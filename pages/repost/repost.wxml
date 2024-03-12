@@ -1,0 +1,182 @@
+<include src="../layout/layout.wxml" />
+<!-- <van-divider hairline customStyle="color: #7232dd; border-color: #7232dd;"/> -->
+<view>
+  <view class="screen screen1">
+    <block>
+      <view class="contact" bindtap="showWherePage">
+        <view class="list">
+          <van-field
+            value="{{ location }}"
+            readonly
+            placeholder="位置和时间"
+            border="{{ false }}"
+            focus="{{inputShowed}}" 
+            input-align="center"
+            input-class="searchitem"
+          />
+        </view>
+      </view>
+    </block>
+    <block>
+      <view class="contact" bindtap="showInfoPage">
+        <view class="list">
+          <van-field
+            value="{{ }}"
+            readonly
+            placeholder="房源信息"
+            border="{{ false }}"
+            focus="{{inputShowed}}" 
+            input-align="center"
+            input-class="searchitem"
+          />
+        </view>
+      </view>
+    </block>
+    <block>
+      <view class="contact" bindtap="showOwnerPage">
+        <view class="list">
+          <van-field
+            value="{{ }}"
+            readonly
+            placeholder="房主描述及要求"
+            border="{{ false }}"
+            focus="{{inputShowed}}" 
+            input-align="center"
+            input-class="searchitem"
+          />
+        </view>
+      </view>
+    </block>
+    <block>
+      <view class="contact" bindtap="showImagePage">
+        <view class="list">
+          <van-field
+            value="{{ }}"
+            readonly
+            placeholder="请上传一些房子的图片吧~"
+            border="{{ false }}"
+            focus="{{inputShowed}}" 
+            input-align="center"
+            input-class="searchitem"
+          />
+        </view>
+      </view>
+    </block>
+    <block>
+      <button class="submit-button" bindtap="onSubmitInfo"  hover-class="none">Submit</button>
+    </block>
+  </view>
+</view>
+<page-container show="{{show}}" overlay="{{overlay}}" close-on-slide-down duration="{{duration}}" position="{{position}}" bindbeforeenter="onBeforeEnter" bindenter="onEnter" bindafterenter="onAfterEnter" bindbeforeleave="onBeforeLeave" bindleave="onLeave" bindafterleave="onAfterLeave" bindclickoverlay="onClickOverlay">
+  
+  <view class="screen screen2">
+    <view class="contact">
+    
+    <view hidden="{{!isShowWhere}}">
+      <van-field
+        value="{{ location }}"
+        placeholder="Where"
+        border="{{ false }}"
+        input-class="searchitem"
+        focus="{{inputShowed}}" 
+        bindinput="inputTypingWhere"
+        bind:confirm="toConfirmWhere"
+        input-align="center"
+      />
+      <button class="when-button" hover-class="none" bindtap="dateDisplay" label="When">{{start_time}}-{{end_time}}</button>
+      <date isShow="{{dateShowed}}" timeStart="{{start_time}}" minDate="2019/1/ 1" timeEnd="{{end_time}}" theme_color="#2493F8"
+      bind:tapYes="onDateConfirm" bind:tapNo="onDateClose"/>
+    </view>
+    <view hidden="{{!isShowInfo}}" class="scrolly">
+      <view><text class="typeInfo">房源类型</text></view>
+      <van-grid column-num="4" gutter="{{ 10 }}" square>
+        <van-grid-item use-slot wx:for="{{houseType}}" wx:for-index="bindex" data-bindex='{{bindex}}' wx:for-item="item" bind:click="onClickHouseType">
+          <van-icon name="home-o" color="{{item.selected? '#CCCCCC' : '#676788' }}" />
+          <text>{{item.name}}</text>
+        </van-grid-item>
+      </van-grid>
+      <view><text class="typeInfo">最多居住人数</text></view>
+      <!-- <van-slider value="10" step="1" bar-height="4px" active-color="#ee0a24" /> -->
+      <view class="section section_gap">
+            <view class="body-view">
+                <slider bindchange="onChangeCapacity" color="#666666" block-color="#666666" activeColor="#b0c0eb" min="1" max="10" show-value/>
+            </view>
+        </view>
+      <view><text class="typeInfo">配套设施</text></view>
+      <van-grid column-num="4" square>
+        <van-grid-item use-slot wx:for="{{settings}}" wx:for-index="bindex" data-bindex='{{bindex}}' wx:for-item="item" bind:click="onClickHouseSetting">
+          <van-icon name="home-o"  color="{{item.selected? '#CCCCCC' : '#676788' }}" />
+          <text class="setting_text">{{item.name}}</text>
+        </van-grid-item>
+      </van-grid>
+      <view><text class="typeInfo">周边设施</text></view>
+      <van-grid column-num="3">
+        <van-grid-item use-slot wx:for="{{surroundings}}" wx:for-index="bindex" data-bindex='{{bindex}}' wx:for-item="item" bind:click="onClickHouseSurroundings">
+          <van-icon name="home-o" color="{{item.selected? '#CCCCCC' : '#676788' }}" />
+          <text class="setting_text">{{item.name}}</text>
+        </van-grid-item>
+      </van-grid>
+    </view>
+    <view class="scrolly" hidden="{{!isShowOwner}}">
+      <van-field
+        value="{{ description }}"
+        placeholder="描述一下自己的房源和要求吧~"
+        border="{{ false }}"
+        type="textarea"
+        autosize
+        input-class="searchitemdes"
+        bind:change="onDesChange"
+        focus="{{inputShowed}}" 
+        input-align="center"
+      />
+    <view><text class="typeInfo">房主偏好</text></view>
+    <van-grid column-num="4" gutter="{{ 10 }}" >
+        <van-grid-item use-slot wx:for="{{preference}}" wx:for-index="bindex" data-bindex='{{bindex}}' wx:for-item="item" bind:click="onClickHousePreference">
+          <van-icon name="home-o" size="30px" color="{{item.selected? '#CCCCCC' : '#676788' }}" />
+          <text class="setting_text">{{item.name}}</text>
+        </van-grid-item>
+      </van-grid>
+      <van-field
+        value="{{ target }}"
+        placeholder="你想要去哪里换宿呢？"
+        border="{{ false }}"
+        type="textarea"
+        autosize
+        input-class="searchitemdes"
+        bind:change="onTargetChange"
+        focus="{{inputShowed}}" 
+        input-align="center"
+      />
+      <van-field
+        value="{{ contact }}"
+        placeholder="请留下自己的联系方式吧~"
+        border="{{ false }}"
+        type="textarea"
+        autosize
+        input-class="searchitemdes"
+        bind:change="onContactChange"
+        focus="{{inputShowed}}" 
+        input-align="center"
+      />
+    </view>
+    <view hidden="{{!isShowImage}}">
+      <view class="multipleImg">
+        <view class='upload' wx:for="{{chooseImgs}}" wx:key>
+            <!--显示缩略图-->
+            <image src="{{item}}" class="addImg" mode="aspectFill" bindtap="previewImg" data-index='{{index}}' data-item='{{item}}'/>
+            <!--删除-->
+            <image src="/icons/image-.png" class="deleteImg" mode="aspectFill" bindtap="deleteImg" data-index='{{index}}' data-item='{{item}}'/>
+        </view>
+
+        <!--上传图片-->
+        <view class='upload' style='display:{{hideAdd?"none":"block"}}'>
+            <image src='/icons/image-.png' class="addImg" bindtap="uploadImgs" mode="aspectFill"/>
+        </view>
+      </view>
+    </view>
+      <button class="screen2-button" bindtap="showPrev" hidden="{{!show}}" hover-class="none">Submit</button>
+    
+    </view>
+  </view>
+</page-container>
+

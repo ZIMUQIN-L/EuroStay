@@ -1,0 +1,77 @@
+.row-display {
+  margin-top: 10px;
+  text-align: center;
+  display: block;
+  color: #555;
+  margin-bottom: 10px;
+}
+
+.container{
+  align-items: center;
+  width:100%;
+  height:100%;
+  overflow:hidden;
+  justify-content: center;  
+  text-align: center；
+}
+
+.line{
+  width:100%;
+  height:20%;
+  align-items: center;
+}
+
+.list{
+  height:1050rpx;
+  width:100%;
+  align-items: center;
+  overflow-y:scroll;
+  text-align:center;
+
+}
+
+.list .item{
+  height:300rpx;
+  width:100%;
+  align-items: center;
+  align-self: center;
+  text-align: center;
+  line-height:300rpx;
+}
+
+.list .item:nth-child(even){
+  align-items: center;
+  background: skyblue;
+}
+
+.list .item:nth-child(odd){
+  align-items: center;
+  background: pink;
+}
+
+.itemsw{
+  text-align: center;
+}
+
+.listcss{
+  align-items: center;
+  height:40%;
+  width:100%;
+  overflow-y:scroll;
+}
+
+.listcss .item{
+  align-items: center;
+  height:300rpx;
+  width:100%;
+  text-align: center;
+  line-height:300rpx;
+}
+
+.listcss .item:nth-child(even){
+  background: skyblue;
+}
+
+.listcss .item:nth-child(odd){
+  background: pink;
+}
