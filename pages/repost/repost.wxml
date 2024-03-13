@@ -1,4 +1,4 @@
-<include src="../layout/layout.wxml" />
+<include src="../bottom-nav/bottom-nav.wxml" />
 <!-- <van-divider hairline customStyle="color: #7232dd; border-color: #7232dd;"/> -->
 <view>
   <view class="screen screen1">
