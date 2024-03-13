@@ -1,11 +1,13 @@
 Page({
   data: {
     userInfo: '',
+    active: 2,
   },
   onLoad() {
     const userInfo = wx.getStorageSync('userInfo');
     this.setData({
-      userInfo: userInfo
+      userInfo: userInfo,
+      active: 2
     })
   },
   onGoHome() {
@@ -43,5 +45,8 @@ Page({
         });
       },
     });
+  },
+  onChange(event) {
+    this.setData({ active: event.detail });
   },
 });

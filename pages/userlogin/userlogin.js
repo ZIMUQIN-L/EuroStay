@@ -9,7 +9,7 @@ Page({
     var userInfo = wx.getStorageSync('userInfo');
     if (userId != "" && userInfo != "") {
       that.setData({
-        userOpenid: userId
+        userOpenid: userId,
       })
       wx.navigateTo({
         url: '/pages/home/home',
@@ -62,15 +62,7 @@ Page({
   },
   onAfterLeave() {
     this.setData({
-      active: 1,
-      show: false,
-      isShowInfo: false,
-      isShowWhere: false,
-      isShowOwner: false,
-      isShowImage: false
+      active: 0,
     });
-  },
-  onChange(event) {
-    this.setData({ active: event.detail });
-  },
+  }
 });
