@@ -1,4 +1,13 @@
 Page({
+  data: {
+    userInfo: '',
+  },
+  onLoad() {
+    const userInfo = wx.getStorageSync('userInfo');
+    this.setData({
+      userInfo: userInfo
+    })
+  },
   onGoHome() {
     wx.navigateTo({
       url: '/pages/home/home',

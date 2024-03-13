@@ -5,12 +5,12 @@
         width="10rem"
         height="10rem"
         round
-        src= "/icons/fox.png"
+        src= "{{userInfo.avatarUrl}}"
       />
     </van-col>
     <van-col span="10" offset = "7">
       <van-icon name="records" />
-      I'm the fox
+      {{userInfo.nickName}}
     </van-col>
   </van-row>
 

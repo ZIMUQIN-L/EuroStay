@@ -6,3 +6,5 @@ $RECYCLE.BIN/
 
 # Node.js
 
+node_modules/*
+miniprogram_npm/*
