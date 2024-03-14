@@ -1,49 +1,66 @@
+// pages/layout/layout.js
 Page({
+
+  /**
+   * Page initial data
+   */
   data: {
-    active: 0,
+
   },
-  onLoad() {
-    this.setData({
-      active: 0,
-    });
+
+  /**
+   * Lifecycle function--Called when page load
+   */
+  onLoad(options) {
+
   },
-  onGoHome() {
-    wx.navigateTo({
-      url: '/pages/home/home',
-      success: () => {},
-      error: () => {
-        wx.showToast({
-          icon: 'none',
-          title: 'Fail to Open Home',
-        });
-      },
-    });
+
+  /**
+   * Lifecycle function--Called when page is initially rendered
+   */
+  onReady() {
+
   },
-  onGoProfile() {
-    wx.navigateTo({
-      url: '/pages/user/index',
-      success: () => {},
-      error: () => {
-        wx.showToast({
-          icon: 'none',
-          title: 'Fail to open Profile',
-        });
-      },
-    });
+
+  /**
+   * Lifecycle function--Called when page show
+   */
+  onShow() {
+
   },
-  onGoPost() {
-    wx.navigateTo({
-      url: '/pages/repost/repost',
-      success: () => {},
-      error: () => {
-        wx.showToast({
-          icon: 'none',
-          title: 'Fail to OpenHost',
-        });
-      },
-    });
+
+  /**
+   * Lifecycle function--Called when page hide
+   */
+  onHide() {
+
   },
-  onChange(event) {
-    this.setData({ active: event.detail });
+
+  /**
+   * Lifecycle function--Called when page unload
+   */
+  onUnload() {
+
   },
-});
+
+  /**
+   * Page event handler function--Called when user drop down
+   */
+  onPullDownRefresh() {
+
+  },
+
+  /**
+   * Called when page reach bottom
+   */
+  onReachBottom() {
+
+  },
+
+  /**
+   * Called when user click on the top right corner to share
+   */
+  onShareAppMessage() {
+
+  }
+})
