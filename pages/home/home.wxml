@@ -11,9 +11,9 @@
     </view>
 
     <scroll-view scroll-y="true" class="list" scroll-y="{{true}}">
-        <view wx:for="{{searchRes}}" wx:for-index="bindex" data-bindex='{{bindex}}' bindtap="onClickHouse">
+        <view wx:for="{{searchRes}}" wx:key="_id" wx:for-index="bindex" data-bindex='{{bindex}}' bindtap="onClickHouse">
             <swiper indicator-dots="true" autoplay="true" interval="true" duration="true" interval="3000" class="swiperHome">
-                <view wx:for="{{item.images}}" wx:for-item="images">
+                <view wx:for="{{item.images}}" wx:key="*this" wx:for-item="images">
                     <swiper-item>
                         <image class="slide-image" src="{{images}}"></image>
                     </swiper-item>
@@ -38,15 +38,15 @@
     <view class="screen screen2">
         <view class="contact">
             <van-grid column-num="4" square>
-                <van-grid-item use-slot wx:for="{{filtering1}}" wx:for-index="bindex" data-bindex='{{bindex}}' wx:for-item="item" bind:click="onClickFilters1">
+                <van-grid-item use-slot wx:for="{{filtering1}}" wx:key="*this" wx:for-index="bindex" data-bindex='{{bindex}}' wx:for-item="item" bind:click="onClickFilters1">
                     <van-icon name="{{item.iconPath}}" color="{{item.selected? '#CCCCCC' : '#676788' }}" />
                     <text class="{{item.selected? 'tag-text_selected' : 'tag-text_unselected' }}">{{item.name}}</text>
                 </van-grid-item>
-                <van-grid-item use-slot wx:for="{{filtering2}}" wx:for-index="bindex" data-bindex='{{bindex}}' wx:for-item="item" bind:click="onClickFilters2">
+                <van-grid-item use-slot wx:for="{{filtering2}}" wx:key="*this" wx:for-index="bindex" data-bindex='{{bindex}}' wx:for-item="item" bind:click="onClickFilters2">
                     <van-icon name="{{item.iconPath}}" color="{{item.selected? '#CCCCCC' : '#676788' }}" />
                     <text class="{{item.selected? 'tag-text_selected' : 'tag-text_unselected' }}">{{item.name}}</text>
                 </van-grid-item>
-                <van-grid-item use-slot wx:for="{{filtering3}}" wx:for-index="bindex" data-bindex='{{bindex}}' wx:for-item="item" bind:click="onClickFilters3">
+                <van-grid-item use-slot wx:for="{{filtering3}}" wx:key="*this" wx:for-index="bindex" data-bindex='{{bindex}}' wx:for-item="item" bind:click="onClickFilters3">
                     <van-icon name="{{item.iconPath}}" color="{{item.selected? '#CCCCCC' : '#111188' }}" />
                     <text class="{{item.selected? 'tag-text_selected' : 'tag-text_unselected' }}">{{item.name}}</text>
                 </van-grid-item>

@@ -561,7 +561,7 @@ Page({
   },
   onGoProfile() {
     wx.navigateTo({
-      url: '/pages/user/index',
+      url: '/pages/user/user',
       success: () => {},
       error: () => {
         wx.showToast({
