@@ -35,89 +35,109 @@ Page({
     settings: [
       {
         name: 'WIFI',
-        selected: false
+        selected: false,
+        iconPath: '/icons/tag-icons/wifi.png'
       },
       {
         name: '独立卫浴',
-        selected: false
+        selected: false,
+        iconPath: '/icons/tag-icons/独立卫浴.png'
       },
       {
         name: '洗衣机',
-        selected: false
+        selected: false,
+        iconPath: '/icons/tag-icons/洗衣机.png'
       },
       {
         name: '独立厨房',
-        selected: false
+        selected: false,
+        iconPath: '/icons/tag-icons/独立厨房.png'
       },
       {
         name: '冰箱',
-        selected: false
+        selected: false,
+        iconPath: '/icons/tag-icons/冰箱.png'
       },
       {
         name: '空调',
-        selected: false
+        selected: false,
+        iconPath: '/icons/tag-icons/空调.png'
       },
       {
         name: '沙发',
-        selected: false
+        selected: false,
+        iconPath: '/icons/tag-icons/沙发.png'
       },
       {
         name: '暖气',
-        selected: false
+        selected: false,
+        iconPath: '/icons/tag-icons/暖气.png'
       },
     ],
     surroundings: [
       {
         name: '近地铁',
-        selected: false
+        selected: false,
+        iconPath: '/icons/tag-icons/近地铁.png'
       },
       {
         name: '近中超',
-        selected: false
+        selected: false,
+        iconPath: '/icons/tag-icons/近中超.png'
       },
       {
         name: '近景点',
-        selected: false
+        selected: false,
+        iconPath: '/icons/tag-icons/近景点.png'
       }
     ],
     preference: [
       {
         name: "宠物友好",
-        selected:false
+        selected:false,
+        iconPath: '/icons/tag-icons/宠物友好.png'
       },
       {
         name: "换宿",
-        selected:false
+        selected:false,
+        iconPath: '/icons/tag-icons/换宿.png'
       },
       {
         name: "短租",
-        selected:false
+        selected:false,
+        iconPath: '/icons/tag-icons/短租.png'
       },
       {
         name: "限男生",
-        selected:false
+        selected:false,
+        iconPath: '/icons/tag-icons/限男生.png'
       },
       {
         name: "限女生",
-        selected:false
+        selected:false,
+        iconPath: '/icons/tag-icons/限女生.png'
       },
       {
         name: "不限",
-        selected:false
+        selected:false,
+        iconPath: '/icons/tag-icons/男女不限.png'
       },
       {
         name: "可吸烟",
-        selected:false
+        selected:false,
+        iconPath: '/icons/tag-icons/可吸烟.png'
       },
       {
         name: "换洗床具",
-        selected:false
+        selected:false,
+        iconPath: '/icons/tag-icons/换洗床具.png'
       },
 
     ],
     chooseImgs: [],
     hideAdd: false, 
     // data for upload
+    userOpenid: '',
     location: '',
     onshow: '',
     start_time: '',
@@ -155,13 +175,15 @@ Page({
     contact: '',
   },
   onLoad() {
+    const userOpenid = wx.getStorageSync('userOpenid');
     this.setData({
       active: 1,
       show: false,
       isShowInfo: false,
       isShowWhere: false,
       isShowOwner: false,
-      isShowImage: false
+      isShowImage: false,
+      userOpenid: userOpenid
     });
   },
   onAfterLeave() {
@@ -524,6 +546,7 @@ Page({
         ownerTarget: this.data.target,
         contact: this.data.contact,
         images: this.data.upload,
+        userOpenid: this.data.userOpenid,
       }
     })
     .then(res => {

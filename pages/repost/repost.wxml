@@ -105,15 +105,15 @@
       <view><text class="typeInfo">配套设施</text></view>
       <van-grid column-num="4" square>
         <van-grid-item use-slot wx:for="{{settings}}" wx:for-index="bindex" data-bindex='{{bindex}}' wx:for-item="item" bind:click="onClickHouseSetting">
-          <van-icon name="home-o"  color="{{item.selected? '#CCCCCC' : '#676788' }}" />
-          <text class="setting_text">{{item.name}}</text>
+          <van-icon name="{{item.iconPath}}"  color="{{item.selected? '#CCCCCC' : '#676788' }}" />
+          <text class="{{item.selected? 'tag-text_selected' : 'tag-text_unselected' }}">{{item.name}}</text>
         </van-grid-item>
       </van-grid>
       <view><text class="typeInfo">周边设施</text></view>
       <van-grid column-num="3">
         <van-grid-item use-slot wx:for="{{surroundings}}" wx:for-index="bindex" data-bindex='{{bindex}}' wx:for-item="item" bind:click="onClickHouseSurroundings">
-          <van-icon name="home-o" color="{{item.selected? '#CCCCCC' : '#676788' }}" />
-          <text class="setting_text">{{item.name}}</text>
+          <van-icon name="{{item.iconPath}}" color="{{item.selected? '#CCCCCC' : '#676788' }}" />
+          <text class="{{item.selected? 'tag-text_selected' : 'tag-text_unselected' }}">{{item.name}}</text>
         </van-grid-item>
       </van-grid>
     </view>
@@ -130,10 +130,10 @@
         input-align="center"
       />
     <view><text class="typeInfo">房主偏好</text></view>
-    <van-grid column-num="4" gutter="{{ 10 }}" >
+    <van-grid column-num="4" >
         <van-grid-item use-slot wx:for="{{preference}}" wx:for-index="bindex" data-bindex='{{bindex}}' wx:for-item="item" bind:click="onClickHousePreference">
-          <van-icon name="home-o" size="30px" color="{{item.selected? '#CCCCCC' : '#676788' }}" />
-          <text class="setting_text">{{item.name}}</text>
+          <van-icon name="{{item.iconPath}}"  color="{{item.selected? '#CCCCCC' : '#676788' }}" />
+          <text class="{{item.selected? 'tag-text_selected' : 'tag-text_unselected' }}">{{item.name}}</text>
         </van-grid-item>
       </van-grid>
       <van-field

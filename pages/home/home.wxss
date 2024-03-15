@@ -246,9 +246,16 @@ page {
   color: #b0c0eb;
 }
 
-.setting_text {
-  font-size: 12px;
+.tag-text_selected {
+  font-size: 16px;
+  color: rgb(133, 167, 199);
 }
+
+.tag-text_unselected {
+  font-size: 16px;
+  color: rgb(44, 46, 48);
+}
+
 
 .swiperHome {
   height: 230px;

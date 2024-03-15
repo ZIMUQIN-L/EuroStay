@@ -1,14 +1,21 @@
 Page({
   data: {
     userInfo: '',
+    userOpenid: '',
+    userProfileInfo: '',
     active: 2,
   },
   onLoad() {
     const userInfo = wx.getStorageSync('userInfo');
+    const userProfileInfo = wx.getStorageSync('userProfileInfo');
+    const userOpenid = wx.getStorageSync('userOpenid');
     this.setData({
       userInfo: userInfo,
+      userProfileInfo: userProfileInfo,
+      userOpenid: userOpenid,
       active: 2
     })
+    console.log(userProfileInfo)
   },
   onGoHome() {
     wx.navigateTo({

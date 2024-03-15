@@ -15,7 +15,7 @@
 
   /* color: rgb(67, 91, 112) !important;
   border-radius: 6px 6px 6px 6px !important; */
-  font-size: 24px !important;
+  font-size: 22px !important;
   /* overflow:hidden; */
   justify-content: center !important;  
   text-align: center !important;
@@ -193,6 +193,15 @@ button {
   border-color: hsl(0, 41%, 87%) !important;
 }
 
+.tag-text_selected {
+  font-size: 14px;
+  color: rgb(133, 167, 199);
+}
+
+.tag-text_unselected {
+  font-size: 14px;
+  color: rgb(44, 46, 48);
+}
 .typeInfo {
   height     : 30px;
   font-size  : 18px;
@@ -227,7 +236,7 @@ button {
   min-height: 45px !important;
   color: rgb(67, 91, 112) !important;
   border-radius: 6px 6px 6px 6px !important;
-  font-size: 24px !important;
+  font-size: 18px !important;
   /* overflow:hidden; */
   justify-content: center !important;  
   text-align: center !important;

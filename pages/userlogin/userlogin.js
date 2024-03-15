@@ -1,15 +1,19 @@
 Page({
   data: {
-    userOpenid: '',
+    userProfileInfo: '',
     userInfo: '',
+    userOpenid: '',
   },
   onLoad() {
     var that = this;
-    var userId = wx.getStorageSync('userOpenid');
+    var userProfileInfo = wx.getStorageSync('userProfileInfo');
     var userInfo = wx.getStorageSync('userInfo');
-    if (userId != "" && userInfo != "") {
+    var userOpenid = wx.getStorageSync('userOpenid');
+    if (userProfileInfo != "" && userInfo != "" && userOpenid != "") {
       that.setData({
-        userOpenid: userId,
+        userOpenid: userOpenid,
+        userProfileInfo: userProfileInfo,
+        userInfo: userInfo
       })
       wx.navigateTo({
         url: '/pages/home/home',
@@ -27,14 +31,27 @@ Page({
     wx.getUserInfo({
       success: function(res) {
         console.log(res);
-        wx.setStorageSync('userOpenid', res.userInfo)
+        wx.setStorageSync('userInfo', res.userInfo)
       }
     });
+    wx.login({
+      success: (res) => {
+        console.log(res);
+        let code = res.code;
+        wx.request({
+          url: `https://api.weixin.qq.com/sns/jscode2session?appid=wx24e83617ca9cdc41&secret=b278e397a8142c5f551141245bbddb23&js_code=${code}&grant_type=authorization_code`,
+          success: (res) => {
+            console.log(res.data.openid)
+            wx.setStorageSync('userOpenid', res.data.openid)
+          }
+        })
+      },
+    })
     wx.getUserProfile({
       desc: 'desc',
       success: function(res) {
         console.log(res.userInfo)
-        wx.setStorageSync('userInfo', res.userInfo)
+        wx.setStorageSync('userProfileInfo', res.userInfo)
       }
     })
     wx.navigateTo({
