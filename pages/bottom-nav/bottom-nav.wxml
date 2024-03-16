@@ -1,5 +1,5 @@
 <view class="nav-container">
-    <van-tabbar active="{{ active }}" bind:change="onChange">
+    <van-tabbar active-color="#9890E3BB" active="{{ active }}" bind:change="onChange">
         <van-tabbar-item icon="home-o" bind:click="onGoHome">Home</van-tabbar-item>
         <van-tabbar-item icon="search" size="100px" bind:click="onGoPost">Post</van-tabbar-item>
         <van-tabbar-item icon="friends-o" bind:click="onGoProfile">Profile</van-tabbar-item>

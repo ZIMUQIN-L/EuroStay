@@ -10,13 +10,17 @@
 .search-container__input-btn {
   flex: 5;
   width: 100%;
-  height: 2.5rem;
   border-radius: 5px;
   display: flex;
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
   font-size: 1.1rem;
+  display: block;
+  margin : 10px auto;
+  color: #ffffff !important;
+  background-color: #9890e3BB;
+  box-shadow        : 0 7px 15px rgba(0, 0, 0, 0.2);
 }
 
 .search-container__filter-btn {
@@ -195,11 +199,12 @@ page {
   overflow     : hidden;
 }
 
-.screen2-button {
+.search-container_submit-btn {
   display: block;
   margin : 24px auto;
   color: beige !important;
-  background-color: rgb(147, 174, 224);
+  background-color: #9890E3BB;
+  box-shadow        : 0 5px 13px rgba(0, 0, 0, 0.2);
 }
 
 .when-button {
@@ -247,15 +252,14 @@ page {
 }
 
 .tag-text_selected {
-  font-size: 16px;
-  color: rgb(133, 167, 199);
+  font-size: 0.8rem;
+  color: #9890E3;
 }
 
 .tag-text_unselected {
-  font-size: 16px;
+  font-size: 0.8rem;
   color: rgb(44, 46, 48);
 }
-
 
 .swiperHome {
   height: 230px;
@@ -264,4 +268,13 @@ page {
  
 .slide-image {
 	width: 100%;
+}
+
+.search-container_search-btn {
+    display: block;
+    margin : 10px auto;
+    color: #9890e3 !important;
+    font-size: 13px;
+    background-color: #9890e3;
+    box-shadow        : 0 7px 15px rgba(0, 0, 0, 0.2);
 }

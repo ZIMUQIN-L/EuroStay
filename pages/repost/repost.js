@@ -17,19 +17,23 @@ Page({
     houseType: [
       {
         name: "studio",
-        selected: false
+        selected: false,
+        iconPath: '/icons/tag-icons/studio.png'
       },
       {
         name: "shared",
-        selected: false
+        selected: false,
+        iconPath: '/icons/tag-icons/shared.png'
       },
       {
         name: "ensuite",
-        selected: false
+        selected: false,
+        iconPath: '/icons/tag-icons/ensuite.png'
       },
       {
         name: "apartment",
-        selected: false
+        selected: false,
+        iconPath: '/icons/tag-icons/apartment.png'
       }
     ],
     settings: [
@@ -118,7 +122,7 @@ Page({
         iconPath: '/icons/tag-icons/限女生.png'
       },
       {
-        name: "不限",
+        name: "不限性别",
         selected:false,
         iconPath: '/icons/tag-icons/男女不限.png'
       },
@@ -166,13 +170,16 @@ Page({
       短租: false,
       限男生: false,
       限女生: false,
-      不限: false,
+      不限性别: false,
       可吸烟: false,
       换洗床具: false
     },
     target: '',
     upload: [], 
     contact: '',
+    tagSetting: {},
+    tagSurrounding: {},
+    tagPreference: {},
   },
   onLoad() {
     const userOpenid = wx.getStorageSync('userOpenid');
@@ -333,55 +340,66 @@ Page({
     var index = e.currentTarget.dataset.bindex;
     let housesetting = this.data.settings;
     let userSetting = this.data.userHouseSetting;
+    let tags = this.data.tagSetting;
     if (housesetting[index].selected == true) {
       housesetting[index].selected = false;
       userSetting[housesetting[index].name] = false;
+      delete tags[housesetting[index].name];
     } else {
       housesetting[index].selected = true;
       userSetting[housesetting[index].name] = true;
+      tags[housesetting[index].name] = true;
     }
     console.log(this.data.settings)
     this.setData({
       settings: housesetting,
-      userHouseSetting: userSetting
+      userHouseSetting: userSetting,
+      tagSetting: tags,
     })
-    console.log(this.data.userHouseSetting)
-    console.log(this.data.settings)
+    console.log(this.data.tagSetting)
   },
   onClickHouseSurroundings(e) {
     var index = e.currentTarget.dataset.bindex;
     let housesurro = this.data.surroundings;
     let userSurro = this.data.userSurroundings;
+    let tags = this.data.tagSurrounding;
     if (housesurro[index].selected == true) {
       housesurro[index].selected = false;
       userSurro[housesurro[index].name] = false;
+      delete tags[housesurro[index].name];
     } else {
       housesurro[index].selected = true;
       userSurro[housesurro[index].name] = true;
+      tags[housesurro[index].name] = true;
     }
     this.setData({
       surroundings: housesurro,
-      userSurroundings: userSurro
+      userSurroundings: userSurro,
+      tagSurrounding: tags,
     })
-    console.log(this.data.surroundings)
+    console.log(this.data.tagSurrounding)
     console.log(this.data.userSurroundings)
   },
   onClickHousePreference(e) {
     var index = e.currentTarget.dataset.bindex;
     let housepre = this.data.preference;
     let userPre = this.data.userPreference;
+    let tags = this.data.tagPreference;
     if (housepre[index].selected == true) {
       housepre[index].selected = false;
       userPre[housepre[index].name] = false;
+      delete tags[housepre[index].name];
     } else {
       housepre[index].selected = true;
       userPre[housepre[index].name] = true;
+      tags[housepre[index].name] = true;
     }
     this.setData({
       preference: housepre,
-      userPreference: userPre
+      userPreference: userPre,
+      tagPreference: tags,
     })
-    console.log(this.data.userPreference)
+    console.log(this.data.tagPreference)
   },
   onTargetChange(e) {
     this.setData({

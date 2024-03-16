@@ -63,7 +63,7 @@
       </view>
     </block>
     <block>
-      <button class="submit-button" bindtap="onSubmitInfo"  hover-class="none">Submit</button>
+      <button class="post-container_submit-button" bindtap="onSubmitInfo"  hover-class="none">提交</button>
     </block>
   </view>
 </view>
@@ -89,10 +89,10 @@
     </view>
     <view hidden="{{!isShowInfo}}" class="scrolly">
       <view><text class="typeInfo">房源类型</text></view>
-      <van-grid column-num="4" gutter="{{ 10 }}" square>
+      <van-grid column-num="4" gutter="{{ 5 }}" square>
         <van-grid-item use-slot wx:for="{{houseType}}" wx:for-index="bindex" data-bindex='{{bindex}}' wx:for-item="item" bind:click="onClickHouseType">
-          <van-icon name="home-o" color="{{item.selected? '#CCCCCC' : '#676788' }}" />
-          <text>{{item.name}}</text>
+          <van-icon name="{{item.iconPath}}" color="{{item.selected? '#CCCCCC' : '#676788' }}" />
+          <text class="{{item.selected? 'tag-text_selected' : 'tag-text_unselected' }}">{{item.name}}</text>
         </van-grid-item>
       </van-grid>
       <view><text class="typeInfo">最多居住人数</text></view>
@@ -149,7 +149,7 @@
       />
       <van-field
         value="{{ contact }}"
-        placeholder="请留下自己的联系方式吧~"
+        placeholder="请留下自己的vx吧~"
         border="{{ false }}"
         type="textarea"
         autosize
@@ -174,7 +174,7 @@
         </view>
       </view>
     </view>
-      <button class="screen2-button" bindtap="showPrev" hidden="{{!show}}" hover-class="none">Submit</button>
+      <button class="post-container_in-page-submit-btn" bindtap="showPrev" hidden="{{!show}}" hover-class="none">Submit</button>
     
     </view>
   </view>

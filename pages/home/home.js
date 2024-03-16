@@ -92,7 +92,7 @@ Page({
                 iconPath: '/icons/tag-icons/限女生.png'
             },
             {
-                name: "不限",
+                name: "不限性别",
                 selected: false,
                 iconPath: '/icons/tag-icons/男女不限.png'
             },
@@ -129,7 +129,7 @@ Page({
             短租: false,
             限男生: false,
             限女生: false,
-            不限: false,
+            不限性别: false,
             可吸烟: false,
             换洗床具: false
         },

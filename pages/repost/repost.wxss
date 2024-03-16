@@ -15,7 +15,7 @@
 
   /* color: rgb(67, 91, 112) !important;
   border-radius: 6px 6px 6px 6px !important; */
-  font-size: 22px !important;
+  font-size: 1.6em !important;
   /* overflow:hidden; */
   justify-content: center !important;  
   text-align: center !important;
@@ -159,19 +159,20 @@ button {
   overflow     : hidden;
 }
 
-.screen2-button {
+.post-container_in-page-submit-btn {
   display: block;
   margin : 24px auto;
-  color: beige !important;
-  background-color: rgb(147, 174, 224);
+  color: rgb(102, 98, 83) !important;
+  background-color: #FDD28466;
+  box-shadow   : 0 2px 2px 0 rgba(0, 0, 0, 0.2);
 }
 
 .when-button {
   display: block;
-  margin : 24px auto;
+  margin : 1.6rem auto;
   color: rgb(128, 119, 119) !important;
   background-color: rgb(255, 255, 255);
-  font-size: 24px !important;
+  font-size: 1.3rem !important;
 }
 
 .paragraph {
@@ -194,20 +195,22 @@ button {
 }
 
 .tag-text_selected {
-  font-size: 14px;
-  color: rgb(133, 167, 199);
+  font-size: 0.8rem;
+  color: #9890E3CC;
+  font-weight: bold;
 }
 
 .tag-text_unselected {
-  font-size: 14px;
+  font-size: 0.8rem;
+  font-weight: bold;
   color: rgb(44, 46, 48);
 }
 .typeInfo {
-  height     : 30px;
-  font-size  : 18px;
+  height     : 1.8rem;
+  font-size  : 1.1rem;
   font-weight: bold;
   text-align : center;
-  margin     : 2px 0;
+  margin     : 0.1rem 0;
   align-items: center;
   vertical-align: center;
   justify-content: center;  
@@ -233,10 +236,10 @@ button {
   margin-top: 6px !important;
   /* width:80% !important; */
   /* height:45px !important; */
-  min-height: 45px !important;
+  min-height: 2.2rem !important;
   color: rgb(67, 91, 112) !important;
   border-radius: 6px 6px 6px 6px !important;
-  font-size: 18px !important;
+  font-size: 1.1rem !important;
   /* overflow:hidden; */
   justify-content: center !important;  
   text-align: center !important;
@@ -266,9 +269,11 @@ button {
   right: 0;
 }
 
-.submit-button {
+.post-container_submit-button {
   display: block;
-  margin : 24px auto;
+  margin : 2rem auto;
+  height: 4rem;
+  width: 60%;
   color: beige !important;
-  background-color: rgb(224, 209, 178);
+  background-color: #9890E3BB;
 }

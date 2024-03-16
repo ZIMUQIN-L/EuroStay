@@ -1,60 +1,45 @@
+<include src="../bottom-nav/bottom-nav.wxml" />
 <view>
-  <view>
-    <swiper
-      indicator-dots="true"
-      autoplay="true"
-      interval="true"
-      duration="true"
-      interval="3000"
-      class="swiperHome"> 
-      <view wx:for="{{detailInfo.images}}" wx:for-item="images">
-        <swiper-item>
-        <image class="slide-image" src="{{images}}"></image>  
-        </swiper-item> 
-      </view>
-    </swiper>
-  </view>
-  <van-cell-group border="{{ false }}">
-    <van-cell
-      custom-class="goods-message"
-      title="{{ detailInfo.location }}"
-      label="{{ detailInfo._id}}"
-    />
-    <van-cell custom-class="capacityInfo">
-      <van-col span="18">{{ detailInfo.capacity }} guests </van-col>
-    </van-cell>
-  </van-cell-group>
-  <van-cell class="van-multi-ellipsis--l2" title = "Details" label = "{{detailInfo.description}}">
-  </van-cell>
-  <van-cell-group custom-class="goods-cell-group">
-    <van-cell value="{{detailInfo.start_date}} - {{detailInfo.end_date}}" icon="shop-o"  bind:click="sorry">
-      <view slot="title">
-        <span class="van-cell-text">Time Avalibility</span>
-      </view>
-    </van-cell>
-    <van-cell title="Owner Contact" value="{{detailInfo.contact}}" icon="location-o"  bind:click="sorry" />
-  </van-cell-group>
-
-  <van-goods-action>
-    <van-goods-action-icon
-      icon="chat-o"
-      text="我的"
-      bind:click="onClickUser"
-    />
-    <van-goods-action-icon
-      icon="cart-o"
-      text="Wishes"
-      bind:click="onClickCart"
-    />
-    <van-goods-action-button
-      text="Contect"
-      bind:click="onClickButton"
-    />
-</van-goods-action>
-
-<van-tabbar active="{{ active }}" bind:change="onChange">
-  <van-tabbar-item icon="home-o" bind:click="onGoHome">Home</van-tabbar-item>
-  <van-tabbar-item icon="search" size="100px" bind:click="onGoPost">Post</van-tabbar-item>
-  <van-tabbar-item icon="friends-o" bind:click="onGoProfile">Profile</van-tabbar-item>
-</van-tabbar>
+    <view>
+        <swiper indicator-dots="true" autoplay="true" interval="true" duration="true" interval="3000" class="swiperHome">
+            <view wx:for="{{detailInfo.images}}" wx:for-item="images">
+                <swiper-item>
+                    <image class="slide-image" src="{{images}}"></image>
+                </swiper-item>
+            </view>
+        </swiper>
+    </view>
+    <van-cell-group border="{{ false }}">
+        <van-cell custom-class="goods-message" title="{{ detailInfo.location }}" label="{{ detailInfo.houseType}}" />
+        <van-cell custom-class="capacityInfo">
+            <van-col span="14">{{ detailInfo.capacity }} guests </van-col>
+        </van-cell>
+    </van-cell-group>
+    <scroll-view scroll-y="true" class="house-detail__scroll_view" scroll-y="{{true}}">
+        <text class="house-detail__timeslot-text">Time Slot: {{detailInfo.start_date}} to {{detailInfo.end_date}}</text>
+        <van-divider />
+        <text class="house-detail__timeslot-text">联系方式： {{ detailInfo.contact }}</text>
+        <van-divider />
+        
+        <van-grid column-num="5"  gutter="{{0}}">
+            <van-grid-item class="house-detail__tag-text"use-slot wx:for="{{detailInfo.houseSetting}}" wx:if="{{item}}" wx:key="*this" wx:for-index="bindex" data-bindex='{{bindex}}' wx:for-item="item">
+                <text class="house-detail__tag-text">{{bindex}}</text>
+            </van-grid-item>
+            <van-grid-item class="house-detail__tag-text"use-slot wx:for="{{detailInfo.houseSurrounding}}" wx:if="{{item}}" wx:key="*this" wx:for-index="bindex" data-bindex='{{bindex}}' wx:for-item="item">
+                <text class="house-detail__tag-text">{{bindex}}</text>
+            </van-grid-item>
+            <van-grid-item class="house-detail__tag-text"use-slot wx:for="{{detailInfo.preference}}" wx:if="{{item}}" wx:key="*this" wx:for-index="bindex" data-bindex='{{bindex}}' wx:for-item="item">
+                <text class="house-detail__tag-text">{{bindex}}</text>
+            </van-grid-item>
+        </van-grid>
+        <van-divider />
+        <text class="house-detail__description-text">房屋详情： {{ detailInfo.description }}</text>
+        <van-divider />
+        <text class="house-detail__description-text">房主换宿目标： {{ detailInfo.ownerTarget }}</text>
+        <van-divider />
+        <van-divider />
+        <text class="house-detail__description-text"></text>
+        <van-divider />
+        <text class="house-detail__description-text"></text>
+    </scroll-view>
 </view>

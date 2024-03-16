@@ -2,7 +2,7 @@
 <view class="container">
     <!--  place the search bar to a dedicate folder  -->
     <view class="search-container">
-        <button type="warn" bind:tap="onClickSearch" class="search-container__input-btn">
+        <button bind:tap="onClickSearch" class="search-container__input-btn">
             搜索房源
         </button>
         <button bind:tap="onClickFilter" class="search-container__filter-btn">
@@ -25,7 +25,7 @@
                         <van-cell title="{{item.location}}" label="{{item.location}}" border="{{ false }}" />
                     </van-col>
                     <van-col span="12">
-                        <van-cell title="{{item.start_date}} to {{item.end_date}}" label="Feb, March" border="{{ false }}" />
+                        <van-cell title="{{item.start_date}} to {{item.end_date}}" border="{{ false }}" />
                     </van-col>
                 </van-row>
             </van-cell-group>
@@ -37,7 +37,7 @@
 <page-container show="{{show}}" overlay="{{overlay}}" close-on-slide-down duration="{{duration}}" position="{{position}}">
     <view class="screen screen2">
         <view class="contact">
-            <van-grid column-num="4" square>
+            <van-grid column-num="4" square gutter="{{2}}">
                 <van-grid-item use-slot wx:for="{{filtering1}}" wx:key="*this" wx:for-index="bindex" data-bindex='{{bindex}}' wx:for-item="item" bind:click="onClickFilters1">
                     <van-icon name="{{item.iconPath}}" color="{{item.selected? '#CCCCCC' : '#676788' }}" />
                     <text class="{{item.selected? 'tag-text_selected' : 'tag-text_unselected' }}">{{item.name}}</text>
@@ -51,7 +51,7 @@
                     <text class="{{item.selected? 'tag-text_selected' : 'tag-text_unselected' }}">{{item.name}}</text>
                 </van-grid-item>
             </van-grid>
-            <button class="screen2-button" bindtap="showPrev" hidden="{{!show}}" hover-class="none">Submit</button>
+            <button class="search-container_submit-btn" bindtap="showPrev" hidden="{{!show}}" hover-class="none">Submit</button>
         </view>
     </view>
 </page-container>
