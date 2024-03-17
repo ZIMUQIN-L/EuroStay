@@ -5,6 +5,6 @@
   </view>
   <view class="login_container--box">
     <button class="login_container--button" style="background-color:rgb(141, 221, 141)" bind:tap="onLoginWechat">微信登录</button>
-    <button class="login_container--button" style="background-color:rgb(173, 179, 224)" bind:tap="onDirectUse">直接进入</button>
+    <!-- <button class="login_container--button" style="background-color:rgb(173, 179, 224)" bind:tap="onDirectUse">直接进入</button> -->
   </view>
 </view>

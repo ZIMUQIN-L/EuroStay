@@ -98,3 +98,27 @@
     border-radius: 0.1rem;
     border-width: thin;
 }
+
+.house-detail__connect-btn {
+    display: block;
+  margin-left: 0.5rem;
+  margin-top: 0rem;
+  font-size: small;
+  color: beige !important;
+  background-color: #9890E3BB;
+  box-shadow        : 0 5px 13px rgba(0, 0, 0, 0.2);
+}
+
+.house-detail__contact-text {
+    margin-top: 0.5rem;
+    margin-left: 6rem;
+    height: 2.5rem;
+    margin-bottom: -0.5rem;
+    display: block;
+    white-space: wrap;
+    font-size: 1rem;
+    font-style:unset;
+    text-align: center;
+    color: rgb(127, 142, 143);
+    text-overflow:ellipsis;
+}

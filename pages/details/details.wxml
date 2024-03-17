@@ -16,10 +16,25 @@
         </van-cell>
     </van-cell-group>
     <scroll-view scroll-y="true" class="house-detail__scroll_view" scroll-y="{{true}}">
-        <text class="house-detail__timeslot-text">Time Slot: {{detailInfo.start_date}} to {{detailInfo.end_date}}</text>
         <van-divider />
-        <text class="house-detail__timeslot-text">联系方式： {{ detailInfo.contact }}</text>
+            <text class="house-detail__timeslot-text">Time Slot: {{detailInfo.start_date}} to {{detailInfo.end_date}}</text>
+        
+        
         <van-divider />
+        <view style="display:flex;align-items:center">
+        <text class="house-detail__contact-text">联系方式：</text>
+        <button bind:tap="onClickConnect" class="house-detail__connect-btn">
+            Connect
+        </button>
+        <!-- <text class="house-detail__contact-text">房主xhs： {{ detailInfo.xhscontact }}</text>
+        <button bind:tap="onClickSearch" class="house-detail__connect-btn">
+            Connect
+        </button> -->
+        </view>
+
+        <van-divider />
+        <!-- <text class="house-detail__contact-text">房主xhs： {{ detailInfo.xhscontact }}</text>
+        <van-divider /> -->
         
         <van-grid column-num="5"  gutter="{{0}}">
             <van-grid-item class="house-detail__tag-text"use-slot wx:for="{{detailInfo.houseSetting}}" wx:if="{{item}}" wx:key="*this" wx:for-index="bindex" data-bindex='{{bindex}}' wx:for-item="item">
