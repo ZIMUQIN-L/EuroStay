@@ -22,7 +22,14 @@ const userAgreementContent =  `在使用留学生换宿信息平台EuroStay（�
 
 var dataUtil = require('../../common/data.js');
 
+const common = require('../../utils/common_func.js');
 Page({
+    onShareAppMessage: function () {
+      return common.globalShareMessage();
+    },
+    onShareTimeline: function () {
+      return common.globalShareTimeline();
+    },
     data: {
         userProfileInfo: '',
         userInfo: '',

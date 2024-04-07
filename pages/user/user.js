@@ -1,4 +1,11 @@
+const common = require('../../utils/common_func.js');
 Page({
+    onShareAppMessage: function () {
+      return common.globalShareMessage();
+    },
+    onShareTimeline: function () {
+      return common.globalShareTimeline();
+    },
     data: {
         userInfo: '',
         userDbInfo: '',

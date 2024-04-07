@@ -1,7 +1,14 @@
 //inputVal: 地点，city
 //date: 入住日期
 //number: 入住人数
+const common = require('../../utils/common_func.js');
 Page({
+    onShareAppMessage: function () {
+      return common.globalShareMessage();
+    },
+    onShareTimeline: function () {
+      return common.globalShareTimeline();
+    },
   data: {
     date: '',
     active: 0,
