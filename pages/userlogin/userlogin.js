@@ -58,16 +58,17 @@ Page({
                         userProfileInfo: userProfileInfo,
                         userInfo: userInfo,
                     })
-                    wx.navigateTo({
-                        url: '/pages/home/home',
-                        success: () => { },
-                        error: () => {
-                            wx.showToast({
-                                icon: 'none',
-                                title: '打开个人中心失败',
-                            });
-                        },
-                    });
+                    //注释掉这个是因为：点击确认会通过确认跳过上传昵称和图片阶段
+                    // wx.navigateTo({
+                    //     url: '/pages/home/home',
+                    //     success: () => { },
+                    //     error: () => {
+                    //         wx.showToast({
+                    //             icon: 'none',
+                    //             title: '打开个人中心失败',
+                    //         });
+                    //     },
+                    // });
                 }
               } else {
                 console.log('用户点击取消')
