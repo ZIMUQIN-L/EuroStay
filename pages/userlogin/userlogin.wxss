@@ -9,6 +9,44 @@
   -webkit-overflow-scrolling: touch;
 }
 
+.avatar-container {
+  width: 100px; /* 设置宽度为100px */
+  height: 100px; /* 设置高度为100px */
+  margin-bottom: 20px;
+  background-color: transparent; /* 保持背景透明 */
+  border: none; /* 去除边框 */
+}
+
+.avatar {
+  width: 100%;
+  height: 100%;
+  background-color: #f0f0f0;
+}
+
+.nickname-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.nickname-label {
+  margin-right: 10px;
+}
+
+.nickname-input {
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.register-btn {
+  background-color: #1aad19;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+}
+
+
 .login_container--box {
   position        : relative;
   padding         : 16px;
