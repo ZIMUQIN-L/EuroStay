@@ -21,6 +21,7 @@ const userAgreementContent =  `在使用留学生换宿信息平台EuroStay（�
 9.最终解释权归本平台所有。`
 
 var dataUtil = require('../../common/data.js');
+var databaseUtil = require('../../common/database.js');
 
 const common = require('../../utils/common_func.js');
 Page({
@@ -89,7 +90,7 @@ Page({
       this.setData({
         avatarUrl,
       })
-      dataUtil.saveAvatarUrl(e.detail )
+      dataUtil.saveAvatarUrl(e.detail)
     },
 
     onLoginWechat() {
@@ -102,49 +103,20 @@ Page({
         };
         wx.login({
             success: (res) => {
-              console.log("--------------printed by xiaoli 2222-------------")
                 console.log(res);
                 let code = res.code;
                 wx.request({
                     url: `https://api.weixin.qq.com/sns/jscode2session?appid=wx24e83617ca9cdc41&secret=b278e397a8142c5f551141245bbddb23&js_code=${code}&grant_type=authorization_code`,
                     success: (res) => {
-                      console.log("--------------printed by xiaoli 3333-------------")
-                        console.log(res.data.openid)
-                        wx.setStorageSync('userOpenid', res.data.openid)
+                        dataUtil.setUserOpenId(res.data.openid)
+                        const db = wx.cloud.database()
+                        databaseUtil.saveUserInfoByOpenId(db, res.data.openid, this.data.avatarUrl, this.data.username, "", () =>{})    
+                        // [todo!!!]向数据库中写入数据
                     }
                 })
             },
         })
       
-        var userProfile = wx.getStorageSync('userProfileInfo');
-        var userInfo = wx.getStorageSync('userInfo');
-        var userOpenid = wx.getStorageSync('userOpenid');
-        console.log("--------------printed by xiaoli-------------")
-        console.log(userOpenid)
-        console.log(userInfo)
-        var that = this;
-        var data_lenth = 0;
-        const db = wx.cloud.database()
-        const _ = db.command
-        db.collection('UserInfo').where({
-            userOpenid: userOpenid
-        }).get({
-            success: function (res) {
-                console.log(res.data.length);
-                if (res.data.length == 0) {
-                    db.collection('UserInfo').add({
-                        data: {
-                            userOpenid: userOpenid,
-                            nickName: this.data.username,
-                            avatarUrl: this.data.avatarUrl,
-                            userDes: '',
-                        }
-                    }).then(res => {
-                        console.log(res)
-                    })
-                }
-            }
-        })
         wx.navigateTo({
             url: '/pages/home/home',
             success: () => { },

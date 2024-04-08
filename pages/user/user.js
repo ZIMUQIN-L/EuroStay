@@ -1,4 +1,7 @@
 const common = require('../../utils/common_func.js');
+var dataUtil = require('../../common/data.js');
+var databaseUtil = require('../../common/database.js');
+
 Page({
     onShareAppMessage: function () {
       return common.globalShareMessage();
@@ -27,7 +30,7 @@ Page({
         var that = this;
         const userInfo = wx.getStorageSync('userInfo');
         const userProfileInfo = wx.getStorageSync('userProfileInfo');
-        const userOpenid = wx.getStorageSync('userOpenid');
+        const userOpenid = dataUtil.getUserOpenId();
         this.setData({
             userInfo: userInfo,
             userProfileInfo: userProfileInfo,
@@ -38,18 +41,15 @@ Page({
         const db = wx.cloud.database()
         const _ = db.command
         console.log(userOpenid)
-        db.collection('UserInfo').where({
-            userOpenid: userOpenid
+
+        databaseUtil.getUserDbInfo(db, userOpenid, (res) => {
+          that.setData({
+            userDbInfo: res.data[0],
+          });
+          console.log("userDbInfo--------------------------------------")
+          console.log(this.data.userDbInfo)
+          this.onLoad()
         })
-            .get({
-                success: function (res) {
-                    console.log(res);
-                    that.setData({
-                        userDbInfo: res.data[0],
-                    });
-                    console.log(that.data.userDbInfo);
-                }
-            })
         db.collection('HouseInfo').where({
             userOpenid: this.data.userOpenid
         })
@@ -96,45 +96,29 @@ Page({
             show: true,
         })
     },
-    showPrev() {
-        var that = this;
-        this.setData({
-            show: false,
-        })
-        console.log(this.data.imageURL)
-        const db = wx.cloud.database()
-        const _ = db.command
-        db.collection('UserInfo').doc(this.data.userDbInfo._id).update({
-            data: {
-                avatarUrl: this.data.imageURL,
-                userDes: this.data.userDescription,
-                nickName: this.data.userNickName
-            },
-            success: function (res) {
-                console.log(res)
-            }
-        })
-        
-        this.onLoad();
-    },
-    onChooseAvatar(e) {
-        const { avatarUrl } = e.detail
-        console.log(e)
-        this.setData({
-            avatarUrl: avatarUrl,
-        })
-        let cloudPath = "userAvatar/" + Date.now() + ".jpg";
-        wx.cloud.uploadFile({
-            cloudPath: cloudPath,
-            filePath: this.data.avatarUrl,
-            success: res => {
-                console.log(res);
-                this.setData({
-                    imageURL: res.fileID
-                })
-            }
-        })
-    },
+  // [todo!!!] 在往云数据库中存数据之前，应该确保用户同时更新了用户名、头像和description
+  showPrev() {
+    this.setData({
+      show: false,
+    })
+    console.log(this.data.imageURL)
+    const db = wx.cloud.database()
+    const _ = db.command
+    databaseUtil.saveUserInfo(db, this.data.userDbInfo._id,
+      this.data.avatarUrl, this.data.userNickName, this.data.userDescription, () => {
+      this.onLoad();
+    })
+  },
+
+  onChooseAvatar(e) {
+    const {
+      avatarUrl
+    } = e.detail
+    console.log(e)
+    this.setData({
+      avatarUrl: avatarUrl,
+    })
+  },
     onDelHouseInfo(e) {
         var that = this;
         wx.showModal({
@@ -158,52 +142,57 @@ Page({
                         url: '/pages/home/home'
                     })
 
-                } else if (res.cancel) {
-                    console.log('cancel')
-                }
-            }
-        })
-    },
-    onChangeNickname(e) {
-        console.log(e.detail.value)
-        this.setData({
-            userNickName: e.detail.value
-        })
-    },
-    onChangeDes(e) {
-        console.log(e.detail.value)
-        this.setData({
-            userDescription: e.detail.value
-        })
-    },
-    onGoHome() {
-        wx.navigateTo({
-            url: '/pages/home/home',
-            success: () => { },
-            error: () => {
-                wx.showToast({
-                    icon: 'none',
-                    title: '打开个人中心失败',
-                });
-            },
+        } else if (res.cancel) {
+          console.log('cancel')
+        }
+      }
+    })
+  },
+
+
+  onChangeNickname(e) {
+    console.log(e.detail.value)
+    this.setData({
+      userNickName: e.detail.value
+    })
+  },
+
+  onChangeDes(e) {
+    console.log(e.detail.value)
+    this.setData({
+      userDescription: e.detail.value
+    })
+  },
+
+
+  onGoHome() {
+    wx.navigateTo({
+      url: '/pages/home/home',
+      success: () => {},
+      error: () => {
+        wx.showToast({
+          icon: 'none',
+          title: '打开个人中心失败',
         });
-    },
+      },
+    });
+  },
 
     onGoProfile() {
-        if(!this.data.isGoNavigation) {
-            wx.navigateTo({
-                url: '/pages/user/user',
-                success: () => {
-                },
-                error: () => {
-                    wx.showToast({
-                        icon: 'none',
-                        title: '打开个人中心失败',
-                    });
-                },
-            });
-        }
-    },
+          if(!this.data.isGoNavigation) {
+              wx.navigateTo({
+                  url: '/pages/user/user',
+                  success: () => {
+                  },
+                  error: () => {
+                      wx.showToast({
+                          icon: 'none',
+                          title: '打开个人中心失败',
+                      });
+                  },
+              });
+          }
+      },
     onGoPost() {
         wx.redirectTo({
             url: '/pages/repost/repost',
