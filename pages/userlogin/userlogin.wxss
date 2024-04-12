@@ -15,6 +15,7 @@
   margin-bottom: 20px;
   background-color: transparent; /* 保持背景透明 */
   border: none; /* 去除边框 */
+  padding: 0;
 }
 
 .avatar {

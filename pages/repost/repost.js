@@ -187,6 +187,12 @@ Page({
     tagSetting: {},
     tagSurrounding: {},
     tagPreference: {},
+    isGoNavigation: false,
+  },
+  onShow() {
+    this.setData({
+      isGoNavigation: true
+    })
   },
   onLoad() {
     const userOpenid = wx.getStorageSync('userOpenid');
@@ -585,7 +591,7 @@ Page({
     });
   },
   onGoProfile() {
-    wx.navigateTo({
+    wx.redirectTo({
       url: '/pages/user/user',
       success: () => {},
       error: () => {
@@ -597,16 +603,19 @@ Page({
     });
   },
   onGoPost() {
-    wx.navigateTo({
-      url: '/pages/repost/repost',
-      success: () => {},
-      error: () => {
-        wx.showToast({
-          icon: 'none',
-          title: 'Fail to OpenHost',
-        });
-      },
-    });
+    if(!this.data.isGoNavigation) {
+      wx.redirectTo({
+        url: '/pages/repost/repost',
+        success: () => {
+        },
+        error: () => {
+          wx.showToast({
+            icon: 'none',
+            title: 'Fail to OpenHost',
+          });
+        },
+      });
+    }
   },
   onChange(event) {
     this.setData({ active: event.detail });
