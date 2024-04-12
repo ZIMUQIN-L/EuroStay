@@ -21,6 +21,7 @@ Page({
         userDescription: '',
         userNickName: '',
         imageURL: '',
+        isGoNavigation: false,
     },
     onLoad() {
         var that = this;
@@ -71,7 +72,8 @@ Page({
             userInfo: userInfo,
             userProfileInfo: userProfileInfo,
             userOpenid: userOpenid,
-            active: 2
+            active: 2,
+            isGoNavigation: true
         })
         console.log(userProfileInfo)
         const db = wx.cloud.database()
@@ -188,19 +190,22 @@ Page({
     },
 
     onGoProfile() {
-        wx.navigateTo({
-            url: '/pages/user/user',
-            success: () => { },
-            error: () => {
-                wx.showToast({
-                    icon: 'none',
-                    title: '打开个人中心失败',
-                });
-            },
-        });
+        if(!this.data.isGoNavigation) {
+            wx.navigateTo({
+                url: '/pages/user/user',
+                success: () => {
+                },
+                error: () => {
+                    wx.showToast({
+                        icon: 'none',
+                        title: '打开个人中心失败',
+                    });
+                },
+            });
+        }
     },
     onGoPost() {
-        wx.navigateTo({
+        wx.redirectTo({
             url: '/pages/repost/repost',
             success: () => { },
             error: () => {

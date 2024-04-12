@@ -142,11 +142,13 @@ Page({
         },
         filterConsult1: {},
         filterConsult2: {},
-        filterConsult3: {}
+        filterConsult3: {},
+        isGoNavigation: false,
     },
     onShow() {
         this.setData({
             active: 0,
+            isGoNavigation: true,
         });
     },
     onLoad() {
@@ -359,17 +361,19 @@ Page({
         });
     },
     onGoHome() {
-        wx.navigateTo({
-            url: '/pages/home/home',
-            success: () => {
-            },
-            error: () => {
-                wx.showToast({
-                    icon: 'none',
-                    title: '打开个人中心失败',
-                });
-            },
-        });
+        if(!this.data.isGoNavigation) {
+            wx.redirectTo({
+                url: '/pages/home/home',
+                success: () => {
+                },
+                error: () => {
+                    wx.showToast({
+                        icon: 'none',
+                        title: '打开个人中心失败',
+                    });
+                },
+            });
+        }
     },
     onGoProfile() {
         wx.navigateTo({
