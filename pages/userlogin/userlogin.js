@@ -94,31 +94,31 @@ Page({
     },
 
     onLoginWechat() {
-        if (!this.isUserFilledInfo()) {
-          wx.showToast({
-            icon: 'none',
-            title: '请先填写头像和昵称',
-          })
-          return;
-        };
-        wx.login({
-            success: (res) => {
-                console.log(res);
-                let code = res.code;
-                wx.request({
-                    url: `https://api.weixin.qq.com/sns/jscode2session?appid=wx24e83617ca9cdc41&secret=b278e397a8142c5f551141245bbddb23&js_code=${code}&grant_type=authorization_code`,
-                    success: (res) => {
-                        dataUtil.setUserOpenId(res.data.openid)
-                        const db = wx.cloud.database()
-                        databaseUtil.saveUserInfoByOpenId(db, res.data.openid, this.data.avatarUrl, this.data.username, "", () =>{})    
-                        // [todo!!!]向数据库中写入数据
-                    }
-                })
-            },
-        })
+        // if (!this.isUserFilledInfo()) {
+        //   wx.showToast({
+        //     icon: 'none',
+        //     title: '请先填写头像和昵称',
+        //   })
+        //   return;
+        // };
+        // wx.login({
+        //     success: (res) => {
+        //         console.log(res);
+        //         let code = res.code;
+        //         wx.request({
+        //             url: `https://api.weixin.qq.com/sns/jscode2session?appid=wx24e83617ca9cdc41&secret=b278e397a8142c5f551141245bbddb23&js_code=${code}&grant_type=authorization_code`,
+        //             success: (res) => {
+        //                 dataUtil.setUserOpenId(res.data.openid)
+        //                 const db = wx.cloud.database()
+        //                 databaseUtil.saveUserInfoByOpenId(db, res.data.openid, this.data.avatarUrl, this.data.username, "", () =>{})
+        //                 // [todo!!!]向数据库中写入数据
+        //             }
+        //         })
+        //     },
+        // })
       
         wx.navigateTo({
-            url: '/pages/home/home',
+            url: '/pages/home-new/home',
             success: () => { },
             error: () => {
                 wx.showToast({

@@ -1,1 +1,6 @@
 @import './miniprogram_npm/@vant/weapp/common/index.wxss';
+@import './components/home-new/search-section/index.wxss';
+
+button::after{
+  border: none;
+}

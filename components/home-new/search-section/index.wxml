@@ -1,0 +1,18 @@
+<view class="search-section">
+    <view class="search-section__first-line-container">
+        <button class="search-section__first-line-container__continent-btn">欧洲<text class="triangle"></text>
+        </button>
+        <view class="vertical-line"></view>
+        <input class="search-section__first-line-container__country-input" auto-focus placeholder="目的地" placeholder-class="placeholder"/>
+    </view>
+    <view class="horizontal-line"></view>
+    <view class="search-section__second-line-container">
+        <input class="search-section__second-line-container__time-range-input" auto-focus placeholder="入住退房日期" placeholder-class="placeholder" bindtap="dateDisplay"/>
+        <text class="search-section__second-line-container__nights-counter">共0晚</text>
+    </view>
+    <view class="search-section__third-line-container">
+        <button icon="plus" bind:tap="onClickSearch" class="search-section__third-line-container__search-btn">
+            搜索房源
+        </button>
+    </view>
+</view>
