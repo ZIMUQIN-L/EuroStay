@@ -1,4 +1,4 @@
-import Experiment from "../../../src/pages/index/Components/experiment";
+import Experiment from "../../../src/pages/temp-index/Components/experiment";
 import { shallow } from "enzyme";
 
 describe("Experiment Component", () => {
