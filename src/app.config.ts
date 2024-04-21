@@ -14,4 +14,21 @@ export default {
     navigationStyle: "custom",
   },
   style: "v2",
+  tabBar: {
+    custom: true,
+    list: [
+      {
+        pagePath: "pages/index/index",
+        text: "主页",
+      },
+      {
+        pagePath: "pages/repost/index",
+        text: "发布",
+      },
+      {
+        pagePath: "pages/user/index",
+        text: "我",
+      },
+    ],
+  },
 };
