@@ -153,12 +153,23 @@ page {
   -webkit-align-items: center;
       -ms-flex-align: center;
           align-items: center;
-  cursor: pointer;
 }
 .tab-icon {
-  width: 24rpx;
-  height: 24rpx;
+  width: 48rpx;
+  height: 48rpx;
   margin-bottom: 4rpx;
+}
+.tab-icon Image {
+  width: 100%;
+  height: 100%;
+}
+.tab-text {
+  margin-top: 5rpx;
+  font-size: 28rpx;
+  color: #666;
+}
+.tab-text.active {
+  color: #FFD111;
 }
 @charset "UTF-8";
 /*每个页面公共css */

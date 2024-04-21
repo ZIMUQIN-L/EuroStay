@@ -392,7 +392,7 @@ Component(runtime_1.createRecursiveComponentConfig('custom-wrapper'));
   !*** ./node_modules/@tarojs/plugin-platform-weapp/dist/components-react.js ***!
   \*****************************************************************************/
 /*! exports provided: Ad, AdCustom, Audio, Block, Button, Camera, Canvas, Checkbox, CheckboxGroup, CoverImage, CoverView, CustomWrapper, Editor, Form, FunctionalPageNavigator, Icon, Image, Input, KeyboardAccessory, Label, LivePlayer, LivePusher, Map, MatchMedia, MovableArea, MovableView, NavigationBar, Navigator, OfficialAccount, OpenData, PageContainer, PageMeta, Picker, PickerView, PickerViewColumn, Progress, Radio, RadioGroup, RichText, ScrollView, Slider, Slot, Swiper, SwiperItem, Switch, Text, Textarea, Video, View, VoipRoom, WebView */
-/*! exports used: Text, View */
+/*! exports used: Image, Text, View */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -412,7 +412,7 @@ Component(runtime_1.createRecursiveComponentConfig('custom-wrapper'));
 /* unused harmony export Form */
 /* unused harmony export FunctionalPageNavigator */
 /* unused harmony export Icon */
-/* unused harmony export Image */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Image; });
 /* unused harmony export Input */
 /* unused harmony export KeyboardAccessory */
 /* unused harmony export Label */
@@ -441,10 +441,10 @@ Component(runtime_1.createRecursiveComponentConfig('custom-wrapper'));
 /* unused harmony export Swiper */
 /* unused harmony export SwiperItem */
 /* unused harmony export Switch */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Text; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return Text; });
 /* unused harmony export Textarea */
 /* unused harmony export Video */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return View; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return View; });
 /* unused harmony export VoipRoom */
 /* unused harmony export WebView */
 var View = 'view';
