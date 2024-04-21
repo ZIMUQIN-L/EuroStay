@@ -26,12 +26,13 @@
     },
     "packNpmManually": false,
     "packNpmRelationList": [],
-    "minifyWXSS": true,
+    "minifyWXSS": false,
     "disableUseStrict": false,
     "showES6CompileOption": false,
     "useCompilerPlugins": false,
     "ignoreUploadUnusedFiles": false,
-    "useStaticServer": true
+    "useStaticServer": true,
+    "minifyWXML": false
   },
   "compileType": "miniprogram",
   "libVersion": "2.23.2",

@@ -1,10 +1,12 @@
 export default {
   pages: [
-    "pages/index/index",
-    "pages/repost/index",
-    "pages/user/index",
-    "pages/details/index",
+    "pages/temp-index/index",
+    "pages/home/index",
+    "pages/house-detail/index",
+    "pages/house-post/index",
+    "pages/house-search/index",
     "pages/login/index",
+    "pages/user-profile/index",
   ],
   window: {
     backgroundTextStyle: "light",
@@ -18,16 +20,32 @@ export default {
     custom: true,
     list: [
       {
-        pagePath: "pages/index/index",
+        pagePath: "pages/temp-index/index",
+        text: "测试页面",
+      },
+      {
+        pagePath: "pages/home/index",
         text: "主页",
       },
       {
-        pagePath: "pages/repost/index",
-        text: "发布",
+        pagePath: "pages/house-detail/index",
+        text: "房源详情",
       },
       {
-        pagePath: "pages/user/index",
-        text: "我",
+        pagePath: "pages/house-post/index",
+        text: "房源post",
+      },
+      {
+        pagePath: "pages/house-search/index",
+        text: "房源搜索",
+      },
+      {
+        pagePath: "pages/login/index",
+        text: "登录",
+      },
+      {
+        pagePath: "pages/user-profile/index",
+        text: "用户profile",
       },
     ],
   },
