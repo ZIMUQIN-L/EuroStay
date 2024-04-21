@@ -1,9 +1,9 @@
-@import './mixin/flex.scss'; // flex(主轴,交叉轴,方向,换行,多轴线对齐) / flex-self(对齐,(布满||固定),顺序)
-@import './mixin/text-overflow.scss'; // 文本格式化超出省略号  参数：宽度,单行/多行
-@import './mixin/position-absolute.scss'; // 绝对定位  参数：上,右,下,左
-@import './mixin/triangle.scss'; // 画三角形  参数：宽度,朝向,颜色
-@import './mixin/hr.scss'; // 添加分割线  参数：位置,间隔
-@import './mixin/price-before.scss'; // 价格前加¥
+@import "./mixin/flex.scss"; // flex(主轴,交叉轴,方向,换行,多轴线对齐) / flex-self(对齐,(布满||固定),顺序)
+@import "./mixin/text-overflow.scss"; // 文本格式化超出省略号  参数：宽度,单行/多行
+@import "./mixin/position-absolute.scss"; // 绝对定位  参数：上,右,下,左
+@import "./mixin/triangle.scss"; // 画三角形  参数：宽度,朝向,颜色
+@import "./mixin/hr.scss"; // 添加分割线  参数：位置,间隔
+@import "./mixin/price-before.scss"; // 价格前加¥
 
 /*每个页面公共css */
 page {

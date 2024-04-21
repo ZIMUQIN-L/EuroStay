@@ -33,7 +33,7 @@
     } @else if $flex == keep {
       flex: none;
     } @else {
-      @include flexError($flex, 'flex-self');
+      @include flexError($flex, "flex-self");
     }
   }
 
@@ -60,7 +60,7 @@
     color: #ff3c00 !important;
     background-color: white !important;
     font-size: 12px;
-    content: 'ErrorParam: #{$param} in #{$type}';
+    content: "ErrorParam: #{$param} in #{$type}";
   }
 }
 
@@ -75,7 +75,7 @@
   } @else if $direction == column-reverse {
     flex-direction: column-reverse;
   } @else {
-    @include flexError($direction, 'flex-direction');
+    @include flexError($direction, "flex-direction");
   }
 }
 
@@ -92,7 +92,7 @@
   } @else if $justify == around {
     justify-content: space-around;
   } @else {
-    @include flexError($justify, 'flex-justify');
+    @include flexError($justify, "flex-justify");
   }
 }
 
@@ -105,7 +105,7 @@
   } @else if $align == bottom {
     align-items: flex-end;
   } @else {
-    @include flexError($align, 'flex-align');
+    @include flexError($align, "flex-align");
   }
 }
 
@@ -118,7 +118,7 @@
   } @else if $warp == wrap-reverse {
     flex-wrap: wrap-reverse;
   } @else {
-    @include flexError($warp, 'flex-wrap');
+    @include flexError($warp, "flex-wrap");
   }
 }
 
@@ -137,7 +137,7 @@
   } @else if $align == around {
     align-content: space-around;
   } @else {
-    @include flexError($align, 'flex-wrapAlign');
+    @include flexError($align, "flex-wrapAlign");
   }
 }
 
@@ -156,7 +156,7 @@
   } @else if $align == stretch {
     align-self: stretch;
   } @else {
-    @include flexError($align, 'flex-self-align');
+    @include flexError($align, "flex-self-align");
   }
 }
 
@@ -165,6 +165,6 @@
   @if $order == round($order) {
     order: $order;
   } @else {
-    @include flexError($order, 'flex-self-order');
+    @include flexError($order, "flex-self-order");
   }
 }

@@ -1,9 +1,9 @@
-import { Button, View, MovableView, MovableArea } from '@tarojs/components';
-import Taro, { useDidShow } from '@tarojs/taro';
-import { observer } from '@store/utils';
-import { useState } from 'react';
-import QUIcon from '@components/QUIcon';
-import './index.scss';
+import { Button, View, MovableView, MovableArea } from "@tarojs/components";
+import Taro, { useDidShow } from "@tarojs/taro";
+import { observer } from "@store/utils";
+import { useState } from "react";
+import QUIcon from "@components/QUIcon";
+import "./index.scss";
 
 interface IProps {
   showTitle: string;
@@ -25,8 +25,8 @@ const Floating = (props: IProps) => {
   });
   const [isSideLeft, setIsSideLeft] = useState(false);
 
-  const onChange = e => {
-    if (e.detail.source === 'touch') {
+  const onChange = (e) => {
+    if (e.detail.source === "touch") {
       setMove({ x: e.detail.x, y: e.detail.y });
     }
   };
@@ -67,10 +67,10 @@ const Floating = (props: IProps) => {
   });
 
   return (
-    <MovableArea className='movableArea'>
+    <MovableArea className="movableArea">
       <MovableView
-        className='movableView'
-        direction='all'
+        className="movableView"
+        direction="all"
         damping={40}
         x={pageX}
         y={pageY}
@@ -78,18 +78,18 @@ const Floating = (props: IProps) => {
         onTouchEnd={onTouchend}
       >
         <Button
-          className='home_area'
+          className="home_area"
           style={{
             borderRadius: isSideLeft
-              ? '0px 100px 100px 0px'
-              : '100px 0px 0px 100px',
+              ? "0px 100px 100px 0px"
+              : "100px 0px 0px 100px",
           }}
-          open-type='contact'
+          open-type="contact"
         >
-          <View className='circle'>
-            <QUIcon icon='icon-xiaoxi3' fontSize='36rpx' color='#77D4DB' />
+          <View className="circle">
+            <QUIcon icon="icon-xiaoxi3" fontSize="36rpx" color="#77D4DB" />
           </View>
-          <View className='home_title'>{props.showTitle}</View>
+          <View className="home_title">{props.showTitle}</View>
         </Button>
       </MovableView>
     </MovableArea>
@@ -97,7 +97,7 @@ const Floating = (props: IProps) => {
 };
 
 Floating.defaultProps = {
-  showTitle: '在线客服',
+  showTitle: "在线客服",
 };
 
 export default observer(Floating);

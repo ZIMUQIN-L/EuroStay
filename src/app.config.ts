@@ -1,17 +1,17 @@
 export default {
   pages: [
-    'pages/index/index',
-    'pages/repost/index',
-    'pages/user/index',
-    'pages/details/index',
-    'pages/login/index'
+    "pages/index/index",
+    "pages/repost/index",
+    "pages/user/index",
+    "pages/details/index",
+    "pages/login/index",
   ],
   window: {
-    backgroundTextStyle: 'light',
-    navigationBarBackgroundColor: '#fff',
-    navigationBarTitleText: 'WeChat',
-    navigationBarTextStyle: 'black',
-    navigationStyle: 'custom',
+    backgroundTextStyle: "light",
+    navigationBarBackgroundColor: "#fff",
+    navigationBarTitleText: "WeChat",
+    navigationBarTextStyle: "black",
+    navigationStyle: "custom",
   },
-  style: 'v2',
+  style: "v2",
 };

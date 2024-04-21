@@ -1,5 +1,5 @@
-import React from 'react';
-import GlobalStore, { IGlobalStore } from './GlobalStore';
+import React from "react";
+import GlobalStore, { IGlobalStore } from "./GlobalStore";
 
 export const storesContext = React.createContext({
   GlobalStore,

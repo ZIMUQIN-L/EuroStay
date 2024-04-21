@@ -11824,7 +11824,7 @@ d?null:d;null!==d&&(b.callback=d);md(e,b);ud(e,g,f);return g};
   !*** ./node_modules/react/cjs/react-jsx-runtime.production.min.js ***!
   \********************************************************************/
 /*! no static exports found */
-/*! exports used: Fragment, jsx */
+/*! exports used: jsx, jsxs */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";

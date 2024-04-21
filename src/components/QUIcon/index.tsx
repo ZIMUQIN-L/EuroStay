@@ -1,6 +1,6 @@
-import { useCallback } from 'react';
-import { View } from '@tarojs/components';
-import './index.scss';
+import { useCallback } from "react";
+import { View } from "@tarojs/components";
+import "./index.scss";
 interface IPros {
   icon: string;
   onClick?: () => void;
@@ -17,8 +17,8 @@ const QUIcon = (props: IPros) => {
       onClick={_onClick}
       className={`iconfont ${icon} ${className}`}
       style={{
-        fontSize: fontSize || '16px',
-        color: color || '#000',
+        fontSize: fontSize || "16px",
+        color: color || "#000",
       }}
     ></View>
   );
