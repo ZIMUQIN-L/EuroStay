@@ -14,8 +14,7 @@ const Index = () => {
 
   return (
     <View className="index">
-      
-      <CustomTabBar />
+      <CustomTabBar currentTab={'index'}/>
     </View>
   );
 };

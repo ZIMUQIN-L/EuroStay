@@ -115,7 +115,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var config = {"pages":["pages/index/index","pages/repost/index","pages/user/index","pages/details/index","pages/login/index"],"window":{"backgroundTextStyle":"light","navigationBarBackgroundColor":"#fff","navigationBarTitleText":"WeChat","navigationBarTextStyle":"black","navigationStyle":"custom"},"style":"v2"};
+var config = {"pages":["pages/index/index","pages/repost/index","pages/user/index","pages/details/index","pages/login/index"],"window":{"backgroundTextStyle":"light","navigationBarBackgroundColor":"#fff","navigationBarTitleText":"WeChat","navigationBarTextStyle":"black","navigationStyle":"custom"},"style":"v2","tabBar":{"custom":true,"list":[{"pagePath":"pages/index/index","text":"主页"},{"pagePath":"pages/repost/index","text":"发布"},{"pagePath":"pages/user/index","text":"我"}]}};
 _tarojs_runtime__WEBPACK_IMPORTED_MODULE_1__["window"].__taroAppConfig = config
 var inst = App(Object(_tarojs_runtime__WEBPACK_IMPORTED_MODULE_1__["createReactApp"])(_node_modules_tarojs_mini_runner_node_modules_babel_loader_lib_index_js_app_tsx__WEBPACK_IMPORTED_MODULE_3__[/* default */ "a"], react__WEBPACK_IMPORTED_MODULE_4__, react_dom__WEBPACK_IMPORTED_MODULE_5__[/* default */ "a"], config))
 

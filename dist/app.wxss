@@ -141,3 +141,5 @@ page {
   padding-bottom: env(safe-area-inset-bottom);
   /*兼容 IOS>11.2*/
 }
+
+@import "./common.wxss";
