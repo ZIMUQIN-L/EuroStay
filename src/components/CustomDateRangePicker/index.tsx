@@ -9,8 +9,8 @@ const CustomDateRangePicker = () => {
   const today = formatToday();
   const [errorMsg, setErrorMsg] = useState('');
   const [isToastOpened, setIsToastOpened] = useState(false);
-  var [startDate, setStartDate] = useState(today);
-  var [endDate, setEndDate] = useState(null);
+  const [startDate, setStartDate] = useState(today);
+  const [endDate, setEndDate] = useState(null);
   const [isCalendarVisible, setIsCalendarVisible] = useState(false);
   const [isSelected, setIsSelected] = useState(false);
   const [days, setDays] = useState(0);
