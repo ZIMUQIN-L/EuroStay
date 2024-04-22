@@ -6,7 +6,7 @@ import {
   reLaunch as _reLaunch,
   getCurrentPages,
   useRouter,
-} from "@tarojs/taro";
+} from '@tarojs/taro';
 
 function switchTab(url: string) {
   const newUrl = createUrl(url);
@@ -45,7 +45,7 @@ function redirectTo(url: string, param?: {}) {
   });
 }
 function serialize(data: any) {
-  if ("routerQuery" in data) {
+  if ('routerQuery' in data) {
     return JSON.parse(decodeURIComponent(data.routerQuery));
   }
   return data;

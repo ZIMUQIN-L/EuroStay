@@ -1,8 +1,7 @@
-import { makeAutoObservable } from "mobx";
+import { makeAutoObservable } from 'mobx';
 
 class GlobalStore {
-
-  _currentTab: string = "index";
+  _currentTab: string = 'index';
 
   constructor() {
     makeAutoObservable(this, {}, { autoBind: true });
@@ -10,7 +9,7 @@ class GlobalStore {
 
   get currentTab() {
     return this._currentTab;
-  };
+  }
 
   set currentTab(tab: string) {
     this._currentTab = tab;

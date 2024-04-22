@@ -1,22 +1,22 @@
-const path = require("path");
+const path = require('path');
 const config = {
-  projectName: "taro-template",
-  date: "2021-4-25",
+  projectName: 'taro-template',
+  date: '2021-4-25',
   designWidth: 750,
   deviceRatio: {
     640: 2.34 / 2,
     750: 1,
     828: 1.81 / 2,
   },
-  sourceRoot: "src",
-  outputRoot: "dist",
+  sourceRoot: 'src',
+  outputRoot: 'dist',
   plugins: [],
   defineConstants: {},
   copy: {
     patterns: [],
     options: {},
   },
-  framework: "react",
+  framework: 'react',
   mini: {
     postcss: {
       pxtransform: {
@@ -32,27 +32,27 @@ const config = {
       cssModules: {
         enable: false, // 默认为 false，如需使用 css modules 功能，则设为 true
         config: {
-          namingPattern: "module", // 转换模式，取值为 global/module
-          generateScopedName: "[name]__[local]___[hash:base64:5]",
+          namingPattern: 'module', // 转换模式，取值为 global/module
+          generateScopedName: '[name]__[local]___[hash:base64:5]',
         },
       },
     },
   },
   sass: {
-    resource: [path.resolve(__dirname, "..", "src/assets/style/base.scss")],
+    resource: [path.resolve(__dirname, '..', 'src/assets/style/base.scss')],
   },
   alias: {
-    "@assets": path.resolve(__dirname, "..", "src/assets"),
-    "@components": path.resolve(__dirname, "..", "src/components"),
-    "@lib": path.resolve(__dirname, "..", "src/lib"),
-    "@config": path.resolve(__dirname, "..", "src/config"),
-    "@store": path.resolve(__dirname, "..", "src/store"),
-    "@utils": path.resolve(__dirname, "..", "src/utils"),
+    '@assets': path.resolve(__dirname, '..', 'src/assets'),
+    '@components': path.resolve(__dirname, '..', 'src/components'),
+    '@lib': path.resolve(__dirname, '..', 'src/lib'),
+    '@config': path.resolve(__dirname, '..', 'src/config'),
+    '@store': path.resolve(__dirname, '..', 'src/store'),
+    '@utils': path.resolve(__dirname, '..', 'src/utils'),
   },
   h5: {
-    esnextModules: ["taro-ui"],
-    publicPath: "/",
-    staticDirectory: "static",
+    esnextModules: ['taro-ui'],
+    publicPath: '/',
+    staticDirectory: 'static',
     postcss: {
       autoprefixer: {
         enable: true,
@@ -61,8 +61,8 @@ const config = {
       cssModules: {
         enable: false, // 默认为 false，如需使用 css modules 功能，则设为 true
         config: {
-          namingPattern: "module", // 转换模式，取值为 global/module
-          generateScopedName: "[name]__[local]___[hash:base64:5]",
+          namingPattern: 'module', // 转换模式，取值为 global/module
+          generateScopedName: '[name]__[local]___[hash:base64:5]',
         },
       },
     },
@@ -70,8 +70,8 @@ const config = {
 };
 
 module.exports = function (merge) {
-  if (process.env.NODE_ENV === "development") {
-    return merge({}, config, require("./dev"));
+  if (process.env.NODE_ENV === 'development') {
+    return merge({}, config, require('./dev'));
   }
-  return merge({}, config, require("./prod"));
+  return merge({}, config, require('./prod'));
 };
