@@ -15,7 +15,7 @@ const CustomDateRangePicker = () => {
   const [isSelected, setIsSelected] = useState(false);
   const [days, setDays] = useState(0);
 
-  function handleDateChange (startValue, endValue) {
+  const handleDateChange = (startValue, endValue) => {
     setStartDate(startValue);
     setEndDate(endValue);
 }
@@ -27,7 +27,7 @@ const CustomDateRangePicker = () => {
           ? '不能选择今日之前的日期'
           : '终止日期不能小于起始日期',
       );
-      handleDateChange(today, null);
+      handleDateChange(selectedDate, null);
       setIsToastOpened(true);
       return; // 阻止继续
     }

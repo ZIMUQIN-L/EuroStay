@@ -11,6 +11,10 @@ const store = {
 const App = props => {
   useEffect(() => {
     // 检测新版本
+    wx.cloud.init({
+        env: 'cloud1-8gb29x2pbe14a4f8',
+        traceUser: true
+      })
     if (Taro.getUpdateManager) {
       const updateManager = Taro.getUpdateManager();
       updateManager.onCheckForUpdate(res => {
