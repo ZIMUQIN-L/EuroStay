@@ -2,10 +2,8 @@ import { AtCalendar } from 'taro-ui';
 import { View, Text } from '@tarojs/components';
 import { AtToast } from 'taro-ui';
 import { useState } from 'react';
-import Button from '@taroify/core/button/button';
 import { formatToday, calculateDaysBetweenDates } from '@utils/dateUtil';
 import './index.scss';
-import { set } from 'mobx';
 
 const CustomDateRangePicker = () => {
   const today = formatToday();

@@ -1,18 +1,9 @@
-import {
-  Input,
-  View,
-  Text,
-  Button,
-  Icon,
-  Picker,
-  Image,
-} from '@tarojs/components';
+import { Input, View, Text, Picker, Image } from '@tarojs/components';
 import './index.scss';
 import { useState } from 'react';
 import RightBottomArrow from '@assets/images/right-bottom-arrow.svg';
 import SearchIcon from '@assets/images/search.svg';
 import CustomDateRangePicker from '@components/CustomDateRangePicker';
-import { formatToday } from '@utils/dateUtil';
 
 const SearchCard = () => {
   const [region, setRegion] = useState('欧洲');
