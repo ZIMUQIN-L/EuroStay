@@ -1,6 +1,7 @@
 import { View, Text, Button } from '@tarojs/components';
 import { useStore, observer } from '@store/utils';
 import CustomTabBar from '@components/CustomTabBar';
+import SearchCard from './search-section';
 import './index.scss';
 import Taro from '@tarojs/taro';
 
@@ -13,8 +14,11 @@ const Index = () => {
   });
 
   return (
-    <View className='index'>
-      <CustomTabBar />
+    <View>
+      <SearchCard />
+      <View className='index'>
+        <CustomTabBar />
+      </View>
     </View>
   );
 };

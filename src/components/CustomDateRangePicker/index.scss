@@ -1,0 +1,23 @@
+.calendar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.date-text {
+  font-size: 32px; 
+  color: #333; 
+  margin-right: 10px;
+}
+
+.nights-text {
+  font-size: 32px;
+  color: #666;
+  margin-left: 10px;
+}
+
+
+
+@import '~taro-ui/dist/style/components/calendar.scss';
+@import '~taro-ui/dist/style/components/toast.scss';
+@import '~taro-ui/dist/style/components/icon.scss';

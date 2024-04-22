@@ -63,16 +63,22 @@ const CustomTabBar = observer(() => {
             src={currentTab === 'house-post' ? RepostSelectedIcon : RepostIcon}
           />
         </View>
-        <Text className={`tab-text ${currentTab === 'house-post' ? 'active' : ''}`}>
+        <Text
+          className={`tab-text ${currentTab === 'house-post' ? 'active' : ''}`}
+        >
           发布
         </Text>
       </View>
 
       <View className='tab-item' onClick={() => handleTabClick('user-profile')}>
         <View className='tab-icon'>
-          <Image src={currentTab === 'user-profile' ? UserSelectedIcon : UserIcon} />
+          <Image
+            src={currentTab === 'user-profile' ? UserSelectedIcon : UserIcon}
+          />
         </View>
-        <Text className={`tab-text ${currentTab === 'user-profile' ? 'active' : ''}`}>
+        <Text
+          className={`tab-text ${currentTab === 'user-profile' ? 'active' : ''}`}
+        >
           我
         </Text>
       </View>

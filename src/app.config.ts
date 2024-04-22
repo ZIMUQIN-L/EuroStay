@@ -9,10 +9,6 @@ export default {
   ],
   window: {
     backgroundTextStyle: 'light',
-    navigationBarBackgroundColor: '#fff',
-    navigationBarTitleText: 'WeChat',
-    navigationBarTextStyle: 'black',
-    navigationStyle: 'custom',
   },
   style: 'v2',
   tabBar: {

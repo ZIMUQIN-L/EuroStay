@@ -109,3 +109,41 @@ export function formatTimestamp(timestamp: number) {
   const milliseconds = String(date.getMilliseconds()).padStart(3, '0');
   return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}.${milliseconds}`;
 }
+
+/**
+ * 获得今日日期，以yyyy-mm-dd格式返回
+ * @returns 2024-04-22
+ */
+export function formatToday(format = 'YYYY-MM-DD') {
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = String(today.getMonth() + 1).padStart(2, '0');
+  const day = String(today.getDate()).padStart(2, '0');
+
+  if (format === 'YYYY-MM-DD') {
+    return `${year}-${month}-${day}`; // 返回 YYYY-MM-DD 格式
+  }
+
+  // 如果需要其他格式，可以在这里添加更多逻辑
+  return `{month}/${day}/${year}`; // 其他可能的格式
+}
+
+/**
+ * 计算两个日期之间的天数
+ * @param date 日期
+ * @return int days
+ */
+export function calculateDaysBetweenDates(
+  start: Date | string,
+  end: Date | string,
+) {
+  const startDate = new Date(start).getTime();
+  const endDate = new Date(end).getTime();
+
+  const diffInMillis = endDate - startDate;
+  const millisInDay = 1000 * 60 * 60 * 24;
+
+  const daysBetween = Math.ceil(diffInMillis / millisInDay);
+
+  return daysBetween;
+}
