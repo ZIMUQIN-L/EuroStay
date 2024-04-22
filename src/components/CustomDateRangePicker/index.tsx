@@ -18,11 +18,14 @@ const CustomDateRangePicker = () => {
   const handleDateChange = (startValue, endValue) => {
     setStartDate(startValue);
     setEndDate(endValue);
-}
+  };
   const handleDayClick = date => {
     const selectedDate = date.value;
-    if (selectedDate < today || (startDate != null && selectedDate < startDate)) {
-        setErrorMsg(
+    if (
+      selectedDate < today ||
+      (startDate != null && selectedDate < startDate)
+    ) {
+      setErrorMsg(
         selectedDate < today
           ? '不能选择今日之前的日期'
           : '终止日期不能小于起始日期',

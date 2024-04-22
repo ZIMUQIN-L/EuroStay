@@ -5,7 +5,7 @@ import SearchCard from './search-section';
 import './index.scss';
 import Taro from '@tarojs/taro';
 import HouseItem from './house-item';
-import { houseInfoSearch } from '../../common/database/house/house'
+import { houseInfoSearch } from '../../common/database/house/house';
 
 const Index = () => {
   Taro.useShareAppMessage(() => {
