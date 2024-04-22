@@ -1,7 +1,7 @@
 import { AtCalendar } from 'taro-ui';
 import { View, Text } from '@tarojs/components';
 import { AtToast } from 'taro-ui';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { formatToday, calculateDaysBetweenDates } from '@utils/dateUtil';
 import './index.scss';
 
@@ -9,35 +9,39 @@ const CustomDateRangePicker = () => {
   const today = formatToday();
   const [errorMsg, setErrorMsg] = useState('');
   const [isToastOpened, setIsToastOpened] = useState(false);
-  const [startDate, setStartDate] = useState(today);
-  const [endDate, setEndDate] = useState(null);
+  var [startDate, setStartDate] = useState(today);
+  var [endDate, setEndDate] = useState(null);
   const [isCalendarVisible, setIsCalendarVisible] = useState(false);
   const [isSelected, setIsSelected] = useState(false);
   const [days, setDays] = useState(0);
 
+  function handleDateChange (startValue, endValue) {
+    setStartDate(startValue);
+    setEndDate(endValue);
+}
   const handleDayClick = date => {
     const selectedDate = date.value;
-
-    if (selectedDate < today || (startDate && selectedDate < startDate)) {
-      setErrorMsg(
+    if (selectedDate < today || (startDate != null && selectedDate < startDate)) {
+        setErrorMsg(
         selectedDate < today
           ? '不能选择今日之前的日期'
           : '终止日期不能小于起始日期',
       );
+      handleDateChange(today, null);
       setIsToastOpened(true);
       return; // 阻止继续
     }
-
     setIsSelected(true);
     setIsToastOpened(false);
-
     if (!startDate) {
-      setStartDate(selectedDate);
+      handleDateChange(selectedDate, null);
     } else if (!endDate) {
       setEndDate(selectedDate);
+      handleDateChange(startDate, selectedDate);
     } else {
       setStartDate(selectedDate);
       setEndDate(null);
+      handleDateChange(selectedDate, null);
     }
     if (startDate && endDate) {
       const calculatedDays = calculateDaysBetweenDates(startDate, endDate);
@@ -82,7 +86,8 @@ const CustomDateRangePicker = () => {
         <AtCalendar
           isMultiSelect
           currentDate={{ start: startDate, end: endDate }}
-          validRange={{ start: today }} // 有效日期范围
+          // validRange={{ start: today }} // 有效日期范围
+          minDate={today}
           onDayClick={handleDayClick}
           style={{ width: '100%' }}
         />
