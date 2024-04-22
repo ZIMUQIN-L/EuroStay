@@ -129,6 +129,18 @@ export function formatToday(format = 'YYYY-MM-DD') {
 }
 
 /**
+ * 将日期转换为yyyy-mm-dd格式
+ * @returns 2024-04-22
+ */
+export function formatDate(date: Date) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+
+  return `${year}-${month}-${day}`;
+}
+
+/**
  * 计算两个日期之间的天数
  * @param date 日期
  * @return int days

@@ -1,0 +1,20 @@
+.house-item {
+    display: flex;
+  width: 100%;
+}
+.date-icon {
+  width: 16px;
+  height: 16px;
+}
+.house-date {
+  display: flex;
+  align-items: center;
+}
+.house-item .house-info {
+    display: flex;
+    justify-content: space-between;
+}
+.house-owner {
+    color: white;
+    background-color: #FFD111;
+}
