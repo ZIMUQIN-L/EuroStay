@@ -1,6 +1,5 @@
 export default {
   pages: [
-    'pages/temp-index/index',
     'pages/home/index',
     'pages/house-detail/index',
     'pages/house-post/index',

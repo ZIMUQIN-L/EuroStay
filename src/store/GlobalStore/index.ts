@@ -1,7 +1,7 @@
 import { makeAutoObservable } from 'mobx';
 
 class GlobalStore {
-  _currentTab: string = 'index';
+  _currentTab: string = 'home';
 
   constructor() {
     makeAutoObservable(this, {}, { autoBind: true });

@@ -48,31 +48,31 @@ const CustomTabBar = observer(() => {
 
   return (
     <View className='custom-tab-bar' style={{ height: tabBarHeight }}>
-      <View className='tab-item' onClick={() => handleTabClick('index')}>
+      <View className='tab-item' onClick={() => handleTabClick('home')}>
         <View className='tab-icon'>
-          <Image src={currentTab === 'index' ? HomeSelectedIcon : HomeIcon} />
+          <Image src={currentTab === 'home' ? HomeSelectedIcon : HomeIcon} />
         </View>
-        <Text className={`tab-text ${currentTab === 'index' ? 'active' : ''}`}>
+        <Text className={`tab-text ${currentTab === 'home' ? 'active' : ''}`}>
           主页
         </Text>
       </View>
 
-      <View className='tab-item' onClick={() => handleTabClick('repost')}>
+      <View className='tab-item' onClick={() => handleTabClick('house-post')}>
         <View className='tab-icon'>
           <Image
-            src={currentTab === 'repost' ? RepostSelectedIcon : RepostIcon}
+            src={currentTab === 'house-post' ? RepostSelectedIcon : RepostIcon}
           />
         </View>
-        <Text className={`tab-text ${currentTab === 'repost' ? 'active' : ''}`}>
+        <Text className={`tab-text ${currentTab === 'house-post' ? 'active' : ''}`}>
           发布
         </Text>
       </View>
 
-      <View className='tab-item' onClick={() => handleTabClick('user')}>
+      <View className='tab-item' onClick={() => handleTabClick('user-profile')}>
         <View className='tab-icon'>
-          <Image src={currentTab === 'user' ? UserSelectedIcon : UserIcon} />
+          <Image src={currentTab === 'user-profile' ? UserSelectedIcon : UserIcon} />
         </View>
-        <Text className={`tab-text ${currentTab === 'user' ? 'active' : ''}`}>
+        <Text className={`tab-text ${currentTab === 'user-profile' ? 'active' : ''}`}>
           我
         </Text>
       </View>
