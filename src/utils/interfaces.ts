@@ -2,11 +2,11 @@
  * 房源信息接口
  */
 export interface HouseItemProps {
-  id: string;
+  _id: string; // 微信自动生成的_id，无法修改其名称
   capacity: number;
   description: string;
-  endDate: string; // 后期最好优化成日期格式
-  startDate: string;
+  end_date: string; // 后期最好优化成日期格式
+  start_date: string; // 当前数据库名称是start_date和end_date, 或许可以先保持？
   houseType: string;
   images: string[];
   location: string;
@@ -18,7 +18,7 @@ export interface HouseItemProps {
  * 用户信息接口
  */
 export interface UserItemProps {
-  id: string;
+  _id: string;
   openId: string;
   avatarUrl: string;
   nickName: string;

@@ -10,7 +10,7 @@ const HouseItem: React.FC<HouseItemProps> = house => {
   // 跳转至房源详情
   const toHouseDetail = () => {
     Taro.navigateTo({
-      url: `/pages/house-detail/index?id=${house.id}`,
+      url: `/pages/house-detail/index?id=${house._id}`,
     });
   };
 
@@ -30,7 +30,7 @@ const HouseItem: React.FC<HouseItemProps> = house => {
           <Text>
             {/** 如果房源类型不确定的话，不现实房源类型 */}
             {house.location}
-            {house.houseType !== 'unknown' ? ` - ${house.houseType}` : ''}
+            {house.houseType !== 'unKnown' && house.houseType !== '' ? ` - ${house.houseType}` : ''}
           </Text>
 
           <View className='house-date' style={{ alignItems: 'center' }}>
@@ -39,7 +39,7 @@ const HouseItem: React.FC<HouseItemProps> = house => {
               style={{ width: '12px', height: '12px', marginRight: '6px' }}
             />
             <Text style={{ color: '#979797', fontSize: '12px' }}>
-              {house.startDate + ' to ' + house.endDate}
+              {house.start_date + ' to ' + house.end_date}
             </Text>
           </View>
         </View>
