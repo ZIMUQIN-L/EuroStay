@@ -15,7 +15,7 @@ const HouseTexts: React.FC<HouseItemProps> = house => {
           <View className='sub-title'>
             <Image src={DateIcon} className='icon' />
             <Text>
-              {house.startDate} - {house.endDate}
+              {house.start_date} - {house.end_date}
             </Text>
           </View>
           <View className='sub-title'>

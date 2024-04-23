@@ -5,7 +5,6 @@
 //     console.log(testData);
 //   });
 export const houseInfoSearch = async (location, number, startDate, endDate, houseSetting, houseSurrounding, preference, skip = 0) => {
-    console.log("test for house info search");
     const db = wx.cloud.database();
     const _ = db.command;
     return new Promise((resolve, reject) => {
@@ -25,11 +24,23 @@ export const houseInfoSearch = async (location, number, startDate, endDate, hous
       .limit(10)
       .get({
         success: function (res) {
-          console.log(res);
-          console.log(res.data)
           resolve(res.data);
         },
       });
   });
   };
   
+  // 查找房源详细信息
+  export const houseDetailSearch = async (houseId) => {
+    const db = wx.cloud.database()
+    return new Promise((resolve, reject) => {
+    db.collection('HouseInfo').where({
+        _id: houseId
+    })
+        .get({
+            success: function (res) {
+                resolve(res.data[0]);
+            }
+        });
+    });
+  };
