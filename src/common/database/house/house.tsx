@@ -4,10 +4,19 @@
 // houseInfoSearch("巴黎", 1, "2024-03-24", "2024-03-24", {}, {}, {}, 0) .then(testData => {
 //     console.log(testData);
 //   });
-export const houseInfoSearch = async (location, number, startDate, endDate, houseSetting, houseSurrounding, preference, skip = 0) => {
-    const db = wx.cloud.database();
-    const _ = db.command;
-    return new Promise((resolve, reject) => {
+export const houseInfoSearch = async (
+  location,
+  number,
+  startDate,
+  endDate,
+  houseSetting,
+  houseSurrounding,
+  preference,
+  skip = 0,
+) => {
+  const db = wx.cloud.database();
+  const _ = db.command;
+  return new Promise((resolve, reject) => {
     db.collection('HouseInfo')
       .where({
         location: db.RegExp({
@@ -18,7 +27,7 @@ export const houseInfoSearch = async (location, number, startDate, endDate, hous
         end_date: _.gte(endDate),
         houseSetting: houseSetting,
         houseSurrounding: houseSurrounding,
-        preference: preference
+        preference: preference,
       })
       .skip(skip)
       .limit(10)
@@ -28,19 +37,20 @@ export const houseInfoSearch = async (location, number, startDate, endDate, hous
         },
       });
   });
-  };
-  
-  // 查找房源详细信息
-  export const houseDetailSearch = async (houseId) => {
-    const db = wx.cloud.database()
-    return new Promise((resolve, reject) => {
-    db.collection('HouseInfo').where({
-        _id: houseId
-    })
-        .get({
-            success: function (res) {
-                resolve(res.data[0]);
-            }
-        });
-    });
-  };
+};
+
+// 查找房源详细信息
+export const houseDetailSearch = async houseId => {
+  const db = wx.cloud.database();
+  return new Promise((resolve, reject) => {
+    db.collection('HouseInfo')
+      .where({
+        _id: houseId,
+      })
+      .get({
+        success: function (res) {
+          resolve(res.data[0]);
+        },
+      });
+  });
+};

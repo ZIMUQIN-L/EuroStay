@@ -17,14 +17,16 @@ const Index = () => {
     };
   });
   // delete the testdata for now
-  const [demoData, setDemoData] = useState<HouseItemProps[]>([])
+  const [demoData, setDemoData] = useState<HouseItemProps[]>([]);
   useEffect(() => {
-    houseInfoSearch("阿姆", 1, "2024-03-24", "2024-03-24", {}, {}, {}, 0)
-      .then((houseData: HouseItemProps[]) => {
+    houseInfoSearch('阿姆', 1, '2024-03-24', '2024-03-24', {}, {}, {}, 0).then(
+      (houseData: HouseItemProps[]) => {
         setDemoData(houseData); // Update demoData state with the fetched data
-      });
+      },
+    );
   }, []);
-  console.log(demoData)
+  // for debug
+  //   console.log(demoData)
   return (
     <View>
       <SearchCard />

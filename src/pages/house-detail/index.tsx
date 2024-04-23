@@ -16,10 +16,9 @@ const Index = () => {
   // delete demodata for now
   // 通过houseId获取房源详情，函数放在了common/database/house里面
   useEffect(() => {
-    houseDetailSearch(houseId)
-      .then((houseDetail: HouseItemProps) => {
-        setHouseDetail(houseDetail); // Update demoData state with the fetched data
-      });
+    houseDetailSearch(houseId).then((houseDetail: HouseItemProps) => {
+      setHouseDetail(houseDetail); // Update demoData state with the fetched data
+    });
   }, []);
 
   // 如果houseDetail不存在，显示Loading...，避免报错
