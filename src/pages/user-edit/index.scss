@@ -1,0 +1,61 @@
+.index {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  align-items: center;
+  background-color: white;
+}
+.edit-icon {
+  width: 88px;
+  height: 88px;
+  position: absolute;
+  top: 160px;
+  right: 260px;
+}
+.avatar-img {
+  margin-top: 40px;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+}
+.user-texts {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
+}
+.user-name {
+  font-size: 52px;
+  color: #222222;
+}
+.sub-title {
+  font-size: 28px;
+  color: #717171;
+}
+.user-des {
+  background-color: #f7f7f7;
+  width: 90%;
+  height: 150px;
+  border-radius: 20px;
+  margin: 5% 5%;
+  font-size: 24px;
+}
+.des-input {
+  margin: 30px 30px;
+  color: #979797;
+}
+.save-button {
+  background-color: #ffd111;
+  color: white;
+  width: 36%;
+  height: 80px;
+  border-radius: 40px;
+  font-size: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
