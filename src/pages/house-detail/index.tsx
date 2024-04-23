@@ -1,13 +1,13 @@
 import { observer } from '@store/utils';
-import { View, Swiper, SwiperItem, Image, Text } from '@tarojs/components';
+import { View, Text } from '@tarojs/components';
 import { useRouter } from '@tarojs/taro';
 import { HouseItemProps } from '@utils/interfaces';
 import { useEffect, useState } from 'react';
-import DefaultHouse from '@assets/images/default-house.png';
+import HouseImagesSwiper from './house-images';
 
 const Index = () => {
   const router = useRouter();
-  const houseId = router.params.id;
+  const houseId = router?.params?.id;
   const [houseDetail, setHouseDetail] = useState<HouseItemProps | null>(null);
 
   const demoData: HouseItemProps = {
@@ -38,48 +38,12 @@ const Index = () => {
     // 这里调用接口获取房源详情
   };
 
-  // 充满容器的样式
-  const fullContainerStyle = {
-    width: '100%',
-    height: '100%',
-  };
+  // 如果houseDetail不存在，显示Loading...，避免报错
+  if (!houseDetail) {
+    return <Text>Loading...</Text>;
+  }
 
-  return (
-    <View className='images'>
-      <Swiper
-        indicatorColor='#999'
-        indicatorActiveColor='#333'
-        circular
-        indicatorDots
-        autoplay
-        style={{ width: '100%', height: '250px' }} // 设置轮播图的宽高, 目前为固定值，后期可以根据需求调整，适配不同机型
-      >
-        {houseDetail?.house.images.length === 0 ? (
-          <SwiperItem style={fullContainerStyle}>
-            <View className='swiper-item' style={fullContainerStyle}>
-              <Image
-                src={DefaultHouse}
-                mode='aspectFit' // 保持原始比例，可能留有空白
-                style={fullContainerStyle}
-              />
-            </View>
-          </SwiperItem>
-        ) : (
-          houseDetail?.house.images.map((image, index) => (
-            <SwiperItem key={index} style={fullContainerStyle}>
-              <View className='swiper-item' style={fullContainerStyle}>
-                <Image
-                  src={image}
-                  mode='aspectFit' // 保持原始比例，可能留有空白
-                  style={fullContainerStyle}
-                />
-              </View>
-            </SwiperItem>
-          ))
-        )}
-      </Swiper>
-    </View>
-  );
+  return <HouseImagesSwiper house={houseDetail?.house} />;
 };
 
 export default observer(Index);
