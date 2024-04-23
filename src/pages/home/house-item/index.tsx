@@ -1,28 +1,29 @@
 import { View, Text, Image } from '@tarojs/components';
 import DefaultHouse from '@assets/images/default-house.png';
-import { formatDate } from '@utils/dateUtil';
 import DateIcon from '@assets/images/date-icon.svg';
 
 interface HouseItemProps {
   house: {
     id: string;
-    nation: string;
-    city: string;
-    type: string;
-    startDate: Date;
-    endDate: Date;
-    owner: number;
-    url: string;
+    capacity: number;
+    description: string;
+    endDate: string; // 后期最好优化成日期格式
+    startDate: string;
+    houseType: string;
+    images: string[];
+    location: string;
+    ownerTarget: string;
+    xhsContact: string;
   };
 }
 
 const HouseItem: React.FC<HouseItemProps> = ({ house }) => {
-  const imageUrl = house.url ? house.url : DefaultHouse;
+  const imageUrl = house.images.length > 0 ? house.images[0] : DefaultHouse;
 
   return (
     <View className='house-item'>
       <Image src={imageUrl} className='house-image' />
-      {!house.url && (
+      {!house.images && (
         <View
           style={{
             marginTop: '-50px',
@@ -47,8 +48,7 @@ const HouseItem: React.FC<HouseItemProps> = ({ house }) => {
       >
         <View>
           <Text>
-            {house.nation}
-            {house.city} - {house.type}
+            {house.location} - {house.houseType}
           </Text>
 
           <View className='house-date' style={{ alignItems: 'center' }}>
@@ -57,7 +57,7 @@ const HouseItem: React.FC<HouseItemProps> = ({ house }) => {
               style={{ width: '12px', height: '12px', marginRight: '6px' }}
             />
             <Text style={{ color: '#979797', fontSize: '12px' }}>
-              {formatDate(house.startDate) + ' to ' + formatDate(house.endDate)}
+              {house.startDate + ' to ' + house.endDate}
             </Text>
           </View>
         </View>
