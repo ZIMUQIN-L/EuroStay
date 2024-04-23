@@ -3,7 +3,6 @@ export default {
     'pages/home/index',
     'pages/house-detail/index',
     'pages/house-post/index',
-    'pages/house-search/index',
     'pages/login/index',
     'pages/user-profile/index',
     'pages/user-edit/index',
