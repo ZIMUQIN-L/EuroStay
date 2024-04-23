@@ -4,6 +4,8 @@ import { useRouter } from '@tarojs/taro';
 import { HouseItemProps } from '@utils/interfaces';
 import { useEffect, useState } from 'react';
 import HouseImagesSwiper from './house-images';
+import HouseTexts from './house-texts';
+import './index.scss';
 
 const Index = () => {
   const router = useRouter();
@@ -43,7 +45,12 @@ const Index = () => {
     return <Text>Loading...</Text>;
   }
 
-  return <HouseImagesSwiper house={houseDetail?.house} />;
+  return (
+    <>
+      <HouseImagesSwiper house={houseDetail?.house} />
+      <HouseTexts house={houseDetail?.house} />
+    </>
+  );
 };
 
 export default observer(Index);
