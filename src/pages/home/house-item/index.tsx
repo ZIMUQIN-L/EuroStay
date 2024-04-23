@@ -48,7 +48,9 @@ const HouseItem: React.FC<HouseItemProps> = ({ house }) => {
       >
         <View>
           <Text>
-            {house.location} - {house.houseType}
+            {/** 如果房源类型不确定的话，不现实房源类型 */}
+            {house.location}
+            {house.houseType !== 'unknown' ? ` - ${house.houseType}` : ''}
           </Text>
 
           <View className='house-date' style={{ alignItems: 'center' }}>
