@@ -5,6 +5,7 @@ import SearchCard from './search-section';
 import './index.scss';
 import Taro from '@tarojs/taro';
 import HouseItem from './house-item';
+import { houseInfoSearch } from '../../common/database/house/house';
 
 const Index = () => {
   Taro.useShareAppMessage(() => {
@@ -13,7 +14,6 @@ const Index = () => {
       path: `/pages/index/index`,
     };
   });
-
   const demoData = [
     {
       id: '1',

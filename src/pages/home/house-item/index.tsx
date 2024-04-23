@@ -24,20 +24,27 @@ const HouseItem: React.FC<HouseItemProps> = ({ house }) => {
       <Image src={imageUrl} className='house-image' />
       {!house.url && (
         <View
-        style={{
-          marginTop: '-50px',
-          marginBottom: '30px',
-          color: '#979797',
-          justifyContent: 'center',
-          fontSize: '14px',
-          display: 'flex',
-        }}
-      >
-        <Text>暂无房源内部照片，请与房主交流获取</Text>
+          style={{
+            marginTop: '-50px',
+            marginBottom: '30px',
+            color: '#979797',
+            justifyContent: 'center',
+            fontSize: '14px',
+            display: 'flex',
+          }}
+        >
+          <Text>暂无房源内部照片，请与房主交流获取</Text>
         </View>
       )}
-   
-      <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', marginTop: '10px'}}>
+
+      <View
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          marginTop: '10px',
+        }}
+      >
         <View>
           <Text>
             {house.nation}
@@ -54,12 +61,29 @@ const HouseItem: React.FC<HouseItemProps> = ({ house }) => {
             </Text>
           </View>
         </View>
-        <View style={{ backgroundColor: '#FFD111', color: 'white', width: '30%', justifyContent: 'center', height: '32px', borderRadius: '32px', display: 'flex', alignItems: 'center'}}>
+        <View
+          style={{
+            backgroundColor: '#FFD111',
+            color: 'white',
+            width: '30%',
+            justifyContent: 'center',
+            height: '32px',
+            borderRadius: '32px',
+            display: 'flex',
+            alignItems: 'center',
+          }}
+        >
           <Text style={{ fontSize: '14px' }}>联系房主</Text>
         </View>
       </View>
-      <View style={{ borderBottom: '1px solid #ddd', width: '100%', marginTop: '10px', marginBottom: '20px' }}>
-      </View>
+      <View
+        style={{
+          borderBottom: '1px solid #ddd',
+          width: '100%',
+          marginTop: '10px',
+          marginBottom: '20px',
+        }}
+      ></View>
     </View>
   );
 };
