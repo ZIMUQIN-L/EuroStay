@@ -48,7 +48,7 @@ const Index = () => {
       <SearchCard />
       <View className='house-list'>
         {demoData.map(house => (
-          <HouseItem key={house.id} house={house} />
+          <HouseItem key={house.id} {...house} />
         ))}
       </View>
       <View className='index'>

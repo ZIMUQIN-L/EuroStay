@@ -6,7 +6,7 @@ import DefaultAvatar from '@assets/images/default-avatar.png';
 import './index.scss';
 import Taro from '@tarojs/taro';
 
-const UserInfo: React.FC<UserItemProps> = ({ user }) => {
+const UserInfo: React.FC<UserItemProps> = user => {
   // 如果用户未登录，提供默认框架
   const isEmpty = !user;
   const avatarUrl = isEmpty ? DefaultAvatar : user?.avatarUrl;

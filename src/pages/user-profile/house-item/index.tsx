@@ -7,16 +7,9 @@ import { HouseItemProps } from '@utils/interfaces';
 const HouseItem: React.FC<HouseItemProps> = house => {
   const imageUrl = house.images.length > 0 ? house.images[0] : DefaultHouse;
 
-  // 跳转至房源详情
-  const toHouseDetail = () => {
-    Taro.navigateTo({
-      url: `/pages/house-detail/index?id=${house.id}`,
-    });
-  };
-
   return (
     <View className='house-item'>
-      <Image src={imageUrl} className='house-image' onClick={toHouseDetail} />
+      <Image src={imageUrl} className='house-image' />
 
       <View
         style={{
@@ -42,20 +35,6 @@ const HouseItem: React.FC<HouseItemProps> = house => {
               {house.startDate + ' to ' + house.endDate}
             </Text>
           </View>
-        </View>
-        <View
-          style={{
-            backgroundColor: '#FFD111',
-            color: 'white',
-            width: '30%',
-            justifyContent: 'center',
-            height: '32px',
-            borderRadius: '32px',
-            display: 'flex',
-            alignItems: 'center',
-          }}
-        >
-          <Text style={{ fontSize: '14px' }}>联系房主</Text>
         </View>
       </View>
       <View

@@ -5,7 +5,7 @@ import { UserItemProps } from '@utils/interfaces';
 import EditIcon from '@assets/images/profile-edit-icon.svg';
 import './index.scss';
 
-const Index: React.FC<UserItemProps> = ({ user }) => {
+const Index: React.FC<UserItemProps> = user => {
   // 先采用默认数据
   return (
     <View className='index'>
