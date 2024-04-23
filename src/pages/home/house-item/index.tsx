@@ -1,42 +1,22 @@
 import { View, Text, Image } from '@tarojs/components';
 import DefaultHouse from '@assets/images/default-house.png';
 import DateIcon from '@assets/images/date-icon.svg';
-
-interface HouseItemProps {
-  house: {
-    id: string;
-    capacity: number;
-    description: string;
-    endDate: string; // 后期最好优化成日期格式
-    startDate: string;
-    houseType: string;
-    images: string[];
-    location: string;
-    ownerTarget: string;
-    xhsContact: string;
-  };
-}
+import Taro from '@tarojs/taro';
+import { HouseItemProps } from '@utils/interfaces';
 
 const HouseItem: React.FC<HouseItemProps> = ({ house }) => {
   const imageUrl = house.images.length > 0 ? house.images[0] : DefaultHouse;
 
+  // 跳转至房源详情
+  const toHouseDetail = () => {
+    Taro.navigateTo({
+      url: `/pages/house-detail/index?id=${house.id}`,
+    });
+  };
+
   return (
     <View className='house-item'>
-      <Image src={imageUrl} className='house-image' />
-      {!house.images && (
-        <View
-          style={{
-            marginTop: '-50px',
-            marginBottom: '30px',
-            color: '#979797',
-            justifyContent: 'center',
-            fontSize: '14px',
-            display: 'flex',
-          }}
-        >
-          <Text>暂无房源内部照片，请与房主交流获取</Text>
-        </View>
-      )}
+      <Image src={imageUrl} className='house-image' onClick={toHouseDetail} />
 
       <View
         style={{

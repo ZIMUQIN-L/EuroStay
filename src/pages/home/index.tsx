@@ -1,5 +1,5 @@
-import { View, Text, Button } from '@tarojs/components';
-import { useStore, observer } from '@store/utils';
+import { View } from '@tarojs/components';
+import { observer } from '@store/utils';
 import CustomTabBar from '@components/CustomTabBar';
 import SearchCard from './search-section';
 import './index.scss';
