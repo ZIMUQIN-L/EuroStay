@@ -15,3 +15,17 @@ export interface HouseItemProps {
     xhsContact: string;
   };
 }
+
+/**
+ * 用户信息接口
+ */
+export interface UserItemProps {
+  user: {
+    id: string;
+    openId: string;
+    avatarUrl: string;
+    nickName: string;
+    userDes: string;
+    userOpenid: string;
+  };
+}

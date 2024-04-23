@@ -1,0 +1,51 @@
+.user-card {
+  margin-top: 5px;
+  width: 100%;
+  background-color: white;
+  display: flex;
+  justify-content: center;
+}
+.inner-card {
+  width: 90%;
+  background-color: #eceaff;
+  margin: 50px 0;
+  min-height: 400px;
+  border-radius: 50px;
+}
+.edit-icon {
+  width: 88px;
+  height: 88px;
+  position: absolute;
+  top: 80px;
+  right: 80px;
+}
+.higher-part {
+  margin: 40px 40px;
+  display: flex;
+  flex-direction: row;
+}
+.avatar-img {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+}
+.user-texts {
+  margin-left: 40px;
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  justify-content: center;
+}
+.title {
+  font-size: 48px;
+  color: #222222;
+}
+.sub-title {
+  font-size: 28px;
+  color: #717171;
+}
+.user-des {
+  margin: 0 5%;
+  font-size: 28px;
+  color: #979797;
+}
