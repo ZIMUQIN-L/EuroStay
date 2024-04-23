@@ -2,7 +2,7 @@ import { Swiper, SwiperItem, View, Image } from '@tarojs/components';
 import { HouseItemProps } from '@utils/interfaces';
 import DefaultHouse from '@assets/images/default-house.png';
 
-const HouseImagesSwiper: React.FC<HouseItemProps> = ({ house }) => {
+const HouseImagesSwiper: React.FC<HouseItemProps> = house => {
   // 充满容器的样式
   const fullContainerStyle = {
     width: '100%',

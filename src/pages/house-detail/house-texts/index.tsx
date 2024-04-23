@@ -5,7 +5,7 @@ import CapacityIcon from '@assets/images/capacity-icon.svg';
 import LocationIcon from '@assets/images/location-icon.svg';
 import './index.scss';
 
-const HouseTexts: React.FC<HouseItemProps> = ({ house }) => {
+const HouseTexts: React.FC<HouseItemProps> = house => {
   return (
     <View className='lists'>
       <View className='container'>
