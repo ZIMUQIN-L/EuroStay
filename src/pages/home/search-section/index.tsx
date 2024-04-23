@@ -1,6 +1,6 @@
 import { Input, View, Text, Picker, Image } from '@tarojs/components';
 import './index.scss';
-import { useState } from 'react';
+import { useState, createContext } from 'react';
 import RightBottomArrow from '@assets/images/right-bottom-arrow.svg';
 import SearchIcon from '@assets/images/search.svg';
 import CustomDateRangePicker from '@components/CustomDateRangePicker';
@@ -23,6 +23,13 @@ const SearchCard = () => {
     setEndDate(end);
   };
 
+  const [userDestination, setUserDestination] = useState<string>('');
+
+  const handleDestinationChange = e => {
+    const inputDestination = e.detail.value;
+    setUserDestination(inputDestination);
+  };
+
   return (
     <View className='search-card'>
       <View className='search-first-line'>
@@ -38,7 +45,12 @@ const SearchCard = () => {
           </View>
         </Picker>
         <View className='vertical-line' />
-        <Input className='destination-input' placeholder='目的地' />
+        <Input
+          className='destination-input'
+          placeholder='目的地'
+          value={userDestination}
+          onInput={handleDestinationChange}
+        />
       </View>
       <View className='search-second-line'>
         <CustomDateRangePicker />
@@ -52,3 +64,23 @@ const SearchCard = () => {
 };
 
 export default SearchCard;
+
+// todo for access value from search card
+// const SearchContext = createContext(null);
+// export const SearchProvider = ({ children }) => {
+//   const [startDate, setStartDate] = useState();
+//   const [endDate, setEndDate] = useState();
+
+//   const value = {
+//     startDate,
+//     setStartDate,
+//     endDate,
+//     setEndDate,
+//   };
+
+//   return (
+//     <SearchContext.Provider value={value}>
+//       {children}
+//     </SearchContext.Provider>
+//   );
+// };
