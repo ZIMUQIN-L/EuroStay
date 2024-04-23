@@ -6,6 +6,7 @@ export default {
     'pages/house-search/index',
     'pages/login/index',
     'pages/user-profile/index',
+    'pages/user-edit/index',
   ],
   window: {
     backgroundTextStyle: 'light',
