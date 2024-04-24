@@ -7,7 +7,7 @@ const ImagesUpload = ({ images, handleUploadImage }) => {
   const hasImages = Array.isArray(images) && images.length > 0;
 
   return (
-    <View className='index'>
+    <View className='upload-part'>
       <View className='image-container'>
         {hasImages &&
           images.map(image => (
