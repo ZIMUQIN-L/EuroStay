@@ -19,10 +19,19 @@
   align-items: center;
   align-content: center;
   Image {
-    width: 32px;
-    height: 32px;
-    margin-right: 10px;
+    width: 40px;
+    height: 40px;
+    margin-right: 16px;
   }
+  Text {
+    font-size: 28px;
+    color: #222222;
+  }
+}
+.icon-container {
+  width: 40px;
+  height: 40px;
+  background-color: #eceaff;
 }
 .selection-right {
   display: flex;
@@ -34,4 +43,20 @@
     height: 24px;
     margin-left: 10px;
   }
+  Text {
+    color: #979797;
+    font-size: 28px;
+  }
+}
+.post-submit-button {
+  width: 90%;
+  margin-left: 5%;
+  height: 60px;
+  border-radius: 60px;
+  background-color: #d6d6d6;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
 }

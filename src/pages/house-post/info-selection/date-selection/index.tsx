@@ -2,13 +2,13 @@ import { View, Text } from '@tarojs/components';
 import CustomFullScreenDialog from '@components/CustomFullScreenDialog';
 import './index.scss';
 
-const LocationSelection = ({ onClose }) => {
+const DateSelection = ({ onClose }) => {
   return (
-    <CustomFullScreenDialog title='选择房源地址' onClose={onClose}>
+    <CustomFullScreenDialog title='选择可住时间' onClose={onClose}>
       <View>
-        <Text>这里是房源地址选择的地方</Text>
+        <Text>这里是可选时间选择的地方</Text>
       </View>
     </CustomFullScreenDialog>
   );
 };
-export default LocationSelection;
+export default DateSelection;
