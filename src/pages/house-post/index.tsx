@@ -4,6 +4,7 @@ import { observer } from 'mobx-react';
 import ImagesUpload from './images-upload';
 import HouseDes from './house-des';
 import { useState } from 'react';
+import InfoSelection from './info-selection';
 import './index.scss';
 
 const Index = () => {
@@ -23,6 +24,7 @@ const Index = () => {
     <View className='index'>
       <ImagesUpload images={images} handleUploadImage={handleUploadImage} />
       <HouseDes />
+      <InfoSelection />
       <CustomTabBar />
     </View>
   );

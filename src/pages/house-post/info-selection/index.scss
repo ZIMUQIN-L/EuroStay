@@ -1,0 +1,37 @@
+.selection-part {
+  background-color: white;
+  margin-top: 8px;
+}
+.selection-container {
+  margin-bottom: 5px;
+}
+.selection-content {
+  margin: 20px 40px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  align-content: center;
+  justify-content: space-between;
+}
+.selection-left {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  align-content: center;
+  Image {
+    width: 32px;
+    height: 32px;
+    margin-right: 10px;
+  }
+}
+.selection-right {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  align-content: center;
+  Image {
+    width: 24px;
+    height: 24px;
+    margin-left: 10px;
+  }
+}
