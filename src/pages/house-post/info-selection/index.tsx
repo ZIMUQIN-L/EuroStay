@@ -72,7 +72,9 @@ const InfoSelection = () => {
         <View className='selection-container'>
           <View className='selection-content'>
             <View className='selection-left'>
-              <Image src={DateSelectionIcon} />
+              <View className='icon-container'>
+                <Image src={DateSelectionIcon} />
+              </View>
               <Text>可住时间</Text>
             </View>
             <View className='selection-right' onClick={handleDateSelection}>
@@ -88,7 +90,9 @@ const InfoSelection = () => {
         <View className='selection-container'>
           <View className='selection-content'>
             <View className='selection-left'>
-              <Image src={CapacitySelectionIcon} />
+              <View className='icon-container'>
+                <Image src={CapacitySelectionIcon} />
+              </View>
               <Text>可住人数</Text>
             </View>
             <View className='selection-right' onClick={handleCapacitySelection}>
@@ -104,7 +108,9 @@ const InfoSelection = () => {
         <View className='selection-container'>
           <View className='selection-content'>
             <View className='selection-left'>
-              <Image src={TypeSelectionIcon} />
+              <View className='icon-container'>
+                <Image src={TypeSelectionIcon} />
+              </View>
               <Text>床型</Text>
             </View>
             <View className='selection-right' onClick={handleTypeSelection}>
@@ -120,7 +126,9 @@ const InfoSelection = () => {
         <View className='selection-container'>
           <View className='selection-content'>
             <View className='selection-left'>
-              <Image src={UtilitySelectionIcon} />
+              <View className='icon-container'>
+                <Image src={UtilitySelectionIcon} />
+              </View>
               <Text>设施</Text>
             </View>
             <View className='selection-right' onClick={handleUtilitySelection}>
