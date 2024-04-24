@@ -16,6 +16,14 @@ const Index = () => {
       path: `/pages/index/index`,
     };
   });
+
+  const [userDestination, setUserDestination] = useState<string>('');
+
+  const handleDestinationChange = inputDestination => {
+    setUserDestination(inputDestination);
+  };
+  console.log(userDestination);
+
   // delete the testdata for now
   const [demoData, setDemoData] = useState<HouseItemProps[]>([]);
   useEffect(() => {
@@ -25,11 +33,12 @@ const Index = () => {
       },
     );
   }, []);
+
   // for debug
   //   console.log(demoData)
   return (
     <View>
-      <SearchCard />
+      <SearchCard onDestinationChange={handleDestinationChange} />
       <View className='house-list'>
         {demoData.map(house => (
           <HouseItem key={house._id} {...house} />

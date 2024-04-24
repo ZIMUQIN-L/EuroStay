@@ -5,9 +5,11 @@ import RightBottomArrow from '@assets/images/right-bottom-arrow.svg';
 import SearchIcon from '@assets/images/search.svg';
 import CustomDateRangePicker from '@components/CustomDateRangePicker';
 
-const SearchCard = () => {
+const SearchCard = ({ onDestinationChange }) => {
   const [region, setRegion] = useState('欧洲');
-  const regions = ['欧洲', '亚洲', '北美', '南美', '非洲', '大洋洲'];
+  // 先只保留欧洲
+  // const regions = ['欧洲', '亚洲', '北美', '南美', '非洲', '大洋洲'];
+  const regions = ['欧洲'];
 
   const handleRegionChange = e => {
     const index = e.detail.value;
@@ -28,6 +30,7 @@ const SearchCard = () => {
   const handleDestinationChange = e => {
     const inputDestination = e.detail.value;
     setUserDestination(inputDestination);
+    onDestinationChange(e.detail.value);
   };
 
   return (
@@ -64,23 +67,3 @@ const SearchCard = () => {
 };
 
 export default SearchCard;
-
-// todo for access value from search card
-// const SearchContext = createContext(null);
-// export const SearchProvider = ({ children }) => {
-//   const [startDate, setStartDate] = useState();
-//   const [endDate, setEndDate] = useState();
-
-//   const value = {
-//     startDate,
-//     setStartDate,
-//     endDate,
-//     setEndDate,
-//   };
-
-//   return (
-//     <SearchContext.Provider value={value}>
-//       {children}
-//     </SearchContext.Provider>
-//   );
-// };
