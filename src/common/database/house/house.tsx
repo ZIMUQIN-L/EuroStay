@@ -6,12 +6,12 @@
 //   });
 export const houseInfoSearch = async (
   location,
-  number,
   startDate,
   endDate,
-  houseSetting,
-  houseSurrounding,
-  preference,
+  number = 1,
+  houseSetting = {},
+  houseSurrounding = {},
+  preference = {},
   skip = 0,
 ) => {
   const db = wx.cloud.database();

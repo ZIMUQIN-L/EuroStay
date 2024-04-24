@@ -22,23 +22,40 @@ const Index = () => {
   const handleDestinationChange = inputDestination => {
     setUserDestination(inputDestination);
   };
-  console.log(userDestination);
+
+  const [userStartDate, setUserStartDate] = useState<Date>();
+  const [userEndDate, setUserEndDate] = useState<Date>();
+
+  const handleDateChange = (startDate: Date, endDate: Date) => {
+    setUserStartDate(startDate);
+    setUserEndDate(endDate);
+    console.log(userDestination, userStartDate, userEndDate);
+  };
 
   // delete the testdata for now
   const [demoData, setDemoData] = useState<HouseItemProps[]>([]);
   useEffect(() => {
-    houseInfoSearch('阿姆', 1, '2024-03-24', '2024-03-24', {}, {}, {}, 0).then(
+    houseInfoSearch('阿姆', '2024-03-24', '2024-03-24').then(
       (houseData: HouseItemProps[]) => {
         setDemoData(houseData); // Update demoData state with the fetched data
       },
     );
   }, []);
 
+  const handleClickSearch = () => {
+    houseInfoSearch(userDestination, userStartDate, userEndDate).then(
+        (houseData: HouseItemProps[]) => {
+          setDemoData(houseData); // Update demoData state with the fetched data
+        },
+      );
+  };
+
   // for debug
-  //   console.log(demoData)
   return (
     <View>
-      <SearchCard onDestinationChange={handleDestinationChange} />
+      <SearchCard onDestinationChange={handleDestinationChange} 
+      onDateChange={handleDateChange}
+      onClickSearch={handleClickSearch}/>
       <View className='house-list'>
         {demoData.map(house => (
           <HouseItem key={house._id} {...house} />

@@ -5,7 +5,8 @@ import { useState, useEffect } from 'react';
 import { formatToday, calculateDaysBetweenDates } from '@utils/dateUtil';
 import './index.scss';
 
-const CustomDateRangePicker = () => {
+// 添加回调函数，返回选中的日期
+const CustomDateRangePicker = ({onDateChange}) => {
   const today = formatToday();
   const [errorMsg, setErrorMsg] = useState('');
   const [isToastOpened, setIsToastOpened] = useState(false);
@@ -64,6 +65,7 @@ const CustomDateRangePicker = () => {
     if (endDate === null || startDate === endDate) {
       return startDate;
     }
+    onDateChange(startDate, endDate);
 
     return `${startDate} 至 ${endDate}`;
   };
