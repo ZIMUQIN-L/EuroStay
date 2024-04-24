@@ -1,0 +1,32 @@
+.index {
+  background-color: white;
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 8px;
+  margin-top: 5px;
+}
+.image-container {
+  display: flex;
+  flex-direction: row;
+  margin: 40px 40px;
+}
+.house-image {
+  width: 120px;
+  height: 120px;
+  background-color: #f7f7f7;
+  margin-right: 20px;
+  border-radius: 20px;
+}
+.upload {
+  width: 120px;
+  height: 120px;
+  background-color: #f7f7f7;
+  color: #979797;
+  margin-right: 20px;
+  border-radius: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  flex-direction: column;
+}
