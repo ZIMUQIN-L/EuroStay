@@ -44,7 +44,9 @@
     "react": "^17.0.0",
     "react-dom": "^17.0.0",
     "react-pdf": "5.x",
+    "react-redux": "^9.1.1",
     "react-router-dom": "^6.22.1",
+    "redux": "^5.0.1",
     "taro-ui": "^3.3.0",
     "ts-jest": "^26.5.5"
   },
