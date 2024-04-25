@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { observer } from '@store/utils';
 import { Button, Image, Toast } from '@taroify/core';
 import Taro from '@tarojs/taro';
@@ -11,8 +11,37 @@ import EuroStay from '@assets/images/EuroStay.png';
 const Index = () => {
   const [loginState, setLoginState] = useState(false);
   const [loginStateText, setLoginStateText] = useState('错误提示');
-  // const [dialogType, setDialogType] = useState("fail");
   const [userInfo, setUserInfo] = useState({});
+  const [userOpenidInfo, setUserOpenidInfo] = useState('');
+
+  // 如已经登录过则不再登录
+  useEffect(() => {
+    Taro.login({
+      success: function (res) {
+        if (res.code) {
+          //发起网络请求
+          Taro.cloud
+            .callFunction({
+              name: 'getUserOpenid',
+              data: {},
+            })
+            .then(callbackResult => {
+              console.log(callbackResult.result);
+              if (typeof callbackResult.result === 'string') {
+                setUserOpenidInfo(callbackResult.result);
+              }
+            })
+            .catch(err => {
+              errorDialog('登录失败' + err.errMsg, 'fail');
+            });
+        } else {
+          errorDialog('登录失败' + res.errMsg, 'fail');
+        }
+      },
+    });
+  }, []);
+
+  // 处理用户登录请求
   const handleUserLogin = () => {
     Taro.login({
       success: function (res) {
@@ -20,11 +49,13 @@ const Index = () => {
           //发起网络请求
           Taro.cloud
             .callFunction({
-              name: 'getCloudOpenid',
+              name: 'getUserOpenid',
               data: {},
             })
             .then(callbackResult => {
-              console.log(callbackResult.result);
+              if (typeof callbackResult.result === 'string') {
+                setUserOpenidInfo(callbackResult.result);
+              }
             })
             .catch(err => {
               errorDialog('登录失败' + err.errMsg, 'fail');
@@ -37,9 +68,7 @@ const Index = () => {
     Taro.getUserProfile({
       desc: '用户登录',
       success: res => {
-        console.log(res);
         setUserInfo(res.userInfo);
-        console.log(userInfo);
         Taro.switchTab({
           url: `/pages/home/index`,
         });
@@ -83,12 +112,12 @@ const Index = () => {
   };
   const logo = EuroStay;
   return (
-    <View className='container'>
+    <View className='login-container'>
       <Toast className='login-toast' open={loginState}>
         {loginStateText}
       </Toast>
-      <View className='content'>
-        <Image className='logo' src={logo} />
+      <View className='login-logo-container'>
+        <Image className='login-logo-image' src={logo} />
       </View>
       <Button
         className='login-button'

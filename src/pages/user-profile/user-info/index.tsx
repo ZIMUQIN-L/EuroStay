@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 import { UserItemProps } from '@utils/interfaces';
 import { View, Image } from '@tarojs/components';
 import EditIcon from '@assets/images/profile-edit-icon.svg';
@@ -11,21 +11,21 @@ const UserInfo: React.FC<UserItemProps> = user => {
     avatarUrl: DefaultAvatar,
     nickName: '未登录',
     userDes: '',
-    id: undefined as string | undefined
+    id: undefined as string | undefined,
   });
   Taro.getStorage({
     key: 'userInfo',
-    success: (res) => {
-      console.log("local storage: " + res.data.nickName)
+    success: res => {
+      console.log('local storage: ' + res.data.nickName);
       setUserInfo({
         ...userInfo,
         avatarUrl: res.data.avatarUrl || DefaultAvatar,
         nickName: res.data.nickName || '未登录',
         userDes: res.data.userDes || '',
-        id: res.data.id || undefined
+        id: res.data.id || undefined,
       });
-    }
-  })
+    },
+  });
   // 如果用户未登录，提供默认框架
   // const isEmpty = !user;
   // const avatarUrl = isEmpty ? DefaultAvatar : user.avatarUrl;
@@ -53,7 +53,8 @@ const UserInfo: React.FC<UserItemProps> = user => {
           </View>
         </View>
         <View className='user-des'>
-          个人描述：{userInfo.userDes === '' ? '简单介绍一下自己吧～' : userInfo.userDes}
+          个人描述：
+          {userInfo.userDes === '' ? '简单介绍一下自己吧～' : userInfo.userDes}
         </View>
       </View>
     </View>
