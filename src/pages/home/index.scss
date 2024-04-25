@@ -10,9 +10,11 @@
     margin: 30px 40px;
     .search-first-line {
       margin-top: 10px;
-      .destination-input {
+      .home-destination-input{
+        color:#d9d9d9;
+      }
+      .destination-input{
         padding-left: 10px;
-        color: #d9d9d9;
         font-size: 28px;
       }
     }
@@ -28,10 +30,13 @@
         font-size: 24px;
         color: #979797;
       }
+      .at-calendar{
+        margin-top: 15px;
+      }
     }
     .search-button {
       margin-bottom: 15px;
-    }
+    }   
   }
   .house-list {
     padding: 0px;

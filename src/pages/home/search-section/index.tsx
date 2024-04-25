@@ -54,6 +54,7 @@ const SearchCard = ({ onDestinationChange, onDateChange, onClickSearch }) => {
           placeholder='目的地'
           value={userDestination}
           onInput={handleDestinationChange}
+          placeholder-class="home-destination-input"
         />
       </View>
       <View className='search-second-line'>
