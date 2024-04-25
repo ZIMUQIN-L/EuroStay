@@ -1,9 +1,42 @@
-.login-toast {
-    margin-top: 5px;
-    height: 5rem;
-    color: #6B63B9;
-    width: 100%;
-    background-color: #FFD11188;
-    display: flex;
-    justify-content: center;
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  height: 60vh; // adjust this if you have a header or tab bar
+  padding: 20px;
+  .login-toast {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100;
   }
+  .content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    .logo {
+      width: 500px;
+      height: 100%;
+      max-height: 400px;
+      margin-top: 30px; // spacing from the top of the container
+    }
+  }
+  .login-button {
+    width: 100%;
+    max-width: 600px;
+    height: 80px;
+    background-color: #ffcd32;
+    border-radius: 25px;
+    font-size: 28px;
+    font-weight: bold;
+    color: rgb(255, 255, 255);
+    border: none;
+    outline: none;
+    border-radius: 25px;
+    // Taro may require you to use 'primary' as a prop instead of a class
+  }
+}

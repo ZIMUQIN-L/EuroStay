@@ -6,16 +6,13 @@ import './index.scss';
 import { View, Text } from '@tarojs/components';
 import UserInfo from "../user-profile/user-info";
 
+import EuroStay from '@assets/images/EuroStay.png';
+
 const Index = () => {
     const [loginState, setLoginState] = useState(false);
     const [loginStateText, setLoginStateText] = useState("错误提示");
     // const [dialogType, setDialogType] = useState("fail");
     const [userInfo, setUserInfo] = useState({});
-
-    const style = {
-        width: "100%",
-        height: "100%",
-    };
     const handleUserLogin = () => {
         Taro.login({
             success: function (res) {
@@ -79,18 +76,17 @@ const Index = () => {
             setLoginState(false);
         }, 1000);
     }
-    const avatarUrl = "https://mmbiz.qpic.cn/mmbiz/icTdbqWNOwNRna42FI242Lcia07jQodd2FJGIYQfG0LAJGFxM4FbnQP6yfMxBgJ0F3YRqJCJ1aPAK2dQagdusBZg/0";
-    const nickName = "heltest";
+    const logo = EuroStay;
     return (
-        <View>
-            <Toast className='login-toast' open={loginState}>{loginStateText}</Toast>
-            <Image style={{ width: "100px", height: "100px" }} src={avatarUrl} />
-            <p>昵称：{nickName}</p>
-            <Button color='primary' shape='round' style={style} onClick={handleUserLogin}>
-                一键获取信息
+        <View className="container">
+      <Toast className='login-toast' open={loginState}>{loginStateText}</Toast>
+      <View className='content'>
+        <Image className='logo' src={logo} />
+      </View>
+      <Button className='login-button' color='primary' onClick={handleUserLogin}>
+        微信登陆
       </Button>
-
-        </View>
+    </View>
     );
 };
 export default observer(Index);
