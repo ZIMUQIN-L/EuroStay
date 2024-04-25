@@ -57,10 +57,10 @@ const SearchCard = ({ onDestinationChange, onDateChange, onClickSearch }) => {
         />
       </View>
       <View className='search-second-line'>
-        <CustomDateRangePicker onDateChange={handleDateChange}/>
+        <CustomDateRangePicker onDateChange={handleDateChange} />
       </View>
       <View className='search-button' onClick={onClickSearch}>
-      {/* <Button className='search-button'> */}
+        {/* <Button className='search-button'> */}
         <Image src={SearchIcon} className='search-icon' />
         <View>搜索房源</View>
         {/* </Button> */}

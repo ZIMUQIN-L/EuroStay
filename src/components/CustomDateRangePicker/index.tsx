@@ -6,7 +6,7 @@ import { formatToday, calculateDaysBetweenDates } from '@utils/dateUtil';
 import './index.scss';
 
 // 添加回调函数，返回选中的日期
-const CustomDateRangePicker = ({onDateChange}) => {
+const CustomDateRangePicker = ({ onDateChange }) => {
   const today = formatToday();
   const [errorMsg, setErrorMsg] = useState('');
   const [isToastOpened, setIsToastOpened] = useState(false);
