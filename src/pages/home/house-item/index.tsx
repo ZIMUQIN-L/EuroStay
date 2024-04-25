@@ -26,19 +26,22 @@ const HouseItem: React.FC<HouseItemProps> = house => {
           marginTop: '10px',
         }}
       >
-        <View>
-          <Text>
-            {/** 如果房源类型不确定的话，不现实房源类型 */}
-            {house.location}
-            {house.houseType !== 'unKnown' && house.houseType !== ''
-              ? ` - ${house.houseType}`
-              : ''}
-          </Text>
-
+        <View className='house-details'>
+          {/** 如果房源类型不确定的话，不现实房源类型 */}
+          <View className='house-location'>
+            <Text>{house.location}</Text>
+          </View>
+          <View className='house-type'>
+            <Text>
+              {house.houseType !== 'unKnown' && house.houseType !== ''
+                ? ` - ${house.houseType}`
+                : ''}
+            </Text>
+          </View>
           <View className='house-date' style={{ alignItems: 'center' }}>
             <Image
               src={DateIcon}
-              style={{ width: '12px', height: '12px', marginRight: '6px' }}
+              style={{ width: '17px', height: '17px', marginRight: '6px' }}
             />
             <Text style={{ color: '#979797', fontSize: '12px' }}>
               {house.start_date + ' to ' + house.end_date}
@@ -56,6 +59,7 @@ const HouseItem: React.FC<HouseItemProps> = house => {
             display: 'flex',
             alignItems: 'center',
           }}
+          className='contact-button'
         >
           <Text style={{ fontSize: '14px' }}>联系房主</Text>
         </View>

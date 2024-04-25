@@ -2,3 +2,58 @@
   padding: 16px;
   margin: 40px;
 }
+.home {
+  .search-card {
+    padding-top: 20px;
+    padding-left: 30px;
+    padding-right: 30px;
+    margin: 30px 40px;
+    .search-first-line {
+      margin-top: 10px;
+      .destination-input {
+        padding-left: 10px;
+        color: #d9d9d9;
+        font-size: 28px;
+      }
+    }
+    .search-second-line {
+      border-top: 1px solid #d9d9d9;
+      margin-top: 15px;
+      padding-top: 20px;
+      .date-text {
+        font-size: 28px;
+        color: #d9d9d9;
+      }
+      .nights-text {
+        font-size: 24px;
+        color: #979797;
+      }
+    }
+    .search-button {
+      margin-bottom: 15px;
+    }
+  }
+  .house-list {
+    padding: 0px;
+    margin-top: 20px;
+    margin-left: 40px;
+    margin-right: 40px;
+    .house-item {
+      .house-image {
+        width: 100%;
+        border-radius: 20px;
+        border: 1px solid #d9d9d9;
+      }
+      .house-date {
+        margin-top: 3px;
+        display: flex;
+        align-items: center;
+      }
+      .contact-button {
+        margin-top: 20px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      }
+    }
+    padding-bottom: 90px;
+  }
+}

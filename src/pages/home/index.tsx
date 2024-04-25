@@ -44,18 +44,20 @@ const Index = () => {
 
   const handleClickSearch = () => {
     houseInfoSearch(userDestination, userStartDate, userEndDate).then(
-        (houseData: HouseItemProps[]) => {
-          setDemoData(houseData); // Update demoData state with the fetched data
-        },
-      );
+      (houseData: HouseItemProps[]) => {
+        setDemoData(houseData); // Update demoData state with the fetched data
+      },
+    );
   };
 
   // for debug
   return (
-    <View>
-      <SearchCard onDestinationChange={handleDestinationChange} 
-      onDateChange={handleDateChange}
-      onClickSearch={handleClickSearch}/>
+    <View className='home'>
+      <SearchCard
+        onDestinationChange={handleDestinationChange}
+        onDateChange={handleDateChange}
+        onClickSearch={handleClickSearch}
+      />
       <View className='house-list'>
         {demoData.map(house => (
           <HouseItem key={house._id} {...house} />
