@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { UserItemProps } from '@utils/interfaces';
 import { View, Image } from '@tarojs/components';
 import EditIcon from '@assets/images/profile-edit-icon.svg';
@@ -7,11 +7,15 @@ import './index.scss';
 import Taro from '@tarojs/taro';
 
 const UserInfo: React.FC<UserItemProps> = user => {
+  const [userInfo, setUserInfo] = useState<UserItemProps>(user);
+  useEffect(() => {
+    setUserInfo(user);
+  }, []);
   // 如果用户未登录，提供默认框架
-  const isEmpty = !user;
-  const avatarUrl = isEmpty ? DefaultAvatar : user?.avatarUrl;
-  const nickName = isEmpty ? '未登录' : user?.nickName;
-  const userDes = isEmpty ? '' : user?.userDes;
+  // const isEmpty = !user;
+  // const avatarUrl = isEmpty ? DefaultAvatar : user.avatarUrl;
+  // const nickName = isEmpty ? '未登录' : user.nickName;
+  // const userDes = isEmpty ? '' : user.userDes;
 
   const editClick = () => {
     Taro.navigateTo({
@@ -25,16 +29,17 @@ const UserInfo: React.FC<UserItemProps> = user => {
         <Image src={EditIcon} className='edit-icon' onClick={editClick} />
         <View className='higher-part'>
           <View>
-            <Image src={avatarUrl} className='avatar-img' />
+            <Image src={userInfo.avatarUrl} className='avatar-img' />
           </View>
           <View className='user-texts'>
-            <View className='tilte'>{nickName}</View>
-            <View className='sub-title'>ID: {user.id}</View>
+            <View className='tilte'>{userInfo.nickName}</View>
+            <View className='sub-title'>ID: {userInfo.userOpenid}</View>
             <View className='sub-title'>所属地: </View> {/* 数据库暂无数据 */}
           </View>
         </View>
         <View className='user-des'>
-          个人描述：{userDes === '' ? '简单介绍一下自己吧～' : userDes}
+          个人描述：
+          {userInfo.userDes === '' ? '简单介绍一下自己吧～' : userInfo.userDes}
         </View>
       </View>
     </View>
