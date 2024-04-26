@@ -19,7 +19,7 @@ export interface HouseItemProps {
  */
 export interface UserItemProps {
   _id: string;
-  openId: string;
+  _openid: string;
   avatarUrl: string;
   nickName: string;
   userDes: string;

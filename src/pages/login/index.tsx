@@ -5,6 +5,8 @@ import Taro from '@tarojs/taro';
 import './index.scss';
 import { View, Text } from '@tarojs/components';
 import UserInfo from '../user-profile/user-info';
+import { UserItemProps } from '@utils/interfaces';
+import { userInfoSearch } from '../../common/database/user/user'
 
 import EuroStay from '@assets/images/EuroStay.png';
 
@@ -15,6 +17,8 @@ const Index = () => {
   const [userOpenidInfo, setUserOpenidInfo] = useState('');
 
   // 如已经登录过则不再登录
+
+  const [dbUserData, setDbUserData] = useState<UserItemProps[]>([]);
   useEffect(() => {
     Taro.login({
       success: function (res) {
@@ -30,6 +34,11 @@ const Index = () => {
               if (typeof callbackResult.result === 'string') {
                 setUserOpenidInfo(callbackResult.result);
               }
+              userInfoSearch(userOpenidInfo).then(
+                (dbUserInfo: UserItemProps[]) => {
+                  setDbUserData(dbUserInfo);
+                },
+              );
             })
             .catch(err => {
               errorDialog('登录失败' + err.errMsg, 'fail');
