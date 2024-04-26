@@ -7,25 +7,10 @@ import './index.scss';
 import Taro from '@tarojs/taro';
 
 const UserInfo: React.FC<UserItemProps> = user => {
-  const [userInfo, setUserInfo] = useState({
-    avatarUrl: DefaultAvatar,
-    nickName: '未登录',
-    userDes: '',
-    id: undefined as string | undefined,
-  });
-  Taro.getStorage({
-    key: 'userInfo',
-    success: res => {
-      console.log('local storage: ' + res.data.nickName);
-      setUserInfo({
-        ...userInfo,
-        avatarUrl: res.data.avatarUrl || DefaultAvatar,
-        nickName: res.data.nickName || '未登录',
-        userDes: res.data.userDes || '',
-        id: res.data.id || undefined,
-      });
-    },
-  });
+  const [userInfo, setUserInfo] = useState<UserItemProps>(user);
+  useEffect(() => {
+    setUserInfo(user);
+  }, []);
   // 如果用户未登录，提供默认框架
   // const isEmpty = !user;
   // const avatarUrl = isEmpty ? DefaultAvatar : user.avatarUrl;
@@ -48,7 +33,7 @@ const UserInfo: React.FC<UserItemProps> = user => {
           </View>
           <View className='user-texts'>
             <View className='tilte'>{userInfo.nickName}</View>
-            <View className='sub-title'>ID: {userInfo.id}</View>
+            <View className='sub-title'>ID: {userInfo.userOpenid}</View>
             <View className='sub-title'>所属地: </View> {/* 数据库暂无数据 */}
           </View>
         </View>

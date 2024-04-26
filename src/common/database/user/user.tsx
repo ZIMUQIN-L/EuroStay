@@ -18,6 +18,7 @@ export const userInfoSearch = async ( userOpenid
 // 添加用户信息
 export const userInfoAdd = async (userOpenid, userNickName, userAvatarUrl) => {
     const db = wx.cloud.database();
+    console.log(userOpenid, userNickName, userAvatarUrl);
     return new Promise((resolve, reject) => {
     db.collection('UserInfo').add({
         data: {
@@ -27,7 +28,7 @@ export const userInfoAdd = async (userOpenid, userNickName, userAvatarUrl) => {
             userDes: '',
         }
     }).then(res => {
-        resolve(res);
+        resolve(res.errMsg);
         console.log(res);
     })
 });
