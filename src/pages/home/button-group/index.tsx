@@ -1,0 +1,34 @@
+import { View } from '@tarojs/components';
+import './index.scss';
+import { useEffect, useMemo, useState } from 'react';
+interface ButtonGroupProps {
+  buttons: {
+    text: string;
+    value: any;
+  }[];
+  onClickButton: (_) => void;
+  curValue: any;
+}
+export default (props: ButtonGroupProps) => {
+  const curButton = useMemo(() => {
+    return props.curValue;
+  }, [props.curValue]);
+  return (
+    <View className='button-groups'>
+      {props.buttons.map((item, index) => {
+        return (
+          <View
+            id={item.text}
+            className={curButton == item.value ? 'button active' : 'button'}
+            onClick={() => {
+              console.log(item.value, '1');
+              props.onClickButton(item.value);
+            }}
+          >
+            {item.text}
+          </View>
+        );
+      })}
+    </View>
+  );
+};

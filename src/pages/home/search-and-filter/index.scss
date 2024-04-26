@@ -1,0 +1,211 @@
+.search-card-clicked-filteron {
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  top: 3px; //不要变 magic number
+  left: 0;
+  z-index: 1000;
+  background-color: rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+  pointer-events: auto;
+}
+.search-card-clicked {
+  height: 0px;
+  width: 0px;
+}
+.search-card-clicked-down {
+  background-color: #fff;
+  border-radius: 0px 0px 60px 60px;
+  position: absolute;
+  opacity: 1;
+  z-index: 1001;
+  width: 100%;
+  .filter-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .option {
+      padding: 10px 0 20px;
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 20px;
+      font-weight: 400;
+      border-bottom: 1px solid #555555;
+      .option-text-block {
+        border-left: 1px solid #555555;
+        width: 100%;
+        flex: 2;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        &.no-border {
+          border-left: none;
+        }
+        &.active {
+          color: #6b63b9;
+        }
+      }
+      &.active {
+        border-bottom: 3px solid #6b63b9;
+      }
+      .filter-select-icon {
+        width: 20px;
+        height: 20px;
+        margin-left: 10px;
+      }
+    }
+  }
+  .filter-buttons {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    padding: 20px 0 30px;
+    border-bottom: 4px solid #f7f7f7;
+    .button {
+      padding: 15px 40px;
+      font-size: 20px;
+      border-radius: 40px;
+      background-color: #f7f7f7;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #979797;
+      &.active {
+        color: #6b63b9;
+        background-color: #eceaff;
+      }
+    }
+  }
+  .reset-and-save {
+    overflow: hidden;
+    padding: 30px 50px;
+    display: flex;
+    justify-content: space-between;
+    .reset {
+      padding: 15px 50px;
+      border-radius: 40px;
+      border: 1px solid #d9d9d9;
+      color: #979797;
+      font-size: 20px;
+    }
+    .save {
+      border-radius: 40px;
+      color: #fff;
+      padding: 15px 180px;
+      font-size: 20px;
+      background-color: #ffd111;
+    }
+  }
+}
+.search-card-clicked-up {
+  padding: 30px 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  // background-color: #fff;
+  &.filter-on {
+    background-color: #fff;
+    position: relative;
+    opacity: 1;
+    z-index: 1001;
+  }
+  .search-card-right {
+    margin-left: 20px;
+    display: flex;
+    align-items: center;
+
+    image {
+      width: 75px;
+      height: 75px;
+    }
+  }
+  .search-card-left {
+    flex: 2;
+    display: flex;
+    align-items: center;
+    background-color: #fff;
+    border-radius: 25px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 20px 30px;
+    // padding-left: 30px;
+    // padding-right: 30px;
+    position: relative;
+    justify-content: space-between;
+    &.filter-on {
+      background-color: #f5f5f5;
+      box-shadow: none;
+    }
+    .vertical-line {
+      width: 1px;
+      height: 40px;
+      background-color: #ccc;
+      margin: 0 10px;
+      position: absolute;
+      left: 160px;
+    }
+    .destination-input {
+      flex: 2;
+      position: absolute;
+      left: 190px;
+      // font-size: 20px;
+      font-size: 28px;
+      display: flex;
+      align-items: center;
+      width: 150px;
+    }
+    .region-input {
+      flex: 1;
+      width: 100px;
+    }
+    .date-picker {
+      color: #d9d9d9;
+      // font-size: 20px;
+      font-size: 28px;
+      flex: 1;
+      position: absolute;
+      right: 30px;
+      z-index: 1;
+      .selected {
+        display: inline-block;
+        word-break: break-all;
+        word-wrap: break-word;
+        width: 110px;
+        font-size: 18px;
+        height: 40px;
+        white-space: wrap;
+      }
+    }
+    .right-bottom-arrow {
+      color: #d9d9d9;
+    }
+  }
+}
+.calendar-block {
+  position: absolute;
+  width: 100%;
+  top: 100px;
+  left: 0px;
+  font-size: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding-top: 10px;
+  background-color: #fff;
+  .at-calendar {
+    text {
+      font-size: 20px;
+    }
+    .header__flex {
+      height: 30px;
+    }
+    .header__flex-item {
+      font-size: 20px;
+    }
+    .main {
+      font-size: 20px;
+    }
+    .container-text {
+      font-size: 20px;
+    }
+  }
+}

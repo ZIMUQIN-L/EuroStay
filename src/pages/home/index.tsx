@@ -8,6 +8,7 @@ import { useState, useEffect } from 'react';
 import HouseItem from './house-item';
 import { houseInfoSearch } from '../../common/database/house/house';
 import { HouseItemProps } from '@utils/interfaces';
+import SearchAndFilter from './search-and-filter';
 
 const Index = () => {
   Taro.useShareAppMessage(() => {
@@ -25,6 +26,7 @@ const Index = () => {
 
   const [userStartDate, setUserStartDate] = useState<Date>();
   const [userEndDate, setUserEndDate] = useState<Date>();
+  const [isClickedSearch, setIsClickedSearch] = useState<Boolean>(false);
 
   const handleDateChange = (startDate: Date, endDate: Date) => {
     setUserStartDate(startDate);
@@ -48,16 +50,68 @@ const Index = () => {
         setDemoData(houseData); // Update demoData state with the fetched data
       },
     );
+    const mockData: HouseItemProps[] = [
+      {
+        _id: '123', // 微信自动生成的_id，无法修改其名称
+        capacity: 4,
+        description: '1111111',
+        end_date: '2024-1-1', // 后期最好优化成日期格式
+        start_date: '2024-1-1', // 当前数据库名称是start_date和end_date, 或许可以先保持？
+        houseType: '123',
+        images: [''],
+        location: '国家 城市',
+        ownerTarget: '',
+        xhsContact: ',',
+      },
+      {
+        _id: '123', // 微信自动生成的_id，无法修改其名称
+        capacity: 4,
+        description: '1111111',
+        end_date: '2024-1-1', // 后期最好优化成日期格式
+        start_date: '2024-1-1', // 当前数据库名称是start_date和end_date, 或许可以先保持？
+        houseType: '123',
+        images: [''],
+        location: '国家 城市',
+        ownerTarget: '',
+        xhsContact: ',',
+      },
+      {
+        _id: '123', // 微信自动生成的_id，无法修改其名称
+        capacity: 4,
+        description: '1111111',
+        end_date: '2024-1-1', // 后期最好优化成日期格式
+        start_date: '2024-1-1', // 当前数据库名称是start_date和end_date, 或许可以先保持？
+        houseType: '123',
+        images: [''],
+        location: '国家 城市',
+        ownerTarget: '',
+        xhsContact: ',',
+      },
+    ];
+    setIsClickedSearch(true);
+    setDemoData(mockData);
   };
 
   // for debug
   return (
     <View className='home'>
-      <SearchCard
-        onDestinationChange={handleDestinationChange}
-        onDateChange={handleDateChange}
-        onClickSearch={handleClickSearch}
-      />
+      {isClickedSearch ? (
+        <SearchAndFilter
+          onDestinationChange={handleDestinationChange}
+          onDateChange={handleDateChange}
+          onClickSearch={handleClickSearch}
+          userStartDate={userStartDate}
+          userEndDate={userEndDate}
+          destination={userDestination}
+        />
+      ) : (
+        <SearchCard
+          onDestinationChange={handleDestinationChange}
+          onDateChange={handleDateChange}
+          onClickSearch={handleClickSearch}
+        />
+      )}
+
       <View className='house-list'>
         {demoData.map(house => (
           <HouseItem key={house._id} {...house} />

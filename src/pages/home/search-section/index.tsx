@@ -1,6 +1,6 @@
 import { Input, View, Text, Picker, Image, Button } from '@tarojs/components';
 import './index.scss';
-import { useState, createContext } from 'react';
+import { useState, createContext, useRef, useEffect } from 'react';
 import RightBottomArrow from '@assets/images/right-bottom-arrow.svg';
 import SearchIcon from '@assets/images/search.svg';
 import CustomDateRangePicker from '@components/CustomDateRangePicker';
@@ -19,7 +19,6 @@ const SearchCard = ({ onDestinationChange, onDateChange, onClickSearch }) => {
 
   const [startDate, setStartDate] = useState<Date>();
   const [endDate, setEndDate] = useState<Date>();
-
   const handleDateChange = (start: Date, end: Date) => {
     setStartDate(start);
     setEndDate(end);
@@ -54,14 +53,14 @@ const SearchCard = ({ onDestinationChange, onDateChange, onClickSearch }) => {
           placeholder='目的地'
           value={userDestination}
           onInput={handleDestinationChange}
-          placeholder-class="home-destination-input"
+          placeholder-class='home-destination-input'
         />
       </View>
       <View className='search-second-line'>
-        <CustomDateRangePicker onDateChange={handleDateChange}/>
+        <CustomDateRangePicker onDateChange={handleDateChange} />
       </View>
       <View className='search-button' onClick={onClickSearch}>
-      {/* <Button className='search-button'> */}
+        {/* <Button className='search-button'> */}
         <Image src={SearchIcon} className='search-icon' />
         <View>搜索房源</View>
         {/* </Button> */}
