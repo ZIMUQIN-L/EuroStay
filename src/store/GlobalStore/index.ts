@@ -9,20 +9,20 @@ class GlobalStore {
   }
 
   get userInfo() {
-      const globalUserInfo : UserItemProps = {
-        _id: this._userInfo._id,
-        _openid: this._userInfo._openid,
-        avatarUrl: this._userInfo.avatarUrl,
-        nickName: this._userInfo.nickName,
-        userDes: this._userInfo.userDes,
-        userOpenid: this._userInfo.userOpenid,
-      }
-      console.log(globalUserInfo);
-      return globalUserInfo;
+    const globalUserInfo: UserItemProps = {
+      _id: this._userInfo._id,
+      _openid: this._userInfo._openid,
+      avatarUrl: this._userInfo.avatarUrl,
+      nickName: this._userInfo.nickName,
+      userDes: this._userInfo.userDes,
+      userOpenid: this._userInfo.userOpenid,
+    };
+    console.log(globalUserInfo);
+    return globalUserInfo;
   }
 
   set userInfo(updateUserInfo: UserItemProps) {
-      this._userInfo = updateUserInfo;
+    this._userInfo = updateUserInfo;
   }
 
   get currentTab() {
