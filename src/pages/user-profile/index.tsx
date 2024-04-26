@@ -9,7 +9,7 @@ import UserInfo from './user-info';
 import PostedHouse from './posted-house';
 
 const Index = () => {
-  const [user, setUser] = useState<UserItemProps>();
+  const [user, setUser] = useState<UserItemProps>(GlobalStore.userInfo);
   // 用户拥有的房源信息
   const [houseList, setHouseList] = useState<HouseItemProps[]>([]); // HouseItemProps[]
 
@@ -29,11 +29,13 @@ const Index = () => {
     },
   ];
 
+  // 在user修改信息后不更新，应该是page没有reload，todo
   useEffect(() => {
     const demoUser: UserItemProps = GlobalStore.userInfo;
+    console.log(GlobalStore.userInfo);
     setUser(demoUser);
     setHouseList(demoHouseList);
-  }, []);
+  }, [GlobalStore.userInfo]);
 
   // 需要优化
   if (!user) {
