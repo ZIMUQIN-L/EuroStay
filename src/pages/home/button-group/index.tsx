@@ -8,13 +8,14 @@ interface ButtonGroupProps {
   }[];
   onClickButton: (_) => void;
   curValue: any;
+  className?: String;
 }
 export default (props: ButtonGroupProps) => {
   const curButton = useMemo(() => {
     return props.curValue;
   }, [props.curValue]);
   return (
-    <View className='button-groups'>
+    <View className={`button-groups ${props.className}`}>
       {props.buttons.map((item, index) => {
         return (
           <View

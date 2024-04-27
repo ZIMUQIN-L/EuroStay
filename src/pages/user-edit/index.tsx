@@ -8,7 +8,7 @@ import Taro from '@tarojs/taro';
 import GlobalStore from '@store/GlobalStore';
 import { cloudImageUpload } from '../../common/database/cloudstorage/files';
 import { userInfoUpdate } from '../../common/database/user/user';
-
+import CustomTabBar from '@components/CustomTabBar';
 const Index = () => {
   const [userInfo, setUserInfo] = useState<UserItemProps>(GlobalStore.userInfo);
   const [userAvatarUrl, setUserAvatarUrl] = useState<string>(
@@ -60,10 +60,10 @@ const Index = () => {
       mask: true,
     });
     userInfoUpdate(
-      userInfo._id,
+      userInfo?._id,
       userAvatarUrl,
       userDescription,
-      userInfo.nickName,
+      userInfo?.nickName,
     ).then(res => {
       console.log(res);
       if (res == 'document.update:ok') {
@@ -96,19 +96,17 @@ const Index = () => {
 
   return (
     <View className='index'>
-      <Image src={userAvatarUrl} className='avatar-img' />
+      <Image
+        src={userAvatarUrl}
+        className='avatar-img'
+        onClick={handleUserImageEdit}
+      />
       <View>
-        <Image
-          src={EditIcon}
-          className='edit-icon'
-          onClick={handleUserImageEdit}
-        />
         <View className='user-texts'>
           <View className='user-name'>
             <Text>{userInfo.nickName}</Text>
           </View>
-
-          <View className='sub-title'>{userInfo.userOpenid}</View>
+          <View className='sub-title'>ID:{userInfo.userOpenid}</View>
           <View className='sub-title'>所属地: 英国</View>
         </View>
       </View>
@@ -128,6 +126,7 @@ const Index = () => {
       <View className='save-button' onClick={handleUserInfoChange}>
         <Text>保存修改</Text>
       </View>
+      <CustomTabBar />
     </View>
   );
 };

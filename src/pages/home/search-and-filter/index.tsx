@@ -29,6 +29,15 @@ enum BedType {
   TwinBed,
   StapleBed,
 }
+enum Location {
+  Within1KM,
+  Within2KM,
+  Within4KM,
+  Within6KM,
+  Within8KM,
+  Within10KM,
+  Default,
+}
 
 export default ({
   onDestinationChange,
@@ -55,6 +64,7 @@ export default ({
   const [curNum, setCurNum] = useState<Number>(Number.Default);
   const [curGender, setCurGender] = useState<Gender>(Gender.Default);
   const [curBed, setCurBed] = useState<BedType>(BedType.Default);
+  const [curLocation, setCurLocation] = useState<Location>(Location.Default);
   const [userDestination, setUserDestination] = useState<string>('');
 
   useEffect(() => {
@@ -134,11 +144,20 @@ export default ({
     { text: '双床房', value: BedType.TwinBed },
     { text: '上下床', value: BedType.StapleBed },
   ];
+  const locationButtonValues = [
+    { text: '1km以内', value: Location.Within1KM },
+    { text: '2km以内', value: Location.Within2KM },
+    { text: '4km以内', value: Location.Within4KM },
+    { text: '6km以内', value: Location.Within6KM },
+    { text: '8km以内', value: Location.Within8KM },
+    { text: '10km以内', value: Location.Within10KM },
+  ];
 
   const buttonValuMap = {
     number: numberButtonsValues,
     gender: genderButtonsValues,
     bed: bedButtonsValues,
+    location: locationButtonValues,
   };
 
   return (
@@ -253,10 +272,11 @@ export default ({
               );
             })}
           </View>
-          {curFilterOption != 'facilities' && curFilterOption != 'location' ? (
+          {curFilterOption != 'facilities' ? (
             <ButtonGroup
               // @ts-ignore
               buttons={buttonValuMap[curFilterOption]}
+              className={curFilterOption}
               onClickButton={value => {
                 // @ts-ignore
                 if (curFilterOption == 'bed') {
@@ -268,6 +288,9 @@ export default ({
                 if (curFilterOption == 'gender') {
                   setCurGender(value);
                 }
+                if (curFilterOption == 'location') {
+                  setCurLocation(value);
+                }
               }}
               // @ts-ignore
               curValue={
@@ -275,7 +298,9 @@ export default ({
                   ? curBed
                   : curFilterOption == 'gender'
                     ? curGender
-                    : curNum
+                    : curFilterOption == 'number'
+                      ? curNum
+                      : curLocation
               }
             />
           ) : null}
@@ -287,6 +312,7 @@ export default ({
                 setCurBed(BedType.Default);
                 setCurGender(Gender.Default);
                 setCurNum(Number.Default);
+                setCurLocation(Location.Default);
               }}
             >
               重置
