@@ -31,7 +31,6 @@ export const userInfoAdd = async (userOpenid, userNickName, userAvatarUrl) => {
       })
       .then(res => {
         resolve(res.errMsg);
-        console.log(res);
       });
   });
 };

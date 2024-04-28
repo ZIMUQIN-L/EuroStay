@@ -6,7 +6,6 @@ export const cloudImageUpload = async tempImagePath => {
       cloudPath: cloudPath,
       filePath: tempImagePath,
       success: res => {
-        console.log(res);
         resolve(res.fileID);
       },
     });

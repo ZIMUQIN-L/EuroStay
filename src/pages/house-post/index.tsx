@@ -14,15 +14,21 @@ const Index = () => {
   const [images, setImages] = useState<string[]>([]);
 
   // TODO: 处理照片上传的逻辑
-  const handleUploadImage = () => {
+  const handleUploadImage = (uploadedImagePath) => {
     // TODO: 调用微信小程序的API上传照片
     // const newImage = '';
     // setImages([...images, newImage]);
+    setImages([...images, uploadedImagePath]);
+  };
+
+  const handleDeleteImage = (deletedImagePath) => {
+    const updatedImages = images.filter(image => image !== deletedImagePath);
+    setImages(updatedImages);
   };
 
   return (
     <View className='index'>
-      <ImagesUpload images={images} handleUploadImage={handleUploadImage} />
+      <ImagesUpload images={images} onUploadImage={handleUploadImage}  onDeleteImage={handleDeleteImage}/>
       <HouseDes />
       <InfoSelection />
       <CustomTabBar />
