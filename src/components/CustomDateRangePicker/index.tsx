@@ -63,7 +63,7 @@ const CustomDateRangePicker = ({ onDateChange }) => {
 
   const getButtonLabel = () => {
     if (!isSelected) {
-      return '入住退房日期';
+      return '入住退房日期（点击进行选择）';
     }
 
     if (endDate === null || startDate === endDate) {

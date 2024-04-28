@@ -1,7 +1,7 @@
 import { View, Text } from '@tarojs/components';
 import './index.scss';
 
-const CustomFullScreenDialog = ({ title, children, onClose }) => {
+const CustomFullScreenDialog = ({ title, children, onClose, onSubmit }) => {
   const handleOuterClick = () => {
     onClose();
   };
@@ -14,7 +14,7 @@ const CustomFullScreenDialog = ({ title, children, onClose }) => {
       >
         <Text style={{ marginTop: '24px' }}>{title}</Text>
         {children}
-        <View className='dialog-save-button'>
+        <View className='dialog-save-button' onClick={onSubmit}>
           <Text style={{ color: 'white' }}>保存</Text>
         </View>
       </View>

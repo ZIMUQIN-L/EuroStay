@@ -28,8 +28,25 @@ const InfoSelection = () => {
     setIsDateSelection(true);
   };
 
+  // user select date
+  const [startDate, setStartDate] = useState<Date>();
+  const [endDate, setEndDate] = useState<Date>();
+  const handleUserDateEdit = (start, end) => {
+    setStartDate(start);
+    setEndDate(end);
+    console.log(start, end);
+  };
+
+  // 修改capacity
+  const [capacity, setCapacity] = useState(0);
+
   const handleCapacitySelection = () => {
     setIsCapacitySelection(true);
+  };
+
+  const handleUserCapacityEdit = editedCapacity => {
+    console.log(editedCapacity);
+    setCapacity(editedCapacity);
   };
 
   const handleTypeSelection = () => {
@@ -78,10 +95,17 @@ const InfoSelection = () => {
               <Text>可住时间</Text>
             </View>
             <View className='selection-right' onClick={handleDateSelection}>
-              <Text>请选择 </Text>
+              <Text>
+                {startDate && endDate ? `${startDate} - ${endDate}` : `请选择`}{' '}
+              </Text>
               <Image src={RightArrow} />
             </View>
-            {isDateSelection && <DateSelection onClose={handleClose} />}
+            {isDateSelection && (
+              <DateSelection
+                onClose={handleClose}
+                onDateSelected={handleUserDateEdit}
+              />
+            )}
           </View>
         </View>
       </View>
@@ -96,10 +120,15 @@ const InfoSelection = () => {
               <Text>可住人数</Text>
             </View>
             <View className='selection-right' onClick={handleCapacitySelection}>
-              <Text>请选择 </Text>
+              <Text>{capacity != 0 ? `${capacity}` : `请选择`} </Text>
               <Image src={RightArrow} />
             </View>
-            {isCapacitySelection && <CapacitySelection onClose={handleClose} />}
+            {isCapacitySelection && (
+              <CapacitySelection
+                onClose={handleClose}
+                onCapacitySelected={handleUserCapacityEdit}
+              />
+            )}
           </View>
         </View>
       </View>
