@@ -39,22 +39,26 @@ const CustomDateRangePicker = ({ onDateChange }) => {
     setIsToastOpened(false);
     if (!startDate) {
       handleDateChange(selectedDate, null);
+      setDays(1);
     } else if (!endDate) {
       setEndDate(selectedDate);
       handleDateChange(startDate, selectedDate);
+      const calculatedDays = calculateDaysBetweenDates(startDate, selectedDate);
+      setDays(calculatedDays);
     } else {
       setStartDate(selectedDate);
       setEndDate(null);
       handleDateChange(selectedDate, null);
-    }
-    if (startDate && endDate) {
-      const calculatedDays = calculateDaysBetweenDates(startDate, endDate);
-      setDays(calculatedDays);
-    } else if (!endDate) {
       setDays(1);
-    } else {
-      setDays(0);
     }
+    // if (startDate != null && endDate != null) {
+    //   const calculatedDays = calculateDaysBetweenDates(startDate, endDate);
+    //   setDays(calculatedDays);
+    // } else if (!endDate) {
+    //   setDays(1);
+    // } else {
+    //   setDays(0);
+    // }
   };
 
   const getButtonLabel = () => {

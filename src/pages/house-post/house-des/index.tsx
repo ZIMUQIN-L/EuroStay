@@ -2,8 +2,15 @@ import { View, Text, Input, Textarea } from '@tarojs/components';
 import './index.scss';
 import { useState } from 'react';
 
-const HouseDes = () => {
+const HouseDes = ({ onUserDescriptionEdit }) => {
   const [des, setDes] = useState('');
+
+  // 用户修改房源描述
+  const handleUserDescriptionEdit = e => {
+    const inputDescription = e.detail.value;
+    setDes(inputDescription);
+    onUserDescriptionEdit(inputDescription);
+  };
 
   return (
     <View className='des-part'>
@@ -13,6 +20,7 @@ const HouseDes = () => {
           <View className='des-text'>
             <Textarea
               value={des}
+              onInput={handleUserDescriptionEdit}
               placeholder='详情介绍：更详细的介绍，如房屋类型、独居合租、交通便利、区域安全、租金押金等，帮助租客更好的了解你的房源～'
             />
           </View>

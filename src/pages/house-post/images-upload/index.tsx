@@ -20,13 +20,12 @@ const ImagesUpload = ({ images, onUploadImage, onDeleteImage }) => {
         onUploadImage(tempFilePaths);
         return;
 
-
         Taro.showLoading({
           title: '上传中',
           mask: true,
         });
         cloudImageUpload(tempFilePaths[0]).then((uploadedImagePath: string) => {
-        onUploadImage(uploadedImagePath);
+          onUploadImage(uploadedImagePath);
           Taro.hideLoading();
         });
       },
@@ -36,7 +35,7 @@ const ImagesUpload = ({ images, onUploadImage, onDeleteImage }) => {
     });
   };
 
-  const handleDeleteImage = (imageUrl) => {
+  const handleDeleteImage = imageUrl => {
     onDeleteImage(imageUrl);
   };
 
@@ -47,7 +46,12 @@ const ImagesUpload = ({ images, onUploadImage, onDeleteImage }) => {
           images.map(image => (
             <View className='house-image' key={image}>
               <Image src={image} mode='aspectFill' />
-              <View className='image-delete' onClick={() => handleDeleteImage(image)}>删除</View>
+              <View
+                className='image-delete'
+                onClick={() => handleDeleteImage(image)}
+              >
+                删除
+              </View>
             </View>
           ))}
         <View className='upload' onClick={handleUploadImage}>
