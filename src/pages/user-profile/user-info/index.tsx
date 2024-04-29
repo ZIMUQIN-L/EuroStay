@@ -19,7 +19,7 @@ const UserInfo: React.FC<UserItemProps> = user => {
 
   const editClick = () => {
     Taro.navigateTo({
-      url: '/pages/user-edit/index',
+      url: '../../packageUser/user-edit/index',
     });
   };
 

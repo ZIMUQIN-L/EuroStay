@@ -2,10 +2,22 @@ export default {
   pages: [
     'pages/login/index',
     'pages/home/index',
-    'pages/house-detail/index',
     'pages/house-post/index',
-    'pages/user-profile/index',
-    'pages/user-edit/index',
+    'pages/user-profile/index'
+  ],
+  subPackages: [
+    {
+      "root": "packageUser/",
+      "pages": [
+        "user-edit/index"
+      ]
+    },
+    {
+      "root": "packageHome/",
+      "pages": [
+        "house-detail/index",
+      ]
+    }
   ],
   window: {
     backgroundTextStyle: 'light',
