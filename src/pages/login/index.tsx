@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { observer } from '@store/utils';
 import { Button, Image, Toast } from '@taroify/core';
 import Taro from '@tarojs/taro';
 import './index.scss';
 import GlobalStore from '@store/GlobalStore';
-import { View, Text } from '@tarojs/components';
-// import UserInfo from '../user-profile/user-info';
+import { View } from '@tarojs/components';
 import { UserItemProps } from '@utils/interfaces';
 import { userInfoSearch, userInfoAdd } from '../../common/database/user/user';
 

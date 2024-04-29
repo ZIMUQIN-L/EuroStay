@@ -1,4 +1,4 @@
-import { View, Text, Input, Textarea } from '@tarojs/components';
+import { View, Text, Textarea } from '@tarojs/components';
 import './index.scss';
 import { useState } from 'react';
 

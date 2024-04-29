@@ -3,21 +3,17 @@ export default {
     'pages/login/index',
     'pages/home/index',
     'pages/house-post/index',
-    'pages/user-profile/index'
+    'pages/user-profile/index',
   ],
   subPackages: [
     {
-      "root": "packageUser/",
-      "pages": [
-        "user-edit/index"
-      ]
+      root: 'packageUser/',
+      pages: ['user-edit/index'],
     },
     {
-      "root": "packageHome/",
-      "pages": [
-        "house-detail/index",
-      ]
-    }
+      root: 'packageHome/',
+      pages: ['house-detail/index'],
+    },
   ],
   window: {
     backgroundTextStyle: 'light',
