@@ -54,3 +54,44 @@ export const houseDetailSearch = async houseId => {
       });
   });
 };
+
+// 上传房源信息接口
+export const houseInfoPost = async (
+  location,
+  startDate,
+  endDate,
+  capacity,
+  houseType,
+  houseSetting,
+  houseSurrounding,
+  description,
+  userPreference,
+  images,
+  userOpenid,
+) => {
+  const db = wx.cloud.database();
+  return new Promise((resolve, reject) => {
+    db.collection('HouseInfo')
+      .add({
+        data: {
+          location: location,
+          start_date: startDate,
+          end_date: endDate,
+          capacity: capacity,
+          houseType: houseType,
+          houseSetting: houseSetting,
+          houseSurrounding: houseSurrounding,
+          description: description,
+          preference: userPreference,
+          images: images,
+          userOpenid: userOpenid,
+        },
+      })
+      .then(res => {
+        resolve(res.errMsg);
+      })
+      .catch(err => {
+        reject(err.errMsg);
+      });
+  });
+};
