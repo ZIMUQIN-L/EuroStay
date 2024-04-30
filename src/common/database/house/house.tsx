@@ -18,6 +18,7 @@ export const houseInfoSearch = async (
   const _ = db.command;
   return new Promise((resolve, reject) => {
     db.collection('HouseInfo')
+      .orderBy('start_date', 'desc')
       .where({
         location: db.RegExp({
           regexp: '^.*' + location + '.*',

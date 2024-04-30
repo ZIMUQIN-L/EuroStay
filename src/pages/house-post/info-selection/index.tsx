@@ -1,10 +1,19 @@
 import { View, Image, Text } from '@tarojs/components';
-import LocationSelectionIcon from '@assets/images/location-selection-icon.png';
-import DateSelectionIcon from '@assets/images/date-selection-icon.png';
-import CapacitySelectionIcon from '@assets/images/capacity-selection-icon.png';
-import TypeSelectionIcon from '@assets/images/type-seletion-icon.png';
-import UtilitySelectionIcon from '@assets/images/utility-selection-icon.png';
-import RightArrow from '@assets/images/right-arrow.svg';
+// import LocationSelectionIcon from '@assets/images/location-selection-icon.png';
+// import DateSelectionIcon from '@assets/images/date-selection-icon.png';
+// import CapacitySelectionIcon from '@assets/images/capacity-selection-icon.png';
+// import TypeSelectionIcon from '@assets/images/type-seletion-icon.png';
+// import UtilitySelectionIcon from '@assets/images/utility-selection-icon.png';
+// import RightArrow from '@assets/images/right-arrow.svg';
+import {
+  LocationSelectionIcon,
+  DateSelectionIcon,
+  CapacitySelectionIcon,
+  TypeSelectionIcon,
+  UtilitySelectionIcon,
+  RightBottomArrow,
+} from '../../../utils/cloudIcons';
+
 import LocationSelection from './location-selection';
 import DateSelection from './date-selection';
 import CapacitySelection from './capacity-selection';
@@ -78,7 +87,7 @@ const InfoSelection = () => {
             </View>
             <View className='selection-right' onClick={handleLocationSelection}>
               <Text>请选择 </Text>
-              <Image src={RightArrow} />
+              <Image src={RightBottomArrow} />
             </View>
             {isLocationSelection && <LocationSelection onClose={handleClose} />}
           </View>
@@ -98,7 +107,7 @@ const InfoSelection = () => {
               <Text>
                 {startDate && endDate ? `${startDate} - ${endDate}` : `请选择`}{' '}
               </Text>
-              <Image src={RightArrow} />
+              <Image src={RightBottomArrow} />
             </View>
             {isDateSelection && (
               <DateSelection
@@ -121,7 +130,7 @@ const InfoSelection = () => {
             </View>
             <View className='selection-right' onClick={handleCapacitySelection}>
               <Text>{capacity != 0 ? `${capacity}` : `请选择`} </Text>
-              <Image src={RightArrow} />
+              <Image src={RightBottomArrow} />
             </View>
             {isCapacitySelection && (
               <CapacitySelection
@@ -144,7 +153,7 @@ const InfoSelection = () => {
             </View>
             <View className='selection-right' onClick={handleTypeSelection}>
               <Text>请选择 </Text>
-              <Image src={RightArrow} />
+              <Image src={RightBottomArrow} />
             </View>
             {isTypeSelection && <TypeSelection onClose={handleClose} />}
           </View>
@@ -162,7 +171,7 @@ const InfoSelection = () => {
             </View>
             <View className='selection-right' onClick={handleUtilitySelection}>
               <Text>请选择 </Text>
-              <Image src={RightArrow} />
+              <Image src={RightBottomArrow} />
             </View>
             {isUtilitySelection && <UtilitySelection onClose={handleClose} />}
           </View>

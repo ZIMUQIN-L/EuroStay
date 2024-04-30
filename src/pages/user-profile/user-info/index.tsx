@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { UserItemProps } from '@utils/interfaces';
 import { View, Image } from '@tarojs/components';
-import EditIcon from '@assets/images/profile-edit-icon.svg';
-import DefaultAvatar from '@assets/images/default-avatar.png';
+// import EditIcon from '@assets/images/profile-edit-icon.svg';
+// import DefaultAvatar from '@assets/images/default-avatar.png';
+import { EditIcon, DefaultAvatar } from '../../../utils/cloudIcons';
 import './index.scss';
 import Taro from '@tarojs/taro';
 

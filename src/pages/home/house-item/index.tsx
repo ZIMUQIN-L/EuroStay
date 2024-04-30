@@ -1,8 +1,9 @@
 import { View, Text, Image } from '@tarojs/components';
-import DefaultHouse from '@assets/images/default-house.png';
-import DateIcon from '@assets/images/date-icon.svg';
+// import DefaultHouse from '@assets/images/default-house.png';
+// import DateIcon from '@assets/images/date-icon.svg';
 import Taro from '@tarojs/taro';
 import { HouseItemProps } from '@utils/interfaces';
+import { DefaultHouse, DateIcon } from '../../../utils/cloudIcons';
 
 const HouseItem: React.FC<HouseItemProps> = house => {
   const imageUrl = house.images.length > 0 ? house.images[0] : DefaultHouse;

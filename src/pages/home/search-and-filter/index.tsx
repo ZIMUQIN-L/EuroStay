@@ -1,15 +1,24 @@
 import { Input, View, Text, Picker, Image } from '@tarojs/components';
-import FilterSelectOff from '@assets/images/filter-select-off.svg';
-import FilterSelectOn from '@assets/images/filter-select-on.svg';
 import ButtonGroup from '../button-group';
-import RightBottomArrowGrey from '@assets/images/right-bottom-arrow-grey.svg';
-import YellowFilter from '@assets/images/filter-yellow.svg';
-import FilterOn from '@assets/images/filter-on.svg';
+// import FilterSelectOff from '@assets/images/filter-select-off.svg';
+// import FilterSelectOn from '@assets/images/filter-select-on.svg';
+// import RightBottomArrowGrey from '@assets/images/right-bottom-arrow-grey.svg';
+// import YellowFilter from '@assets/images/filter-yellow.svg';
+// import FilterOn from '@assets/images/filter-on.svg';
+// import RightBottomArrow from '@assets/images/right-bottom-arrow.svg';
 import { useEffect, useState } from 'react';
-import RightBottomArrow from '@assets/images/right-bottom-arrow.svg';
 import './index.scss';
 import { formatToday } from '@utils/dateUtil';
 import { AtToast, AtCalendar } from 'taro-ui';
+import {
+  FilterSelectOff,
+  FilterSelectOn,
+  RightBottomArrowGrey,
+  YellowFilter,
+  FilterOn,
+  RightBottomArrow,
+} from '../../../utils/cloudIcons';
+
 enum Gender {
   Female,
   Male,

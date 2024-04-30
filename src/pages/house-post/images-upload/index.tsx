@@ -1,9 +1,10 @@
 import { View, Image, Text } from '@tarojs/components';
 import './index.scss';
-import UploadIcon from '@assets/images/upload-icon.svg';
+// import UploadIcon from '@assets/images/upload-icon.svg';
 import image from '@taroify/core/image';
 import Taro from '@tarojs/taro';
 import { cloudImageUpload } from '../../../common/database/cloudstorage/files';
+import { UploadIcon } from '../../../utils/cloudIcons';
 
 const ImagesUpload = ({ images, onUploadImage, onDeleteImage }) => {
   const hasImages = Array.isArray(images) && images.length > 0;

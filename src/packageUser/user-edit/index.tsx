@@ -2,13 +2,14 @@ import { View, Image, Input, Text } from '@tarojs/components';
 import { observer } from 'mobx-react';
 import { useEffect, useState } from 'react';
 import { UserItemProps } from '@utils/interfaces';
-import EditIcon from '@assets/images/profile-edit-icon.svg';
+// import EditIcon from '@assets/images/profile-edit-icon.svg';
 import './index.scss';
 import Taro from '@tarojs/taro';
 import GlobalStore from '@store/GlobalStore';
 import { cloudImageUpload } from '../../common/database/cloudstorage/files';
 import { userInfoUpdate } from '../../common/database/user/user';
 import CustomTabBar from '@components/CustomTabBar';
+
 const Index = () => {
   const [userInfo, setUserInfo] = useState<UserItemProps>(GlobalStore.userInfo);
   const [userAvatarUrl, setUserAvatarUrl] = useState<string>(
