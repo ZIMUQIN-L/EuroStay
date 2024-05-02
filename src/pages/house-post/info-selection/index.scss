@@ -1,10 +1,11 @@
 .selection-part {
   background-color: white;
   margin-top: 8px;
+  &.last {
+    margin-bottom: 8px;
+  }
 }
-.selection-container {
-  margin-bottom: 5px;
-}
+
 .selection-content {
   margin: 20px 40px;
   display: flex;
