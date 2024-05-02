@@ -46,6 +46,10 @@ const Index = () => {
       content: userAgreementContent,
       success: function (res) {
         if (res.confirm) {
+          Taro.showLoading({
+            title: '登录信息确认中~',
+            mask: true,
+          });
           Taro.login({
             success: function (res) {
               if (res.code) {
@@ -67,6 +71,7 @@ const Index = () => {
                         console.log(dbUserInfo);
                         setDbUserData(dbUserInfo);
                         GlobalStore.userInfo = dbUserInfo[0];
+                        Taro.hideLoading();
                         if (dbUserInfo.length >= 1) {
                           Taro.switchTab({
                             url: `/pages/home/index`,
@@ -76,6 +81,7 @@ const Index = () => {
                     );
                   })
                   .catch(err => {
+                    Taro.hideLoading();
                     errorDialog('登录失败' + err.errMsg, 'fail');
                   });
               } else {
