@@ -124,7 +124,7 @@ const InfoSelection = () => {
           <View className='selection-content'>
             <View className='selection-left'>
               <View className='icon-container'>
-                <Image src={CapacitySelectionIcon} />
+                <Image src={CapacitySelectionIcon} className='capacity-pic' />
               </View>
               <Text>可住人数</Text>
             </View>
@@ -165,7 +165,7 @@ const InfoSelection = () => {
           <View className='selection-content'>
             <View className='selection-left'>
               <View className='icon-container'>
-                <Image src={UtilitySelectionIcon} />
+                <Image src={UtilitySelectionIcon} className='utility-pic' />
               </View>
               <Text>设施</Text>
             </View>

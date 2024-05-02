@@ -38,15 +38,15 @@ export const SearchIcon =
 export const UploadIcon =
   'cloud://cloud1-8gb29x2pbe14a4f8.636c-cloud1-8gb29x2pbe14a4f8-1324366677/images/upload-icon.svg';
 export const LocationSelectionIcon =
-  'cloud://cloud1-8gb29x2pbe14a4f8.636c-cloud1-8gb29x2pbe14a4f8-1324366677/images/location-selection-icon.png';
+  'cloud://cloud1-8gb29x2pbe14a4f8.636c-cloud1-8gb29x2pbe14a4f8-1324366677/images/location-selection-icon.svg';
 export const DateSelectionIcon =
-  'cloud://cloud1-8gb29x2pbe14a4f8.636c-cloud1-8gb29x2pbe14a4f8-1324366677/images/date-selection-icon.png';
+  'cloud://cloud1-8gb29x2pbe14a4f8.636c-cloud1-8gb29x2pbe14a4f8-1324366677/images/date-selection-icon.svg';
 export const CapacitySelectionIcon =
-  'cloud://cloud1-8gb29x2pbe14a4f8.636c-cloud1-8gb29x2pbe14a4f8-1324366677/images/capacity-selection-icon.png';
+  'cloud://cloud1-8gb29x2pbe14a4f8.636c-cloud1-8gb29x2pbe14a4f8-1324366677/images/capacity-selection-icon.svg';
 export const TypeSelectionIcon =
-  'cloud://cloud1-8gb29x2pbe14a4f8.636c-cloud1-8gb29x2pbe14a4f8-1324366677/images/type-seletion-icon.png';
+  'cloud://cloud1-8gb29x2pbe14a4f8.636c-cloud1-8gb29x2pbe14a4f8-1324366677/images/type-seletion-icon.svg';
 export const UtilitySelectionIcon =
-  'cloud://cloud1-8gb29x2pbe14a4f8.636c-cloud1-8gb29x2pbe14a4f8-1324366677/images/utility-selection-icon.png';
+  'cloud://cloud1-8gb29x2pbe14a4f8.636c-cloud1-8gb29x2pbe14a4f8-1324366677/images/utility-selection-icon.svg';
 export const EuroStay =
   'cloud://cloud1-8gb29x2pbe14a4f8.636c-cloud1-8gb29x2pbe14a4f8-1324366677/images/EuroStay.png';
 export const DefaultAvatar =

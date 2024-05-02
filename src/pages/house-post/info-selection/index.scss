@@ -35,6 +35,15 @@
   justify-content: center;
   align-items: center;
   align-content: center;
+  .utility-pic {
+    width: 55%;
+    height: 55%;
+  }
+  .capacity-pic {
+    width: 100%;
+    height: 100%;
+    margin-left: 12px;
+  }
 
   Image {
     width: 48px;
