@@ -18,11 +18,16 @@ const Index = () => {
   const [userDescription, setUserDescription] = useState<string>(
     GlobalStore.userInfo.userDes,
   );
+  const [userLocation, setUserLocation] = useState<string>(
+    GlobalStore.userInfo.userLocation,
+  );
+
   useEffect(() => {
     const globalUserInfo: UserItemProps = GlobalStore.userInfo;
     setUserInfo(globalUserInfo);
     setUserAvatarUrl(globalUserInfo.avatarUrl);
     setUserDescription(globalUserInfo.userDes);
+    setUserLocation(globalUserInfo.userLocation);
   }, []);
 
   // 用户图片上传
@@ -54,6 +59,12 @@ const Index = () => {
     setUserDescription(inputDescription);
   };
 
+  // 添加用户位置信息
+  const handleUserLocationEdit = e => {
+    const inputLocation = e.detail.value;
+    setUserLocation(inputLocation);
+  };
+
   // 用户信息修改
   const handleUserInfoChange = () => {
     Taro.showLoading({
@@ -65,6 +76,7 @@ const Index = () => {
       userAvatarUrl,
       userDescription,
       userInfo?.nickName,
+      userLocation,
     ).then(res => {
       console.log(res);
       if (res == 'document.update:ok') {
@@ -75,6 +87,7 @@ const Index = () => {
           nickName: userInfo.nickName,
           userDes: userDescription,
           userOpenid: userInfo.userOpenid,
+          userLocation: userInfo.userLocation,
         };
         GlobalStore.userInfo = updatedGlobalUserInfo;
         Taro.hideLoading();
@@ -108,15 +121,28 @@ const Index = () => {
             <Text>{userInfo.nickName}</Text>
           </View>
           <View className='sub-title'>ID:{userInfo.userOpenid}</View>
-          <View className='sub-title'>所属地: 英国</View>
+          {/* <View className='sub-title'>所属地: 英国</View> */}
         </View>
+      </View>
+      <View className='user-location'>
+        <Input
+          type='text'
+          value={userLocation}
+          placeholder={
+            userLocation !== '' && userLocation != undefined
+              ? `${userLocation}`
+              : `请填写个人所在地（国家地区）`
+          }
+          className='location-input'
+          onInput={handleUserLocationEdit}
+        />
       </View>
       <View className='user-des'>
         <Input
           type='text'
           value={userDescription}
           placeholder={
-            userDescription !== ''
+            userDescription
               ? `${userDescription}`
               : `个人描述：简单介绍一下自己吧`
           }

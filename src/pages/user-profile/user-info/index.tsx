@@ -35,7 +35,10 @@ const UserInfo: React.FC<UserItemProps> = user => {
           <View className='user-texts'>
             <View className='tilte'>{userInfo.nickName}</View>
             <View className='sub-title'>ID: {userInfo.userOpenid}</View>
-            <View className='sub-title'>所属地: </View> {/* 数据库暂无数据 */}
+            <View className='sub-title'>
+              所属地: {userInfo.userLocation}
+            </View>{' '}
+            {/* 数据库暂无数据 */}
           </View>
         </View>
         <View className='user-des'>

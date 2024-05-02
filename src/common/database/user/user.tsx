@@ -17,7 +17,12 @@ export const userInfoSearch = async userOpenid => {
 };
 
 // 添加用户信息
-export const userInfoAdd = async (userOpenid, userNickName, userAvatarUrl) => {
+export const userInfoAdd = async (
+  userOpenid,
+  userNickName,
+  userAvatarUrl,
+  userLocation,
+) => {
   const db = wx.cloud.database();
   return new Promise((resolve, reject) => {
     db.collection('UserInfo')
@@ -27,6 +32,7 @@ export const userInfoAdd = async (userOpenid, userNickName, userAvatarUrl) => {
           nickName: userNickName,
           avatarUrl: userAvatarUrl,
           userDes: '',
+          userLocation: userLocation,
         },
       })
       .then(res => {
@@ -41,6 +47,7 @@ export const userInfoUpdate = async (
   avatarUrl,
   userDes,
   nickName,
+  location,
 ) => {
   const db = wx.cloud.database();
   return new Promise((resolve, reject) => {
@@ -51,6 +58,7 @@ export const userInfoUpdate = async (
           avatarUrl: avatarUrl,
           userDes: userDes,
           nickName: nickName,
+          userLocation: location,
         },
         success: function (res) {
           resolve(res.errMsg);

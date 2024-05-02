@@ -108,6 +108,7 @@ const Index = () => {
           userOpenidInfo,
           res.userInfo['nickName'],
           res.userInfo['avatarUrl'],
+          res.userInfo['userLocation'],
         ).then(errMsg => {
           if (errMsg == 'collection.add:ok') {
             userInfoSearch(userOpenidInfo).then(

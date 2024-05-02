@@ -24,4 +24,5 @@ export interface UserItemProps {
   nickName: string;
   userDes: string;
   userOpenid: string;
+  userLocation: string;
 }
