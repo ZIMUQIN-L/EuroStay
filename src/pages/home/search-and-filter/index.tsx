@@ -1,11 +1,5 @@
 import { Input, View, Text, Picker, Image } from '@tarojs/components';
-import ButtonGroup from '../button-group';
-// import FilterSelectOff from '@assets/images/filter-select-off.svg';
-// import FilterSelectOn from '@assets/images/filter-select-on.svg';
-// import RightBottomArrowGrey from '@assets/images/right-bottom-arrow-grey.svg';
-// import YellowFilter from '@assets/images/filter-yellow.svg';
-// import FilterOn from '@assets/images/filter-on.svg';
-// import RightBottomArrow from '@assets/images/right-bottom-arrow.svg';
+import ButtonGroup from '../../../components/ButtonGroup';
 import { useEffect, useState } from 'react';
 import './index.scss';
 import { formatToday } from '@utils/dateUtil';
@@ -18,6 +12,7 @@ import {
   FilterOn,
   RightBottomArrow,
 } from '../../../utils/cloudIcons';
+import RoomFacility from '@components/RoomFacility';
 
 enum Gender {
   Female,
@@ -75,6 +70,17 @@ export default ({
   const [curBed, setCurBed] = useState<BedType>(BedType.Default);
   const [curLocation, setCurLocation] = useState<Location>(Location.Default);
   const [userDestination, setUserDestination] = useState<string>('');
+  const [isWiFiSelected, setIsWiFiSelected] = useState<Boolean>(false);
+  const [isBathSelected, setIsBathSelected] = useState<Boolean>(false);
+  const [isWashMachineSelected, setIsWashMachineSelected] =
+    useState<Boolean>(false);
+  const [isKitchenSelected, setIsKitchenSelected] = useState<Boolean>(false);
+  const [isRefrigeratorSelected, setIsRefrigeratorSelected] =
+    useState<Boolean>(false);
+  const [isAirConditionSelected, setIsAirConditionSelected] =
+    useState<Boolean>(false);
+  const [isSofaSelected, setIsSofaSelected] = useState<Boolean>(false);
+  const [isHeaterSelected, setIsHeaterSelected] = useState<Boolean>(false);
 
   useEffect(() => {
     setStartDate(userStartDate != null ? userStartDate : today);
@@ -312,7 +318,46 @@ export default ({
                       : curLocation
               }
             />
-          ) : null}
+          ) : (
+            <RoomFacility
+              isSofaSelected={isSofaSelected}
+              isAirConditionSelected={isAirConditionSelected}
+              isBathSelected={isBathSelected}
+              isKitchenSelected={isKitchenSelected}
+              isRefrigeratorSelected={isRefrigeratorSelected}
+              isHeaterSelected={isHeaterSelected}
+              isWashMachineSelected={isWashMachineSelected}
+              isWiFiSelected={isWiFiSelected}
+              onClick={value => {
+                switch (value) {
+                  case 'WIFI':
+                    setIsWiFiSelected(!isWiFiSelected);
+                    break;
+                  case 'Bath':
+                    setIsBathSelected(!isBathSelected);
+                    break;
+                  case 'WashMachine':
+                    setIsWashMachineSelected(!isWashMachineSelected);
+                    break;
+                  case 'Kitchen':
+                    setIsKitchenSelected(!isKitchenSelected);
+                    break;
+                  case 'Refrigerator':
+                    setIsRefrigeratorSelected(!isRefrigeratorSelected);
+                    break;
+                  case 'AirCondition':
+                    setIsAirConditionSelected(!isAirConditionSelected);
+                    break;
+                  case 'Sofa':
+                    setIsSofaSelected(!isSofaSelected);
+                    break;
+                  case 'Heater':
+                    setIsHeaterSelected(!isHeaterSelected);
+                    break;
+                }
+              }}
+            />
+          )}
 
           <View className='reset-and-save'>
             <View
@@ -322,6 +367,14 @@ export default ({
                 setCurGender(Gender.Default);
                 setCurNum(Number.Default);
                 setCurLocation(Location.Default);
+                setIsWiFiSelected(false);
+                setIsBathSelected(false);
+                setIsWashMachineSelected(false);
+                setIsKitchenSelected(false);
+                setIsRefrigeratorSelected(false);
+                setIsAirConditionSelected(false);
+                setIsSofaSelected(false);
+                setIsHeaterSelected(false);
               }}
             >
               重置

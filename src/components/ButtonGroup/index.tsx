@@ -1,6 +1,6 @@
 import { View } from '@tarojs/components';
 import './index.scss';
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo } from 'react';
 interface ButtonGroupProps {
   buttons: {
     text: string;
