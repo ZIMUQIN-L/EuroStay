@@ -3,7 +3,7 @@ import { observer } from '@store/utils';
 import CustomTabBar from '@components/CustomTabBar';
 import SearchCard from './search-section';
 import './index.scss';
-import Taro from '@tarojs/taro';
+import Taro, { useReachBottom } from '@tarojs/taro';
 import { useState, useEffect } from 'react';
 import HouseItem from './house-item';
 import { houseInfoSearch } from '../../common/database/house/house';
@@ -16,6 +16,23 @@ const Index = () => {
       title: 'EuroStay欧洲换宿',
       path: `/pages/index/index`,
     };
+  });
+
+  // 上拉进行加载，获取更多房源
+  useReachBottom(() => {
+    //   console.log("reaching bottom");
+    houseInfoSearch(
+      userDestination,
+      userStartDate,
+      userEndDate,
+      1,
+      {},
+      {},
+      {},
+      demoData.length,
+    ).then((houseData: HouseItemProps[]) => {
+      setDemoData(prevData => [...prevData, ...houseData]);
+    });
   });
 
   const [userDestination, setUserDestination] = useState<string>('');

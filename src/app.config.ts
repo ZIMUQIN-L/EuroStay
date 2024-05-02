@@ -18,6 +18,8 @@ export default {
   ],
   window: {
     backgroundTextStyle: 'light',
+    enablePullDownRefresh: true,
+    onReachBottomDistance: 50,
   },
   style: 'v2',
   tabBar: {
