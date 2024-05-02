@@ -58,7 +58,7 @@
 .post-submit-button {
   width: 90%;
   margin-left: 5%;
-  height: 60px;
+  height: 90px;
   border-radius: 60px;
   background-color: #d6d6d6;
   color: white;
@@ -66,4 +66,10 @@
   justify-content: center;
   align-items: center;
   align-content: center;
+  margin-bottom: 160px;
+  margin-top: 20px;
+  background-color: #ffd111;
+  color: #ffffff;
+  font-size: 30px;
+  //保证吸底的CustomTabBar不会遮挡
 }
