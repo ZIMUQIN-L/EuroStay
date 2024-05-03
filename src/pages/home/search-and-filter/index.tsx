@@ -175,6 +175,19 @@ export default ({
     location: locationButtonValues,
   };
 
+  useEffect(() => {
+    // 有蒙层时禁止背景滚动
+    if (isFilterOn) {
+      const dom = document.getElementById('home');
+      dom && (dom.style.overflow = 'hidden');
+      dom && (dom.style.height = '100vh');
+    } else {
+      const dom = document.getElementById('home');
+      dom && (dom.style.overflow = '');
+      dom && (dom.style.height = '');
+    }
+  }, [isFilterOn]);
+
   return (
     <View>
       <View

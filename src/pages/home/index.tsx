@@ -111,7 +111,7 @@ const Index = () => {
 
   // for debug
   return (
-    <View className='home'>
+    <View className='home' id='home'>
       {isClickedSearch ? (
         <SearchAndFilter
           onDestinationChange={handleDestinationChange}
