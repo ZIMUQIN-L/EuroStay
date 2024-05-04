@@ -47,7 +47,7 @@ const Index = () => {
   const handleDateChange = (startDate: Date, endDate: Date) => {
     setUserStartDate(startDate);
     setUserEndDate(endDate);
-    console.log("changed filter", userDestination, userStartDate, userEndDate);
+    console.log('changed filter', userDestination, userStartDate, userEndDate);
   };
 
   // delete the testdata for now
@@ -129,7 +129,7 @@ const Index = () => {
     setIsClickedSearch(false);
     fetchInitialData();
     //setDemoData([]);
-};
+  };
 
   // for debug
   return (

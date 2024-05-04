@@ -22,7 +22,7 @@ interface CustomTabBarProps {
   onHomeSelected: () => void;
 }
 //const CustomTabBar = observer(() => {
-const CustomTabBar: React.FC<CustomTabBarProps> = (({ onHomeSelected }) => {
+const CustomTabBar: React.FC<CustomTabBarProps> = ({ onHomeSelected }) => {
   const currentTab = GlobalStore.currentTab; // 从全局状态管理中获取当前选中的tab
 
   // 获取设备信息，判断是否为有底部安全区的iPhone
@@ -48,7 +48,7 @@ const CustomTabBar: React.FC<CustomTabBarProps> = (({ onHomeSelected }) => {
     if (GlobalStore.currentTab === 'home' && page === 'home') {
       console.log(`reset homepage`);
       onHomeSelected();
-  } else {
+    } else {
       // Update the global store with the new tab
       GlobalStore.currentTab = page; // 点击时更新全局状态管理中的当前选中tab
       Taro.switchTab({
@@ -60,7 +60,7 @@ const CustomTabBar: React.FC<CustomTabBarProps> = (({ onHomeSelected }) => {
           console.error(`Failed to switch tab: ${JSON.stringify(err)}`);
         },
       });
-  }
+    }
   };
 
   return (
@@ -101,7 +101,7 @@ const CustomTabBar: React.FC<CustomTabBarProps> = (({ onHomeSelected }) => {
       </View>
     </View>
   );
-});
+};
 
 export default observer(CustomTabBar);
 //export default CustomTabBar;
