@@ -74,6 +74,12 @@ const InfoSelection = () => {
     setIsUtilitySelection(false);
   };
 
+  // post房源信息设施部分
+  const [utility, setUtility] = useState({});
+  const handleUserUtilityEdit = editedUtility => {
+    setUtility(editedUtility);
+  };
+
   return (
     <>
       <View className='selection-part'>
@@ -173,7 +179,12 @@ const InfoSelection = () => {
               <Text>请选择 </Text>
               <Image src={RightBottomArrow} />
             </View>
-            {isUtilitySelection && <UtilitySelection onClose={handleClose} />}
+            {isUtilitySelection && (
+              <UtilitySelection
+                onClose={handleClose}
+                onUtilitySelected={handleUserUtilityEdit}
+              />
+            )}
           </View>
         </View>
       </View>
