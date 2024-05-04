@@ -4,22 +4,19 @@ import { useState, createContext, useRef, useEffect } from 'react';
 // import RightBottomArrow from '@assets/images/right-bottom-arrow.svg';
 // import SearchIcon from '@assets/images/search.svg';
 import CustomDateRangePicker from '@components/CustomDateRangePicker';
-import MultiSelector from '@components/multiSelector';
 import { RightBottomArrow, SearchIcon } from '../../../utils/cloudIcons';
-import addressData from './addressData';
-import {AtList, AtListItem, AtTextarea} from "taro-ui";
-interface Child {
-  id: string;
-  pid: string;
-  path: string;
-  level: string;
-  name: string;
-  name_en: string;
-  name_pinyin: string;
-  code: string | null;
-  childrens?: Child[];
-}
+
 const SearchCard = ({ onDestinationChange, onDateChange, onClickSearch }) => {
+  const [region, setRegion] = useState('欧洲');
+  // 先只保留欧洲
+  // const regions = ['欧洲', '亚洲', '北美', '南美', '非洲', '大洋洲'];
+  const regions = ['欧洲'];
+
+  const handleRegionChange = e => {
+    const index = e.detail.value;
+    const selectedRegion = regions[index];
+    setRegion(selectedRegion);
+  };
 
   const [startDate, setStartDate] = useState<Date>();
   const [endDate, setEndDate] = useState<Date>();
@@ -36,15 +33,21 @@ const SearchCard = ({ onDestinationChange, onDateChange, onClickSearch }) => {
     setUserDestination(inputDestination);
     onDestinationChange(e.detail.value);
   };
-  const handleAddressChange = (address) => {
-    console.log("Selected address:", address);
-  };
 
   return (
     <View className='search-card'>
-      <View className='search-first-line'>    
-      {/* <MultiSelector addressData={addressData} onAddressChange={handleAddressChange} /> */}
-  
+      <View className='search-first-line'>
+        <Picker
+          className='region-input'
+          mode='selector'
+          range={regions}
+          onChange={handleRegionChange}
+        >
+          <View className='picker'>
+            <Text>{region}</Text>
+            <Image src={RightBottomArrow} className='right-bottom-arrow' />
+          </View>
+        </Picker>
         <View className='vertical-line' />
         <Input
           className='destination-input'
@@ -53,7 +56,7 @@ const SearchCard = ({ onDestinationChange, onDateChange, onClickSearch }) => {
           onInput={handleDestinationChange}
           placeholder-class='home-destination-input'
         />
-      </View> 
+      </View>
       <View className='search-second-line'>
         <CustomDateRangePicker onDateChange={handleDateChange} />
       </View>

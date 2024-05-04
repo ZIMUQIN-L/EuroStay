@@ -80,47 +80,7 @@ const Index = () => {
       },
     );
 
-    //测试reset，暂时注释掉
-    const mockData: HouseItemProps[] = [
-      // {
-      //   _id: '123', // 微信自动生成的_id，无法修改其名称
-      //   capacity: 4,
-      //   description: '1111111',
-      //   end_date: '2024-1-2', // 后期最好优化成日期格式
-      //   start_date: '2024-1-1', // 当前数据库名称是start_date和end_date, 或许可以先保持？
-      //   houseType: '123',
-      //   images: [''],
-      //   location: '国家 城市',
-      //   ownerTarget: '',
-      //   xhsContact: ',',
-      // },
-      // {
-      //   _id: '123', // 微信自动生成的_id，无法修改其名称
-      //   capacity: 4,
-      //   description: '1111111',
-      //   end_date: '2024-1-1', // 后期最好优化成日期格式
-      //   start_date: '2024-1-1', // 当前数据库名称是start_date和end_date, 或许可以先保持？
-      //   houseType: '123',
-      //   images: [''],
-      //   location: '国家 城市',
-      //   ownerTarget: '',
-      //   xhsContact: ',',
-      // },
-      // {
-      //   _id: '123', // 微信自动生成的_id，无法修改其名称
-      //   capacity: 4,
-      //   description: '1111111',
-      //   end_date: '2024-1-1', // 后期最好优化成日期格式
-      //   start_date: '2024-1-1', // 当前数据库名称是start_date和end_date, 或许可以先保持？
-      //   houseType: '123',
-      //   images: [''],
-      //   location: '国家 城市',
-      //   ownerTarget: '',
-      //   xhsContact: ',',
-      // },
-    ];
     setIsClickedSearch(true);
-    setDemoData(mockData);
   };
   const resetState = () => {
     setUserDestination('');
