@@ -1,12 +1,27 @@
 import { View, Text } from '@tarojs/components';
 import CustomFullScreenDialog from '@components/CustomFullScreenDialog';
 import './index.scss';
+import LocationMultiSelector from '@components/locationMultiSelector';
+import { useEffect, useState } from 'react';
 
-const LocationSelection = ({ onClose }) => {
+const LocationSelection = ({ onClose, onLocationSelected }) => {
+  const [location, setLocation] = useState('');
+  const handleSubmitLocationSelection = () => {
+    onLocationSelected(location);
+    onClose();
+  };
+
+  const handleAddressChange = addressInfo => {
+    setLocation(addressInfo);
+  };
   return (
-    <CustomFullScreenDialog title='选择房源地址' onClose={onClose}>
+    <CustomFullScreenDialog
+      title='选择房源地址'
+      onClose={onClose}
+      onSubmit={handleSubmitLocationSelection}
+    >
       <View>
-        <Text>这里是房源地址选择的地方</Text>
+        <LocationMultiSelector onAddressChange={handleAddressChange} />
       </View>
     </CustomFullScreenDialog>
   );

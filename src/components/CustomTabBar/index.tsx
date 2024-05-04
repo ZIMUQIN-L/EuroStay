@@ -2,7 +2,14 @@ import React from 'react';
 import { View, Text, Image } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import './index.scss';
-import { HomeIcon, RepostIcon, UserIcon, HomeSelectedIcon, RepostSelectedIcon, UserSelectedIcon } from '../../utils/cloudIcons';
+import {
+  HomeIcon,
+  RepostIcon,
+  UserIcon,
+  HomeSelectedIcon,
+  RepostSelectedIcon,
+  UserSelectedIcon,
+} from '../../utils/cloudIcons';
 import { useMemo } from 'react';
 import GlobalStore from '@store/GlobalStore';
 import { observer } from 'mobx-react-lite';
@@ -65,18 +72,26 @@ const CustomTabBar: React.FC<CustomTabBarProps> = ({ onHomeSelected }) => {
 
       <View className='tab-item' onClick={() => handleTabClick('house-post')}>
         <View className='tab-icon'>
-          <Image src={currentTab === 'house-post' ? RepostSelectedIcon : RepostIcon} />
+          <Image
+            src={currentTab === 'house-post' ? RepostSelectedIcon : RepostIcon}
+          />
         </View>
-        <Text className={`tab-text ${currentTab === 'house-post' ? 'active' : ''}`}>
+        <Text
+          className={`tab-text ${currentTab === 'house-post' ? 'active' : ''}`}
+        >
           发布
         </Text>
       </View>
 
       <View className='tab-item' onClick={() => handleTabClick('user-profile')}>
         <View className='tab-icon'>
-          <Image src={currentTab === 'user-profile' ? UserSelectedIcon : UserIcon} />
+          <Image
+            src={currentTab === 'user-profile' ? UserSelectedIcon : UserIcon}
+          />
         </View>
-        <Text className={`tab-text ${currentTab === 'user-profile' ? 'active' : ''}`}>
+        <Text
+          className={`tab-text ${currentTab === 'user-profile' ? 'active' : ''}`}
+        >
           我
         </Text>
       </View>
