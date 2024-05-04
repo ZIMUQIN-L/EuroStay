@@ -4,6 +4,7 @@ import { useState, createContext, useRef, useEffect } from 'react';
 // import RightBottomArrow from '@assets/images/right-bottom-arrow.svg';
 // import SearchIcon from '@assets/images/search.svg';
 import CustomDateRangePicker from '@components/CustomDateRangePicker';
+import MultiSelector from '@components/multiSelector';
 import { RightBottomArrow, SearchIcon } from '../../../utils/cloudIcons';
 import addressData from './addressData';
 import {AtList, AtListItem, AtTextarea} from "taro-ui";
@@ -123,11 +124,16 @@ const SearchCard = ({ onDestinationChange, onDateChange, onClickSearch }) => {
     setUserDestination(inputDestination);
     onDestinationChange(e.detail.value);
   };
+  const handleAddressChange = (address) => {
+    console.log("Selected address:", address);
+  };
 
   return (
     <View className='search-card'>
       <View className='search-first-line'>    
-      <Picker mode='multiSelector' range={onlyArray} onChange={addressOnChange} value={customIndex} onColumnChange={bindCustomPickerColumnChange.bind(this)}>
+      <MultiSelector addressData={addressData} onAddressChange={handleAddressChange} />
+
+      {/* <Picker mode='multiSelector' range={onlyArray} onChange={addressOnChange} value={customIndex} onColumnChange={bindCustomPickerColumnChange.bind(this)}>
           <AtList>
             <AtListItem
               extraText={address}
@@ -142,8 +148,8 @@ const SearchCard = ({ onDestinationChange, onDateChange, onClickSearch }) => {
           value={userDestination}
           onInput={handleDestinationChange}
           placeholder-class='home-destination-input'
-        />
-      </View>
+        />*/}
+      </View> 
       <View className='search-second-line'>
         <CustomDateRangePicker onDateChange={handleDateChange} />
       </View>
