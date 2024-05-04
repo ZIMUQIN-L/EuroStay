@@ -21,6 +21,7 @@ import TypeSelection from './type-selection';
 import UtilitySelection from './utility-selection';
 import './index.scss';
 import { useState } from 'react';
+import SurroundingSelection from './surrounding-selection';
 
 const InfoSelection = () => {
   const [isLocationSelection, setIsLocationSelection] = useState(false);
@@ -28,6 +29,7 @@ const InfoSelection = () => {
   const [isCapacitySelection, setIsCapacitySelection] = useState(false);
   const [isTypeSelection, setIsTypeSelection] = useState(false);
   const [isUtilitySelection, setIsUtilitySelection] = useState(false);
+  const [isSurroundingSelection, setIsSurroundingSelection] = useState(false);
 
   const handleLocationSelection = () => {
     setIsLocationSelection(true);
@@ -66,18 +68,29 @@ const InfoSelection = () => {
     setIsUtilitySelection(true);
   };
 
+  const handleSurroundingSelection = () => {
+    setIsSurroundingSelection(true);
+  };
+
   const handleClose = () => {
     setIsLocationSelection(false);
     setIsDateSelection(false);
     setIsCapacitySelection(false);
     setIsTypeSelection(false);
     setIsUtilitySelection(false);
+    setIsSurroundingSelection(false);
   };
 
   // post房源信息设施部分
   const [utility, setUtility] = useState({});
   const handleUserUtilityEdit = editedUtility => {
     setUtility(editedUtility);
+  };
+
+  // post房源周边信息部分
+  const [surrounding, setSurrounding] = useState({});
+  const handleUserSurroundingEdit = editedSurrounding => {
+    setSurrounding(editedSurrounding);
   };
 
   return (
@@ -183,6 +196,32 @@ const InfoSelection = () => {
               <UtilitySelection
                 onClose={handleClose}
                 onUtilitySelected={handleUserUtilityEdit}
+              />
+            )}
+          </View>
+        </View>
+      </View>
+
+      <View className='selection-part last'>
+        <View className='selection-container'>
+          <View className='selection-content'>
+            <View className='selection-left'>
+              <View className='icon-container'>
+                <Image src={UtilitySelectionIcon} className='utility-pic' />
+              </View>
+              <Text>周边信息</Text>
+            </View>
+            <View
+              className='selection-right'
+              onClick={handleSurroundingSelection}
+            >
+              <Text>请选择 </Text>
+              <Image src={RightBottomArrow} />
+            </View>
+            {isSurroundingSelection && (
+              <SurroundingSelection
+                onClose={handleClose}
+                onSurroundingSelected={handleUserSurroundingEdit}
               />
             )}
           </View>
