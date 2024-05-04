@@ -43,16 +43,8 @@ const SearchCard = ({ onDestinationChange, onDateChange, onClickSearch }) => {
   return (
     <View className='search-card'>
       <View className='search-first-line'>    
-      <MultiSelector addressData={addressData} onAddressChange={handleAddressChange} />
-
-      {/* <Picker mode='multiSelector' range={onlyArray} onChange={addressOnChange} value={customIndex} onColumnChange={bindCustomPickerColumnChange.bind(this)}>
-          <AtList>
-            <AtListItem
-              extraText={address}
-            >
-            </AtListItem>
-          </AtList>
-        </Picker>    
+      {/* <MultiSelector addressData={addressData} onAddressChange={handleAddressChange} /> */}
+  
         <View className='vertical-line' />
         <Input
           className='destination-input'
@@ -60,7 +52,7 @@ const SearchCard = ({ onDestinationChange, onDateChange, onClickSearch }) => {
           value={userDestination}
           onInput={handleDestinationChange}
           placeholder-class='home-destination-input'
-        />*/}
+        />
       </View> 
       <View className='search-second-line'>
         <CustomDateRangePicker onDateChange={handleDateChange} />
