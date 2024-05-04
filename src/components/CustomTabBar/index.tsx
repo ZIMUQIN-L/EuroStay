@@ -19,7 +19,7 @@ import { useMemo } from 'react';
 import GlobalStore from '@store/GlobalStore';
 import { observer } from 'mobx-react-lite';
 interface CustomTabBarProps {
-  onHomeSelected: () => void; // Define the type for the onHomeSelected function prop
+  onHomeSelected: () => void;
 }
 //const CustomTabBar = observer(() => {
 const CustomTabBar: React.FC<CustomTabBarProps> = (({ onHomeSelected }) => {
