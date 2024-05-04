@@ -17,10 +17,9 @@ const Index = () => {
       path: `/pages/index/index`,
     };
   });
-
   // 上拉进行加载，获取更多房源
   useReachBottom(() => {
-    //   console.log("reaching bottom");
+    //console.log("reaching bottom");
     houseInfoSearch(
       userDestination,
       userStartDate,
@@ -48,18 +47,31 @@ const Index = () => {
   const handleDateChange = (startDate: Date, endDate: Date) => {
     setUserStartDate(startDate);
     setUserEndDate(endDate);
-    console.log(userDestination, userStartDate, userEndDate);
+    console.log("changed filter", userDestination, userStartDate, userEndDate);
   };
 
   // delete the testdata for now
   const [demoData, setDemoData] = useState<HouseItemProps[]>([]);
-  useEffect(() => {
+
+  const fetchInitialData = () => {
     houseInfoSearch('阿姆', '2024-03-24', '2024-03-24').then(
       (houseData: HouseItemProps[]) => {
-        setDemoData(houseData); // Update demoData state with the fetched data
+        setDemoData(houseData); // Set demo data to the fetched initial list
       },
     );
+  };
+
+  // Effect to fetch data on mount
+  useEffect(() => {
+    fetchInitialData();
   }, []);
+  // useEffect(() => {
+  //   houseInfoSearch('阿姆', '2024-03-24', '2024-03-24').then(
+  //     (houseData: HouseItemProps[]) => {
+  //       setDemoData(houseData); // Update demoData state with the fetched data
+  //     },
+  //   );
+  // }, []);
 
   const handleClickSearch = () => {
     houseInfoSearch(userDestination, userStartDate, userEndDate).then(
@@ -72,7 +84,7 @@ const Index = () => {
         _id: '123', // 微信自动生成的_id，无法修改其名称
         capacity: 4,
         description: '1111111',
-        end_date: '2024-1-1', // 后期最好优化成日期格式
+        end_date: '2024-1-2', // 后期最好优化成日期格式
         start_date: '2024-1-1', // 当前数据库名称是start_date和end_date, 或许可以先保持？
         houseType: '123',
         images: [''],
@@ -108,6 +120,14 @@ const Index = () => {
     setIsClickedSearch(true);
     setDemoData(mockData);
   };
+  const resetState = () => {
+    setUserDestination('');
+    setUserStartDate(undefined);
+    setUserEndDate(undefined);
+    setIsClickedSearch(false);
+    fetchInitialData();
+    //setDemoData([]);
+};
 
   // for debug
   return (
@@ -135,8 +155,12 @@ const Index = () => {
         ))}
       </View>
       <View className='index'>
-        <CustomTabBar />
+        <CustomTabBar onHomeSelected={resetState} />
       </View>
+
+      {/* <View className='index'>
+        <CustomTabBar />
+      </View> */}
     </View>
   );
 };

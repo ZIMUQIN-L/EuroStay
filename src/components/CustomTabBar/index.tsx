@@ -18,8 +18,11 @@ import {
 import { useMemo } from 'react';
 import GlobalStore from '@store/GlobalStore';
 import { observer } from 'mobx-react-lite';
-
-const CustomTabBar = observer(() => {
+interface CustomTabBarProps {
+  onHomeSelected: () => void; // Define the type for the onHomeSelected function prop
+}
+//const CustomTabBar = observer(() => {
+const CustomTabBar: React.FC<CustomTabBarProps> = (({ onHomeSelected }) => {
   const currentTab = GlobalStore.currentTab; // 从全局状态管理中获取当前选中的tab
 
   // 获取设备信息，判断是否为有底部安全区的iPhone
@@ -42,16 +45,22 @@ const CustomTabBar = observer(() => {
   const tabBarHeight = isIphone ? '60px' : '40px'; // 根据设备调整底部高度
 
   const handleTabClick = page => {
-    GlobalStore.currentTab = page; // 点击时更新全局状态管理中的当前选中tab
-    Taro.switchTab({
-      url: `/pages/${page}/index`,
-      success: () => {
-        console.log(`Switched to ${page}`);
-      },
-      fail: err => {
-        console.error(`Failed to switch tab: ${JSON.stringify(err)}`);
-      },
-    });
+    if (GlobalStore.currentTab === 'home' && page === 'home') {
+      console.log(`reset homepage`);
+      onHomeSelected();
+  } else {
+      // Update the global store with the new tab
+      GlobalStore.currentTab = page; // 点击时更新全局状态管理中的当前选中tab
+      Taro.switchTab({
+        url: `/pages/${page}/index`,
+        success: () => {
+          console.log(`Switched to ${page}`);
+        },
+        fail: err => {
+          console.error(`Failed to switch tab: ${JSON.stringify(err)}`);
+        },
+      });
+  }
   };
 
   return (
@@ -94,4 +103,5 @@ const CustomTabBar = observer(() => {
   );
 });
 
-export default CustomTabBar;
+export default observer(CustomTabBar);
+//export default CustomTabBar;
