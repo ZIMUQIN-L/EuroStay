@@ -4,7 +4,7 @@ import './index.scss';
 import { useEffect, useState } from 'react';
 import RoomFacility from '@components/RoomFacility';
 
-const UtilitySelection = ({ onClose }) => {
+const UtilitySelection = ({ onClose, onUtilitySelected }) => {
   const [isWiFiSelected, setIsWiFiSelected] = useState<Boolean>(false);
   const [isBathSelected, setIsBathSelected] = useState<Boolean>(false);
   const [isWashMachineSelected, setIsWashMachineSelected] =
@@ -16,7 +16,23 @@ const UtilitySelection = ({ onClose }) => {
     useState<Boolean>(false);
   const [isSofaSelected, setIsSofaSelected] = useState<Boolean>(false);
   const [isHeaterSelected, setIsHeaterSelected] = useState<Boolean>(false);
+
   const handleSubmitUtilitySelection = () => {
+    const selectedItems = {
+      WIFI: isWiFiSelected,
+      独立卫浴: isBathSelected,
+      洗衣机: isWashMachineSelected,
+      独立厨房: isKitchenSelected,
+      冰箱: isRefrigeratorSelected,
+      空调: isAirConditionSelected,
+      沙发: isSofaSelected,
+      暖气: isHeaterSelected,
+    };
+    const filteredSelectedItems = Object.fromEntries(
+      Object.entries(selectedItems).filter(([key, value]) => value === true),
+    );
+    console.log(filteredSelectedItems);
+    onUtilitySelected(filteredSelectedItems);
     onClose();
   };
   return (
