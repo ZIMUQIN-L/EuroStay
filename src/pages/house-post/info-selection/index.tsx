@@ -22,6 +22,7 @@ import UtilitySelection from './utility-selection';
 import './index.scss';
 import { useState } from 'react';
 import SurroundingSelection from './surrounding-selection';
+import PreferenceSelection from './preference-selection';
 
 const InfoSelection = () => {
   const [isLocationSelection, setIsLocationSelection] = useState(false);
@@ -30,6 +31,7 @@ const InfoSelection = () => {
   const [isTypeSelection, setIsTypeSelection] = useState(false);
   const [isUtilitySelection, setIsUtilitySelection] = useState(false);
   const [isSurroundingSelection, setIsSurroundingSelection] = useState(false);
+  const [isPreferenceSelection, setIsPreferenceSelection] = useState(false);
 
   const handleLocationSelection = () => {
     setIsLocationSelection(true);
@@ -72,6 +74,10 @@ const InfoSelection = () => {
     setIsSurroundingSelection(true);
   };
 
+  const handlePreferenceSelection = () => {
+    setIsPreferenceSelection(true);
+  };
+
   const handleClose = () => {
     setIsLocationSelection(false);
     setIsDateSelection(false);
@@ -79,6 +85,7 @@ const InfoSelection = () => {
     setIsTypeSelection(false);
     setIsUtilitySelection(false);
     setIsSurroundingSelection(false);
+    setIsPreferenceSelection(false);
   };
 
   // post房源信息设施部分
@@ -91,6 +98,13 @@ const InfoSelection = () => {
   const [surrounding, setSurrounding] = useState({});
   const handleUserSurroundingEdit = editedSurrounding => {
     setSurrounding(editedSurrounding);
+  };
+
+  // post房主偏好信息
+  const [preference, setPreference] = useState({});
+  const handleUserPreferenceEdit = editedPreference => {
+    console.log(editedPreference);
+    setPreference(editedPreference);
   };
 
   return (
@@ -222,6 +236,32 @@ const InfoSelection = () => {
               <SurroundingSelection
                 onClose={handleClose}
                 onSurroundingSelected={handleUserSurroundingEdit}
+              />
+            )}
+          </View>
+        </View>
+      </View>
+
+      <View className='selection-part last'>
+        <View className='selection-container'>
+          <View className='selection-content'>
+            <View className='selection-left'>
+              <View className='icon-container'>
+                <Image src={UtilitySelectionIcon} className='utility-pic' />
+              </View>
+              <Text>房主偏好</Text>
+            </View>
+            <View
+              className='selection-right'
+              onClick={handlePreferenceSelection}
+            >
+              <Text>请选择 </Text>
+              <Image src={RightBottomArrow} />
+            </View>
+            {isPreferenceSelection && (
+              <PreferenceSelection
+                onClose={handleClose}
+                onPreferenceSelected={handleUserPreferenceEdit}
               />
             )}
           </View>
