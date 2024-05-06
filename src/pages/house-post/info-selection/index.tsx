@@ -24,7 +24,7 @@ import { useState } from 'react';
 import SurroundingSelection from './surrounding-selection';
 import PreferenceSelection from './preference-selection';
 
-const InfoSelection = () => {
+const InfoSelection = ({ onUserInfoEdit }) => {
   const [isLocationSelection, setIsLocationSelection] = useState(false);
   const [isDateSelection, setIsDateSelection] = useState(false);
   const [isCapacitySelection, setIsCapacitySelection] = useState(false);
@@ -47,6 +47,15 @@ const InfoSelection = () => {
   const handleUserDateEdit = (start, end) => {
     setStartDate(start);
     setEndDate(end);
+    onUserInfoEdit(
+      location,
+      start,
+      end,
+      capacity,
+      utility,
+      surrounding,
+      preference,
+    );
     console.log(start, end);
   };
 
@@ -58,7 +67,15 @@ const InfoSelection = () => {
   };
 
   const handleUserCapacityEdit = editedCapacity => {
-    console.log(editedCapacity);
+    onUserInfoEdit(
+      location,
+      startDate,
+      endDate,
+      editedCapacity,
+      utility,
+      surrounding,
+      preference,
+    );
     setCapacity(editedCapacity);
   };
 
@@ -88,9 +105,33 @@ const InfoSelection = () => {
     setIsPreferenceSelection(false);
   };
 
+  // post房源location信息
+  const [location, setLocation] = useState('');
+  const handleLocationUserEdit = editedLocation => {
+    onUserInfoEdit(
+      editedLocation,
+      startDate,
+      endDate,
+      capacity,
+      utility,
+      surrounding,
+      preference,
+    );
+    setLocation(editedLocation);
+  };
+
   // post房源信息设施部分
   const [utility, setUtility] = useState({});
   const handleUserUtilityEdit = editedUtility => {
+    onUserInfoEdit(
+      location,
+      startDate,
+      endDate,
+      capacity,
+      editedUtility,
+      surrounding,
+      preference,
+    );
     setUtility(editedUtility);
   };
 
@@ -98,12 +139,29 @@ const InfoSelection = () => {
   const [surrounding, setSurrounding] = useState({});
   const handleUserSurroundingEdit = editedSurrounding => {
     setSurrounding(editedSurrounding);
+    onUserInfoEdit(
+      location,
+      startDate,
+      endDate,
+      capacity,
+      utility,
+      editedSurrounding,
+      preference,
+    );
   };
 
   // post房主偏好信息
   const [preference, setPreference] = useState({});
   const handleUserPreferenceEdit = editedPreference => {
-    console.log(editedPreference);
+    onUserInfoEdit(
+      location,
+      startDate,
+      endDate,
+      capacity,
+      utility,
+      surrounding,
+      editedPreference,
+    );
     setPreference(editedPreference);
   };
 
@@ -119,10 +177,15 @@ const InfoSelection = () => {
               <Text>房源地址</Text>
             </View>
             <View className='selection-right' onClick={handleLocationSelection}>
-              <Text>请选择 </Text>
+              <Text>{location != '' ? `${location}` : `请选择`}</Text>
               <Image src={RightBottomArrow} />
             </View>
-            {isLocationSelection && <LocationSelection onClose={handleClose} />}
+            {isLocationSelection && (
+              <LocationSelection
+                onClose={handleClose}
+                onLocationSelected={handleLocationUserEdit}
+              />
+            )}
           </View>
         </View>
       </View>
@@ -175,7 +238,7 @@ const InfoSelection = () => {
         </View>
       </View>
 
-      <View className='selection-part'>
+      {/*暂时注释掉 <View className='selection-part'>
         <View className='selection-container'>
           <View className='selection-content'>
             <View className='selection-left'>
@@ -191,7 +254,7 @@ const InfoSelection = () => {
             {isTypeSelection && <TypeSelection onClose={handleClose} />}
           </View>
         </View>
-      </View>
+      </View> */}
 
       <View className='selection-part last'>
         <View className='selection-container'>
@@ -265,12 +328,6 @@ const InfoSelection = () => {
               />
             )}
           </View>
-        </View>
-      </View>
-
-      <View style={{ backgroundColor: 'white' }}>
-        <View className='post-submit-button'>
-          <Text>发布房源</Text>
         </View>
       </View>
     </>
