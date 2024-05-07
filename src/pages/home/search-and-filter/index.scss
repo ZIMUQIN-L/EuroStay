@@ -20,6 +20,14 @@
   opacity: 1;
   z-index: 1001;
   width: 100%;
+  .preference-groups {
+    &.house-owner-preference {
+      .preference {
+        max-width: 100px;
+        min-width: 100px;
+      }
+    }
+  }
   .location {
     max-width: 100%;
     flex-wrap: wrap;

@@ -461,6 +461,7 @@ export default ({
                 isExchangeSelected={isExchangeSelected}
                 isBeddingSelected={isBeddingSelected}
                 isRentSelected={isRentSelected}
+                className={'house-owner-preference'}
                 onClick={value => {
                   switch (value) {
                     case 'Smoke':
@@ -585,6 +586,9 @@ export default ({
         className={
           !isFilterOn ? 'search-card-clicked' : 'search-card-clicked-filteron'
         }
+        onClick={() => {
+          setIsFilterOn(false);
+        }}
       />
     </View>
   );

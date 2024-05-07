@@ -312,7 +312,7 @@ const InfoSelection = ({ onUserInfoEdit }) => {
         </View>
       </View> */}
 
-      <View className='selection-part last'>
+      <View className='selection-part'>
         <View className='selection-container'>
           <View className='selection-content'>
             <View className='selection-left'>
@@ -335,7 +335,7 @@ const InfoSelection = ({ onUserInfoEdit }) => {
         </View>
       </View>
 
-      <View className='selection-part last'>
+      <View className='selection-part'>
         <View className='selection-container'>
           <View className='selection-content'>
             <View className='selection-left'>
