@@ -13,6 +13,9 @@ import {
   RightBottomArrow,
 } from '../../../utils/cloudIcons';
 import RoomFacility from '@components/RoomFacility';
+import RoomSurrounding from '@components/RoomSurrounding';
+import HouseGenderPreference from '@components/HouseGenderPreference';
+import HouseOwnerPreference from '@components/HouseOwnerPreference';
 
 enum Gender {
   Female,
@@ -70,6 +73,8 @@ export default ({
   const [curBed, setCurBed] = useState<BedType>(BedType.Default);
   const [curLocation, setCurLocation] = useState<Location>(Location.Default);
   const [userDestination, setUserDestination] = useState<string>('');
+
+  // 房源utility信息
   const [isWiFiSelected, setIsWiFiSelected] = useState<Boolean>(false);
   const [isBathSelected, setIsBathSelected] = useState<Boolean>(false);
   const [isWashMachineSelected, setIsWashMachineSelected] =
@@ -81,6 +86,26 @@ export default ({
     useState<Boolean>(false);
   const [isSofaSelected, setIsSofaSelected] = useState<Boolean>(false);
   const [isHeaterSelected, setIsHeaterSelected] = useState<Boolean>(false);
+
+  // 房源周边信息
+  const [isSubwaySelected, setIsSubwaySelected] = useState<Boolean>(false);
+  const [isAttractionSelected, setIsAttractionSelected] =
+    useState<Boolean>(false);
+  const [isChineseSuperMartSelected, setIsChineseSuperMartSelected] =
+    useState<Boolean>(false);
+
+  // 房源性别信息
+  const [isFemaleSelected, setIsFemaleSelected] = useState<Boolean>(false);
+  const [isMaleSelected, setIsMaleSelected] = useState<Boolean>(false);
+  const [isAllGenderSelected, setIsAllGenderSelected] =
+    useState<Boolean>(false);
+
+  //房主偏好信息
+  const [isSmokeSelected, setIsSmokeSelected] = useState<Boolean>(false);
+  const [isPetSelected, setIsPetSelected] = useState<Boolean>(false);
+  const [isExchangeSelected, setIsExchangeSelected] = useState<Boolean>(false);
+  const [isBeddingSelected, setIsBeddingSelected] = useState<Boolean>(false);
+  const [isRentSelected, setIsRentSelected] = useState<Boolean>(false);
 
   useEffect(() => {
     setStartDate(userStartDate != null ? userStartDate : today);
@@ -139,9 +164,9 @@ export default ({
   const filterOptions = [
     { text: '人数', value: 'number' },
     { text: '性别', value: 'gender' },
-    { text: '床型', value: 'bed' },
-    { text: '设备', value: 'facilities' },
-    { text: '地理位置', value: 'location' },
+    { text: '设施', value: 'facilities' },
+    { text: '周边', value: 'surroundings' },
+    { text: '房主偏好', value: 'preference' },
   ];
   const numberButtonsValues = [
     { text: '1人', value: Number.One },
@@ -152,7 +177,7 @@ export default ({
   const genderButtonsValues = [
     { text: '限女生', value: Gender.Female },
     { text: '限男生', value: Gender.Male },
-    { text: '不限', value: Gender.Default },
+    { text: '不限性别', value: Gender.Default },
   ];
   const bedButtonsValues = [
     { text: '大床房', value: BedType.DoubleBed },
@@ -301,36 +326,111 @@ export default ({
             })}
           </View>
           {curFilterOption != 'facilities' ? (
-            <ButtonGroup
-              // @ts-ignore
-              buttons={buttonValuMap[curFilterOption]}
-              className={curFilterOption}
-              onClickButton={value => {
+            curFilterOption == 'surroundings' ? (
+              <RoomSurrounding
+                isAttractionSelected={isAttractionSelected}
+                isChineseSuperMartSelected={isChineseSuperMartSelected}
+                isSubwaySelected={isSubwaySelected}
+                onClick={value => {
+                  switch (value) {
+                    case 'Subway':
+                      setIsSubwaySelected(!isSubwaySelected);
+                      break;
+                    case 'Attraction':
+                      setIsAttractionSelected(!isAttractionSelected);
+                      break;
+                    case 'ChineseSuperMart':
+                      setIsChineseSuperMartSelected(
+                        !isChineseSuperMartSelected,
+                      );
+                      break;
+                  }
+                }}
+              />
+            ) : curFilterOption == 'gender' ? (
+              <HouseGenderPreference
+                isFemaleSelected={isFemaleSelected}
+                isMaleSelected={isMaleSelected}
+                isAllGenderSelected={isAllGenderSelected}
+                onClick={value => {
+                  switch (value) {
+                    case 'Female':
+                      setIsFemaleSelected(!isFemaleSelected);
+                      setIsMaleSelected(false);
+                      setIsAllGenderSelected(false);
+                      break;
+                    case 'Male':
+                      setIsFemaleSelected(false);
+                      setIsMaleSelected(!isMaleSelected);
+                      setIsAllGenderSelected(false);
+                      break;
+                    case 'AllGender':
+                      setIsFemaleSelected(false);
+                      setIsMaleSelected(false);
+                      setIsAllGenderSelected(!isAllGenderSelected);
+                      break;
+                  }
+                }}
+              />
+            ) : curFilterOption == 'preference' ? (
+              <HouseOwnerPreference
+                isSmokeSelected={isSmokeSelected}
+                isPetSelected={isPetSelected}
+                isExchangeSelected={isExchangeSelected}
+                isBeddingSelected={isBeddingSelected}
+                isRentSelected={isRentSelected}
+                onClick={value => {
+                  switch (value) {
+                    case 'Smoke':
+                      setIsSmokeSelected(!isSmokeSelected);
+                      break;
+                    case 'Pet':
+                      setIsPetSelected(!isPetSelected);
+                      break;
+                    case 'Exchange':
+                      setIsExchangeSelected(!isExchangeSelected);
+                      break;
+                    case 'Bedding':
+                      setIsBeddingSelected(!isBeddingSelected);
+                      break;
+                    case 'Rent':
+                      setIsRentSelected(!isRentSelected);
+                      break;
+                  }
+                }}
+              />
+            ) : (
+              <ButtonGroup
                 // @ts-ignore
-                if (curFilterOption == 'bed') {
-                  setCurBed(value);
+                buttons={buttonValuMap[curFilterOption]}
+                className={curFilterOption}
+                onClickButton={value => {
+                  // @ts-ignore
+                  if (curFilterOption == 'bed') {
+                    setCurBed(value);
+                  }
+                  if (curFilterOption == 'number') {
+                    setCurNum(value);
+                  }
+                  if (curFilterOption == 'gender') {
+                    setCurGender(value);
+                  }
+                  if (curFilterOption == 'location') {
+                    setCurLocation(value);
+                  }
+                }}
+                // @ts-ignore
+                curValue={
+                  curFilterOption == 'bed'
+                    ? curBed
+                    : curFilterOption == 'gender'
+                      ? curGender
+                      : curFilterOption == 'number'
+                        ? curNum
+                        : curLocation
                 }
-                if (curFilterOption == 'number') {
-                  setCurNum(value);
-                }
-                if (curFilterOption == 'gender') {
-                  setCurGender(value);
-                }
-                if (curFilterOption == 'location') {
-                  setCurLocation(value);
-                }
-              }}
-              // @ts-ignore
-              curValue={
-                curFilterOption == 'bed'
-                  ? curBed
-                  : curFilterOption == 'gender'
-                    ? curGender
-                    : curFilterOption == 'number'
-                      ? curNum
-                      : curLocation
-              }
-            />
+              />
+            )
           ) : (
             <RoomFacility
               isSofaSelected={isSofaSelected}
@@ -388,6 +488,17 @@ export default ({
                 setIsAirConditionSelected(false);
                 setIsSofaSelected(false);
                 setIsHeaterSelected(false);
+                setIsSubwaySelected(false);
+                setIsAttractionSelected(false);
+                setIsChineseSuperMartSelected(false);
+                setIsFemaleSelected(false);
+                setIsMaleSelected(false);
+                setIsAllGenderSelected(false);
+                setIsSmokeSelected(false);
+                setIsPetSelected(false);
+                setIsExchangeSelected(false);
+                setIsBeddingSelected(false);
+                setIsRentSelected(false);
               }}
             >
               重置
