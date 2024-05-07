@@ -91,6 +91,11 @@ const Index = () => {
     //setDemoData([]);
   };
 
+  // 使用filter进行查询
+  const handleClickFilter = (houseData: HouseItemProps[]) => {
+    setDemoData(houseData);
+  };
+
   // for debug
   return (
     <View className='home' id='home'>
@@ -102,6 +107,7 @@ const Index = () => {
           userStartDate={userStartDate}
           userEndDate={userEndDate}
           destination={userDestination}
+          onClickFilterData={handleClickFilter}
         />
       ) : (
         <SearchCard

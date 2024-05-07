@@ -72,12 +72,14 @@ export default (props: HouseOwnerPreferenceProps) => {
     Rent: props.isRentSelected,
   };
   return (
-    <View className={`facility-groups ${props.className}`}>
+    <View className={`preference-groups ${props.className}`}>
       {HouseOwnerPreferences.map(item => {
         return (
           <View
             id={item.value}
-            className={valueMap[item.value] ? 'facility active' : 'facility'}
+            className={
+              valueMap[item.value] ? 'preference active' : 'preference'
+            }
             onClick={() => {
               props.onClick(item.value);
             }}

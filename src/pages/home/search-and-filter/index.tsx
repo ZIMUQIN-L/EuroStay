@@ -16,6 +16,8 @@ import RoomFacility from '@components/RoomFacility';
 import RoomSurrounding from '@components/RoomSurrounding';
 import HouseGenderPreference from '@components/HouseGenderPreference';
 import HouseOwnerPreference from '@components/HouseOwnerPreference';
+import { houseInfoSearch } from '../../../common/database/house/house';
+import { HouseItemProps } from '@utils/interfaces';
 
 enum Gender {
   Female,
@@ -53,6 +55,7 @@ export default ({
   userStartDate,
   userEndDate,
   destination,
+  onClickFilterData,
 }) => {
   const regions = ['欧洲'];
   const [isFilterOn, setIsFilterOn] = useState<Boolean>(false);
@@ -193,11 +196,41 @@ export default ({
     { text: '10km以内', value: Location.Within10KM },
   ];
 
+  const selectedGenderItems = {
+    限女生: isFemaleSelected,
+    限男生: isMaleSelected,
+    不限性别: isAllGenderSelected,
+  };
+
+  const selectedUtilityItems = {
+    WIFI: isWiFiSelected,
+    独立卫浴: isBathSelected,
+    洗衣机: isWashMachineSelected,
+    独立厨房: isKitchenSelected,
+    冰箱: isRefrigeratorSelected,
+    空调: isAirConditionSelected,
+    沙发: isSofaSelected,
+    暖气: isHeaterSelected,
+  };
+  const selectedSurroundingItems = {
+    近地铁: isSubwaySelected,
+    近景点: isAttractionSelected,
+    近中超: isChineseSuperMartSelected,
+  };
+
   const buttonValuMap = {
     number: numberButtonsValues,
     gender: genderButtonsValues,
     bed: bedButtonsValues,
     location: locationButtonValues,
+  };
+
+  const selectedPreferenceItems = {
+    可吸烟: isSmokeSelected,
+    宠物友好: isPetSelected,
+    换宿: isExchangeSelected,
+    换洗床具: isBeddingSelected,
+    短租: isRentSelected,
   };
 
   useEffect(() => {
@@ -212,6 +245,55 @@ export default ({
       dom && (dom.style.height = '');
     }
   }, [isFilterOn]);
+
+  const handleClickFilter = () => {
+    console.log(curNum);
+    const filteredGenderSelectedItems = Object.fromEntries(
+      Object.entries(selectedGenderItems).filter(
+        ([key, value]) => value === true,
+      ),
+    );
+    const filteredUtilitySelectedItems = Object.fromEntries(
+      Object.entries(selectedUtilityItems).filter(
+        ([key, value]) => value === true,
+      ),
+    );
+    const filteredSurroundingSelectedItems = Object.fromEntries(
+      Object.entries(selectedSurroundingItems).filter(
+        ([key, value]) => value === true,
+      ),
+    );
+    const filteredPreferenceSelectedItems = Object.fromEntries(
+      Object.entries(selectedPreferenceItems).filter(
+        ([key, value]) => value === true,
+      ),
+    );
+
+    console.log(
+      filteredGenderSelectedItems,
+      filteredUtilitySelectedItems,
+      filteredSurroundingSelectedItems,
+      filteredPreferenceSelectedItems,
+    );
+
+    const mergedPreference = {
+      ...filteredPreferenceSelectedItems,
+      ...filteredGenderSelectedItems,
+    };
+
+    houseInfoSearch(
+      userDestination,
+      userStartDate,
+      userEndDate,
+      curNum,
+      filteredUtilitySelectedItems,
+      filteredSurroundingSelectedItems,
+      mergedPreference,
+    ).then((houseData: HouseItemProps[]) => {
+      console.log(houseData);
+      onClickFilterData(houseData);
+    });
+  };
 
   return (
     <View>
@@ -406,29 +488,12 @@ export default ({
                 className={curFilterOption}
                 onClickButton={value => {
                   // @ts-ignore
-                  if (curFilterOption == 'bed') {
-                    setCurBed(value);
-                  }
                   if (curFilterOption == 'number') {
                     setCurNum(value);
                   }
-                  if (curFilterOption == 'gender') {
-                    setCurGender(value);
-                  }
-                  if (curFilterOption == 'location') {
-                    setCurLocation(value);
-                  }
                 }}
                 // @ts-ignore
-                curValue={
-                  curFilterOption == 'bed'
-                    ? curBed
-                    : curFilterOption == 'gender'
-                      ? curGender
-                      : curFilterOption == 'number'
-                        ? curNum
-                        : curLocation
-                }
+                curValue={curNum}
               />
             )
           ) : (
@@ -507,6 +572,7 @@ export default ({
               className='save'
               onClick={() => {
                 setIsFilterOn(false);
+                handleClickFilter();
               }}
             >
               保存
