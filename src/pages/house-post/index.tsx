@@ -42,6 +42,7 @@ const Index = () => {
   const [endDate, setEndDate] = useState<Date>();
   const [capacity, setCapacity] = useState(0);
   const [location, setLocation] = useState('');
+  const [gender, setGender] = useState({});
   const [utility, setUtility] = useState({});
   const [surrounding, setSurrounding] = useState({});
   const [preference, setPreference] = useState({});
@@ -52,6 +53,7 @@ const Index = () => {
     startDate,
     endDate,
     capacity,
+    gender,
     utility,
     surrounding,
     preference,
@@ -60,6 +62,7 @@ const Index = () => {
     setStartDate(startDate);
     setEndDate(endDate);
     setCapacity(capacity);
+    setGender(gender);
     setUtility(utility);
     setSurrounding(surrounding);
     setPreference(preference);
@@ -102,6 +105,13 @@ const Index = () => {
         mask: true,
         duration: 2000,
       });
+    } else if (Object.keys(gender).length === 0) {
+      Taro.showToast({
+        title: '请选择住客性别~',
+        icon: 'error',
+        mask: true,
+        duration: 2000,
+      });
     } else if (
       Object.keys(utility).length === 0 &&
       Object.keys(surrounding).length === 0 &&
@@ -119,6 +129,7 @@ const Index = () => {
         title: '上传中',
         mask: true,
       });
+      const mergedPreference = { ...preference, ...gender };
       houseInfoPost(
         location,
         startDate,
@@ -127,7 +138,7 @@ const Index = () => {
         utility,
         surrounding,
         houseDescription,
-        preference,
+        mergedPreference,
         images,
         userInfo._openid,
       ).then(res => {

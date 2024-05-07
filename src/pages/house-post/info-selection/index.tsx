@@ -23,6 +23,7 @@ import './index.scss';
 import { useState } from 'react';
 import SurroundingSelection from './surrounding-selection';
 import PreferenceSelection from './preference-selection';
+import GenderSelection from './gender-selection';
 
 const InfoSelection = ({ onUserInfoEdit }) => {
   const [isLocationSelection, setIsLocationSelection] = useState(false);
@@ -32,6 +33,7 @@ const InfoSelection = ({ onUserInfoEdit }) => {
   const [isUtilitySelection, setIsUtilitySelection] = useState(false);
   const [isSurroundingSelection, setIsSurroundingSelection] = useState(false);
   const [isPreferenceSelection, setIsPreferenceSelection] = useState(false);
+  const [isGenderSelection, setIsGenderSelection] = useState(false);
 
   const handleLocationSelection = () => {
     setIsLocationSelection(true);
@@ -52,6 +54,7 @@ const InfoSelection = ({ onUserInfoEdit }) => {
       start,
       end,
       capacity,
+      gender,
       utility,
       surrounding,
       preference,
@@ -72,6 +75,7 @@ const InfoSelection = ({ onUserInfoEdit }) => {
       startDate,
       endDate,
       editedCapacity,
+      gender,
       utility,
       surrounding,
       preference,
@@ -95,6 +99,10 @@ const InfoSelection = ({ onUserInfoEdit }) => {
     setIsPreferenceSelection(true);
   };
 
+  const handleGenderSelection = () => {
+    setIsGenderSelection(true);
+  };
+
   const handleClose = () => {
     setIsLocationSelection(false);
     setIsDateSelection(false);
@@ -103,6 +111,7 @@ const InfoSelection = ({ onUserInfoEdit }) => {
     setIsUtilitySelection(false);
     setIsSurroundingSelection(false);
     setIsPreferenceSelection(false);
+    setIsGenderSelection(false);
   };
 
   // post房源location信息
@@ -113,11 +122,28 @@ const InfoSelection = ({ onUserInfoEdit }) => {
       startDate,
       endDate,
       capacity,
+      gender,
       utility,
       surrounding,
       preference,
     );
     setLocation(editedLocation);
+  };
+
+  // post房源性别信息部分
+  const [gender, setGender] = useState({});
+  const handleUserGenderEdit = editedGender => {
+    onUserInfoEdit(
+      location,
+      startDate,
+      endDate,
+      capacity,
+      editedGender,
+      utility,
+      surrounding,
+      preference,
+    );
+    setGender(editedGender);
   };
 
   // post房源信息设施部分
@@ -128,6 +154,7 @@ const InfoSelection = ({ onUserInfoEdit }) => {
       startDate,
       endDate,
       capacity,
+      gender,
       editedUtility,
       surrounding,
       preference,
@@ -144,6 +171,7 @@ const InfoSelection = ({ onUserInfoEdit }) => {
       startDate,
       endDate,
       capacity,
+      gender,
       utility,
       editedSurrounding,
       preference,
@@ -158,6 +186,7 @@ const InfoSelection = ({ onUserInfoEdit }) => {
       startDate,
       endDate,
       capacity,
+      gender,
       utility,
       surrounding,
       editedPreference,
@@ -232,6 +261,33 @@ const InfoSelection = ({ onUserInfoEdit }) => {
               <CapacitySelection
                 onClose={handleClose}
                 onCapacitySelected={handleUserCapacityEdit}
+              />
+            )}
+          </View>
+        </View>
+      </View>
+
+      <View className='selection-part'>
+        <View className='selection-container'>
+          <View className='selection-content'>
+            <View className='selection-left'>
+              <View className='icon-container'>
+                <Image src={CapacitySelectionIcon} className='capacity-pic' />
+              </View>
+              <Text>住客性别</Text>
+            </View>
+            <View className='selection-right' onClick={handleGenderSelection}>
+              <Text>
+                {Object.keys(gender).length !== 0
+                  ? Object.keys(gender)[0]
+                  : `请选择`}{' '}
+              </Text>
+              <Image src={RightBottomArrow} />
+            </View>
+            {isGenderSelection && (
+              <GenderSelection
+                onClose={handleClose}
+                onGenderSelected={handleUserGenderEdit}
               />
             )}
           </View>
