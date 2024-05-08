@@ -143,7 +143,8 @@ export default ({
       handleDateChange(startDate, selectedDate);
       setIsCalendarVisible(false);
       onDateChange(startDate, selectedDate);
-      onClickSearch();
+      // onClickSearch();
+      handleClickFilter(userDestination, startDate, selectedDate);
     } else {
       setStartDate(selectedDate);
       setEndDate(null);
@@ -161,7 +162,8 @@ export default ({
     const inputDestination = e.detail.value;
     setUserDestination(inputDestination);
     onDestinationChange(e.detail.value);
-    onClickSearch(e.detail.value);
+    // onClickSearch(e.detail.value);
+    handleClickFilter(e.detail.value, startDate, endDate);
   };
 
   const filterOptions = [
@@ -246,7 +248,7 @@ export default ({
     }
   }, [isFilterOn]);
 
-  const handleClickFilter = () => {
+  const handleClickFilter = (userDes?, userStart?, userEnd?) => {
     console.log(curNum);
     const filteredGenderSelectedItems = Object.fromEntries(
       Object.entries(selectedGenderItems).filter(
@@ -269,22 +271,15 @@ export default ({
       ),
     );
 
-    console.log(
-      filteredGenderSelectedItems,
-      filteredUtilitySelectedItems,
-      filteredSurroundingSelectedItems,
-      filteredPreferenceSelectedItems,
-    );
-
     const mergedPreference = {
       ...filteredPreferenceSelectedItems,
       ...filteredGenderSelectedItems,
     };
 
     houseInfoSearch(
-      userDestination,
-      userStartDate,
-      userEndDate,
+      userDes,
+      userStart,
+      userEnd,
       curNum,
       filteredUtilitySelectedItems,
       filteredSurroundingSelectedItems,
@@ -573,7 +568,7 @@ export default ({
               className='save'
               onClick={() => {
                 setIsFilterOn(false);
-                handleClickFilter();
+                handleClickFilter(userDestination, userStartDate, userEndDate);
               }}
             >
               保存

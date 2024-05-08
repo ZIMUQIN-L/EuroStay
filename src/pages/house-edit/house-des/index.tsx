@@ -7,7 +7,7 @@ const HouseDes = ({ onUserDescriptionEdit }) => {
 
   // 用户修改房源描述
   const handleUserDescriptionEdit = e => {
-    console.log("handleUserDescriptionEdit");
+    console.log('handleUserDescriptionEdit');
     const inputDescription = e.detail.value;
     setDes(inputDescription);
     onUserDescriptionEdit(inputDescription);

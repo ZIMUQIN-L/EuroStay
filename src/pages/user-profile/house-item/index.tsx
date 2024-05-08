@@ -44,22 +44,23 @@ const HouseItem: React.FC<HouseItemProps> = house => {
         </View>
       </View>
 
-      <View style={{
-            backgroundColor: '#FFD111',
-            color: 'white',
-            width: '100px',
-            justifyContent: 'center',
-            height: '32px',
-            borderRadius: '32px',
-            display: 'flex',
-            alignItems: 'center',
-            marginBottom: '10px',
-          }}
-          className='edit-home-button'
-          onClick={handleEditHomeClick}
-          >
-            <Text style={{ fontSize: '14px' }}>编辑房源</Text>
-        </View>
+      <View
+        style={{
+          backgroundColor: '#FFD111',
+          color: 'white',
+          width: '100px',
+          justifyContent: 'center',
+          height: '32px',
+          borderRadius: '32px',
+          display: 'flex',
+          alignItems: 'center',
+          marginBottom: '10px',
+        }}
+        className='edit-home-button'
+        onClick={handleEditHomeClick}
+      >
+        <Text style={{ fontSize: '14px' }}>编辑房源</Text>
+      </View>
 
       <View
         style={{

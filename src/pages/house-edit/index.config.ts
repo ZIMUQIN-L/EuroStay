@@ -1,3 +1,3 @@
 export default {
-    enableShareAppMessage: true,
-  };
+  enableShareAppMessage: true,
+};
