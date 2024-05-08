@@ -66,3 +66,20 @@ export const userInfoUpdate = async (
       });
   });
 };
+
+// 查询用户房源信息
+export const userHouseInfoSearch = async userOpenid => {
+  const db = wx.cloud.database();
+  return new Promise((resolve, reject) => {
+    db.collection('HouseInfo')
+      .orderBy('start_date', 'desc')
+      .where({
+        userOpenid: userOpenid,
+      })
+      .get({
+        success: function (res) {
+          resolve(res.data);
+        },
+      });
+  });
+};
