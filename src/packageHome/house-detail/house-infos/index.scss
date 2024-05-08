@@ -1,0 +1,34 @@
+.facility-groups {
+  max-width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-items: center;
+  justify-content: space-around;
+  padding: 0 30px;
+  .facility {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 60px;
+    // height: px;
+    background-color: #f7f7f7;
+    color: #979797;
+    font-size: 20px;
+    max-width: 120px;
+    min-width: 120px;
+    margin-left: 14px;
+    margin-top: 20px;
+    border-radius: 20px;
+    padding: 10px;
+    &.active {
+      background-color: #eceaff;
+      color: #6b63b9;
+    }
+    .image {
+      width: 80px;
+      height: 50px;
+      margin-bottom: 10px;
+      stroke: #979797;
+    }
+  }
+}

@@ -34,7 +34,9 @@ const HouseItem: React.FC<HouseItemProps> = house => {
           </View>
           <View className='house-type'>
             <Text>
-              {house.houseType !== 'unKnown' && house.houseType !== ''
+              {house.houseType !== 'unKnown' &&
+              house.houseType !== '' &&
+              house.houseType != undefined
                 ? ` - ${house.houseType}`
                 : ''}
             </Text>

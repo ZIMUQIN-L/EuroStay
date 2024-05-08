@@ -1,5 +1,5 @@
 import { View, Text, Image } from '@tarojs/components';
-import { HouseItemProps } from '@utils/interfaces';
+import { HouseDetailItemProps } from '@utils/interfaces';
 // import DateIcon from '@assets/images/date-icon.svg';
 // import CapacityIcon from '@assets/images/capacity-icon.svg';
 // import LocationIcon from '@assets/images/location-icon.svg';
@@ -10,7 +10,7 @@ import {
   LocationIcon,
 } from '../../../utils/cloudIcons';
 
-const HouseTexts: React.FC<HouseItemProps> = house => {
+const HouseTexts: React.FC<HouseDetailItemProps> = house => {
   return (
     <View className='lists'>
       <View className='container'>
