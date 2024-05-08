@@ -7,6 +7,7 @@ import GlobalStore from '@store/GlobalStore';
 import { HouseItemProps, UserItemProps } from '@utils/interfaces';
 import UserInfo from './user-info';
 import PostedHouse from './posted-house';
+import { userHouseInfoSearch } from '../../common/database/user/user';
 
 const Index = () => {
   const [user, setUser] = useState<UserItemProps>(GlobalStore.userInfo);
@@ -16,7 +17,7 @@ const Index = () => {
   // Mock data for houseList
   const demoHouseList: HouseItemProps[] = [
     {
-      id: '1',
+      _id: '1',
       capacity: 3,
       description: 'Beautiful house with garden',
       endDate: '2024-05-01',
@@ -34,7 +35,12 @@ const Index = () => {
     const demoUser: UserItemProps = GlobalStore.userInfo;
     console.log(GlobalStore.userInfo);
     setUser(demoUser);
-    setHouseList(demoHouseList);
+    userHouseInfoSearch(demoUser._openid).then(
+      (houseData: HouseItemProps[]) => {
+        setHouseList(houseData); // Update demoData state with the fetched data
+      },
+    );
+    // setHouseList(demoHouseList);
   }, [GlobalStore.userInfo]);
 
   // 需要优化

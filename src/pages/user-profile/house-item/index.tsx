@@ -32,7 +32,7 @@ const HouseItem: React.FC<HouseItemProps> = house => {
               style={{ width: '12px', height: '12px', marginRight: '6px' }}
             />
             <Text style={{ color: '#979797', fontSize: '12px' }}>
-              {house.startDate + ' to ' + house.endDate}
+              {house.start_date + ' to ' + house.end_date}
             </Text>
           </View>
         </View>
