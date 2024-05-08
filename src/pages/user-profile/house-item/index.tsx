@@ -6,6 +6,12 @@ import { HouseItemProps } from '@utils/interfaces';
 import { DefaultHouse, DateIcon } from '../../../utils/cloudIcons';
 const HouseItem: React.FC<HouseItemProps> = house => {
   const imageUrl = house.images.length > 0 ? house.images[0] : DefaultHouse;
+  // jump to the edit page
+  const handleEditHomeClick = () => {
+    Taro.switchTab({
+      url: `/pages/house-edit/index`,
+    });
+  };
 
   return (
     <View className='house-item'>
@@ -37,6 +43,24 @@ const HouseItem: React.FC<HouseItemProps> = house => {
           </View>
         </View>
       </View>
+
+      <View style={{
+            backgroundColor: '#FFD111',
+            color: 'white',
+            width: '100px',
+            justifyContent: 'center',
+            height: '32px',
+            borderRadius: '32px',
+            display: 'flex',
+            alignItems: 'center',
+            marginBottom: '10px',
+          }}
+          className='edit-home-button'
+          onClick={handleEditHomeClick}
+          >
+            <Text style={{ fontSize: '14px' }}>编辑房源</Text>
+        </View>
+
       <View
         style={{
           borderBottom: '1px solid #ddd',

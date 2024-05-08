@@ -5,6 +5,7 @@ export default {
     'pages/home/index',
     'pages/house-post/index',
     'pages/user-profile/index',
+    'pages/house-edit/index',
   ],
   subPackages: [
     {
@@ -36,6 +37,10 @@ export default {
       {
         pagePath: 'pages/user-profile/index',
         text: '用户profile',
+      },
+      {
+        pagePath: 'pages/house-edit/index',
+        text: '房源修改',
       },
     ],
   },
