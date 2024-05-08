@@ -33,7 +33,11 @@ const Index = () => {
     <>
       <HouseImagesSwiper {...houseDetail} />
       <HouseTexts {...houseDetail} />
-      <RoomDetailInfo roomUtility={houseDetail.houseSetting} />
+      <RoomDetailInfo
+        roomUtility={houseDetail.houseSetting}
+        roomSurrounding={houseDetail.houseSurrounding}
+        roomPreference={houseDetail.preference}
+      />
     </>
   );
 };
