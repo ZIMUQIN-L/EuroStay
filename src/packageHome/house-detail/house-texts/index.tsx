@@ -48,7 +48,7 @@ const HouseTexts: React.FC<HouseDetailItemProps> = house => {
           </View>
         </View>
       </View>
-      <View className='container'>
+      {/* <View className='container'>
         <View className='text-container'>
           <Text className='title'>房客评价</Text>
         </View>
@@ -57,7 +57,7 @@ const HouseTexts: React.FC<HouseDetailItemProps> = house => {
         <View className='contact-button'>
           <Text className='contact-text'>联系房东</Text>
         </View>
-      </View>
+      </View> */}
     </View>
   );
 };

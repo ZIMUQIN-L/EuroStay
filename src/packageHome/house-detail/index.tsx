@@ -8,6 +8,7 @@ import HouseTexts from './house-texts';
 import './index.scss';
 import { houseDetailSearch } from '../../common/database/house/house';
 import { RoomDetailInfo } from './house-infos';
+import HouseContact from './house-contact';
 
 const Index = () => {
   const router = useRouter();
@@ -21,6 +22,7 @@ const Index = () => {
   useEffect(() => {
     houseDetailSearch(houseId).then((houseDetail: HouseDetailItemProps) => {
       setHouseDetail(houseDetail); // Update demoData state with the fetched data
+      console.log(houseDetail.houseSetting);
     });
   }, []);
 
@@ -38,6 +40,7 @@ const Index = () => {
         roomSurrounding={houseDetail.houseSurrounding}
         roomPreference={houseDetail.preference}
       />
+      <HouseContact {...houseDetail} />
     </>
   );
 };

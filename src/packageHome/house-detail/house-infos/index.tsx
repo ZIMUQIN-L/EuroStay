@@ -1,4 +1,4 @@
-import { View, Image } from '@tarojs/components';
+import { View, Text, Image } from '@tarojs/components';
 import './index.scss';
 import { useEffect, useMemo, useState } from 'react';
 import {
@@ -153,6 +153,7 @@ export const RoomDetailInfo = ({
   console.log(roomUtility, Object.keys(roomUtility));
   return (
     <view>
+      <Text>性别要求</Text>
       <View className={`facility-groups ${Object.keys(roomPreference)}`}>
         {HouseGenderPreferences.map(item => {
           if (roomPreference[item.value]) {
@@ -179,6 +180,7 @@ export const RoomDetailInfo = ({
           }
         })}
       </View>
+      <Text>房源信息</Text>
       <View className={`facility-groups ${Object.keys(roomUtility)}`}>
         {RoomFacilities.map(item => {
           if (roomUtility[item.value]) {
