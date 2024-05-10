@@ -124,7 +124,6 @@ const Index = () => {
         duration: 2000,
       });
     } else {
-      console.log('wtf1');
       Taro.showLoading({
         title: '上传中',
         mask: true,
@@ -148,7 +147,6 @@ const Index = () => {
         });
       });
     }
-    console.log('wtf');
   };
   return (
     <View className='index'>

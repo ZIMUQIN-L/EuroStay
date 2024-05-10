@@ -2,7 +2,6 @@ import { View, Image, Input, Text } from '@tarojs/components';
 import { observer } from 'mobx-react';
 import { useEffect, useState } from 'react';
 import { UserItemProps } from '@utils/interfaces';
-// import EditIcon from '@assets/images/profile-edit-icon.svg';
 import './index.scss';
 import Taro from '@tarojs/taro';
 import GlobalStore from '@store/GlobalStore';
@@ -30,15 +29,13 @@ const Index = () => {
     setUserLocation(globalUserInfo.userLocation);
   }, []);
 
-  // 用户图片上传
   const handleUserImageEdit = () => {
     Taro.chooseImage({
-      count: 1, // 默认9
+      count: 1, 
       sizeType: ['original', 'compressed'],
       sourceType: ['album', 'camera'],
       success: function (res) {
         const tempFilePaths = res.tempFilePaths;
-        console.log(tempFilePaths);
         Taro.showLoading({
           title: '上传中',
           mask: true,
@@ -49,7 +46,11 @@ const Index = () => {
         });
       },
       fail: function (err) {
-        console.log(err);
+        Taro.showToast({
+          title: '图片上传失败',
+          icon: 'error',
+          duration: 2000,
+        })
       },
     });
   };
@@ -78,7 +79,6 @@ const Index = () => {
       userInfo?.nickName,
       userLocation,
     ).then(res => {
-      console.log(res);
       if (res == 'document.update:ok') {
         const updatedGlobalUserInfo: UserItemProps = {
           _id: userInfo._id,
@@ -121,7 +121,6 @@ const Index = () => {
             <Text>{userInfo.nickName}</Text>
           </View>
           <View className='sub-title'>ID:{userInfo.userOpenid}</View>
-          {/* <View className='sub-title'>所属地: 英国</View> */}
         </View>
       </View>
       <View className='user-location'>

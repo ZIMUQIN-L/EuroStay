@@ -1,6 +1,5 @@
 import { View, Text, Image } from '@tarojs/components';
 import './index.scss';
-import { useEffect, useMemo, useState } from 'react';
 import {
   WIFISelected,
   WashMachineSelected,
@@ -150,7 +149,6 @@ export const RoomDetailInfo = ({
   roomSurrounding,
   roomPreference,
 }) => {
-  console.log(roomUtility, Object.keys(roomUtility));
   return (
     <view>
       <Text>性别要求</Text>

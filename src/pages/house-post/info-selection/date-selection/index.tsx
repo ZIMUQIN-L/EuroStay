@@ -1,4 +1,4 @@
-import { View, Text } from '@tarojs/components';
+import { View } from '@tarojs/components';
 import CustomFullScreenDialog from '@components/CustomFullScreenDialog';
 import { useState } from 'react';
 import './index.scss';
@@ -10,7 +10,6 @@ const DateSelection = ({ onClose, onDateSelected }) => {
   const handleDateChange = (start: Date, end: Date) => {
     setStartDate(start);
     setEndDate(end);
-    console.log(start, end);
   };
 
   const handleSubmitDateSelection = () => {

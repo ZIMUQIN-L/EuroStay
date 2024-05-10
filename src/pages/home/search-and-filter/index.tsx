@@ -249,7 +249,6 @@ export default ({
   }, [isFilterOn]);
 
   const handleClickFilter = (userDes?, userStart?, userEnd?) => {
-    console.log(curNum);
     const filteredGenderSelectedItems = Object.fromEntries(
       Object.entries(selectedGenderItems).filter(
         ([key, value]) => value === true,
@@ -285,7 +284,6 @@ export default ({
       filteredSurroundingSelectedItems,
       mergedPreference,
     ).then((houseData: HouseItemProps[]) => {
-      console.log(houseData);
       onClickFilterData(houseData);
     });
   };
@@ -347,7 +345,6 @@ export default ({
               <AtCalendar
                 isMultiSelect
                 currentDate={{ start: startDate, end: endDate }}
-                // validRange={{ start: today }} // 有效日期范围
                 minDate={today}
                 onDayClick={handleDayClick}
                 style={{ width: '100%' }}

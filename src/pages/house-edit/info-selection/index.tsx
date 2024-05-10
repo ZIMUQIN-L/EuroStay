@@ -1,15 +1,8 @@
 import { View, Image, Text } from '@tarojs/components';
-// import LocationSelectionIcon from '@assets/images/location-selection-icon.png';
-// import DateSelectionIcon from '@assets/images/date-selection-icon.png';
-// import CapacitySelectionIcon from '@assets/images/capacity-selection-icon.png';
-// import TypeSelectionIcon from '@assets/images/type-seletion-icon.png';
-// import UtilitySelectionIcon from '@assets/images/utility-selection-icon.png';
-// import RightArrow from '@assets/images/right-arrow.svg';
 import {
   LocationSelectionIcon,
   DateSelectionIcon,
   CapacitySelectionIcon,
-  TypeSelectionIcon,
   UtilitySelectionIcon,
   RightBottomArrow,
 } from '../../../utils/cloudIcons';
@@ -17,7 +10,6 @@ import {
 import LocationSelection from './location-selection';
 import DateSelection from './date-selection';
 import CapacitySelection from './capacity-selection';
-import TypeSelection from './type-selection';
 import UtilitySelection from './utility-selection';
 import './index.scss';
 import { useState } from 'react';
@@ -59,7 +51,6 @@ const InfoSelection = ({ onUserInfoEdit }) => {
       surrounding,
       preference,
     );
-    console.log(start, end);
   };
 
   // 修改capacity

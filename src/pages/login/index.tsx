@@ -60,7 +60,6 @@ const Index = () => {
                     data: {},
                   })
                   .then(callbackResult => {
-                    console.log(callbackResult.result);
                     // 这里不太确定需不需要synchronize一下
                     // todo?
                     if (typeof callbackResult.result === 'string') {
@@ -68,7 +67,6 @@ const Index = () => {
                     }
                     userInfoSearch(callbackResult.result).then(
                       (dbUserInfo: UserItemProps[]) => {
-                        console.log(dbUserInfo);
                         setDbUserData(dbUserInfo);
                         GlobalStore.userInfo = dbUserInfo[0];
                         Taro.hideLoading();
@@ -140,7 +138,6 @@ const Index = () => {
 
   // 用户获取用户手机号，可以在小程序企业认证后使用
   const getPhoneNumber = e => {
-    console.log(e);
     if (e.detail.errMsg == 'getPhoneNumber:ok') {
       const result = wx.cloud.callFunction({
         name: 'getUserInfo',
@@ -149,7 +146,6 @@ const Index = () => {
           id: wx.cloud.CloudID(e.detail.cloudID),
         },
       });
-      console.log(result);
     } else {
       wx.hideLoading({
         complete: res => {

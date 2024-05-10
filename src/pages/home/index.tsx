@@ -19,7 +19,6 @@ const Index = () => {
   });
   // 上拉进行加载，获取更多房源
   useReachBottom(() => {
-    //console.log("reaching bottom");
     houseInfoSearch(
       userDestination,
       userStartDate,
@@ -47,7 +46,6 @@ const Index = () => {
   const handleDateChange = (startDate: Date, endDate: Date) => {
     setUserStartDate(startDate);
     setUserEndDate(endDate);
-    console.log('changed filter', userDestination, userStartDate, userEndDate);
   };
 
   // delete the testdata for now
@@ -56,12 +54,11 @@ const Index = () => {
   const fetchInitialData = () => {
     houseInfoSearch('阿姆', '2024-03-24', '2024-03-24').then(
       (houseData: HouseItemProps[]) => {
-        setDemoData(houseData); // Set demo data to the fetched initial list
+        setDemoData(houseData); 
       },
     );
   };
 
-  // Effect to fetch data on mount
   useEffect(() => {
     fetchInitialData();
   }, []);
@@ -76,7 +73,7 @@ const Index = () => {
   const handleClickSearch = () => {
     houseInfoSearch(userDestination, userStartDate, userEndDate).then(
       (houseData: HouseItemProps[]) => {
-        setDemoData(houseData); // Update demoData state with the fetched data
+        setDemoData(houseData); 
       },
     );
 
@@ -88,7 +85,6 @@ const Index = () => {
     setUserEndDate(undefined);
     setIsClickedSearch(false);
     fetchInitialData();
-    //setDemoData([]);
   };
 
   // 使用filter进行查询
@@ -96,7 +92,6 @@ const Index = () => {
     setDemoData(houseData);
   };
 
-  // for debug
   return (
     <View className='home' id='home'>
       {isClickedSearch ? (
@@ -116,7 +111,6 @@ const Index = () => {
           onClickSearch={handleClickSearch}
         />
       )}
-
       <View className='house-list'>
         {demoData.map(house => (
           <HouseItem key={house._id} {...house} />
@@ -125,10 +119,6 @@ const Index = () => {
       <View className='index'>
         <CustomTabBar onHomeSelected={resetState} />
       </View>
-
-      {/* <View className='index'>
-        <CustomTabBar />
-      </View> */}
     </View>
   );
 };

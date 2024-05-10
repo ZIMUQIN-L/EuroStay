@@ -2,14 +2,6 @@ import React from 'react';
 import { View, Text, Image } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import './index.scss';
-// import {
-//   HomeIcon,
-//   RepostIcon,
-//   UserIcon,
-//   HomeSelectedIcon,
-//   RepostSelectedIcon,
-//   UserSelectedIcon,
-// } from '../../utils/cloudIcons';
 import HomeIcon from '../../assets/images/home.png';
 import RepostIcon from '../../assets/images/repost.png';
 import UserIcon from '../../assets/images/user.png';
@@ -21,7 +13,7 @@ import GlobalStore from '@store/GlobalStore';
 import { observer } from 'mobx-react-lite';
 
 interface CustomTabBarProps {
-  onHomeSelected?: () => void; // Make onHomeSelected optional
+  onHomeSelected?: () => void; 
 }
 
 const CustomTabBar: React.FC<CustomTabBarProps> = ({ onHomeSelected }) => {
@@ -47,7 +39,6 @@ const CustomTabBar: React.FC<CustomTabBarProps> = ({ onHomeSelected }) => {
 
   const handleTabClick = page => {
     if (GlobalStore.currentTab === 'home' && page === 'home') {
-      console.log(`reset homepage`);
       if (onHomeSelected) {
         onHomeSelected(); // Call onHomeSelected if it exists
       }
@@ -56,10 +47,10 @@ const CustomTabBar: React.FC<CustomTabBarProps> = ({ onHomeSelected }) => {
       Taro.switchTab({
         url: `/pages/${page}/index`,
         success: () => {
-          console.log(`Switched to ${page}`);
+          
         },
         fail: err => {
-          console.error(`Failed to switch tab: ${JSON.stringify(err)}`);
+          // 后面可以上报服务器
         },
       });
     }

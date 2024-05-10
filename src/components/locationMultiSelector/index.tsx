@@ -92,7 +92,6 @@ const LocationMultiSelector = ({ onAddressChange }: MultiSelectorProps) => {
 
   const addressOnChange = e => {
     const indexArr = e.detail.value;
-    // console.log(customArray[indexArr[0]].cityList[indexArr[1]].areaList[indexArr[2]])
 
     const addressText = `${customArray[indexArr[0]].cityList[indexArr[1]].name}${customArray[indexArr[0]].cityList[indexArr[1]].areaList[indexArr[2]]}`;
     setAddress(addressText);
@@ -101,7 +100,6 @@ const LocationMultiSelector = ({ onAddressChange }: MultiSelectorProps) => {
 
   return (
     <View className='information-pages'>
-      {/*选择地址 这里要自己写三级联动*/}
       <Picker
         mode='multiSelector'
         range={onlyArray}

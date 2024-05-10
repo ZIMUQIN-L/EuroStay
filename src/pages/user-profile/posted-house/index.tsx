@@ -17,8 +17,6 @@ const PostedHouse: React.FC<PostedHouseProps> = ({ houseList }) => {
     );
   }
 
-  console.log(houseList);
-
   return (
     <View className='index'>
       <Text className='house-info'>发布房源</Text>

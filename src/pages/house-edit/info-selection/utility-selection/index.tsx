@@ -1,7 +1,7 @@
-import { View, Text } from '@tarojs/components';
+import { View } from '@tarojs/components';
 import CustomFullScreenDialog from '@components/CustomFullScreenDialog';
 import './index.scss';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import RoomFacility from '@components/RoomFacility';
 
 const UtilitySelection = ({ onClose, onUtilitySelected }) => {
@@ -31,7 +31,6 @@ const UtilitySelection = ({ onClose, onUtilitySelected }) => {
     const filteredSelectedItems = Object.fromEntries(
       Object.entries(selectedItems).filter(([key, value]) => value === true),
     );
-    console.log(filteredSelectedItems);
     onUtilitySelected(filteredSelectedItems);
     onClose();
   };

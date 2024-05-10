@@ -1,5 +1,5 @@
 import { observer } from '@store/utils';
-import { View, Text } from '@tarojs/components';
+import { Text } from '@tarojs/components';
 import { useRouter } from '@tarojs/taro';
 import { HouseDetailItemProps } from '@utils/interfaces';
 import { useEffect, useState } from 'react';
@@ -17,12 +17,9 @@ const Index = () => {
     null,
   );
 
-  // delete demodata for now
-  // 通过houseId获取房源详情，函数放在了common/database/house里面
   useEffect(() => {
     houseDetailSearch(houseId).then((houseDetail: HouseDetailItemProps) => {
-      setHouseDetail(houseDetail); // Update demoData state with the fetched data
-      console.log(houseDetail.houseSetting);
+      setHouseDetail(houseDetail); 
     });
   }, []);
 

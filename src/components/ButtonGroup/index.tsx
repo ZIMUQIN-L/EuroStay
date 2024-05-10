@@ -19,10 +19,10 @@ export default (props: ButtonGroupProps) => {
       {props.buttons.map((item, index) => {
         return (
           <View
+            key={index}
             id={item.text}
             className={curButton == item.value ? 'button active' : 'button'}
             onClick={() => {
-              console.log(item.value, '1');
               props.onClickButton(item.value);
             }}
           >

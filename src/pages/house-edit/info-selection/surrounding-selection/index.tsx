@@ -1,7 +1,7 @@
-import { View, Text } from '@tarojs/components';
+import { View} from '@tarojs/components';
 import CustomFullScreenDialog from '@components/CustomFullScreenDialog';
 import './index.scss';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import RoomSurrounding from '@components/RoomSurrounding';
 
 const SurroundingSelection = ({ onClose, onSurroundingSelected }) => {
@@ -20,7 +20,6 @@ const SurroundingSelection = ({ onClose, onSurroundingSelected }) => {
     const filteredSelectedItems = Object.fromEntries(
       Object.entries(selectedItems).filter(([key, value]) => value === true),
     );
-    console.log(filteredSelectedItems);
     onSurroundingSelected(filteredSelectedItems);
     onClose();
   };

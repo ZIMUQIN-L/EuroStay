@@ -1,17 +1,14 @@
 import { View, Image, Text } from '@tarojs/components';
 import './index.scss';
-// import UploadIcon from '@assets/images/upload-icon.svg';
-import image from '@taroify/core/image';
 import Taro from '@tarojs/taro';
 import { cloudImageUpload } from '../../../common/database/cloudstorage/files';
-import { UploadIcon } from '../../../utils/cloudIcons';
 
 const ImagesUpload = ({ images, onUploadImage, onDeleteImage }) => {
   const hasImages = Array.isArray(images) && images.length > 0;
 
   const handleUploadImage = () => {
     Taro.chooseImage({
-      count: 1, // 默认9
+      count: 1, 
       sizeType: ['original', 'compressed'],
       sourceType: ['album', 'camera'],
       success: function (res) {
@@ -31,7 +28,11 @@ const ImagesUpload = ({ images, onUploadImage, onDeleteImage }) => {
         });
       },
       fail: function (err) {
-        console.log(err);
+        Taro.showToast({
+          title: '图片上传失败',
+          icon: 'error',
+          duration: 2000
+        })
       },
     });
   };

@@ -33,7 +33,6 @@ const Index = () => {
   // 在user修改信息后不更新，应该是page没有reload，todo
   useEffect(() => {
     const demoUser: UserItemProps = GlobalStore.userInfo;
-    console.log(GlobalStore.userInfo);
     setUser(demoUser);
     userHouseInfoSearch(demoUser._openid).then(
       (houseData: HouseItemProps[]) => {

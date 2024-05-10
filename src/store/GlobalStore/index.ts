@@ -18,7 +18,6 @@ class GlobalStore {
       userOpenid: this._userInfo.userOpenid,
       userLocation: this._userInfo.userLocation,
     };
-    console.log(globalUserInfo);
     return globalUserInfo;
   }
 
