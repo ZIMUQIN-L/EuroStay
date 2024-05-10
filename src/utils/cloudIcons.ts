@@ -89,3 +89,35 @@ export const PreferenceIcon =
   'cloud://cloud1-8gb29x2pbe14a4f8.636c-cloud1-8gb29x2pbe14a4f8-1324366677/images/preference.png';
 export const GenderIcon =
   'cloud://cloud1-8gb29x2pbe14a4f8.636c-cloud1-8gb29x2pbe14a4f8-1324366677/images/gender.png';
+export const RentSelected =
+  'cloud://cloud1-8gb29x2pbe14a4f8.636c-cloud1-8gb29x2pbe14a4f8-1324366677/images/rent-selected.svg';
+export const RentUnselected =
+  'cloud://cloud1-8gb29x2pbe14a4f8.636c-cloud1-8gb29x2pbe14a4f8-1324366677/images/rent-unselected.svg';
+export const ExchangeSelected =
+  'cloud://cloud1-8gb29x2pbe14a4f8.636c-cloud1-8gb29x2pbe14a4f8-1324366677/images/exchange-selected.svg';
+export const ExchangeUnselected =
+  'cloud://cloud1-8gb29x2pbe14a4f8.636c-cloud1-8gb29x2pbe14a4f8-1324366677/images/exchange-unselected.svg';
+export const BeddingSelected =
+  'cloud://cloud1-8gb29x2pbe14a4f8.636c-cloud1-8gb29x2pbe14a4f8-1324366677/images/bedding-selected.svg';
+export const BeddingUnselected =
+  'cloud://cloud1-8gb29x2pbe14a4f8.636c-cloud1-8gb29x2pbe14a4f8-1324366677/images/bedding-unselected.svg';
+export const SmokeSelected =
+  'cloud://cloud1-8gb29x2pbe14a4f8.636c-cloud1-8gb29x2pbe14a4f8-1324366677/images/smoke-selected.svg';
+export const SmokeUnselected =
+  'cloud://cloud1-8gb29x2pbe14a4f8.636c-cloud1-8gb29x2pbe14a4f8-1324366677/images/smoke-unselected.svg';
+export const PetFriendlySelected =
+  'cloud://cloud1-8gb29x2pbe14a4f8.636c-cloud1-8gb29x2pbe14a4f8-1324366677/images/petFriendly-selected.svg';
+export const PetFriendlyUnselected =
+  'cloud://cloud1-8gb29x2pbe14a4f8.636c-cloud1-8gb29x2pbe14a4f8-1324366677/images/petFriendly-unselected.svg';
+export const AllGenderSelected =
+  'cloud://cloud1-8gb29x2pbe14a4f8.636c-cloud1-8gb29x2pbe14a4f8-1324366677/images/AllGender-selected.svg';
+export const AllGenderUnselected =
+  'cloud://cloud1-8gb29x2pbe14a4f8.636c-cloud1-8gb29x2pbe14a4f8-1324366677/images/AllGender-unselected.svg';
+export const FemaleSelected =
+  'cloud://cloud1-8gb29x2pbe14a4f8.636c-cloud1-8gb29x2pbe14a4f8-1324366677/images/female-selected.svg';
+export const FemaleUnselected =
+  'cloud://cloud1-8gb29x2pbe14a4f8.636c-cloud1-8gb29x2pbe14a4f8-1324366677/images/female-unselected.svg';
+export const MaleSelected =
+  'cloud://cloud1-8gb29x2pbe14a4f8.636c-cloud1-8gb29x2pbe14a4f8-1324366677/images/male-selected.svg';
+export const MaleUnselected =
+  'cloud://cloud1-8gb29x2pbe14a4f8.636c-cloud1-8gb29x2pbe14a4f8-1324366677/images/male-unselected.svg';

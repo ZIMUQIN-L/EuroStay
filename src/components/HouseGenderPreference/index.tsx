@@ -1,12 +1,12 @@
 import { View, Image } from '@tarojs/components';
 import '../HouseOwnerPreference/index.scss';
 import {
-  WIFISelected,
-  WashMachineSelected,
-  BathSelectd,
-  WIFIUnselected,
-  WashMachineUnselected,
-  BathUnselected,
+  AllGenderSelected,
+  AllGenderUnselected,
+  FemaleSelected,
+  FemaleUnselected,
+  MaleSelected,
+  MaleUnselected,
 } from '@utils/cloudIcons';
 
 interface HouseGenderPreferenceProps {
@@ -21,20 +21,20 @@ const HouseGenderPreferences = [
   {
     value: 'Female',
     text: '限女生',
-    imgSeleted: WIFISelected,
-    imgUnselectd: WIFIUnselected,
+    imgSeleted: FemaleSelected,
+    imgUnselectd: FemaleUnselected,
   },
   {
     value: 'Male',
     text: '限男生',
-    imgSeleted: BathSelectd,
-    imgUnselectd: BathUnselected,
+    imgSeleted: MaleSelected,
+    imgUnselectd: MaleUnselected,
   },
   {
     value: 'AllGender',
     text: '不限性别',
-    imgSeleted: WashMachineSelected,
-    imgUnselectd: WashMachineUnselected,
+    imgSeleted: AllGenderSelected,
+    imgUnselectd: AllGenderUnselected,
   },
 ];
 

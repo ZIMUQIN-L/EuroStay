@@ -1,16 +1,16 @@
 import { View, Image } from '@tarojs/components';
 import './index.scss';
 import {
-  WIFISelected,
-  WashMachineSelected,
-  RefrigeratorSeleted,
-  KitchenSeleted,
-  BathSelectd,
-  WIFIUnselected,
-  WashMachineUnselected,
-  RefrigeratorUnselected,
-  KitchenUnselected,
-  BathUnselected,
+  RentSelected,
+  RentUnselected,
+  PetFriendlySelected,
+  PetFriendlyUnselected,
+  ExchangeSelected,
+  ExchangeUnselected,
+  SmokeSelected,
+  SmokeUnselected,
+  BeddingSelected,
+  BeddingUnselected,
 } from '@utils/cloudIcons';
 
 interface HouseOwnerPreferenceProps {
@@ -27,32 +27,32 @@ const HouseOwnerPreferences = [
   {
     value: 'Smoke',
     text: '可吸烟',
-    imgSeleted: WIFISelected,
-    imgUnselectd: WIFIUnselected,
+    imgSeleted: SmokeSelected,
+    imgUnselectd: SmokeUnselected,
   },
   {
     value: 'Pet',
     text: '宠物友好',
-    imgSeleted: BathSelectd,
-    imgUnselectd: BathUnselected,
+    imgSeleted: PetFriendlySelected,
+    imgUnselectd: PetFriendlyUnselected,
   },
   {
     value: 'Exchange',
     text: '换宿',
-    imgSeleted: WashMachineSelected,
-    imgUnselectd: WashMachineUnselected,
+    imgSeleted: ExchangeSelected,
+    imgUnselectd: ExchangeUnselected,
   },
   {
     value: 'Bedding',
     text: '换洗床具',
-    imgSeleted: KitchenSeleted,
-    imgUnselectd: KitchenUnselected,
+    imgSeleted: BeddingSelected,
+    imgUnselectd: BeddingUnselected,
   },
   {
     value: 'Rent',
     text: '短租',
-    imgSeleted: RefrigeratorSeleted,
-    imgUnselectd: RefrigeratorUnselected,
+    imgSeleted: RentSelected,
+    imgUnselectd: RentUnselected,
   },
 ];
 
