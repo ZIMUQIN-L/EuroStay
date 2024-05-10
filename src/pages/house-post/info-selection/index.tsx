@@ -5,6 +5,9 @@ import {
   CapacitySelectionIcon,
   UtilitySelectionIcon,
   RightBottomArrow,
+  GenderIcon,
+  SurroundingIcon,
+  PreferenceIcon,
 } from '../../../utils/cloudIcons';
 
 import LocationSelection from './location-selection';
@@ -262,7 +265,7 @@ const InfoSelection = ({ onUserInfoEdit }) => {
           <View className='selection-content'>
             <View className='selection-left'>
               <View className='icon-container'>
-                <Image src={CapacitySelectionIcon} className='capacity-pic' />
+                <Image src={GenderIcon} className='capacity-pic' />
               </View>
               <Text>住客性别</Text>
             </View>
@@ -330,7 +333,7 @@ const InfoSelection = ({ onUserInfoEdit }) => {
           <View className='selection-content'>
             <View className='selection-left'>
               <View className='icon-container'>
-                <Image src={UtilitySelectionIcon} className='utility-pic' />
+                <Image src={SurroundingIcon} />
               </View>
               <Text>周边信息</Text>
             </View>
@@ -356,7 +359,7 @@ const InfoSelection = ({ onUserInfoEdit }) => {
           <View className='selection-content'>
             <View className='selection-left'>
               <View className='icon-container'>
-                <Image src={UtilitySelectionIcon} className='utility-pic' />
+                <Image src={PreferenceIcon} />
               </View>
               <Text>房主偏好</Text>
             </View>

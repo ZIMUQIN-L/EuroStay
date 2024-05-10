@@ -70,3 +70,22 @@ export const HeaterUnselected =
   'cloud://cloud1-8gb29x2pbe14a4f8.636c-cloud1-8gb29x2pbe14a4f8-1324366677/images/Heater-unselected.svg';
 export const AirConditionUnselected =
   'cloud://cloud1-8gb29x2pbe14a4f8.636c-cloud1-8gb29x2pbe14a4f8-1324366677/images/air-condition-unselected.svg';
+
+export const AttractionSelected =
+  'cloud://cloud1-8gb29x2pbe14a4f8.636c-cloud1-8gb29x2pbe14a4f8-1324366677/images/attraction-selected.png';
+export const AttractionUnselected =
+  'cloud://cloud1-8gb29x2pbe14a4f8.636c-cloud1-8gb29x2pbe14a4f8-1324366677/images/attraction-unselected.png';
+export const MarketSelected =
+  'cloud://cloud1-8gb29x2pbe14a4f8.636c-cloud1-8gb29x2pbe14a4f8-1324366677/images/market-selected.png';
+export const MarketUnselected =
+  'cloud://cloud1-8gb29x2pbe14a4f8.636c-cloud1-8gb29x2pbe14a4f8-1324366677/images/market-unselected.png';
+export const MetroSelected =
+  'cloud://cloud1-8gb29x2pbe14a4f8.636c-cloud1-8gb29x2pbe14a4f8-1324366677/images/metro-selected.png';
+export const MetroUnselected =
+  'cloud://cloud1-8gb29x2pbe14a4f8.636c-cloud1-8gb29x2pbe14a4f8-1324366677/images/metro-unselected.png';
+export const SurroundingIcon =
+  'cloud://cloud1-8gb29x2pbe14a4f8.636c-cloud1-8gb29x2pbe14a4f8-1324366677/images/surroundings.png';
+export const PreferenceIcon =
+  'cloud://cloud1-8gb29x2pbe14a4f8.636c-cloud1-8gb29x2pbe14a4f8-1324366677/images/preference.png';
+export const GenderIcon =
+  'cloud://cloud1-8gb29x2pbe14a4f8.636c-cloud1-8gb29x2pbe14a4f8-1324366677/images/gender.png';

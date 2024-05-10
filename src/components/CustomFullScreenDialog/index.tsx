@@ -8,10 +8,7 @@ const CustomFullScreenDialog = ({ title, children, onClose, onSubmit }) => {
 
   return (
     <View className='CustomFullScreenDialog' onClick={handleOuterClick}>
-      <View
-        className='dialog-container'
-        onClick={e => e.stopPropagation()}
-      >
+      <View className='dialog-container' onClick={e => e.stopPropagation()}>
         <Text style={{ marginTop: '24px' }}>{title}</Text>
         {children}
         <View className='dialog-save-button' onClick={onSubmit}>

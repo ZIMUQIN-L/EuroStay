@@ -1,12 +1,12 @@
 import { View, Image } from '@tarojs/components';
 import './index.scss';
 import {
-  WIFISelected,
-  WashMachineSelected,
-  BathSelectd,
-  WIFIUnselected,
-  WashMachineUnselected,
-  BathUnselected,
+  AttractionSelected,
+  AttractionUnselected,
+  MarketSelected,
+  MarketUnselected,
+  MetroSelected,
+  MetroUnselected,
 } from '@utils/cloudIcons';
 
 interface RoomSurroundingsProps {
@@ -21,20 +21,20 @@ const RoomSurroundings = [
   {
     value: 'Subway',
     text: '近地铁',
-    imgSeleted: WIFISelected,
-    imgUnselectd: WIFIUnselected,
+    imgSeleted: MetroSelected,
+    imgUnselectd: MetroUnselected,
   },
   {
     value: 'Attraction',
     text: '近景点',
-    imgSeleted: BathSelectd,
-    imgUnselectd: BathUnselected,
+    imgSeleted: AttractionSelected,
+    imgUnselectd: AttractionUnselected,
   },
   {
     value: 'ChineseSuperMart',
     text: '近中超',
-    imgSeleted: WashMachineSelected,
-    imgUnselectd: WashMachineUnselected,
+    imgSeleted: MarketSelected,
+    imgUnselectd: MarketUnselected,
   },
 ];
 

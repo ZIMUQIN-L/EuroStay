@@ -17,6 +17,12 @@ import {
   BathUnselected,
   HeaterUnselected,
   AirConditionUnselected,
+  AttractionSelected,
+  AttractionUnselected,
+  MarketSelected,
+  MarketUnselected,
+  MetroSelected,
+  MetroUnselected,
 } from '@utils/cloudIcons';
 
 const RoomFacilities = [
@@ -74,20 +80,20 @@ const RoomSurroundings = [
   {
     value: '近地铁',
     text: '近地铁',
-    imgSeleted: WIFISelected,
-    imgUnselectd: WIFIUnselected,
+    imgSeleted: MetroSelected,
+    imgUnselectd: MetroUnselected,
   },
   {
     value: '近景点',
     text: '近景点',
-    imgSeleted: BathSelectd,
-    imgUnselectd: BathUnselected,
+    imgSeleted: AttractionSelected,
+    imgUnselectd: AttractionUnselected,
   },
   {
     value: '近中超',
     text: '近中超',
-    imgSeleted: WashMachineSelected,
-    imgUnselectd: WashMachineUnselected,
+    imgSeleted: MarketSelected,
+    imgUnselectd: MarketUnselected,
   },
 ];
 
