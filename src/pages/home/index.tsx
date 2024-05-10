@@ -55,7 +55,6 @@ const Index = () => {
   const fetchInitialData = () => {
     const today = formatToday();
     houseInfoSearch('', today, today).then((houseData: HouseItemProps[]) => {
-      console.log(houseData);
       setDemoData(houseData);
     });
   };

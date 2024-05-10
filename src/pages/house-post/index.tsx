@@ -41,7 +41,6 @@ const Index = () => {
   // 用户联系方式描述
   const [userContact, setUserContact] = useState<string>('');
   const handleUserContactEdit = inputContact => {
-    console.log(inputContact);
     setUserContact(inputContact);
   };
 
