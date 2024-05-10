@@ -9,6 +9,7 @@ import HouseItem from './house-item';
 import { houseInfoSearch } from '../../common/database/house/house';
 import { HouseItemProps } from '@utils/interfaces';
 import SearchAndFilter from './search-and-filter';
+import { formatToday } from '@utils/dateUtil';
 
 const Index = () => {
   Taro.useShareAppMessage(() => {
@@ -52,11 +53,11 @@ const Index = () => {
   const [demoData, setDemoData] = useState<HouseItemProps[]>([]);
 
   const fetchInitialData = () => {
-    houseInfoSearch('阿姆', '2024-03-24', '2024-03-24').then(
-      (houseData: HouseItemProps[]) => {
-        setDemoData(houseData); 
-      },
-    );
+    const today = formatToday();
+    houseInfoSearch('', today, today).then((houseData: HouseItemProps[]) => {
+      console.log(houseData);
+      setDemoData(houseData); 
+    });
   };
 
   useEffect(() => {

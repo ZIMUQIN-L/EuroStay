@@ -5,7 +5,7 @@ import { UserItemProps } from '@utils/interfaces';
 import './index.scss';
 import Taro from '@tarojs/taro';
 import GlobalStore from '@store/GlobalStore';
-import { cloudImageUpload } from '../../common/database/cloudstorage/files';
+import { cloudAvatarUpload } from '../../common/database/cloudstorage/files';
 import { userInfoUpdate } from '../../common/database/user/user';
 import CustomTabBar from '@components/CustomTabBar';
 
@@ -40,10 +40,12 @@ const Index = () => {
           title: '上传中',
           mask: true,
         });
-        cloudImageUpload(tempFilePaths[0]).then((uploadedImagePath: string) => {
-          setUserAvatarUrl(uploadedImagePath);
-          Taro.hideLoading();
-        });
+        cloudAvatarUpload(tempFilePaths[0]).then(
+          (uploadedImagePath: string) => {
+            setUserAvatarUrl(uploadedImagePath);
+            Taro.hideLoading();
+          },
+        );
       },
       fail: function (err) {
         Taro.showToast({
