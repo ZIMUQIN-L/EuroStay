@@ -1,10 +1,8 @@
 import { Swiper, SwiperItem, View, Image } from '@tarojs/components';
 import { HouseDetailItemProps } from '@utils/interfaces';
-// import DefaultHouse from '@assets/images/default-house.png';
 import { DefaultHouse } from '../../../utils/cloudIcons';
 
 const HouseImagesSwiper: React.FC<HouseDetailItemProps> = house => {
-  // 充满容器的样式
   const fullContainerStyle = {
     width: '100%',
     height: '100%',
@@ -18,14 +16,14 @@ const HouseImagesSwiper: React.FC<HouseDetailItemProps> = house => {
         circular
         indicatorDots
         autoplay
-        style={{ width: '100%', height: '250px' }} // 设置轮播图的宽高, 目前为固定值，后期可以根据需求调整，适配不同机型
+        style={{ width: '100%', height: '250px' }}
       >
         {house.images.length === 0 ? (
           <SwiperItem style={fullContainerStyle}>
             <View className='swiper-item' style={fullContainerStyle}>
               <Image
                 src={DefaultHouse}
-                mode='aspectFit' // 保持原始比例，可能留有空白
+                mode='aspectFit'
                 style={fullContainerStyle}
               />
             </View>
@@ -36,7 +34,7 @@ const HouseImagesSwiper: React.FC<HouseDetailItemProps> = house => {
               <View className='swiper-item' style={fullContainerStyle}>
                 <Image
                   src={image}
-                  mode='aspectFit' // 保持原始比例，可能留有空白
+                  mode='aspectFit'
                   style={fullContainerStyle}
                 />
               </View>

@@ -1,23 +1,12 @@
 import { View, Image } from '@tarojs/components';
 import '../HouseOwnerPreference/index.scss';
-import { useEffect, useMemo, useState } from 'react';
 import {
   WIFISelected,
   WashMachineSelected,
-  SofaSelected,
-  RefrigeratorSeleted,
-  KitchenSeleted,
   BathSelectd,
-  HeaterSelected,
-  AirConditionSelected,
   WIFIUnselected,
   WashMachineUnselected,
-  SofaUnselected,
-  RefrigeratorUnselected,
-  KitchenUnselected,
   BathUnselected,
-  HeaterUnselected,
-  AirConditionUnselected,
 } from '@utils/cloudIcons';
 
 interface HouseGenderPreferenceProps {

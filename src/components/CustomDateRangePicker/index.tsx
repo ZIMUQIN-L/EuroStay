@@ -1,11 +1,10 @@
 import { AtCalendar } from 'taro-ui';
 import { View, Text } from '@tarojs/components';
 import { AtToast } from 'taro-ui';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { formatToday, calculateDaysBetweenDates } from '@utils/dateUtil';
 import './index.scss';
 
-// 添加回调函数，返回选中的日期
 const CustomDateRangePicker = ({ onDateChange }) => {
   const today = formatToday();
   const [errorMsg, setErrorMsg] = useState('');
@@ -33,7 +32,7 @@ const CustomDateRangePicker = ({ onDateChange }) => {
       );
       handleDateChange(selectedDate, null);
       setIsToastOpened(true);
-      return; // 阻止继续
+      return;
     }
     setIsSelected(true);
     setIsToastOpened(false);
@@ -51,14 +50,6 @@ const CustomDateRangePicker = ({ onDateChange }) => {
       handleDateChange(selectedDate, null);
       setDays(1);
     }
-    // if (startDate != null && endDate != null) {
-    //   const calculatedDays = calculateDaysBetweenDates(startDate, endDate);
-    //   setDays(calculatedDays);
-    // } else if (!endDate) {
-    //   setDays(1);
-    // } else {
-    //   setDays(0);
-    // }
   };
 
   const getButtonLabel = () => {

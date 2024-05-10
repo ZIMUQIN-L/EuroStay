@@ -10,7 +10,7 @@ const CustomFullScreenDialog = ({ title, children, onClose, onSubmit }) => {
     <View className='CustomFullScreenDialog' onClick={handleOuterClick}>
       <View
         className='dialog-container'
-        onClick={e => e.stopPropagation()} // 点击白色框不触发close
+        onClick={e => e.stopPropagation()}
       >
         <Text style={{ marginTop: '24px' }}>{title}</Text>
         {children}

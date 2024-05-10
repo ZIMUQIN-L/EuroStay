@@ -1,5 +1,3 @@
-import { useDidHide } from '@tarojs/taro';
-
 // 检查用户是否存在并获取用户信息
 export const userInfoSearch = async userOpenid => {
   const db = wx.cloud.database();

@@ -1,8 +1,5 @@
 import { View, Text, Image } from '@tarojs/components';
 import { HouseDetailItemProps } from '@utils/interfaces';
-// import DateIcon from '@assets/images/date-icon.svg';
-// import CapacityIcon from '@assets/images/capacity-icon.svg';
-// import LocationIcon from '@assets/images/location-icon.svg';
 import './index.scss';
 import {
   DateIcon,
@@ -43,7 +40,6 @@ const HouseTexts: React.FC<HouseDetailItemProps> = house => {
             <View className='location-texts'>
               <Text className='first-line'>地址</Text>
               <Text className='second-line'>{house.location}</Text>
-              {/* 数据库中缺少相应的信息 */}
             </View>
           </View>
         </View>
