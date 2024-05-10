@@ -133,6 +133,7 @@ const Index = () => {
         location,
         startDate,
         endDate,
+        '', // for contact info
         capacity,
         utility,
         surrounding,

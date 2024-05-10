@@ -92,6 +92,13 @@ const Index = () => {
         mask: true,
         duration: 2000,
       });
+    } else if (userContact == '') {
+      Taro.showToast({
+        title: '请填写联系方式~',
+        icon: 'error',
+        mask: true,
+        duration: 2000,
+      });
     } else if (location == '') {
       Taro.showToast({
         title: '请填写房源地址~',
@@ -141,6 +148,7 @@ const Index = () => {
         location,
         startDate,
         endDate,
+        userContact,
         capacity,
         utility,
         surrounding,
