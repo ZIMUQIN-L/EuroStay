@@ -1,5 +1,5 @@
 import { View, Image } from '@tarojs/components';
-import './index.scss';
+import '../HouseOwnerPreference/index.scss';
 import { useEffect, useMemo, useState } from 'react';
 import {
   WIFISelected,
