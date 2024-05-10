@@ -3,6 +3,7 @@ import CustomTabBar from '@components/CustomTabBar';
 import { observer } from 'mobx-react';
 import ImagesUpload from './images-upload';
 import HouseDes from './house-des';
+import HouseContact from './house-contact';
 import { useState, useEffect } from 'react';
 import InfoSelection from './info-selection';
 import './index.scss';
@@ -35,6 +36,13 @@ const Index = () => {
   const [houseDescription, setHouseDescription] = useState<string>('');
   const handleUserDescriptionEdit = inputDescription => {
     setHouseDescription(inputDescription);
+  };
+
+  // 用户联系方式描述
+  const [userContact, setUserContact] = useState<string>('');
+  const handleUserContactEdit = inputContact => {
+    console.log(inputContact);
+    setUserContact(inputContact);
   };
 
   // 房源info属性
@@ -156,6 +164,7 @@ const Index = () => {
         onDeleteImage={handleDeleteImage}
       />
       <HouseDes onUserDescriptionEdit={handleUserDescriptionEdit} />
+      <HouseContact onUserContactEdit={handleUserContactEdit} />
       <InfoSelection onUserInfoEdit={handleUserInfoEdit} />
       <View style={{ backgroundColor: 'white' }}>
         <View className='post-submit-button' onClick={handleClickPostSubmit}>

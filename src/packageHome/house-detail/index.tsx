@@ -19,7 +19,7 @@ const Index = () => {
 
   useEffect(() => {
     houseDetailSearch(houseId).then((houseDetail: HouseDetailItemProps) => {
-      setHouseDetail(houseDetail); 
+      setHouseDetail(houseDetail);
     });
   }, []);
 

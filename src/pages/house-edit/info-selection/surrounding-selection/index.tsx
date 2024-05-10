@@ -1,4 +1,4 @@
-import { View} from '@tarojs/components';
+import { View } from '@tarojs/components';
 import CustomFullScreenDialog from '@components/CustomFullScreenDialog';
 import './index.scss';
 import { useState } from 'react';

@@ -56,7 +56,7 @@ const Index = () => {
     const today = formatToday();
     houseInfoSearch('', today, today).then((houseData: HouseItemProps[]) => {
       console.log(houseData);
-      setDemoData(houseData); 
+      setDemoData(houseData);
     });
   };
 
@@ -74,7 +74,7 @@ const Index = () => {
   const handleClickSearch = () => {
     houseInfoSearch(userDestination, userStartDate, userEndDate).then(
       (houseData: HouseItemProps[]) => {
-        setDemoData(houseData); 
+        setDemoData(houseData);
       },
     );
 

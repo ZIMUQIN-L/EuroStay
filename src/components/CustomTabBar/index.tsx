@@ -13,7 +13,7 @@ import GlobalStore from '@store/GlobalStore';
 import { observer } from 'mobx-react-lite';
 
 interface CustomTabBarProps {
-  onHomeSelected?: () => void; 
+  onHomeSelected?: () => void;
 }
 
 const CustomTabBar: React.FC<CustomTabBarProps> = ({ onHomeSelected }) => {
@@ -46,9 +46,7 @@ const CustomTabBar: React.FC<CustomTabBarProps> = ({ onHomeSelected }) => {
       GlobalStore.currentTab = page;
       Taro.switchTab({
         url: `/pages/${page}/index`,
-        success: () => {
-          
-        },
+        success: () => {},
         fail: err => {
           // 后面可以上报服务器
         },

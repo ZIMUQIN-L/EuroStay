@@ -8,7 +8,7 @@ const ImagesUpload = ({ images, onUploadImage, onDeleteImage }) => {
 
   const handleUploadImage = () => {
     Taro.chooseImage({
-      count: 1, 
+      count: 1,
       sizeType: ['original', 'compressed'],
       sourceType: ['album', 'camera'],
       success: function (res) {
@@ -31,8 +31,8 @@ const ImagesUpload = ({ images, onUploadImage, onDeleteImage }) => {
         Taro.showToast({
           title: '图片上传失败',
           icon: 'error',
-          duration: 2000
-        })
+          duration: 2000,
+        });
       },
     });
   };

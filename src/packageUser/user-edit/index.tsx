@@ -31,7 +31,7 @@ const Index = () => {
 
   const handleUserImageEdit = () => {
     Taro.chooseImage({
-      count: 1, 
+      count: 1,
       sizeType: ['original', 'compressed'],
       sourceType: ['album', 'camera'],
       success: function (res) {
@@ -52,7 +52,7 @@ const Index = () => {
           title: '图片上传失败',
           icon: 'error',
           duration: 2000,
-        })
+        });
       },
     });
   };
