@@ -1,10 +1,8 @@
 import { View, Image, Text } from '@tarojs/components';
 import './index.scss';
 // import UploadIcon from '@assets/images/upload-icon.svg';
-import image from '@taroify/core/image';
 import Taro from '@tarojs/taro';
 import { cloudImageUpload } from '../../../common/database/cloudstorage/files';
-import { UploadIcon } from '../../../utils/cloudIcons';
 
 const ImagesUpload = ({ images, onUploadImage, onDeleteImage }) => {
   const hasImages = Array.isArray(images) && images.length > 0;
@@ -21,17 +19,45 @@ const ImagesUpload = ({ images, onUploadImage, onDeleteImage }) => {
         onUploadImage(tempFilePaths);
         return;
 
-        Taro.showLoading({
-          title: '上传中',
-          mask: true,
-        });
-        cloudImageUpload(tempFilePaths[0]).then((uploadedImagePath: string) => {
-          onUploadImage(uploadedImagePath);
-          Taro.hideLoading();
+        // 压缩照片
+        Taro.compressImage({
+          src: tempFilePaths[0],
+          quality: 50,
+          success(res) {
+            const compressedImagePath = res.tempFilePath;
+            Taro.showLoading({
+              title: '图片上传中',
+              mask: true,
+            });
+            cloudImageUpload(compressedImagePath)
+              .then((uploadedImagePath: string) => {
+                onUploadImage(uploadedImagePath);
+                Taro.hideLoading();
+              })
+              .catch(err => {
+                Taro.showToast({
+                  title: '图片上传失败',
+                  icon: 'none',
+                  duration: 2000,
+                });
+                Taro.hideLoading();
+              });
+          },
+          fail(err) {
+            Taro.showToast({
+              title: '图片压缩失败',
+              icon: 'none',
+              duration: 2000,
+            });
+          },
         });
       },
       fail: function (err) {
-        console.log(err);
+        Taro.showToast({
+          title: '选择图片失败',
+          icon: 'none',
+          duration: 2000,
+        });
       },
     });
   };
