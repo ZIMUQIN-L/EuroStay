@@ -1,11 +1,57 @@
 import { View, Text, Image } from '@tarojs/components';
 import { HouseDetailItemProps } from '@utils/interfaces';
+import Taro from '@tarojs/taro';
 // import DateIcon from '@assets/images/date-icon.svg';
 // import CapacityIcon from '@assets/images/capacity-icon.svg';
 // import LocationIcon from '@assets/images/location-icon.svg';
 import './index.scss';
 
 const HouseContact: React.FC<HouseDetailItemProps> = house => {
+  const onCopyContactToClipboard = () => {
+    if (house.contact == undefined || house.contact == '') {
+      if (house.xhsContact != undefined && house.xhsContact != '') {
+        Taro.setClipboardData({
+          data: house.xhsContact,
+          success: function (res) {
+            Taro.showModal({
+              title: '提示',
+              content: '房主的小红书已复制到剪贴板',
+            });
+          },
+          fail: function (err) {
+            Taro.showToast({
+              title: '联系方式复制失败',
+              icon: 'error',
+              duration: 2000,
+            });
+          },
+        });
+      } else {
+        Taro.showToast({
+          title: '暂无联系方式~',
+          icon: 'error',
+          duration: 2000,
+        });
+      }
+    } else {
+      Taro.setClipboardData({
+        data: house.contact,
+        success: function (res) {
+          Taro.showModal({
+            title: '提示',
+            content: '房主的微信账号已复制到剪贴板',
+          });
+        },
+        fail: function (err) {
+          Taro.showToast({
+            title: '联系方式复制失败',
+            icon: 'error',
+            duration: 2000,
+          });
+        },
+      });
+    }
+  };
   return (
     <View className='lists'>
       <View className='container'>
@@ -14,7 +60,7 @@ const HouseContact: React.FC<HouseDetailItemProps> = house => {
         </View>
       </View>
       <View className='contact-container'>
-        <View className='contact-button'>
+        <View className='contact-button' onClick={onCopyContactToClipboard}>
           <Text className='contact-text'>联系房东</Text>
         </View>
       </View>

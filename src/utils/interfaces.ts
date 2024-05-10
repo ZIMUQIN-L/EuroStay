@@ -11,6 +11,7 @@ export interface HouseItemProps {
   images: string[];
   location: string;
   ownerTarget: string;
+  contact: string;
   xhsContact: string;
 }
 
@@ -37,6 +38,7 @@ export interface HouseDetailItemProps {
   images: string[];
   location: string;
   ownerTarget: string;
+  contact: string;
   xhsContact: string;
   houseSetting: { [key: string]: any };
   houseSurrounding: { [key: string]: any };

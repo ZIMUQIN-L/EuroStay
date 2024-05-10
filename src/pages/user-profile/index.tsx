@@ -14,22 +14,6 @@ const Index = () => {
   // 用户拥有的房源信息
   const [houseList, setHouseList] = useState<HouseItemProps[]>([]); // HouseItemProps[]
 
-  // Mock data for houseList
-  const demoHouseList: HouseItemProps[] = [
-    {
-      _id: '1',
-      capacity: 3,
-      description: 'Beautiful house with garden',
-      endDate: '2024-05-01',
-      startDate: '2024-04-25',
-      houseType: 'Villa',
-      images: [],
-      location: '123 Main Street',
-      ownerTarget: 'Families',
-      xhsContact: 'John Doe',
-    },
-  ];
-
   // 在user修改信息后不更新，应该是page没有reload，todo
   useEffect(() => {
     const demoUser: UserItemProps = GlobalStore.userInfo;

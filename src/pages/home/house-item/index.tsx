@@ -15,6 +15,53 @@ const HouseItem: React.FC<HouseItemProps> = house => {
     });
   };
 
+  // 复制用户联系方式至剪贴板
+  const onCopyContactToClipboard = () => {
+    if (house.contact == undefined || house.contact == '') {
+      if (house.xhsContact != undefined && house.xhsContact != '') {
+        Taro.setClipboardData({
+          data: house.xhsContact,
+          success: function (res) {
+            Taro.showModal({
+              title: '提示',
+              content: '房主的小红书已复制到剪贴板',
+            });
+          },
+          fail: function (err) {
+            Taro.showToast({
+              title: '联系方式复制失败',
+              icon: 'error',
+              duration: 2000,
+            });
+          },
+        });
+      } else {
+        Taro.showToast({
+          title: '暂无联系方式~',
+          icon: 'error',
+          duration: 2000,
+        });
+      }
+    } else {
+      Taro.setClipboardData({
+        data: house.contact,
+        success: function (res) {
+          Taro.showModal({
+            title: '提示',
+            content: '房主的微信账号已复制到剪贴板',
+          });
+        },
+        fail: function (err) {
+          Taro.showToast({
+            title: '联系方式复制失败',
+            icon: 'error',
+            duration: 2000,
+          });
+        },
+      });
+    }
+  };
+
   return (
     <View className='house-item'>
       <Image src={imageUrl} className='house-image' onClick={toHouseDetail} />
@@ -63,6 +110,7 @@ const HouseItem: React.FC<HouseItemProps> = house => {
             alignItems: 'center',
           }}
           className='contact-button'
+          onClick={onCopyContactToClipboard}
         >
           <Text style={{ fontSize: '14px' }}>联系房主</Text>
         </View>
