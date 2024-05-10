@@ -48,7 +48,7 @@ export const TypeSelectionIcon =
 export const UtilitySelectionIcon =
   'cloud://cloud1-8gb29x2pbe14a4f8.636c-cloud1-8gb29x2pbe14a4f8-1324366677/images/utility-selection-icon.svg';
 export const EuroStay =
-  'cloud://cloud1-8gb29x2pbe14a4f8.636c-cloud1-8gb29x2pbe14a4f8-1324366677/images/EuroStay.png';
+  'cloud://cloud1-8gb29x2pbe14a4f8.636c-cloud1-8gb29x2pbe14a4f8-1324366677/images/EuroStay.webp';
 export const DefaultAvatar =
   'cloud://cloud1-8gb29x2pbe14a4f8.636c-cloud1-8gb29x2pbe14a4f8-1324366677/images/default-avatar.png';
 export const WIFISelected =
