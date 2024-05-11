@@ -118,9 +118,9 @@ export const AllGenderUnselected =
 export const FemaleSelected =
   `${cloudPath}/female-selected.svg`;
 export const FemaleUnselected =
-  `${cloudPath}/images/female-unselected.svg`;
+  `${cloudPath}/female-unselected.svg`;
 export const MaleSelected =
-  `${cloudPath}/images/male-selected.svg`;
+  `${cloudPath}/male-selected.svg`;
 export const MaleUnselected =
   `${cloudPath}/male-unselected.svg`;
 
