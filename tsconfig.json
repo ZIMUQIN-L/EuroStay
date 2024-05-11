@@ -25,7 +25,7 @@
       "@config/*": ["src/config/*"],
       "@lib/*": ["src/lib/*"],
       "@store/*": ["./src/store/*"],
-      "@utils/*": ["./src/utils/*"]
+      "@utils/*": ["./src/utils/*"],
     }
   },
   "exclude": ["node_modules", "dist"],

@@ -5,7 +5,7 @@ import {
   CapacitySelectionIcon,
   UtilitySelectionIcon,
   RightBottomArrow,
-} from '../../../utils/cloudIcons';
+} from '@utils/cloudIcons';
 
 import LocationSelection from './location-selection';
 import DateSelection from './date-selection';

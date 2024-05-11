@@ -8,8 +8,7 @@ import { View } from '@tarojs/components';
 import { UserItemProps } from '@utils/interfaces';
 import { userInfoSearch, userInfoAdd } from '../../common/database/user/user';
 
-// import EuroStay from '@assets/images/EuroStay.png';
-import { EuroStay } from '../../utils/cloudIcons';
+import { EuroStay } from '@utils/cloudIcons';
 
 const Index = () => {
   const [loginState, setLoginState] = useState(false);

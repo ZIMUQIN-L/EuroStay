@@ -1,5 +1,5 @@
 import { Input, View, Text, Picker, Image } from '@tarojs/components';
-import ButtonGroup from '../../../components/ButtonGroup';
+import ButtonGroup from '@components/ButtonGroup';
 import { useEffect, useState } from 'react';
 import './index.scss';
 import { formatToday } from '@utils/dateUtil';
@@ -11,7 +11,7 @@ import {
   YellowFilter,
   FilterOn,
   RightBottomArrow,
-} from '../../../utils/cloudIcons';
+} from '@utils/cloudIcons';
 import RoomFacility from '@components/RoomFacility';
 import RoomSurrounding from '@components/RoomSurrounding';
 import HouseGenderPreference from '@components/HouseGenderPreference';

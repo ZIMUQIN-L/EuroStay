@@ -1,6 +1,6 @@
 import { Swiper, SwiperItem, View, Image } from '@tarojs/components';
 import { HouseDetailItemProps } from '@utils/interfaces';
-import { DefaultHouse } from '../../../utils/cloudIcons';
+import { DefaultHouse } from '@utils/cloudIcons';
 
 const HouseImagesSwiper: React.FC<HouseDetailItemProps> = house => {
   const fullContainerStyle = {

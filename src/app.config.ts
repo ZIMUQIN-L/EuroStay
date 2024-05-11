@@ -38,10 +38,6 @@ export default {
         pagePath: 'pages/user-profile/index',
         text: '用户profile',
       },
-      {
-        pagePath: 'pages/house-edit/index',
-        text: '房源修改',
-      },
     ],
   },
 };

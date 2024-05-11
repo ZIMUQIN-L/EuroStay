@@ -4,7 +4,7 @@ import { useState, createContext, useRef, useEffect } from 'react';
 // import RightBottomArrow from '@assets/images/right-bottom-arrow.svg';
 // import SearchIcon from '@assets/images/search.svg';
 import CustomDateRangePicker from '@components/CustomDateRangePicker';
-import { RightBottomArrow, SearchIcon } from '../../../utils/cloudIcons';
+import { RightBottomArrow, SearchIcon } from '@utils/cloudIcons';
 
 const SearchCard = ({ onDestinationChange, onDateChange, onClickSearch }) => {
   const [region, setRegion] = useState('欧洲');

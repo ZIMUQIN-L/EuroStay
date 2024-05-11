@@ -1,6 +1,6 @@
 // 查找房源信息
 // 示例使用：
-// import { houseInfoSearch } from '../../common/database/house/house'
+// import { houseInfoSearch } from '@common/database/house/house'
 // houseInfoSearch("巴黎", 1, "2024-03-24", "2024-03-24", {}, {}, {}, 0) .then(testData => {
 //     console.log(testData);
 //   });

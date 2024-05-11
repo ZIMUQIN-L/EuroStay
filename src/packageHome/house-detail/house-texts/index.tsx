@@ -5,7 +5,7 @@ import {
   DateIcon,
   CapacityIcon,
   LocationIcon,
-} from '../../../utils/cloudIcons';
+} from '@utils/cloudIcons';
 
 const HouseTexts: React.FC<HouseDetailItemProps> = house => {
   return (
