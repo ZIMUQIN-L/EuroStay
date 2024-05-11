@@ -5,6 +5,7 @@ import addressData from './addressData';
 interface MultiSelectorProps {
   onAddressChange: (address: string) => void;
 }
+import './index.scss';
 
 const LocationMultiSelector = ({ onAddressChange }: MultiSelectorProps) => {
   const [address, setAddress] = useState('点击选择地址');
@@ -99,7 +100,9 @@ const LocationMultiSelector = ({ onAddressChange }: MultiSelectorProps) => {
   };
 
   return (
-    <View className='information-pages'>
+    <View
+      className={`information-pages ${address == '点击选择地址' ? '' : 'active'}`}
+    >
       <Picker
         mode='multiSelector'
         range={onlyArray}

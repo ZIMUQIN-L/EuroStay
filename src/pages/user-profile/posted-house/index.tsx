@@ -11,7 +11,7 @@ const PostedHouse: React.FC<PostedHouseProps> = ({ houseList }) => {
   // 确保 houseList 不为 undefined 或 null
   if (!houseList || houseList.length === 0) {
     return (
-      <View className='index'>
+      <View className='index no-post-house'>
         <Text>暂无发布房源</Text>
       </View>
     );

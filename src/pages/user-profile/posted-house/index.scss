@@ -4,6 +4,9 @@
   display: flex;
   justify-content: center;
   flex-direction: column;
+  &.no-post-house {
+    padding: 5% 8%;
+  }
 }
 .house-info {
   margin: 30px 0;

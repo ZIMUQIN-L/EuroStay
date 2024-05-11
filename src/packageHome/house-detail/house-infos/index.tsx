@@ -172,108 +172,112 @@ export const RoomDetailInfo = ({
   roomPreference,
 }) => {
   return (
-    <view>
-      <Text>性别要求</Text>
-      <View className={`facility-groups ${Object.keys(roomPreference)}`}>
-        {HouseGenderPreferences.map(item => {
-          if (roomPreference[item.value]) {
-            return (
-              <View
-                id={item.value}
-                className={
-                  roomPreference[item.value] ? 'facility active' : 'facility'
-                }
-              >
-                <Image
-                  src={
-                    roomPreference[item.value]
-                      ? item.imgSeleted
-                      : item.imgUnselectd
+    <view className='house-infos'>
+      <View className='gender-requirements'>
+        <Text>性别要求</Text>
+        <View className={`facility-groups ${Object.keys(roomPreference)}`}>
+          {HouseGenderPreferences.map(item => {
+            if (roomPreference[item.value]) {
+              return (
+                <View
+                  id={item.value}
+                  className={
+                    roomPreference[item.value] ? 'facility active' : 'facility'
                   }
-                  className='image'
-                />
-                <View className='text'>{item.text}</View>
-              </View>
-            );
-          } else {
-            return null;
-          }
-        })}
+                >
+                  <Image
+                    src={
+                      roomPreference[item.value]
+                        ? item.imgSeleted
+                        : item.imgUnselectd
+                    }
+                    className='image'
+                  />
+                  <View className='text'>{item.text}</View>
+                </View>
+              );
+            } else {
+              return null;
+            }
+          })}
+        </View>
       </View>
-      <Text>房源信息</Text>
-      <View className={`facility-groups ${Object.keys(roomUtility)}`}>
-        {RoomFacilities.map(item => {
-          if (roomUtility[item.value]) {
-            return (
-              <View
-                id={item.value}
-                className={
-                  roomUtility[item.value] ? 'facility active' : 'facility'
-                }
-              >
-                <Image
-                  src={
-                    roomUtility[item.value]
-                      ? item.imgSeleted
-                      : item.imgUnselectd
+      <View className='house-details'>
+        <Text>房源信息</Text>
+        <View className={`facility-groups ${Object.keys(roomUtility)}`}>
+          {RoomFacilities.map(item => {
+            if (roomUtility[item.value]) {
+              return (
+                <View
+                  id={item.value}
+                  className={
+                    roomUtility[item.value] ? 'facility active' : 'facility'
                   }
-                  className='image'
-                />
-                <View className='text'>{item.text}</View>
-              </View>
-            );
-          } else {
-            return null;
-          }
-        })}
-        {RoomSurroundings.map(item => {
-          if (roomSurrounding[item.value]) {
-            return (
-              <View
-                id={item.value}
-                className={
-                  roomSurrounding[item.value] ? 'facility active' : 'facility'
-                }
-              >
-                <Image
-                  src={
-                    roomSurrounding[item.value]
-                      ? item.imgSeleted
-                      : item.imgUnselectd
+                >
+                  <Image
+                    src={
+                      roomUtility[item.value]
+                        ? item.imgSeleted
+                        : item.imgUnselectd
+                    }
+                    className='image'
+                  />
+                  <View className='text'>{item.text}</View>
+                </View>
+              );
+            } else {
+              return null;
+            }
+          })}
+          {RoomSurroundings.map(item => {
+            if (roomSurrounding[item.value]) {
+              return (
+                <View
+                  id={item.value}
+                  className={
+                    roomSurrounding[item.value] ? 'facility active' : 'facility'
                   }
-                  className='image'
-                />
-                <View className='text'>{item.text}</View>
-              </View>
-            );
-          } else {
-            return null;
-          }
-        })}
-        {HouseOwnerPreferences.map(item => {
-          if (roomPreference[item.value]) {
-            return (
-              <View
-                id={item.value}
-                className={
-                  roomPreference[item.value] ? 'facility active' : 'facility'
-                }
-              >
-                <Image
-                  src={
-                    roomPreference[item.value]
-                      ? item.imgSeleted
-                      : item.imgUnselectd
+                >
+                  <Image
+                    src={
+                      roomSurrounding[item.value]
+                        ? item.imgSeleted
+                        : item.imgUnselectd
+                    }
+                    className='image'
+                  />
+                  <View className='text'>{item.text}</View>
+                </View>
+              );
+            } else {
+              return null;
+            }
+          })}
+          {HouseOwnerPreferences.map(item => {
+            if (roomPreference[item.value]) {
+              return (
+                <View
+                  id={item.value}
+                  className={
+                    roomPreference[item.value] ? 'facility active' : 'facility'
                   }
-                  className='image'
-                />
-                <View className='text'>{item.text}</View>
-              </View>
-            );
-          } else {
-            return null;
-          }
-        })}
+                >
+                  <Image
+                    src={
+                      roomPreference[item.value]
+                        ? item.imgSeleted
+                        : item.imgUnselectd
+                    }
+                    className='image'
+                  />
+                  <View className='text'>{item.text}</View>
+                </View>
+              );
+            } else {
+              return null;
+            }
+          })}
+        </View>
       </View>
     </view>
   );

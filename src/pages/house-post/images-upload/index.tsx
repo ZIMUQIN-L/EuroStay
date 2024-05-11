@@ -72,7 +72,7 @@ const ImagesUpload = ({ images, onUploadImage, onDeleteImage }) => {
         {hasImages &&
           images.map(image => (
             <View className='house-image' key={image}>
-              <Image src={image} mode='aspectFill' />
+              <Image src={image} mode='aspectFill' className='pic' />
               <View
                 className='image-delete'
                 onClick={() => handleDeleteImage(image)}
