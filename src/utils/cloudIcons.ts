@@ -1,123 +1,126 @@
+const cloudPath = 'cloud://cloud1-8gb29x2pbe14a4f8.636c-cloud1-8gb29x2pbe14a4f8-1324366677/images';
+
 export const DefaultHouse =
-  'cloud://cloud1-8gb29x2pbe14a4f8.636c-cloud1-8gb29x2pbe14a4f8-1324366677/images/default-house.png';
+  `${cloudPath}/default-house.png`;
 export const DateIcon =
-  'cloud://cloud1-8gb29x2pbe14a4f8.636c-cloud1-8gb29x2pbe14a4f8-1324366677/images/date-icon.svg';
+  `${cloudPath}/date-icon.svg`;
 export const CapacityIcon =
-  'cloud://cloud1-8gb29x2pbe14a4f8.636c-cloud1-8gb29x2pbe14a4f8-1324366677/images/capacity-icon.svg';
+  `${cloudPath}/capacity-icon.svg`;
 export const LocationIcon =
-  'cloud://cloud1-8gb29x2pbe14a4f8.636c-cloud1-8gb29x2pbe14a4f8-1324366677/images/location-icon.svg';
+  `${cloudPath}/location-icon.svg`;
 export const EditIcon =
-  'cloud://cloud1-8gb29x2pbe14a4f8.636c-cloud1-8gb29x2pbe14a4f8-1324366677/images/profile-edit-icon.svg';
+  `${cloudPath}/profile-edit-icon.svg`;
 export const FilterSelectOff =
-  'cloud://cloud1-8gb29x2pbe14a4f8.636c-cloud1-8gb29x2pbe14a4f8-1324366677/images/filter-select-off.svg';
+  `${cloudPath}/filter-select-off.svg`;
 export const FilterSelectOn =
-  'cloud://cloud1-8gb29x2pbe14a4f8.636c-cloud1-8gb29x2pbe14a4f8-1324366677/images/filter-select-on.svg';
+  `${cloudPath}/filter-select-on.svg`;
 export const RightBottomArrowGrey =
-  'cloud://cloud1-8gb29x2pbe14a4f8.636c-cloud1-8gb29x2pbe14a4f8-1324366677/images/right-bottom-arrow-grey.svg';
+  `${cloudPath}/right-bottom-arrow-grey.svg`;
 export const YellowFilter =
-  'cloud://cloud1-8gb29x2pbe14a4f8.636c-cloud1-8gb29x2pbe14a4f8-1324366677/images/filter-yellow.svg';
+  `${cloudPath}/filter-yellow.svg`;
 export const FilterOn =
-  'cloud://cloud1-8gb29x2pbe14a4f8.636c-cloud1-8gb29x2pbe14a4f8-1324366677/images/filter-on.svg';
+  `${cloudPath}/filter-on.svg`;
 export const RightBottomArrow =
-  'cloud://cloud1-8gb29x2pbe14a4f8.636c-cloud1-8gb29x2pbe14a4f8-1324366677/images/right-arrow.svg';
+  `${cloudPath}/right-arrow.svg`;
 export const SearchIcon =
-  'cloud://cloud1-8gb29x2pbe14a4f8.636c-cloud1-8gb29x2pbe14a4f8-1324366677/images/search.svg';
+  `${cloudPath}/images/search.svg`;
 export const UploadIcon =
-  'cloud://cloud1-8gb29x2pbe14a4f8.636c-cloud1-8gb29x2pbe14a4f8-1324366677/images/upload-icon.svg';
+  `${cloudPath}/upload-icon.svg`;
 export const LocationSelectionIcon =
-  'cloud://cloud1-8gb29x2pbe14a4f8.636c-cloud1-8gb29x2pbe14a4f8-1324366677/images/location-selection-icon.svg';
+  `${cloudPath}/location-selection-icon.svg`;
 export const DateSelectionIcon =
-  'cloud://cloud1-8gb29x2pbe14a4f8.636c-cloud1-8gb29x2pbe14a4f8-1324366677/images/date-selection-icon.svg';
+  `${cloudPath}/date-selection-icon.svg`;
 export const CapacitySelectionIcon =
-  'cloud://cloud1-8gb29x2pbe14a4f8.636c-cloud1-8gb29x2pbe14a4f8-1324366677/images/capacity-selection-icon.svg';
+  `${cloudPath}/capacity-selection-icon.svg`;
 export const TypeSelectionIcon =
-  'cloud://cloud1-8gb29x2pbe14a4f8.636c-cloud1-8gb29x2pbe14a4f8-1324366677/images/type-seletion-icon.svg';
+  `${cloudPath}/type-seletion-icon.svg`;
 export const UtilitySelectionIcon =
-  'cloud://cloud1-8gb29x2pbe14a4f8.636c-cloud1-8gb29x2pbe14a4f8-1324366677/images/utility-selection-icon.svg';
+  `${cloudPath}/utility-selection-icon.svg`;
 export const EuroStay =
-  'cloud://cloud1-8gb29x2pbe14a4f8.636c-cloud1-8gb29x2pbe14a4f8-1324366677/images/EuroStay.webp';
+  `${cloudPath}/EuroStay.webp`;
 export const DefaultAvatar =
-  'cloud://cloud1-8gb29x2pbe14a4f8.636c-cloud1-8gb29x2pbe14a4f8-1324366677/images/default-avatar.png';
+  `${cloudPath}/default-avatar.png`;
 export const WIFISelected =
-  'cloud://cloud1-8gb29x2pbe14a4f8.636c-cloud1-8gb29x2pbe14a4f8-1324366677/images/Wifi-selected.svg';
+  `${cloudPath}/Wifi-selected.svg`;
 export const WashMachineSelected =
-  'cloud://cloud1-8gb29x2pbe14a4f8.636c-cloud1-8gb29x2pbe14a4f8-1324366677/images/wash-machine-selected.svg';
+  `${cloudPath}/wash-machine-selected.svg`;
 export const SofaSelected =
-  'cloud://cloud1-8gb29x2pbe14a4f8.636c-cloud1-8gb29x2pbe14a4f8-1324366677/images/sofa-selected.svg';
+  `${cloudPath}/sofa-selected.svg`;
 export const RefrigeratorSeleted =
-  'cloud://cloud1-8gb29x2pbe14a4f8.636c-cloud1-8gb29x2pbe14a4f8-1324366677/images/refrigerator-selected.svg';
+  `${cloudPath}/refrigerator-selected.svg`;
 export const KitchenSeleted =
-  'cloud://cloud1-8gb29x2pbe14a4f8.636c-cloud1-8gb29x2pbe14a4f8-1324366677/images/kitchen-selected.svg';
+  `${cloudPath}/kitchen-selected.svg`;
 export const BathSelectd =
-  'cloud://cloud1-8gb29x2pbe14a4f8.636c-cloud1-8gb29x2pbe14a4f8-1324366677/images/bath-selected.svg';
+  `${cloudPath}/bath-selected.svg`;
 export const HeaterSelected =
-  'cloud://cloud1-8gb29x2pbe14a4f8.636c-cloud1-8gb29x2pbe14a4f8-1324366677/images/Heater-selected.svg';
+  `${cloudPath}/Heater-selected.svg`;
 export const AirConditionSelected =
-  'cloud://cloud1-8gb29x2pbe14a4f8.636c-cloud1-8gb29x2pbe14a4f8-1324366677/images/air-condition-selected.svg';
+  `${cloudPath}/air-condition-selected.svg`;
 export const WIFIUnselected =
-  'cloud://cloud1-8gb29x2pbe14a4f8.636c-cloud1-8gb29x2pbe14a4f8-1324366677/images/Wifi-unselected.svg';
+  `${cloudPath}/Wifi-unselected.svg`;
 export const WashMachineUnselected =
-  'cloud://cloud1-8gb29x2pbe14a4f8.636c-cloud1-8gb29x2pbe14a4f8-1324366677/images/wash-machine-unselected.svg';
+  `${cloudPath}/wash-machine-unselected.svg`;
 export const SofaUnselected =
-  'cloud://cloud1-8gb29x2pbe14a4f8.636c-cloud1-8gb29x2pbe14a4f8-1324366677/images/sofa-unselected.svg';
+  `${cloudPath}/sofa-unselected.svg`;
 export const RefrigeratorUnselected =
-  'cloud://cloud1-8gb29x2pbe14a4f8.636c-cloud1-8gb29x2pbe14a4f8-1324366677/images/refrigerator-unselcted.svg';
+  `${cloudPath}/refrigerator-unselcted.svg`;
 export const KitchenUnselected =
-  'cloud://cloud1-8gb29x2pbe14a4f8.636c-cloud1-8gb29x2pbe14a4f8-1324366677/images/kitchen-unselected.svg';
+  `${cloudPath}/kitchen-unselected.svg`;
 export const BathUnselected =
-  'cloud://cloud1-8gb29x2pbe14a4f8.636c-cloud1-8gb29x2pbe14a4f8-1324366677/images/bath-unseleted.svg';
+  `${cloudPath}/bath-unseleted.svg`;
 export const HeaterUnselected =
-  'cloud://cloud1-8gb29x2pbe14a4f8.636c-cloud1-8gb29x2pbe14a4f8-1324366677/images/Heater-unselected.svg';
+  `${cloudPath}/Heater-unselected.svg`;
 export const AirConditionUnselected =
-  'cloud://cloud1-8gb29x2pbe14a4f8.636c-cloud1-8gb29x2pbe14a4f8-1324366677/images/air-condition-unselected.svg';
+  `${cloudPath}/air-condition-unselected.svg`;
 
 export const AttractionSelected =
-  'cloud://cloud1-8gb29x2pbe14a4f8.636c-cloud1-8gb29x2pbe14a4f8-1324366677/images/attraction-selected.png';
+  `${cloudPath}/attraction-selected.webp`;
 export const AttractionUnselected =
-  'cloud://cloud1-8gb29x2pbe14a4f8.636c-cloud1-8gb29x2pbe14a4f8-1324366677/images/attraction-unselected.png';
+  `${cloudPath}/attraction-unselected.png`;
 export const MarketSelected =
-  'cloud://cloud1-8gb29x2pbe14a4f8.636c-cloud1-8gb29x2pbe14a4f8-1324366677/images/market-selected.png';
+  `${cloudPath}/market-selected.png`;
 export const MarketUnselected =
-  'cloud://cloud1-8gb29x2pbe14a4f8.636c-cloud1-8gb29x2pbe14a4f8-1324366677/images/market-unselected.png';
+  `${cloudPath}/market-unselected.png`;
 export const MetroSelected =
-  'cloud://cloud1-8gb29x2pbe14a4f8.636c-cloud1-8gb29x2pbe14a4f8-1324366677/images/metro-selected.png';
+  `${cloudPath}/metro-selected.png`;
 export const MetroUnselected =
-  'cloud://cloud1-8gb29x2pbe14a4f8.636c-cloud1-8gb29x2pbe14a4f8-1324366677/images/metro-unselected.png';
+  `${cloudPath}/metro-unselected.png`;
 export const SurroundingIcon =
-  'cloud://cloud1-8gb29x2pbe14a4f8.636c-cloud1-8gb29x2pbe14a4f8-1324366677/images/surroundings.png';
+  `${cloudPath}/surroundings.png`;
 export const PreferenceIcon =
-  'cloud://cloud1-8gb29x2pbe14a4f8.636c-cloud1-8gb29x2pbe14a4f8-1324366677/images/preference.png';
+  `${cloudPath}/preference.png`;
 export const GenderIcon =
-  'cloud://cloud1-8gb29x2pbe14a4f8.636c-cloud1-8gb29x2pbe14a4f8-1324366677/images/gender.png';
+  `${cloudPath}/gender.webp`;
 export const RentSelected =
-  'cloud://cloud1-8gb29x2pbe14a4f8.636c-cloud1-8gb29x2pbe14a4f8-1324366677/images/rent-selected.svg';
+  `${cloudPath}/rent-selected.svg`;
 export const RentUnselected =
-  'cloud://cloud1-8gb29x2pbe14a4f8.636c-cloud1-8gb29x2pbe14a4f8-1324366677/images/rent-unselected.svg';
+  `${cloudPath}/rent-unselected.svg`;
 export const ExchangeSelected =
-  'cloud://cloud1-8gb29x2pbe14a4f8.636c-cloud1-8gb29x2pbe14a4f8-1324366677/images/exchange-selected.svg';
+  `${cloudPath}/exchange-selected.svg`;
 export const ExchangeUnselected =
-  'cloud://cloud1-8gb29x2pbe14a4f8.636c-cloud1-8gb29x2pbe14a4f8-1324366677/images/exchange-unselected.svg';
+  `${cloudPath}/exchange-unselected.svg`;
 export const BeddingSelected =
-  'cloud://cloud1-8gb29x2pbe14a4f8.636c-cloud1-8gb29x2pbe14a4f8-1324366677/images/bedding-selected.svg';
+  `${cloudPath}/bedding-selected.svg`;
 export const BeddingUnselected =
-  'cloud://cloud1-8gb29x2pbe14a4f8.636c-cloud1-8gb29x2pbe14a4f8-1324366677/images/bedding-unselected.svg';
+  `${cloudPath}/bedding-unselected.svg`;
 export const SmokeSelected =
-  'cloud://cloud1-8gb29x2pbe14a4f8.636c-cloud1-8gb29x2pbe14a4f8-1324366677/images/smoke-selected.svg';
+  `${cloudPath}/smoke-selected.svg`;
 export const SmokeUnselected =
-  'cloud://cloud1-8gb29x2pbe14a4f8.636c-cloud1-8gb29x2pbe14a4f8-1324366677/images/smoke-unselected.svg';
+  `${cloudPath}/smoke-unselected.svg`;
 export const PetFriendlySelected =
-  'cloud://cloud1-8gb29x2pbe14a4f8.636c-cloud1-8gb29x2pbe14a4f8-1324366677/images/petFriendly-selected.svg';
+  `${cloudPath}/petFriendly-selected.svg`;
 export const PetFriendlyUnselected =
-  'cloud://cloud1-8gb29x2pbe14a4f8.636c-cloud1-8gb29x2pbe14a4f8-1324366677/images/petFriendly-unselected.svg';
+  `${cloudPath}/petFriendly-unselected.svg`;
 export const AllGenderSelected =
-  'cloud://cloud1-8gb29x2pbe14a4f8.636c-cloud1-8gb29x2pbe14a4f8-1324366677/images/AllGender-selected.svg';
+  `${cloudPath}/AllGender-selected.svg`;
 export const AllGenderUnselected =
-  'cloud://cloud1-8gb29x2pbe14a4f8.636c-cloud1-8gb29x2pbe14a4f8-1324366677/images/AllGender-unselected.svg';
+  `${cloudPath}/AllGender-unselected.svg`;
 export const FemaleSelected =
-  'cloud://cloud1-8gb29x2pbe14a4f8.636c-cloud1-8gb29x2pbe14a4f8-1324366677/images/female-selected.svg';
+  `${cloudPath}/female-selected.svg`;
 export const FemaleUnselected =
-  'cloud://cloud1-8gb29x2pbe14a4f8.636c-cloud1-8gb29x2pbe14a4f8-1324366677/images/female-unselected.svg';
+  `${cloudPath}/images/female-unselected.svg`;
 export const MaleSelected =
-  'cloud://cloud1-8gb29x2pbe14a4f8.636c-cloud1-8gb29x2pbe14a4f8-1324366677/images/male-selected.svg';
+  `${cloudPath}/images/male-selected.svg`;
 export const MaleUnselected =
-  'cloud://cloud1-8gb29x2pbe14a4f8.636c-cloud1-8gb29x2pbe14a4f8-1324366677/images/male-unselected.svg';
+  `${cloudPath}/male-unselected.svg`;
+
