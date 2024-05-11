@@ -6,7 +6,7 @@ import './index.scss';
 import Taro, { useReachBottom } from '@tarojs/taro';
 import { useState, useEffect } from 'react';
 import HouseItem from './house-item';
-import { houseInfoSearch } from '../../common/database/house/house';
+import { houseInfoSearch } from '@common/database/house/house';
 import { HouseItemProps } from '@utils/interfaces';
 import SearchAndFilter from './search-and-filter';
 import { formatToday } from '@utils/dateUtil';

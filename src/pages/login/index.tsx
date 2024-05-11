@@ -6,7 +6,7 @@ import './index.scss';
 import GlobalStore from '@store/GlobalStore';
 import { View } from '@tarojs/components';
 import { UserItemProps } from '@utils/interfaces';
-import { userInfoSearch, userInfoAdd } from '../../common/database/user/user';
+import { userInfoSearch, userInfoAdd } from '@common/database/user/user';
 
 import { EuroStay } from '@utils/cloudIcons';
 

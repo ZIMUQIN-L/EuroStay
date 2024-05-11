@@ -16,7 +16,7 @@ import RoomFacility from '@components/RoomFacility';
 import RoomSurrounding from '@components/RoomSurrounding';
 import HouseGenderPreference from '@components/HouseGenderPreference';
 import HouseOwnerPreference from '@components/HouseOwnerPreference';
-import { houseInfoSearch } from '../../../common/database/house/house';
+import { houseInfoSearch } from '@common/database/house/house';
 import { HouseItemProps } from '@utils/interfaces';
 
 enum Gender {

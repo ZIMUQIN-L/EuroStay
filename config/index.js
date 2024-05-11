@@ -48,6 +48,7 @@ const config = {
     '@config': path.resolve(__dirname, '..', 'src/config'),
     '@store': path.resolve(__dirname, '..', 'src/store'),
     '@utils': path.resolve(__dirname, '..', 'src/utils'),
+    '@common': path.resolve(__dirname, '..', 'src/common'),
   },
   h5: {
     esnextModules: ['taro-ui'],

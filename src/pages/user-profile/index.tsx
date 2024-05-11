@@ -7,7 +7,7 @@ import GlobalStore from '@store/GlobalStore';
 import { HouseItemProps, UserItemProps } from '@utils/interfaces';
 import UserInfo from './user-info';
 import PostedHouse from './posted-house';
-import { userHouseInfoSearch } from '../../common/database/user/user';
+import { userHouseInfoSearch } from '@common/database/user/user';
 
 const Index = () => {
   const [user, setUser] = useState<UserItemProps>(GlobalStore.userInfo);

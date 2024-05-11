@@ -26,6 +26,7 @@
       "@lib/*": ["src/lib/*"],
       "@store/*": ["./src/store/*"],
       "@utils/*": ["./src/utils/*"],
+      "@common/*": ["./src/common/*"],
     }
   },
   "exclude": ["node_modules", "dist"],

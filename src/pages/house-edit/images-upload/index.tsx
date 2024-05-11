@@ -1,7 +1,7 @@
 import { View, Image, Text } from '@tarojs/components';
 import './index.scss';
 import Taro from '@tarojs/taro';
-import { cloudImageUpload } from '../../../common/database/cloudstorage/files';
+import { cloudImageUpload } from '@common/database/cloudstorage/files';
 
 const ImagesUpload = ({ images, onUploadImage, onDeleteImage }) => {
   const hasImages = Array.isArray(images) && images.length > 0;

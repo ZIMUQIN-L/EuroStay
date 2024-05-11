@@ -5,8 +5,8 @@ import { UserItemProps } from '@utils/interfaces';
 import './index.scss';
 import Taro from '@tarojs/taro';
 import GlobalStore from '@store/GlobalStore';
-import { cloudAvatarUpload } from '../../common/database/cloudstorage/files';
-import { userInfoUpdate } from '../../common/database/user/user';
+import { cloudAvatarUpload } from '@common/database/cloudstorage/files';
+import { userInfoUpdate } from '@common/database/user/user';
 import CustomTabBar from '@components/CustomTabBar';
 
 const Index = () => {

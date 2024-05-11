@@ -7,7 +7,7 @@ import { useState, useEffect } from 'react';
 import InfoSelection from './info-selection';
 import './index.scss';
 import Taro from '@tarojs/taro';
-import { houseInfoPost } from '../../common/database/house/house';
+import { houseInfoPost } from '@common/database/house/house';
 import { UserItemProps } from '@utils/interfaces';
 import GlobalStore from '@store/GlobalStore';
 

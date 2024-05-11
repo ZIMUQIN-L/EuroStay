@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import HouseImagesSwiper from './house-images';
 import HouseTexts from './house-texts';
 import './index.scss';
-import { houseDetailSearch } from '../../common/database/house/house';
+import { houseDetailSearch } from '@common/database/house/house';
 import { RoomDetailInfo } from './house-infos';
 import HouseContact from './house-contact';
 
