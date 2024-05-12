@@ -69,7 +69,7 @@ export const userInfoUpdate = async (
 export const userHouseInfoSearch = async userOpenid => {
   const db = wx.cloud.database();
   return new Promise((resolve, reject) => {
-    db.collection('HouseInfo')
+    db.collection('CleanHouseInfo')
       .orderBy('start_date', 'desc')
       .where({
         userOpenid: userOpenid,

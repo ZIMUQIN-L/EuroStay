@@ -24,7 +24,7 @@ export const houseInfoSearch = async (
     endDate = formatToday();
   }
   return new Promise((resolve, reject) => {
-    db.collection('HouseInfo')
+    db.collection('CleanHouseInfo')
       .orderBy('start_date', 'desc')
       .where({
         location: db.RegExp({
@@ -51,7 +51,7 @@ export const houseInfoSearch = async (
 export const houseDetailSearch = async houseId => {
   const db = wx.cloud.database();
   return new Promise((resolve, reject) => {
-    db.collection('HouseInfo')
+    db.collection('CleanHouseInfo')
       .where({
         _id: houseId,
       })
@@ -79,7 +79,7 @@ export const houseInfoPost = async (
 ) => {
   const db = wx.cloud.database();
   return new Promise((resolve, reject) => {
-    db.collection('HouseInfo')
+    db.collection('CleanHouseInfo')
       .add({
         data: {
           location: location,
