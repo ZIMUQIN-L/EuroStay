@@ -23,7 +23,7 @@ export const FilterOn =
 export const RightBottomArrow =
   `${cloudPath}/right-arrow.svg`;
 export const SearchIcon =
-  `${cloudPath}search.svg`;
+  `${cloudPath}/search.svg`;
 export const UploadIcon =
   `${cloudPath}/upload-icon.svg`;
 export const LocationSelectionIcon =

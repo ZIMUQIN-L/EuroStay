@@ -1,12 +1,11 @@
 import { View, Text, Image } from '@tarojs/components';
-// import DefaultHouse from '@assets/images/default-house.png';
-// import DateIcon from '@assets/images/date-icon.svg';
 import Taro from '@tarojs/taro';
 import { HouseItemProps } from '@utils/interfaces';
 import { DefaultHouse, DateIcon } from '@utils/cloudIcons';
+import { checkImageUrl } from '@utils/validationUtil';
 
 const HouseItem: React.FC<HouseItemProps> = house => {
-  const imageUrl = house.images.length > 0 ? house.images[0] : DefaultHouse;
+  const imageUrl = house.images.length > 0 && checkImageUrl(house.images[0] as string) ? house.images[0] : DefaultHouse;
 
   // 跳转至房源详情
   const toHouseDetail = () => {
@@ -75,7 +74,6 @@ const HouseItem: React.FC<HouseItemProps> = house => {
         }}
       >
         <View className='house-details'>
-          {/** 如果房源类型不确定的话，不现实房源类型 */}
           <View className='house-location'>
             <Text>{house.location}</Text>
           </View>

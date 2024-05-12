@@ -1,12 +1,14 @@
 import { Swiper, SwiperItem, View, Image } from '@tarojs/components';
 import { HouseDetailItemProps } from '@utils/interfaces';
 import { DefaultHouse } from '@utils/cloudIcons';
+import { filterValidImageUrls } from '@utils/validationUtil';
 
 const HouseImagesSwiper: React.FC<HouseDetailItemProps> = house => {
   const fullContainerStyle = {
     width: '100%',
     height: '100%',
   };
+  const imageUrls = filterValidImageUrls(house.images);
 
   return (
     <View className='images'>
@@ -18,7 +20,7 @@ const HouseImagesSwiper: React.FC<HouseDetailItemProps> = house => {
         autoplay
         style={{ width: '100%', height: '250px' }}
       >
-        {house.images.length === 0 ? (
+        {imageUrls.length === 0 ? (
           <SwiperItem style={fullContainerStyle}>
             <View className='swiper-item' style={fullContainerStyle}>
               <Image
