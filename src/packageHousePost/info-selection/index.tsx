@@ -337,7 +337,7 @@ const InfoSelection = ({ onUserInfoEdit }) => {
           <View className='selection-content'>
             <View className='selection-left'>
               <View className='icon-container'>
-                <Image src={SurroundingIcon} />
+                <Image src={SurroundingIcon} className='utility-pic'/>
               </View>
               <Text>周边信息</Text>
             </View>
@@ -367,7 +367,7 @@ const InfoSelection = ({ onUserInfoEdit }) => {
           <View className='selection-content'>
             <View className='selection-left'>
               <View className='icon-container'>
-                <Image src={PreferenceIcon} />
+                <Image src={PreferenceIcon} className='utility-pic'/>
               </View>
               <Text>房主偏好</Text>
             </View>
