@@ -1,11 +1,7 @@
 import { View, Text, Image } from '@tarojs/components';
 import { HouseDetailItemProps } from '@utils/interfaces';
 import './index.scss';
-import {
-  DateIcon,
-  CapacityIcon,
-  LocationIcon,
-} from '@utils/cloudIcons';
+import { DateIcon, CapacityIcon, LocationIcon } from '@utils/cloudIcons';
 
 const HouseTexts: React.FC<HouseDetailItemProps> = house => {
   return (

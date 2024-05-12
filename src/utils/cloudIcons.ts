@@ -1,126 +1,65 @@
-const cloudPath = 'cloud://cloud1-8gb29x2pbe14a4f8.636c-cloud1-8gb29x2pbe14a4f8-1324366677/images';
+const cloudPath =
+  'cloud://cloud1-8gb29x2pbe14a4f8.636c-cloud1-8gb29x2pbe14a4f8-1324366677/images';
 
-export const DefaultHouse =
-  `${cloudPath}/default-house.png`;
-export const DateIcon =
-  `${cloudPath}/date-icon.svg`;
-export const CapacityIcon =
-  `${cloudPath}/capacity-icon.svg`;
-export const LocationIcon =
-  `${cloudPath}/location-icon.svg`;
-export const EditIcon =
-  `${cloudPath}/profile-edit-icon.svg`;
-export const FilterSelectOff =
-  `${cloudPath}/filter-select-off.svg`;
-export const FilterSelectOn =
-  `${cloudPath}/filter-select-on.svg`;
-export const RightBottomArrowGrey =
-  `${cloudPath}/right-bottom-arrow-grey.svg`;
-export const YellowFilter =
-  `${cloudPath}/filter-yellow.svg`;
-export const FilterOn =
-  `${cloudPath}/filter-on.svg`;
-export const RightBottomArrow =
-  `${cloudPath}/right-arrow.svg`;
-export const SearchIcon =
-  `${cloudPath}/search.svg`;
-export const UploadIcon =
-  `${cloudPath}/upload-icon.svg`;
-export const LocationSelectionIcon =
-  `${cloudPath}/location-selection-icon.svg`;
-export const DateSelectionIcon =
-  `${cloudPath}/date-selection-icon.svg`;
-export const CapacitySelectionIcon =
-  `${cloudPath}/capacity-selection-icon.svg`;
-export const TypeSelectionIcon =
-  `${cloudPath}/type-seletion-icon.svg`;
-export const UtilitySelectionIcon =
-  `${cloudPath}/utility-selection-icon.svg`;
-export const EuroStay =
-  `${cloudPath}/EuroStay.webp`;
-export const DefaultAvatar =
-  `${cloudPath}/default-avatar.png`;
-export const WIFISelected =
-  `${cloudPath}/Wifi-selected.svg`;
-export const WashMachineSelected =
-  `${cloudPath}/wash-machine-selected.svg`;
-export const SofaSelected =
-  `${cloudPath}/sofa-selected.svg`;
-export const RefrigeratorSeleted =
-  `${cloudPath}/refrigerator-selected.svg`;
-export const KitchenSeleted =
-  `${cloudPath}/kitchen-selected.svg`;
-export const BathSelectd =
-  `${cloudPath}/bath-selected.svg`;
-export const HeaterSelected =
-  `${cloudPath}/Heater-selected.svg`;
-export const AirConditionSelected =
-  `${cloudPath}/air-condition-selected.svg`;
-export const WIFIUnselected =
-  `${cloudPath}/Wifi-unselected.svg`;
-export const WashMachineUnselected =
-  `${cloudPath}/wash-machine-unselected.svg`;
-export const SofaUnselected =
-  `${cloudPath}/sofa-unselected.svg`;
-export const RefrigeratorUnselected =
-  `${cloudPath}/refrigerator-unselcted.svg`;
-export const KitchenUnselected =
-  `${cloudPath}/kitchen-unselected.svg`;
-export const BathUnselected =
-  `${cloudPath}/bath-unseleted.svg`;
-export const HeaterUnselected =
-  `${cloudPath}/Heater-unselected.svg`;
-export const AirConditionUnselected =
-  `${cloudPath}/air-condition-unselected.svg`;
+export const DefaultHouse = `${cloudPath}/default-house.png`;
+export const DateIcon = `${cloudPath}/date-icon.svg`;
+export const CapacityIcon = `${cloudPath}/capacity-icon.svg`;
+export const LocationIcon = `${cloudPath}/location-icon.svg`;
+export const EditIcon = `${cloudPath}/profile-edit-icon.svg`;
+export const FilterSelectOff = `${cloudPath}/filter-select-off.svg`;
+export const FilterSelectOn = `${cloudPath}/filter-select-on.svg`;
+export const RightBottomArrowGrey = `${cloudPath}/right-bottom-arrow-grey.svg`;
+export const YellowFilter = `${cloudPath}/filter-yellow.svg`;
+export const FilterOn = `${cloudPath}/filter-on.svg`;
+export const RightBottomArrow = `${cloudPath}/right-arrow.svg`;
+export const SearchIcon = `${cloudPath}/search.svg`;
+export const UploadIcon = `${cloudPath}/upload-icon.svg`;
+export const LocationSelectionIcon = `${cloudPath}/location-selection-icon.svg`;
+export const DateSelectionIcon = `${cloudPath}/date-selection-icon.svg`;
+export const CapacitySelectionIcon = `${cloudPath}/capacity-selection-icon.svg`;
+export const TypeSelectionIcon = `${cloudPath}/type-seletion-icon.svg`;
+export const UtilitySelectionIcon = `${cloudPath}/utility-selection-icon.svg`;
+export const EuroStay = `${cloudPath}/EuroStay.webp`;
+export const DefaultAvatar = `${cloudPath}/default-avatar.png`;
+export const WIFISelected = `${cloudPath}/Wifi-selected.svg`;
+export const WashMachineSelected = `${cloudPath}/wash-machine-selected.svg`;
+export const SofaSelected = `${cloudPath}/sofa-selected.svg`;
+export const RefrigeratorSeleted = `${cloudPath}/refrigerator-selected.svg`;
+export const KitchenSeleted = `${cloudPath}/kitchen-selected.svg`;
+export const BathSelectd = `${cloudPath}/bath-selected.svg`;
+export const HeaterSelected = `${cloudPath}/Heater-selected.svg`;
+export const AirConditionSelected = `${cloudPath}/air-condition-selected.svg`;
+export const WIFIUnselected = `${cloudPath}/Wifi-unselected.svg`;
+export const WashMachineUnselected = `${cloudPath}/wash-machine-unselected.svg`;
+export const SofaUnselected = `${cloudPath}/sofa-unselected.svg`;
+export const RefrigeratorUnselected = `${cloudPath}/refrigerator-unselcted.svg`;
+export const KitchenUnselected = `${cloudPath}/kitchen-unselected.svg`;
+export const BathUnselected = `${cloudPath}/bath-unseleted.svg`;
+export const HeaterUnselected = `${cloudPath}/Heater-unselected.svg`;
+export const AirConditionUnselected = `${cloudPath}/air-condition-unselected.svg`;
 
-export const AttractionSelected =
-  `${cloudPath}/attraction-selected.svg`;
-export const AttractionUnselected =
-  `${cloudPath}/attraction-unselected.png`;
-export const MarketSelected =
-  `${cloudPath}/market-selected.png`;
-export const MarketUnselected =
-  `${cloudPath}/market-unselected.png`;
-export const MetroSelected =
-  `${cloudPath}/metro-selected.png`;
-export const MetroUnselected =
-  `${cloudPath}/metro-unselected.png`;
-export const SurroundingIcon =
-  `${cloudPath}/surroundings.png`;
-export const PreferenceIcon =
-  `${cloudPath}/preference.png`;
-export const GenderIcon =
-  `${cloudPath}/gender.svg`;
-export const RentSelected =
-  `${cloudPath}/rent-selected.svg`;
-export const RentUnselected =
-  `${cloudPath}/rent-unselected.svg`;
-export const ExchangeSelected =
-  `${cloudPath}/exchange-selected.svg`;
-export const ExchangeUnselected =
-  `${cloudPath}/exchange-unselected.svg`;
-export const BeddingSelected =
-  `${cloudPath}/bedding-selected.svg`;
-export const BeddingUnselected =
-  `${cloudPath}/bedding-unselected.svg`;
-export const SmokeSelected =
-  `${cloudPath}/smoke-selected.svg`;
-export const SmokeUnselected =
-  `${cloudPath}/smoke-unselected.svg`;
-export const PetFriendlySelected =
-  `${cloudPath}/petFriendly-selected.svg`;
-export const PetFriendlyUnselected =
-  `${cloudPath}/petFriendly-unselected.svg`;
-export const AllGenderSelected =
-  `${cloudPath}/AllGender-selected.svg`;
-export const AllGenderUnselected =
-  `${cloudPath}/AllGender-unselected.svg`;
-export const FemaleSelected =
-  `${cloudPath}/female-selected.svg`;
-export const FemaleUnselected =
-  `${cloudPath}/female-unselected.svg`;
-export const MaleSelected =
-  `${cloudPath}/male-selected.svg`;
-export const MaleUnselected =
-  `${cloudPath}/male-unselected.svg`;
-
+export const AttractionSelected = `${cloudPath}/attraction-selected.svg`;
+export const AttractionUnselected = `${cloudPath}/attraction-unselected.png`;
+export const MarketSelected = `${cloudPath}/market-selected.png`;
+export const MarketUnselected = `${cloudPath}/market-unselected.png`;
+export const MetroSelected = `${cloudPath}/metro-selected.png`;
+export const MetroUnselected = `${cloudPath}/metro-unselected.png`;
+export const SurroundingIcon = `${cloudPath}/surroundings.png`;
+export const PreferenceIcon = `${cloudPath}/preference.png`;
+export const GenderIcon = `${cloudPath}/gender.svg`;
+export const RentSelected = `${cloudPath}/rent-selected.svg`;
+export const RentUnselected = `${cloudPath}/rent-unselected.svg`;
+export const ExchangeSelected = `${cloudPath}/exchange-selected.svg`;
+export const ExchangeUnselected = `${cloudPath}/exchange-unselected.svg`;
+export const BeddingSelected = `${cloudPath}/bedding-selected.svg`;
+export const BeddingUnselected = `${cloudPath}/bedding-unselected.svg`;
+export const SmokeSelected = `${cloudPath}/smoke-selected.svg`;
+export const SmokeUnselected = `${cloudPath}/smoke-unselected.svg`;
+export const PetFriendlySelected = `${cloudPath}/petFriendly-selected.svg`;
+export const PetFriendlyUnselected = `${cloudPath}/petFriendly-unselected.svg`;
+export const AllGenderSelected = `${cloudPath}/AllGender-selected.svg`;
+export const AllGenderUnselected = `${cloudPath}/AllGender-unselected.svg`;
+export const FemaleSelected = `${cloudPath}/female-selected.svg`;
+export const FemaleUnselected = `${cloudPath}/female-unselected.svg`;
+export const MaleSelected = `${cloudPath}/male-selected.svg`;
+export const MaleUnselected = `${cloudPath}/male-unselected.svg`;

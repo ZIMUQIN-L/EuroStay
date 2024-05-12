@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, Image } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import './index.scss';
@@ -11,6 +11,7 @@ import UserSelectedIcon from '@assets/images/user-selected.png';
 import { useMemo } from 'react';
 import GlobalStore from '@store/GlobalStore';
 import { observer } from 'mobx-react-lite';
+import { set } from 'mobx';
 
 interface CustomTabBarProps {
   onHomeSelected?: () => void;
@@ -18,6 +19,7 @@ interface CustomTabBarProps {
 
 const CustomTabBar: React.FC<CustomTabBarProps> = ({ onHomeSelected }) => {
   const currentTab = GlobalStore.currentTab;
+  const [showPost, setShowPost] = useState(false);
 
   const isIphone = useMemo(() => {
     const systemInfo = Taro.getSystemInfoSync();
@@ -54,6 +56,10 @@ const CustomTabBar: React.FC<CustomTabBarProps> = ({ onHomeSelected }) => {
     }
   };
 
+  const handlePostClick = () => {
+    setShowPost(true);
+  };
+
   return (
     <View className='custom-tab-bar' style={{ height: tabBarHeight }}>
       <View className='tab-item' onClick={() => handleTabClick('home')}>
@@ -77,6 +83,14 @@ const CustomTabBar: React.FC<CustomTabBarProps> = ({ onHomeSelected }) => {
           发布
         </Text>
       </View>
+      {showPost && (
+        <View className='popup'>
+          <View className='popup-content'>发布类型</View>
+          <View className='popup-content'>
+            <View className='post-house'>发布房源信息</View>
+          </View>
+        </View>
+      )}
 
       <View className='tab-item' onClick={() => handleTabClick('user-profile')}>
         <View className='tab-icon'>

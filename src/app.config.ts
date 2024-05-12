@@ -31,10 +31,6 @@ export default {
         text: '主页',
       },
       {
-        pagePath: 'pages/house-post/index',
-        text: '房源post',
-      },
-      {
         pagePath: 'pages/user-profile/index',
         text: '用户profile',
       },

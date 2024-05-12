@@ -5,7 +5,10 @@ import { DefaultHouse, DateIcon } from '@utils/cloudIcons';
 import { checkImageUrl } from '@utils/validationUtil';
 
 const HouseItem: React.FC<HouseItemProps> = house => {
-  const imageUrl = house.images.length > 0 && checkImageUrl(house.images[0] as string) ? house.images[0] : DefaultHouse;
+  const imageUrl =
+    house.images.length > 0 && checkImageUrl(house.images[0] as string)
+      ? house.images[0]
+      : DefaultHouse;
 
   // 跳转至房源详情
   const toHouseDetail = () => {
