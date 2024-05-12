@@ -11,7 +11,7 @@ import UserSelectedIcon from '@assets/images/user-selected.png';
 import { useMemo } from 'react';
 import GlobalStore from '@store/GlobalStore';
 import { observer } from 'mobx-react-lite';
-import { set } from 'mobx';
+import PostHouseIcon from '@assets/images/post-house.svg';
 
 interface CustomTabBarProps {
   onHomeSelected?: () => void;
@@ -55,56 +55,87 @@ const CustomTabBar: React.FC<CustomTabBarProps> = ({ onHomeSelected }) => {
       });
     }
   };
+  const handlePostHouseClick = () => {
+    console.log('发布房源');
+    Taro.navigateTo({
+      url: '/pages/house-post/index',
+    });
+  };
 
   const handlePostClick = () => {
     setShowPost(true);
   };
 
-  return (
-    <View className='custom-tab-bar' style={{ height: tabBarHeight }}>
-      <View className='tab-item' onClick={() => handleTabClick('home')}>
-        <View className='tab-icon'>
-          <Image src={currentTab === 'home' ? HomeSelectedIcon : HomeIcon} />
-        </View>
-        <Text className={`tab-text ${currentTab === 'home' ? 'active' : ''}`}>
-          主页
-        </Text>
-      </View>
+  const handleClosePopup = () => {
+    setShowPost(false);
+  };
 
-      <View className='tab-item' onClick={() => handleTabClick('house-post')}>
-        <View className='tab-icon'>
-          <Image
-            src={currentTab === 'house-post' ? RepostSelectedIcon : RepostIcon}
-          />
-        </View>
-        <Text
-          className={`tab-text ${currentTab === 'house-post' ? 'active' : ''}`}
-        >
-          发布
-        </Text>
-      </View>
+  return (
+    <>
       {showPost && (
-        <View className='popup'>
-          <View className='popup-content'>发布类型</View>
-          <View className='popup-content'>
-            <View className='post-house'>发布房源信息</View>
+        <View className='popup' onClick={handleClosePopup}>
+          <View className='popup-content' onClick={e => e.stopPropagation()}>
+            <Text className='popup-title'>发布类型</Text>
+            <View
+              style={{ height: '1px', width: '100%', backgroundColor: '#ccc' }}
+            ></View>
+            <View className='popup-selection'>
+              <Image
+                src={PostHouseIcon}
+                style={{
+                  height: '20px',
+                  width: '20px',
+                  marginLeft: '20px',
+                  marginRight: '10px',
+                }}
+              />
+
+              <View className='popup-button' onClick={handlePostHouseClick}>
+                <View>
+                  <Text>发布房源信息</Text>
+                </View>
+                <View style={{ marginRight: '20px', fontSize: '20px' }}>
+                  <Text>{'>'}</Text>
+                </View>
+              </View>
+            </View>
           </View>
         </View>
       )}
-
-      <View className='tab-item' onClick={() => handleTabClick('user-profile')}>
-        <View className='tab-icon'>
-          <Image
-            src={currentTab === 'user-profile' ? UserSelectedIcon : UserIcon}
-          />
+      <View className='custom-tab-bar' style={{ height: tabBarHeight }}>
+        <View className='tab-item' onClick={() => handleTabClick('home')}>
+          <View className='tab-icon'>
+            <Image src={currentTab === 'home' ? HomeSelectedIcon : HomeIcon} />
+          </View>
+          <Text className={`tab-text ${currentTab === 'home' ? 'active' : ''}`}>
+            主页
+          </Text>
         </View>
-        <Text
-          className={`tab-text ${currentTab === 'user-profile' ? 'active' : ''}`}
+
+        <View className='tab-item' onClick={handlePostClick}>
+          <View className='tab-icon'>
+            <Image src={showPost ? RepostSelectedIcon : RepostIcon} />
+          </View>
+          <Text className={`tab-text ${showPost ? 'active' : ''}`}>发布</Text>
+        </View>
+
+        <View
+          className='tab-item'
+          onClick={() => handleTabClick('user-profile')}
         >
-          我
-        </Text>
+          <View className='tab-icon'>
+            <Image
+              src={currentTab === 'user-profile' ? UserSelectedIcon : UserIcon}
+            />
+          </View>
+          <Text
+            className={`tab-text ${currentTab === 'user-profile' ? 'active' : ''}`}
+          >
+            我
+          </Text>
+        </View>
       </View>
-    </View>
+    </>
   );
 };
 

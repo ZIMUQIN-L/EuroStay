@@ -29,3 +29,56 @@
 .tab-text.active {
   color: #ffd111;
 }
+.popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+
+  &-content {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 60px 60px 0 0;
+    width: 95%;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    height: 200px;
+    position: absolute;
+  }
+
+  &-title {
+    font-size: 32px;
+    margin-bottom: 8px;
+  }
+
+  &-selection {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 28px;
+    margin-bottom: 20px;
+  }
+
+  &-button {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 85%;
+    border-bottom: 1px solid #ccc;
+  }
+}

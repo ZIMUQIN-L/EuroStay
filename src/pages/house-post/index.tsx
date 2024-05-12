@@ -1,5 +1,4 @@
 import { View, Text } from '@tarojs/components';
-import CustomTabBar from '@components/CustomTabBar';
 import { observer } from 'mobx-react';
 import ImagesUpload from './images-upload';
 import HouseDes from './house-des';
@@ -178,7 +177,6 @@ const Index = () => {
           <Text>发布房源</Text>
         </View>
       </View>
-      <CustomTabBar />
     </View>
   );
 };
