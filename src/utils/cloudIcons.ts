@@ -39,11 +39,11 @@ export const HeaterUnselected = `${cloudPath}/Heater-unselected.svg`;
 export const AirConditionUnselected = `${cloudPath}/air-condition-unselected.svg`;
 
 export const AttractionSelected = `${cloudPath}/attraction-selected.svg`;
-export const AttractionUnselected = `${cloudPath}/attraction-unselected.png`;
-export const MarketSelected = `${cloudPath}/market-selected.png`;
-export const MarketUnselected = `${cloudPath}/market-unselected.png`;
-export const MetroSelected = `${cloudPath}/metro-selected.png`;
-export const MetroUnselected = `${cloudPath}/metro-unselected.png`;
+export const AttractionUnselected = `${cloudPath}/attraction-unselected.svg`;
+export const MarketSelected = `${cloudPath}/market-selected.svg`;
+export const MarketUnselected = `${cloudPath}/market-unselected.svg`;
+export const MetroSelected = `${cloudPath}/metro-selected.svg`;
+export const MetroUnselected = `${cloudPath}/metro-unselected.svg`;
 export const SurroundingIcon = `${cloudPath}/surroundings.png`;
 export const PreferenceIcon = `${cloudPath}/preference.png`;
 export const GenderIcon = `${cloudPath}/gender.svg`;

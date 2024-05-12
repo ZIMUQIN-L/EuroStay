@@ -86,7 +86,7 @@ export const houseInfoPost = async (
           start_date: startDate,
           end_date: endDate,
           contact: contact,
-          capacity: capacity,
+          capacity: Number(capacity),
           houseSetting: houseSetting,
           houseSurrounding: houseSurrounding,
           description: description,

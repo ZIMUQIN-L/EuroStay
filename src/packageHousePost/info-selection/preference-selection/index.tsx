@@ -27,7 +27,7 @@ const PreferenceSelection = ({ onClose, onPreferenceSelected }) => {
   };
   return (
     <CustomFullScreenDialog
-      title='选择周边信息'
+      title='选择房主偏好'
       onClose={onClose}
       onSubmit={handleSubmitPreferenceSelection}
     >
