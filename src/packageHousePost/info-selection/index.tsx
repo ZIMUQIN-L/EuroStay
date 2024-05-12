@@ -319,7 +319,7 @@ const InfoSelection = ({ onUserInfoEdit }) => {
                 {Object.keys(utility).length !== 0
                   ? Object.keys(utility).join(', ')
                   : `请选择`}{' '}
-                  </Text>
+              </Text>
               <Image src={RightBottomArrow} />
             </View>
             {isUtilitySelection && (
@@ -337,7 +337,7 @@ const InfoSelection = ({ onUserInfoEdit }) => {
           <View className='selection-content'>
             <View className='selection-left'>
               <View className='icon-container'>
-                <Image src={SurroundingIcon} className='utility-pic'/>
+                <Image src={SurroundingIcon} className='utility-pic' />
               </View>
               <Text>周边信息</Text>
             </View>
@@ -346,7 +346,7 @@ const InfoSelection = ({ onUserInfoEdit }) => {
               onClick={handleSurroundingSelection}
             >
               <Text>
-              {Object.keys(surrounding).length !== 0
+                {Object.keys(surrounding).length !== 0
                   ? Object.keys(surrounding).join(', ')
                   : `请选择`}{' '}
               </Text>
@@ -367,7 +367,7 @@ const InfoSelection = ({ onUserInfoEdit }) => {
           <View className='selection-content'>
             <View className='selection-left'>
               <View className='icon-container'>
-                <Image src={PreferenceIcon} className='utility-pic'/>
+                <Image src={PreferenceIcon} className='utility-pic' />
               </View>
               <Text>房主偏好</Text>
             </View>
@@ -376,7 +376,7 @@ const InfoSelection = ({ onUserInfoEdit }) => {
               onClick={handlePreferenceSelection}
             >
               <Text>
-              {Object.keys(preference).length !== 0
+                {Object.keys(preference).length !== 0
                   ? Object.keys(preference).join(', ')
                   : `请选择`}{' '}
               </Text>

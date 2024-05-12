@@ -16,6 +16,11 @@ const HouseDes = ({ onUserDescriptionEdit }) => {
     <View className='des-part'>
       <View className='des-container'>
         <Text className='des-title'>填写标题，简明扼要介绍你的房源吧～</Text>
+        <View className='caution-text'>
+          <Text>
+            描述注意事项，表明你的要求或者提醒，如只租女生、不允许开派对等
+          </Text>
+        </View>
         <View className='des-text-container' style={{ minHeight: '80px' }}>
           <View className='des-text'>
             <Textarea
@@ -25,13 +30,13 @@ const HouseDes = ({ onUserDescriptionEdit }) => {
             />
           </View>
         </View>
-        <View className='des-text-container'>
+        {/* <View className='des-text-container'>
           <View className='des-text'>
             <Text>
               注意事项：描述你的要求或者提醒，如只租女生、不允许开派对等
             </Text>
           </View>
-        </View>
+        </View> */}
       </View>
     </View>
   );
