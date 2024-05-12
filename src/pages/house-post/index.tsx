@@ -156,8 +156,8 @@ const Index = () => {
         userInfo._openid,
       ).then(res => {
         Taro.hideLoading();
-        Taro.switchTab({
-          url: `/pages/home/index`,
+        Taro.navigateBack({
+          delta: 1,
         });
       });
     }

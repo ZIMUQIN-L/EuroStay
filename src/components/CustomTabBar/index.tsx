@@ -56,10 +56,10 @@ const CustomTabBar: React.FC<CustomTabBarProps> = ({ onHomeSelected }) => {
     }
   };
   const handlePostHouseClick = () => {
-    console.log('发布房源');
     Taro.navigateTo({
       url: '/pages/house-post/index',
     });
+    setShowPost(false);
   };
 
   const handlePostClick = () => {
