@@ -3,7 +3,6 @@ export default {
   pages: [
     'pages/login/index',
     'pages/home/index',
-    'pages/house-post/index',
     'pages/user-profile/index',
     'pages/house-edit/index',
   ],
@@ -16,6 +15,10 @@ export default {
       root: 'packageHome/',
       pages: ['house-detail/index'],
     },
+    {
+      root: 'packageHousePost/',
+      pages: ['index'],
+    }
   ],
   window: {
     backgroundTextStyle: 'light',
