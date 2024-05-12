@@ -1,4 +1,4 @@
-import { View } from '@tarojs/components';
+import { View, Image, Text } from '@tarojs/components';
 import { observer } from '@store/utils';
 import CustomTabBar from '@components/CustomTabBar';
 import SearchCard from './search-section';
@@ -10,7 +10,7 @@ import { houseInfoSearch } from '@common/database/house/house';
 import { HouseItemProps } from '@utils/interfaces';
 import SearchAndFilter from './search-and-filter';
 import { formatToday } from '@utils/dateUtil';
-
+import { NoDataLogo } from '@utils/cloudIcons';
 const Index = () => {
   Taro.useShareAppMessage(() => {
     return {
@@ -111,11 +111,18 @@ const Index = () => {
           onClickSearch={handleClickSearch}
         />
       )}
-      <View className='house-list'>
-        {demoData.map(house => (
-          <HouseItem key={house._id} {...house} />
-        ))}
-      </View>
+      {demoData.length === 0 ? (
+        <View>
+          <Image src={NoDataLogo} />
+          <Text className='home-nodata-container'>暂未查询到数据~</Text>
+        </View>
+      ) : (
+        <View className='house-list'>
+          {demoData.map(house => (
+            <HouseItem key={house._id} {...house} />
+          ))}
+        </View>
+      )}
       <View className='index'>
         <CustomTabBar onHomeSelected={resetState} />
       </View>

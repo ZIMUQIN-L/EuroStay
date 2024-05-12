@@ -63,3 +63,4 @@ export const FemaleSelected = `${cloudPath}/female-selected.svg`;
 export const FemaleUnselected = `${cloudPath}/female-unselected.svg`;
 export const MaleSelected = `${cloudPath}/male-selected.svg`;
 export const MaleUnselected = `${cloudPath}/male-unselected.svg`;
+export const NoDataLogo = `${cloudPath}/no-data-logo.svg`;
