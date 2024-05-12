@@ -11,7 +11,7 @@ const CapacitySelection = ({ onClose, onCapacitySelected }) => {
   };
 
   const handleCapacityChange = e => {
-    setCapacity(e.detail.value);
+    setCapacity(Number(e.detail.value));
   };
 
   return (
