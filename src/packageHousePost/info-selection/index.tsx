@@ -315,7 +315,11 @@ const InfoSelection = ({ onUserInfoEdit }) => {
               <Text>设施</Text>
             </View>
             <View className='selection-right' onClick={handleUtilitySelection}>
-              <Text>请选择 </Text>
+              <Text>
+                {Object.keys(utility).length !== 0
+                  ? Object.keys(utility).join(', ')
+                  : `请选择`}{' '}
+                  </Text>
               <Image src={RightBottomArrow} />
             </View>
             {isUtilitySelection && (
@@ -341,7 +345,11 @@ const InfoSelection = ({ onUserInfoEdit }) => {
               className='selection-right'
               onClick={handleSurroundingSelection}
             >
-              <Text>请选择 </Text>
+              <Text>
+              {Object.keys(surrounding).length !== 0
+                  ? Object.keys(surrounding).join(', ')
+                  : `请选择`}{' '}
+              </Text>
               <Image src={RightBottomArrow} />
             </View>
             {isSurroundingSelection && (
@@ -367,7 +375,11 @@ const InfoSelection = ({ onUserInfoEdit }) => {
               className='selection-right'
               onClick={handlePreferenceSelection}
             >
-              <Text>请选择 </Text>
+              <Text>
+              {Object.keys(preference).length !== 0
+                  ? Object.keys(preference).join(', ')
+                  : `请选择`}{' '}
+              </Text>
               <Image src={RightBottomArrow} />
             </View>
             {isPreferenceSelection && (
