@@ -20,8 +20,8 @@ const CapacitySelection = ({ onClose, onCapacitySelected }) => {
       onClose={onClose}
       onSubmit={handleSubmitCapacitySelection}
     >
-      <View className='des-text-container' style={{ minHeight: '30px' }}>
-        <View className='des-text'>
+      <View className='capacity-text-container' style={{ minHeight: '30px' }}>
+        <View className='capacity-text'>
           <Input
             type='number'
             placeholder='请输入可入住人数~'
