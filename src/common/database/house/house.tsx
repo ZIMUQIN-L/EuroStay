@@ -4,6 +4,7 @@
 // houseInfoSearch("巴黎", 1, "2024-03-24", "2024-03-24", {}, {}, {}, 0) .then(testData => {
 //     console.log(testData);
 //   });
+import { formatToday } from '@utils/dateUtil';
 export const houseInfoSearch = async (
   location,
   startDate,
@@ -16,6 +17,12 @@ export const houseInfoSearch = async (
 ) => {
   const db = wx.cloud.database();
   const _ = db.command;
+  if (startDate == undefined || startDate == '') {
+    startDate = formatToday();
+  }
+  if (endDate == undefined || endDate == '') {
+    endDate = formatToday();
+  }
   return new Promise((resolve, reject) => {
     db.collection('HouseInfo')
       .orderBy('start_date', 'desc')
