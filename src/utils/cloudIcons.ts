@@ -23,7 +23,7 @@ export const FilterOn =
 export const RightBottomArrow =
   `${cloudPath}/right-arrow.svg`;
 export const SearchIcon =
-  `${cloudPath}/images/search.svg`;
+  `${cloudPath}search.svg`;
 export const UploadIcon =
   `${cloudPath}/upload-icon.svg`;
 export const LocationSelectionIcon =
@@ -74,7 +74,7 @@ export const AirConditionUnselected =
   `${cloudPath}/air-condition-unselected.svg`;
 
 export const AttractionSelected =
-  `${cloudPath}/attraction-selected.webp`;
+  `${cloudPath}/attraction-selected.svg`;
 export const AttractionUnselected =
   `${cloudPath}/attraction-unselected.png`;
 export const MarketSelected =
@@ -90,7 +90,7 @@ export const SurroundingIcon =
 export const PreferenceIcon =
   `${cloudPath}/preference.png`;
 export const GenderIcon =
-  `${cloudPath}/gender.webp`;
+  `${cloudPath}/gender.svg`;
 export const RentSelected =
   `${cloudPath}/rent-selected.svg`;
 export const RentUnselected =
