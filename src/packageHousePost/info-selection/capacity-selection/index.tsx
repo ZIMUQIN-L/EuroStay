@@ -1,4 +1,4 @@
-import { View, Text, Slider } from '@tarojs/components';
+import { View, Input } from '@tarojs/components';
 import CustomFullScreenDialog from '@components/CustomFullScreenDialog';
 import { useState, useEffect } from 'react';
 import './index.scss';
@@ -20,16 +20,14 @@ const CapacitySelection = ({ onClose, onCapacitySelected }) => {
       onClose={onClose}
       onSubmit={handleSubmitCapacitySelection}
     >
-      <View className='capacity-slider'>
-        <Slider
-          className='capacity-slider'
-          step={1}
-          value={capacity}
-          showValue
-          min={1}
-          max={10}
-          onChange={handleCapacityChange}
-        />
+      <View className='des-text-container' style={{ minHeight: '30px' }}>
+        <View className='des-text'>
+          <Input
+            type='number'
+            placeholder='请输入可入住人数~'
+            onInput={handleCapacityChange}
+          />
+        </View>
       </View>
     </CustomFullScreenDialog>
   );

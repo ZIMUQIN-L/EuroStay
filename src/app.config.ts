@@ -18,7 +18,7 @@ export default {
     {
       root: 'packageHousePost/',
       pages: ['index'],
-    }
+    },
   ],
   window: {
     backgroundTextStyle: 'light',

@@ -103,3 +103,44 @@ export const houseInfoPost = async (
       });
   });
 };
+
+// 修改房源信息接口
+export const houseInfoUpdate = async (
+  _id,
+  location,
+  startDate,
+  endDate,
+  contact,
+  capacity,
+  houseSetting,
+  houseSurrounding,
+  description,
+  userPreference,
+  images,
+) => {
+  const db = wx.cloud.database();
+  return new Promise((resolve, reject) => {
+    db.collection('CleanHouseInfo')
+      .doc(_id)
+      .update({
+        data: {
+          location: location,
+          start_date: startDate,
+          end_date: endDate,
+          contact: contact,
+          capacity: capacity,
+          houseSetting: houseSetting,
+          houseSurrounding: houseSurrounding,
+          description: description,
+          preference: userPreference,
+          images: images,
+        },
+      })
+      .then(res => {
+        resolve(res.errMsg);
+      })
+      .catch(err => {
+        reject(err.errMsg);
+      });
+  });
+};
