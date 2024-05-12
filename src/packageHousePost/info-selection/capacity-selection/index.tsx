@@ -1,6 +1,6 @@
 import { View, Input } from '@tarojs/components';
 import CustomFullScreenDialog from '@components/CustomFullScreenDialog';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import './index.scss';
 
 const CapacitySelection = ({ onClose, onCapacitySelected }) => {
