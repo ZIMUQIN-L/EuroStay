@@ -138,17 +138,17 @@ const Index = () => {
   // 用户获取用户手机号，可以在小程序企业认证后使用
   const getPhoneNumber = e => {
     if (e.detail.errMsg == 'getPhoneNumber:ok') {
-      const result = wx.cloud.callFunction({
+      const result = Taro.cloud.callFunction({
         name: 'getUserInfo',
         data: {
           type: 'login',
-          id: wx.cloud.CloudID(e.detail.cloudID),
+          id: Taro.cloud.CloudID(e.detail.cloudID),
         },
       });
     } else {
-      wx.hideLoading({
+      Taro.hideLoading({
         complete: res => {
-          wx.showToast({
+          Taro.showToast({
             title: '用户拒绝，获取失败',
             icon: 'none',
           });
