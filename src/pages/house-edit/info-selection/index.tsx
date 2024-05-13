@@ -5,6 +5,9 @@ import {
   CapacitySelectionIcon,
   UtilitySelectionIcon,
   RightBottomArrow,
+  GenderIcon,
+  SurroundingIcon,
+  PreferenceIcon,
 } from '@utils/cloudIcons';
 
 import LocationSelection from './location-selection';
@@ -12,12 +15,22 @@ import DateSelection from './date-selection';
 import CapacitySelection from './capacity-selection';
 import UtilitySelection from './utility-selection';
 import './index.scss';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import SurroundingSelection from './surrounding-selection';
 import PreferenceSelection from './preference-selection';
 import GenderSelection from './gender-selection';
 
-const InfoSelection = ({ onUserInfoEdit }) => {
+const InfoSelection = ({
+  prevLocation,
+  prevStartDate,
+  prevEndDate,
+  prevCapacity,
+  prevGender,
+  prevUtility,
+  prevSurrounding,
+  prevPreference,
+  onUserInfoEdit,
+}) => {
   const [isLocationSelection, setIsLocationSelection] = useState(false);
   const [isDateSelection, setIsDateSelection] = useState(false);
   const [isCapacitySelection, setIsCapacitySelection] = useState(false);
@@ -26,7 +39,25 @@ const InfoSelection = ({ onUserInfoEdit }) => {
   const [isSurroundingSelection, setIsSurroundingSelection] = useState(false);
   const [isPreferenceSelection, setIsPreferenceSelection] = useState(false);
   const [isGenderSelection, setIsGenderSelection] = useState(false);
-
+  useEffect(() => {
+    setCapacity(prevCapacity);
+    setUtility(prevUtility);
+    setPreference(prevPreference);
+    setEndDate(prevEndDate);
+    setSurrounding(prevSurrounding);
+    setStartDate(prevStartDate);
+    setLocation(prevLocation);
+    setGender(prevGender);
+  }, [
+    prevLocation,
+    prevStartDate,
+    prevEndDate,
+    prevCapacity,
+    prevGender,
+    prevUtility,
+    prevSurrounding,
+    prevPreference,
+  ]);
   const handleLocationSelection = () => {
     setIsLocationSelection(true);
   };
@@ -35,9 +66,8 @@ const InfoSelection = ({ onUserInfoEdit }) => {
     setIsDateSelection(true);
   };
 
-  // user select date
-  const [startDate, setStartDate] = useState<Date>();
-  const [endDate, setEndDate] = useState<Date>();
+  const [startDate, setStartDate] = useState<Date>(prevStartDate);
+  const [endDate, setEndDate] = useState<Date>(prevEndDate);
   const handleUserDateEdit = (start, end) => {
     setStartDate(start);
     setEndDate(end);
@@ -54,7 +84,7 @@ const InfoSelection = ({ onUserInfoEdit }) => {
   };
 
   // 修改capacity
-  const [capacity, setCapacity] = useState(0);
+  const [capacity, setCapacity] = useState(prevCapacity);
 
   const handleCapacitySelection = () => {
     setIsCapacitySelection(true);
@@ -106,7 +136,7 @@ const InfoSelection = ({ onUserInfoEdit }) => {
   };
 
   // post房源location信息
-  const [location, setLocation] = useState('');
+  const [location, setLocation] = useState(prevLocation);
   const handleLocationUserEdit = editedLocation => {
     onUserInfoEdit(
       editedLocation,
@@ -122,7 +152,7 @@ const InfoSelection = ({ onUserInfoEdit }) => {
   };
 
   // post房源性别信息部分
-  const [gender, setGender] = useState({});
+  const [gender, setGender] = useState(prevGender);
   const handleUserGenderEdit = editedGender => {
     onUserInfoEdit(
       location,
@@ -138,7 +168,7 @@ const InfoSelection = ({ onUserInfoEdit }) => {
   };
 
   // post房源信息设施部分
-  const [utility, setUtility] = useState({});
+  const [utility, setUtility] = useState(prevUtility);
   const handleUserUtilityEdit = editedUtility => {
     onUserInfoEdit(
       location,
@@ -154,7 +184,7 @@ const InfoSelection = ({ onUserInfoEdit }) => {
   };
 
   // post房源周边信息部分
-  const [surrounding, setSurrounding] = useState({});
+  const [surrounding, setSurrounding] = useState(prevSurrounding);
   const handleUserSurroundingEdit = editedSurrounding => {
     setSurrounding(editedSurrounding);
     onUserInfoEdit(
@@ -170,7 +200,7 @@ const InfoSelection = ({ onUserInfoEdit }) => {
   };
 
   // post房主偏好信息
-  const [preference, setPreference] = useState({});
+  const [preference, setPreference] = useState(prevPreference);
   const handleUserPreferenceEdit = editedPreference => {
     onUserInfoEdit(
       location,
@@ -227,6 +257,8 @@ const InfoSelection = ({ onUserInfoEdit }) => {
             </View>
             {isDateSelection && (
               <DateSelection
+                prevStartDate={startDate}
+                prevEndDate={endDate}
                 onClose={handleClose}
                 onDateSelected={handleUserDateEdit}
               />
@@ -250,6 +282,7 @@ const InfoSelection = ({ onUserInfoEdit }) => {
             </View>
             {isCapacitySelection && (
               <CapacitySelection
+                prevCapacity={capacity}
                 onClose={handleClose}
                 onCapacitySelected={handleUserCapacityEdit}
               />
@@ -263,7 +296,7 @@ const InfoSelection = ({ onUserInfoEdit }) => {
           <View className='selection-content'>
             <View className='selection-left'>
               <View className='icon-container'>
-                <Image src={CapacitySelectionIcon} className='capacity-pic' />
+                <Image src={GenderIcon} className='capacity-pic' />
               </View>
               <Text>住客性别</Text>
             </View>
@@ -277,6 +310,7 @@ const InfoSelection = ({ onUserInfoEdit }) => {
             </View>
             {isGenderSelection && (
               <GenderSelection
+                prevGender={gender}
                 onClose={handleClose}
                 onGenderSelected={handleUserGenderEdit}
               />
@@ -313,11 +347,16 @@ const InfoSelection = ({ onUserInfoEdit }) => {
               <Text>设施</Text>
             </View>
             <View className='selection-right' onClick={handleUtilitySelection}>
-              <Text>请选择 </Text>
+              <Text>
+                {Object.keys(utility).length !== 0
+                  ? Object.keys(utility).join(', ')
+                  : `请选择`}{' '}
+              </Text>
               <Image src={RightBottomArrow} />
             </View>
             {isUtilitySelection && (
               <UtilitySelection
+                prevUtility={utility}
                 onClose={handleClose}
                 onUtilitySelected={handleUserUtilityEdit}
               />
@@ -331,7 +370,7 @@ const InfoSelection = ({ onUserInfoEdit }) => {
           <View className='selection-content'>
             <View className='selection-left'>
               <View className='icon-container'>
-                <Image src={UtilitySelectionIcon} className='utility-pic' />
+                <Image src={SurroundingIcon} className='utility-pic' />
               </View>
               <Text>周边信息</Text>
             </View>
@@ -339,11 +378,16 @@ const InfoSelection = ({ onUserInfoEdit }) => {
               className='selection-right'
               onClick={handleSurroundingSelection}
             >
-              <Text>请选择 </Text>
+              <Text>
+                {Object.keys(surrounding).length !== 0
+                  ? Object.keys(surrounding).join(', ')
+                  : `请选择`}{' '}
+              </Text>
               <Image src={RightBottomArrow} />
             </View>
             {isSurroundingSelection && (
               <SurroundingSelection
+                prevSurrounding={surrounding}
                 onClose={handleClose}
                 onSurroundingSelected={handleUserSurroundingEdit}
               />
@@ -357,7 +401,7 @@ const InfoSelection = ({ onUserInfoEdit }) => {
           <View className='selection-content'>
             <View className='selection-left'>
               <View className='icon-container'>
-                <Image src={UtilitySelectionIcon} className='utility-pic' />
+                <Image src={PreferenceIcon} className='utility-pic' />
               </View>
               <Text>房主偏好</Text>
             </View>
@@ -365,11 +409,16 @@ const InfoSelection = ({ onUserInfoEdit }) => {
               className='selection-right'
               onClick={handlePreferenceSelection}
             >
-              <Text>请选择 </Text>
+              <Text>
+                {Object.keys(preference).length !== 0
+                  ? Object.keys(preference).join(', ')
+                  : `请选择`}{' '}
+              </Text>
               <Image src={RightBottomArrow} />
             </View>
             {isPreferenceSelection && (
               <PreferenceSelection
+                prevPreference={preference}
                 onClose={handleClose}
                 onPreferenceSelected={handleUserPreferenceEdit}
               />

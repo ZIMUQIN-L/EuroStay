@@ -1,19 +1,37 @@
 import { AtCalendar } from 'taro-ui';
 import { View, Text } from '@tarojs/components';
 import { AtToast } from 'taro-ui';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { formatToday, calculateDaysBetweenDates } from '@utils/dateUtil';
 import './index.scss';
-
-const CustomDateRangePicker = ({ onDateChange }) => {
+interface CustomDateRangePickerProps {
+  onDateChange: (startDate, endDate) => void;
+  initialValue?: {
+    startDate: Date | null | string;
+    endDate: Date | null | string;
+  };
+}
+const CustomDateRangePicker: React.FC<CustomDateRangePickerProps> = ({
+  onDateChange,
+  initialValue = { startDate: null, endDate: null },
+}) => {
   const today = formatToday();
   const [errorMsg, setErrorMsg] = useState('');
   const [isToastOpened, setIsToastOpened] = useState(false);
-  const [startDate, setStartDate] = useState(today);
-  const [endDate, setEndDate] = useState(null);
+  const [startDate, setStartDate] = useState(
+    initialValue.startDate != null ? initialValue.startDate : today,
+  );
+  const [endDate, setEndDate] = useState(
+    initialValue.endDate != null ? initialValue.endDate : null,
+  );
   const [isCalendarVisible, setIsCalendarVisible] = useState(false);
   const [isSelected, setIsSelected] = useState(false);
   const [days, setDays] = useState(0);
+  useEffect(() => {
+    if (initialValue.startDate != null && initialValue.endDate != null) {
+      setIsSelected(true);
+    }
+  }, []);
 
   const handleDateChange = (startValue, endValue) => {
     setStartDate(startValue);

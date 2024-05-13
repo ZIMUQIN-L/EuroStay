@@ -4,11 +4,18 @@ import './index.scss';
 import { useEffect, useState } from 'react';
 import HouseGenderPreference from '@components/HouseGenderPreference';
 
-const GenderSelection = ({ onClose, onGenderSelected }) => {
+const GenderSelection = ({ prevGender, onClose, onGenderSelected }) => {
   const [isFemaleSelected, setIsFemaleSelected] = useState<Boolean>(false);
   const [isMaleSelected, setIsMaleSelected] = useState<Boolean>(false);
   const [isAllGenderSelected, setIsAllGenderSelected] =
     useState<Boolean>(false);
+  useEffect(() => {
+    setIsFemaleSelected(prevGender['限女生'] ? prevGender['限女生'] : false);
+    setIsMaleSelected(prevGender['限男生'] ? prevGender['限男生'] : false);
+    setIsAllGenderSelected(
+      prevGender['不限性别'] ? prevGender['不限性别'] : false,
+    );
+  }, [prevGender]);
 
   const handleSubmitGenderSelection = () => {
     const selectedItems = {

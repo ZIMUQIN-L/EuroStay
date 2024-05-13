@@ -93,7 +93,7 @@ const Index = () => {
         };
         GlobalStore.userInfo = updatedGlobalUserInfo;
         Taro.hideLoading();
-        Taro.switchTab({
+        Taro.reLaunch({
           url: `/pages/user-profile/index`,
         });
       } else {

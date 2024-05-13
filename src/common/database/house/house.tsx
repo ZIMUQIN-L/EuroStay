@@ -119,6 +119,7 @@ export const houseInfoUpdate = async (
   images,
 ) => {
   const db = wx.cloud.database();
+  const _ = db.command;
   return new Promise((resolve, reject) => {
     db.collection('CleanHouseInfo')
       .doc(_id)
@@ -129,10 +130,10 @@ export const houseInfoUpdate = async (
           end_date: endDate,
           contact: contact,
           capacity: capacity,
-          houseSetting: houseSetting,
-          houseSurrounding: houseSurrounding,
+          houseSetting: _.set(houseSetting),
+          houseSurrounding: _.set(houseSurrounding),
           description: description,
-          preference: userPreference,
+          preference: _.set(userPreference),
           images: images,
         },
       })

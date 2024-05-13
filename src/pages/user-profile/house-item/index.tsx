@@ -8,8 +8,8 @@ const HouseItem: React.FC<HouseItemProps> = house => {
   const imageUrl = house.images.length > 0 ? house.images[0] : DefaultHouse;
   // jump to the edit page
   const handleEditHomeClick = () => {
-    Taro.switchTab({
-      url: `/pages/house-edit/index`,
+    Taro.redirectTo({
+      url: `/pages/house-edit/index?id=${house._id}`,
     });
   };
 

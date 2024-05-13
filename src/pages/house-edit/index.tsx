@@ -1,24 +1,65 @@
 import { View, Text } from '@tarojs/components';
-import CustomTabBar from '@components/CustomTabBar';
 import { observer } from 'mobx-react';
 import ImagesUpload from './images-upload';
 import HouseDes from './house-des';
+import HouseContact from './house-contact';
 import { useState, useEffect } from 'react';
+import { useRouter } from '@tarojs/taro';
 import InfoSelection from './info-selection';
 import './index.scss';
 import Taro from '@tarojs/taro';
-import { houseInfoPost } from '@common/database/house/house';
+import { houseInfoUpdate } from '@common/database/house/house';
 import { UserItemProps } from '@utils/interfaces';
 import GlobalStore from '@store/GlobalStore';
+import { houseDetailSearch } from '../../common/database/house/house';
+import { HouseDetailItemProps } from '@utils/interfaces';
 
 const Index = () => {
+  const router = useRouter();
+  const houseId = router?.params?.id;
   const [userInfo, setUserInfo] = useState<UserItemProps>(GlobalStore.userInfo);
+
+  // 房源属性信息
+  const [images, setImages] = useState<string[]>([]);
+  // 房源info属性
+  const [startDate, setStartDate] = useState<string | Date>();
+  const [endDate, setEndDate] = useState<string | Date>();
+  const [capacity, setCapacity] = useState(0);
+  const [location, setLocation] = useState('');
+  const [gender, setGender] = useState({});
+  const [utility, setUtility] = useState({});
+  const [setting, setSetting] = useState({});
+  const [surrounding, setSurrounding] = useState({});
+  const [preference, setPreference] = useState({});
+
   useEffect(() => {
     const userInfoList: UserItemProps = GlobalStore.userInfo;
     setUserInfo(userInfoList);
+    houseDetailSearch(houseId).then((houseDetail: HouseDetailItemProps) => {
+      setImages(houseDetail.images);
+      setStartDate(houseDetail.start_date);
+      setEndDate(houseDetail.end_date);
+      setCapacity(houseDetail.capacity);
+      setLocation(houseDetail.location);
+      setUtility(houseDetail.houseSetting);
+      setSurrounding(houseDetail.houseSurrounding);
+      setHouseDescription(houseDetail.description);
+      setUserContact(houseDetail.contact);
+      const genderKeys = ['不限性别', '限女生', '限男生'];
+      const genderDict = {};
+      const preferenceDict = {};
+      for (const [key, value] of Object.entries(houseDetail.preference)) {
+        if (genderKeys.includes(key)) {
+          genderDict[key] = value;
+        } else {
+          preferenceDict[key] = value;
+        }
+      }
+      console.log(preferenceDict, genderDict);
+      setPreference(preferenceDict);
+      setGender(genderDict);
+    });
   }, []);
-
-  const [images, setImages] = useState<string[]>([]);
 
   // 处理照片上传的逻辑
   const handleUploadImage = uploadedImagePath => {
@@ -37,15 +78,11 @@ const Index = () => {
     setHouseDescription(inputDescription);
   };
 
-  // 房源info属性
-  const [startDate, setStartDate] = useState<Date>();
-  const [endDate, setEndDate] = useState<Date>();
-  const [capacity, setCapacity] = useState(0);
-  const [location, setLocation] = useState('');
-  const [gender, setGender] = useState({});
-  const [utility, setUtility] = useState({});
-  const [surrounding, setSurrounding] = useState({});
-  const [preference, setPreference] = useState({});
+  // 用户联系方式描述
+  const [userContact, setUserContact] = useState<string>('');
+  const handleUserContactEdit = inputContact => {
+    setUserContact(inputContact);
+  };
 
   // 获取房源info信息
   const handleUserInfoEdit = (
@@ -69,22 +106,29 @@ const Index = () => {
   };
 
   // post房源信息
-  const handleClickPostSubmit = () => {
-    if (images.length == 0) {
+  const handleClickEditUpdate = () => {
+    if (images.length === 0) {
       Taro.showToast({
         title: '请上传房源图片~',
         icon: 'error',
         mask: true,
         duration: 2000,
       });
-    } else if (houseDescription == '') {
+    } else if (houseDescription === '') {
       Taro.showToast({
         title: '请填写房源描述~',
         icon: 'error',
         mask: true,
         duration: 2000,
       });
-    } else if (location == '') {
+    } else if (userContact === '') {
+      Taro.showToast({
+        title: '请填写联系方式~',
+        icon: 'error',
+        mask: true,
+        duration: 2000,
+      });
+    } else if (location === '') {
       Taro.showToast({
         title: '请填写房源地址~',
         icon: 'error',
@@ -98,7 +142,7 @@ const Index = () => {
         mask: true,
         duration: 2000,
       });
-    } else if (capacity == 0) {
+    } else if (capacity === 0) {
       Taro.showToast({
         title: '请选择可住人数~',
         icon: 'error',
@@ -128,25 +172,40 @@ const Index = () => {
         title: '上传中',
         mask: true,
       });
+      console.log(preference, gender);
       const mergedPreference = { ...preference, ...gender };
-      houseInfoPost(
+      houseInfoUpdate(
+        houseId,
         location,
         startDate,
         endDate,
-        '', // for contact info
+        userContact,
         capacity,
         utility,
         surrounding,
         houseDescription,
         mergedPreference,
         images,
-        userInfo._openid,
-      ).then(res => {
-        Taro.hideLoading();
-        Taro.switchTab({
-          url: `/pages/home/index`,
+      )
+        .then(res => {
+          Taro.hideLoading();
+          Taro.showToast({
+            title: '更新成功!',
+            icon: 'success',
+            duration: 2000,
+          });
+          Taro.reLaunch({
+            url: `/pages/user-profile/index`,
+          });
+        })
+        .catch(err => {
+          Taro.hideLoading();
+          Taro.showToast({
+            title: '更新失败，请重试',
+            icon: 'error',
+            duration: 2000,
+          });
         });
-      });
     }
   };
   return (
@@ -156,14 +215,30 @@ const Index = () => {
         onUploadImage={handleUploadImage}
         onDeleteImage={handleDeleteImage}
       />
-      <HouseDes onUserDescriptionEdit={handleUserDescriptionEdit} />
-      <InfoSelection onUserInfoEdit={handleUserInfoEdit} />
+      <HouseDes
+        description={houseDescription}
+        onUserDescriptionEdit={handleUserDescriptionEdit}
+      />
+      <HouseContact
+        prevContact={userContact}
+        onUserContactEdit={handleUserContactEdit}
+      />
+      <InfoSelection
+        prevLocation={location}
+        prevCapacity={capacity}
+        prevStartDate={startDate}
+        prevEndDate={endDate}
+        prevGender={gender}
+        prevPreference={preference}
+        prevSurrounding={surrounding}
+        prevUtility={utility}
+        onUserInfoEdit={handleUserInfoEdit}
+      />
       <View style={{ backgroundColor: 'white' }}>
-        <View className='post-submit-button' onClick={handleClickPostSubmit}>
+        <View className='post-submit-button' onClick={handleClickEditUpdate}>
           <Text>发布房源</Text>
         </View>
       </View>
-      <CustomTabBar />
     </View>
   );
 };

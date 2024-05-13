@@ -1,15 +1,31 @@
 import { View } from '@tarojs/components';
 import CustomFullScreenDialog from '@components/CustomFullScreenDialog';
 import './index.scss';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import RoomSurrounding from '@components/RoomSurrounding';
 
-const SurroundingSelection = ({ onClose, onSurroundingSelected }) => {
+const SurroundingSelection = ({
+  prevSurrounding,
+  onClose,
+  onSurroundingSelected,
+}) => {
   const [isSubwaySelected, setIsSubwaySelected] = useState<Boolean>(false);
   const [isAttractionSelected, setIsAttractionSelected] =
     useState<Boolean>(false);
   const [isChineseSuperMartSelected, setIsChineseSuperMartSelected] =
     useState<Boolean>(false);
+
+  useEffect(() => {
+    setIsSubwaySelected(
+      prevSurrounding['近地铁'] ? prevSurrounding['近地铁'] : false,
+    );
+    setIsAttractionSelected(
+      prevSurrounding['近景点'] ? prevSurrounding['近景点'] : false,
+    );
+    setIsChineseSuperMartSelected(
+      prevSurrounding['近中超'] ? prevSurrounding['近中超'] : false,
+    );
+  }, [prevSurrounding]);
 
   const handleSubmitSurroundingSelection = () => {
     const selectedItems = {

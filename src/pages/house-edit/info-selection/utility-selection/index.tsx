@@ -1,10 +1,10 @@
 import { View } from '@tarojs/components';
 import CustomFullScreenDialog from '@components/CustomFullScreenDialog';
 import './index.scss';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import RoomFacility from '@components/RoomFacility';
 
-const UtilitySelection = ({ onClose, onUtilitySelected }) => {
+const UtilitySelection = ({ prevUtility, onClose, onUtilitySelected }) => {
   const [isWiFiSelected, setIsWiFiSelected] = useState<Boolean>(false);
   const [isBathSelected, setIsBathSelected] = useState<Boolean>(false);
   const [isWashMachineSelected, setIsWashMachineSelected] =
@@ -16,6 +16,27 @@ const UtilitySelection = ({ onClose, onUtilitySelected }) => {
     useState<Boolean>(false);
   const [isSofaSelected, setIsSofaSelected] = useState<Boolean>(false);
   const [isHeaterSelected, setIsHeaterSelected] = useState<Boolean>(false);
+
+  useEffect(() => {
+    setIsWiFiSelected(prevUtility['WIFI'] ? prevUtility['WIFI'] : false);
+    setIsBathSelected(
+      prevUtility['独立卫浴'] ? prevUtility['独立卫浴'] : false,
+    );
+    setIsWashMachineSelected(
+      prevUtility['洗衣机'] ? prevUtility['洗衣机'] : false,
+    );
+    setIsKitchenSelected(
+      prevUtility['独立厨房'] ? prevUtility['独立厨房'] : false,
+    );
+    setIsRefrigeratorSelected(
+      prevUtility['冰箱'] ? prevUtility['冰箱'] : false,
+    );
+    setIsAirConditionSelected(
+      prevUtility['空调'] ? prevUtility['空调'] : false,
+    );
+    setIsSofaSelected(prevUtility['沙发'] ? prevUtility['沙发'] : false);
+    setIsHeaterSelected(prevUtility['暖气'] ? prevUtility['暖气'] : false);
+  }, [prevUtility]);
 
   const handleSubmitUtilitySelection = () => {
     const selectedItems = {

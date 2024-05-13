@@ -55,6 +55,7 @@
   flex-direction: row;
   align-items: center;
   align-content: center;
+  max-width: 60%;
   Image {
     width: 24px;
     height: 24px;
@@ -63,6 +64,9 @@
   Text {
     color: #979797;
     font-size: 28px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 }
 .post-submit-button {

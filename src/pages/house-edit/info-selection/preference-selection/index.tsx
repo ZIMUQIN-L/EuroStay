@@ -4,12 +4,32 @@ import './index.scss';
 import { useEffect, useState } from 'react';
 import HouseOwnerPreference from '@components/HouseOwnerPreference';
 
-const PreferenceSelection = ({ onClose, onPreferenceSelected }) => {
+const PreferenceSelection = ({
+  prevPreference,
+  onClose,
+  onPreferenceSelected,
+}) => {
   const [isSmokeSelected, setIsSmokeSelected] = useState<Boolean>(false);
   const [isPetSelected, setIsPetSelected] = useState<Boolean>(false);
   const [isExchangeSelected, setIsExchangeSelected] = useState<Boolean>(false);
   const [isBeddingSelected, setIsBeddingSelected] = useState<Boolean>(false);
   const [isRentSelected, setIsRentSelected] = useState<Boolean>(false);
+
+  useEffect(() => {
+    setIsSmokeSelected(
+      prevPreference['可吸烟'] ? prevPreference['可吸烟'] : false,
+    );
+    setIsPetSelected(
+      prevPreference['宠物友好'] ? prevPreference['宠物友好'] : false,
+    );
+    setIsExchangeSelected(
+      prevPreference['换宿'] ? prevPreference['换宿'] : false,
+    );
+    setIsBeddingSelected(
+      prevPreference['换洗床具'] ? prevPreference['换洗床具'] : false,
+    );
+    setIsRentSelected(prevPreference['短租'] ? prevPreference['短租'] : false);
+  }, [prevPreference]);
 
   const handleSubmitPreferenceSelection = () => {
     const selectedItems = {

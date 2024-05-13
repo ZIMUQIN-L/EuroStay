@@ -1,17 +1,20 @@
-import { View, Text, Slider } from '@tarojs/components';
+import { View, Input } from '@tarojs/components';
 import CustomFullScreenDialog from '@components/CustomFullScreenDialog';
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import './index.scss';
 
-const CapacitySelection = ({ onClose, onCapacitySelected }) => {
-  const [capacity, setCapacity] = useState(1);
+const CapacitySelection = ({ prevCapacity, onClose, onCapacitySelected }) => {
+  const [capacity, setCapacity] = useState(prevCapacity);
   const handleSubmitCapacitySelection = () => {
     onCapacitySelected(capacity);
     onClose();
   };
+  useEffect(() => {
+    setCapacity(prevCapacity);
+  }, [prevCapacity]);
 
   const handleCapacityChange = e => {
-    setCapacity(e.detail.value);
+    setCapacity(Number(e.detail.value));
   };
 
   return (
@@ -20,16 +23,15 @@ const CapacitySelection = ({ onClose, onCapacitySelected }) => {
       onClose={onClose}
       onSubmit={handleSubmitCapacitySelection}
     >
-      <View className='capacity-slider'>
-        <Slider
-          className='capacity-slider'
-          step={1}
-          value={capacity}
-          showValue
-          min={1}
-          max={10}
-          onChange={handleCapacityChange}
-        />
+      <View className='capacity-text-container' style={{ minHeight: '30px' }}>
+        <View className='capacity-text'>
+          <Input
+            type='number'
+            value={capacity}
+            placeholder='请输入可入住人数~'
+            onInput={handleCapacityChange}
+          />
+        </View>
       </View>
     </CustomFullScreenDialog>
   );
