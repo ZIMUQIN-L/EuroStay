@@ -12,7 +12,7 @@ import { userHouseInfoSearch } from '@common/database/user/user';
 const Index = () => {
   const [user, setUser] = useState<UserItemProps>(GlobalStore.userInfo);
   // 用户拥有的房源信息
-  const [houseList, setHouseList] = useState<HouseItemProps[]>([]); // HouseItemProps[]
+  const [houseList, setHouseList] = useState<HouseItemProps[]>([]);
 
   // 在user修改信息后不更新，应该是page没有reload，todo
   useEffect(() => {
@@ -20,13 +20,12 @@ const Index = () => {
     setUser(demoUser);
     userHouseInfoSearch(demoUser._openid).then(
       (houseData: HouseItemProps[]) => {
-        setHouseList(houseData); // Update demoData state with the fetched data
+        setHouseList(houseData);
       },
     );
-    // setHouseList(demoHouseList);
   }, [GlobalStore.userInfo]);
 
-  // 需要优化
+  // TODO: mofidy the page if user is null
   if (!user) {
     return <Text>Loading...</Text>;
   }

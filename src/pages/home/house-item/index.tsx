@@ -22,7 +22,7 @@ const HouseItem: React.FC<HouseItemProps> = house => {
   // 跳转至房源详情
   const toHouseDetail = () => {
     Taro.navigateTo({
-      url: `../../packageHome/house-detail/index?id=${house._id}`,
+      url: `../../packageHouse/house-detail/index?id=${house._id}`,
     });
   };
 

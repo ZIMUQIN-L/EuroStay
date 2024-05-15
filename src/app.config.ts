@@ -12,12 +12,8 @@ export default {
       pages: ['user-edit/index'],
     },
     {
-      root: 'packageHome/',
-      pages: ['house-detail/index'],
-    },
-    {
-      root: 'packageHousePost/',
-      pages: ['index'],
+      root: 'packageHouse/',
+      pages: ['house-detail/index', 'house-post/index'],
     },
   ],
   window: {

@@ -57,7 +57,7 @@ const CustomTabBar: React.FC<CustomTabBarProps> = ({ onHomeSelected }) => {
   };
   const handlePostHouseClick = () => {
     Taro.navigateTo({
-      url: '../../packageHousePost/index',
+      url: '../../packageHouse/house-post/index',
     });
     setShowPost(false);
   };

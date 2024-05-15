@@ -1,6 +1,4 @@
 import { View, Text, Image } from '@tarojs/components';
-// import DefaultHouse from '@assets/images/default-house.png';
-// import DateIcon from '@assets/images/date-icon.svg';
 import Taro from '@tarojs/taro';
 import { HouseItemProps } from '@utils/interfaces';
 import { DefaultHouse, DateIcon } from '@utils/cloudIcons';
@@ -27,7 +25,6 @@ const HouseItem: React.FC<HouseItemProps> = house => {
       >
         <View>
           <Text>
-            {/** 如果房源类型不确定的话，不现实房源类型 */}
             {house.location}
             {house.houseType !== 'unKnown' &&
             house.houseType !== '' &&
