@@ -19,19 +19,27 @@ const Index = () => {
           onClick={() => setActiveTab('houses')}
           style={{ marginRight: '40px' }}
         >
-        {activeTab === 'houses' ? <Image src={HouseSourceSelected} /> : <Image src={HouseSource} />}
+          {activeTab === 'houses' ? (
+            <Image src={HouseSourceSelected} />
+          ) : (
+            <Image src={HouseSource} />
+          )}
           <Text>房源</Text>
         </View>
         <View
           className={`tab-item ${activeTab === 'accomadation' ? 'active' : ''}`}
           onClick={() => setActiveTab('accomadation')}
         >
-          {activeTab === 'accomadation' ? <Image src={AccomadationIconSelected} /> : <Image src={AccomadationIcon} />}
+          {activeTab === 'accomadation' ? (
+            <Image src={AccomadationIconSelected} />
+          ) : (
+            <Image src={AccomadationIcon} />
+          )}
           <Text>求宿</Text>
         </View>
       </View>
       <View className='search-area'>
-      <Houses />
+        <Houses />
       </View>
     </>
   );
