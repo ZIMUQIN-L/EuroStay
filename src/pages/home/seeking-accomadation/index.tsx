@@ -65,9 +65,10 @@ const SeekingAccommodation = () => {
         searchType='accomadation'
       />
       <View className='house-list'>
-        {seekingData.length > 0 && 
-          seekingData.map(item => (<SeekingCard key={item._id} seekingItem={item} />))
-        }
+        {seekingData.length > 0 &&
+          seekingData.map(item => (
+            <SeekingCard key={item._id} seekingItem={item} />
+          ))}
       </View>
       <CustomTabBar />
     </View>
