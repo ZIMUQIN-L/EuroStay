@@ -1,132 +1,39 @@
-import { View, Image, Text } from '@tarojs/components';
-import { observer } from '@store/utils';
-import CustomTabBar from '@components/CustomTabBar';
-import SearchCard from './search-section';
+import { View, Text, Image } from '@tarojs/components';
+import { observer } from 'mobx-react';
+import Houses from './houses';
+import { useState } from 'react';
+import HouseSource from '@assets/images/house-source.svg';
+import HouseSourceSelected from '@assets/images/house-source-selected.svg';
+import AccomadationIcon from '@assets/images/accomadation.svg';
+import AccomadationIconSelected from '@assets/images/accomadation-selected.svg';
 import './index.scss';
-import Taro, { useReachBottom } from '@tarojs/taro';
-import { useState, useEffect } from 'react';
-import HouseItem from './house-item';
-import { houseInfoSearch } from '@common/database/house/house';
-import { HouseItemProps } from '@utils/interfaces';
-import SearchAndFilter from './search-and-filter';
-import { formatToday } from '@utils/dateUtil';
-import { NoDataLogo } from '@utils/cloudIcons';
+
 const Index = () => {
-  Taro.useShareAppMessage(() => {
-    return {
-      title: 'EuroStay欧洲换宿',
-      path: `/pages/index/index`,
-    };
-  });
-  // 上拉进行加载，获取更多房源
-  useReachBottom(() => {
-    houseInfoSearch(
-      userDestination,
-      userStartDate,
-      userEndDate,
-      1,
-      {},
-      {},
-      {},
-      demoData.length,
-    ).then((houseData: HouseItemProps[]) => {
-      setDemoData(prevData => [...prevData, ...houseData]);
-    });
-  });
-
-  const [userDestination, setUserDestination] = useState<string>('');
-
-  const handleDestinationChange = inputDestination => {
-    setUserDestination(inputDestination);
-  };
-
-  const [userStartDate, setUserStartDate] = useState<Date>();
-  const [userEndDate, setUserEndDate] = useState<Date>();
-  const [isClickedSearch, setIsClickedSearch] = useState<Boolean>(false);
-
-  const handleDateChange = (startDate: Date, endDate: Date) => {
-    setUserStartDate(startDate);
-    setUserEndDate(endDate);
-  };
-
-  // delete the testdata for now
-  const [demoData, setDemoData] = useState<HouseItemProps[]>([]);
-
-  const fetchInitialData = () => {
-    const today = formatToday();
-    houseInfoSearch('', today, today).then((houseData: HouseItemProps[]) => {
-      setDemoData(houseData);
-    });
-  };
-
-  useEffect(() => {
-    fetchInitialData();
-  }, []);
-  // useEffect(() => {
-  //   houseInfoSearch('阿姆', '2024-03-24', '2024-03-24').then(
-  //     (houseData: HouseItemProps[]) => {
-  //       setDemoData(houseData); // Update demoData state with the fetched data
-  //     },
-  //   );
-  // }, []);
-
-  const handleClickSearch = () => {
-    houseInfoSearch(userDestination, userStartDate, userEndDate).then(
-      (houseData: HouseItemProps[]) => {
-        setDemoData(houseData);
-      },
-    );
-
-    setIsClickedSearch(true);
-  };
-  const resetState = () => {
-    setUserDestination('');
-    setUserStartDate(undefined);
-    setUserEndDate(undefined);
-    setIsClickedSearch(false);
-    fetchInitialData();
-  };
-
-  // 使用filter进行查询
-  const handleClickFilter = (houseData: HouseItemProps[]) => {
-    setDemoData(houseData);
-  };
+  const [activeTab, setActiveTab] = useState('houses');
 
   return (
-    <View className='home' id='home'>
-      {isClickedSearch ? (
-        <SearchAndFilter
-          onDestinationChange={handleDestinationChange}
-          onDateChange={handleDateChange}
-          onClickSearch={handleClickSearch}
-          userStartDate={userStartDate}
-          userEndDate={userEndDate}
-          destination={userDestination}
-          onClickFilterData={handleClickFilter}
-        />
-      ) : (
-        <SearchCard
-          onDestinationChange={handleDestinationChange}
-          onDateChange={handleDateChange}
-          onClickSearch={handleClickSearch}
-        />
-      )}
-      {demoData.length === 0 ? (
-        <View>
-          <Image src={NoDataLogo} />
-          <Text className='home-nodata-container'>暂未查询到数据~</Text>
+    <>
+      <View className='tab-bar'>
+        <View
+          className={`tab-item ${activeTab === 'houses' ? 'active' : ''}`}
+          onClick={() => setActiveTab('houses')}
+          style={{ marginRight: '40px' }}
+        >
+        {activeTab === 'houses' ? <Image src={HouseSourceSelected} /> : <Image src={HouseSource} />}
+          <Text>房源</Text>
         </View>
-      ) : (
-        <View className='house-list'>
-          {demoData.map(house => (
-            <HouseItem key={house._id} {...house} />
-          ))}
+        <View
+          className={`tab-item ${activeTab === 'accomadation' ? 'active' : ''}`}
+          onClick={() => setActiveTab('accomadation')}
+        >
+          {activeTab === 'accomadation' ? <Image src={AccomadationIconSelected} /> : <Image src={AccomadationIcon} />}
+          <Text>求宿</Text>
         </View>
-      )}
-      <View className='index'>
-        <CustomTabBar onHomeSelected={resetState} />
       </View>
-    </View>
+      <View className='search-area'>
+      <Houses />
+      </View>
+    </>
   );
 };
 

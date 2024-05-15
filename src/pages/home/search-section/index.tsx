@@ -1,8 +1,6 @@
-import { Input, View, Text, Picker, Image, Button } from '@tarojs/components';
+import { Input, View, Text, Picker, Image } from '@tarojs/components';
 import './index.scss';
-import { useState, createContext, useRef, useEffect } from 'react';
-// import RightBottomArrow from '@assets/images/right-bottom-arrow.svg';
-// import SearchIcon from '@assets/images/search.svg';
+import { useState } from 'react';
 import CustomDateRangePicker from '@components/CustomDateRangePicker';
 import { RightBottomArrow, SearchIcon } from '@utils/cloudIcons';
 

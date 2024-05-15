@@ -6,17 +6,17 @@ import { checkImageUrl } from '@utils/validationUtil';
 import { useState, useEffect } from 'react';
 
 const HouseItem: React.FC<HouseItemProps> = house => {
-  const [imageSrc, setImageSrc] = useState('')
+  const [imageSrc, setImageSrc] = useState('');
   useEffect(() => {
     const imageUrl =
-    house.images.length > 0 && checkImageUrl(house.images[0] as string)
-      ? house.images[0]
-      : DefaultHouse;
-    setImageSrc(imageUrl)
-  })
-  
-  const handleImageError = (e) => {
-    setImageSrc(DefaultHouse)
+      house.images.length > 0 && checkImageUrl(house.images[0] as string)
+        ? house.images[0]
+        : DefaultHouse;
+    setImageSrc(imageUrl);
+  });
+
+  const handleImageError = e => {
+    setImageSrc(DefaultHouse);
   };
 
   // 跳转至房源详情
@@ -75,7 +75,12 @@ const HouseItem: React.FC<HouseItemProps> = house => {
 
   return (
     <View className='house-item'>
-      <Image src={imageSrc} className='house-image' onClick={toHouseDetail} onError={handleImageError}/>
+      <Image
+        src={imageSrc}
+        className='house-image'
+        onClick={toHouseDetail}
+        onError={handleImageError}
+      />
 
       <View
         style={{
