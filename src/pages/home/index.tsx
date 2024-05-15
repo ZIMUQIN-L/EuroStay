@@ -4,10 +4,10 @@ import Houses from './houses';
 import { useState } from 'react';
 import HouseSource from '@assets/images/house-source.svg';
 import HouseSourceSelected from '@assets/images/house-source-selected.svg';
-import AccomadationIcon from '@assets/images/accomadation.svg';
-import AccomadationIconSelected from '@assets/images/accomadation-selected.svg';
+import AccommodationIcon from '@assets/images/accommodation.svg';
+import AccommodationIconSelected from '@assets/images/accommodation-selected.svg';
 import './index.scss';
-import SeekingAccomadation from './seeking-accomadation';
+import SeekingAccommodation from './seeking-accomadation';
 
 const Index = () => {
   const [activeTab, setActiveTab] = useState('houses');
@@ -28,19 +28,19 @@ const Index = () => {
           <Text>房源</Text>
         </View>
         <View
-          className={`tab-item ${activeTab === 'accomadation' ? 'active' : ''}`}
-          onClick={() => setActiveTab('accomadation')}
+          className={`tab-item ${activeTab === 'accommodation' ? 'active' : ''}`}
+          onClick={() => setActiveTab('accommodation')}
         >
-          {activeTab === 'accomadation' ? (
-            <Image src={AccomadationIconSelected} />
+          {activeTab === 'accommodation' ? (
+            <Image src={AccommodationIconSelected} />
           ) : (
-            <Image src={AccomadationIcon} />
+            <Image src={AccommodationIcon} />
           )}
           <Text>求宿</Text>
         </View>
       </View>
       <View className='search-area'>
-        {activeTab === 'houses' ? <Houses /> : <SeekingAccomadation />}
+        {activeTab === 'houses' ? <Houses /> : <SeekingAccommodation />}
       </View>
     </>
   );

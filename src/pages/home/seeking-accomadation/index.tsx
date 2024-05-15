@@ -32,7 +32,7 @@ const demoData: SeekingItemProps[] = [
 /**
  * 求宿页面
  */
-const SeekingAccomadation = () => {
+const SeekingAccommodation = () => {
   const [userDestination, setUserDestination] = useState<string>('');
 
   const handleDestinationChange = inputDestination => {
@@ -72,4 +72,4 @@ const SeekingAccomadation = () => {
   );
 };
 
-export default SeekingAccomadation;
+export default SeekingAccommodation;
