@@ -1,4 +1,4 @@
-import { View, Text } from '@tarojs/components';
+import { View, Text, Image } from '@tarojs/components';
 import CustomTabBar from '@components/CustomTabBar';
 import { observer } from 'mobx-react';
 import { useEffect, useState } from 'react';
@@ -7,7 +7,7 @@ import GlobalStore from '@store/GlobalStore';
 import { HouseItemProps, UserItemProps } from '@utils/interfaces';
 import UserInfo from './user-info';
 import { userHouseInfoSearch } from '@common/database/user/user';
-import { AwaitingCheckin, AwaitingComment, AwaitingSeeking, AlreadyContact } from '@utils/cloudIcons';
+import { AwaitingCheckin, AwaitingComment, AwaitingSeeking, AlreadyContact, MyHouseIcon, MyOfferingIcon, MyFavoriteIcon, ValidationIcon, ReportIcon, SettingIcon, RightBottomArrow } from '@utils/cloudIcons';
 
 const actionList = [
   {
@@ -35,32 +35,32 @@ const actionList = [
 const menuList = [
   {
     text: '我的房源',
-    icon: '',
+    icon: MyHouseIcon,
     path: ''
   },
   {
     text: '我的供宿',
-    icon: '',
+    icon: MyOfferingIcon,
     path: ''
   },
   {
     text: '我的收藏',
-    icon: '',
+    icon: MyFavoriteIcon,
     path: ''
   },
   {
     text: '实名认证',
-    icon: '',
+    icon: ValidationIcon,
     path: ''
   },
   {
     text: '反馈咨询',
-    icon: '',
+    icon: ReportIcon,
     path: ''
   },
   {
     text: '设置',
-    icon: '',
+    icon: SettingIcon,
     path: ''
   }
 ]
@@ -87,8 +87,44 @@ const Index = () => {
   }
 
   return (
-    <View className='page-container'>
+    <View className='user-page'>
       <UserInfo {...user} />
+      <View className='action'>
+        <View className='action-text'>
+          <Text>
+            我的求宿
+          </Text>
+          <View>
+            <Text>全部</Text>
+            <Image src={RightBottomArrow} style={{ width: '18px', height: '18px'}}/>
+          </View>
+        </View>
+        <View className='action-list'>
+          {actionList.map((item, index) => (
+            <View key={index} className='action-item'>
+              <Image src={item.icon} style={{ width: '24px', height: '24px'}}/>
+              <Text>{item.text}</Text>
+          </View>))}
+          </View>
+      </View>
+
+      <View className='menu'>
+        <View className='menu-title'>
+          常用功能
+        </View>
+        <View className='menu-list'>
+          {menuList.map((item, index) => (
+            <View key={index} className='menu-item'>
+              <View className='menu-text'>
+                <Image src={item.icon} style={{ width: '24px', height: '24px', 'marginRight': '10px'}}/>
+                <Text>{item.text}</Text>
+              </View>
+              <View>
+                <Image src={RightBottomArrow} style={{ width: '18px', height: '18px'}}/>
+              </View>
+              </View>))}
+              </View>
+        </View>
       
       <CustomTabBar />
     </View>
