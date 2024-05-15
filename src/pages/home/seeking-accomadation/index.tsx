@@ -5,6 +5,7 @@ import { View } from '@tarojs/components';
 import { SeekingItemProps } from '@utils/interfaces';
 import DefaultAvatar from '@assets/images/default-avatar.png';
 import SeekingCard from '../seeking-item';
+import CustomTabBar from '@components/CustomTabBar';
 
 const demoData: SeekingItemProps[] = [
   {
@@ -68,6 +69,7 @@ const SeekingAccommodation = () => {
           seekingData.map(item => (<SeekingCard key={item._id} seekingItem={item} />))
         }
       </View>
+      <CustomTabBar />
     </View>
   );
 };
