@@ -7,63 +7,75 @@ import GlobalStore from '@store/GlobalStore';
 import { HouseItemProps, UserItemProps } from '@utils/interfaces';
 import UserInfo from './user-info';
 import { userHouseInfoSearch } from '@common/database/user/user';
-import { AwaitingCheckin, AwaitingComment, AwaitingSeeking, AlreadyContact, MyHouseIcon, MyOfferingIcon, MyFavoriteIcon, ValidationIcon, ReportIcon, SettingIcon, RightBottomArrow } from '@utils/cloudIcons';
+import {
+  AwaitingCheckin,
+  AwaitingComment,
+  AwaitingSeeking,
+  AlreadyContact,
+  MyHouseIcon,
+  MyOfferingIcon,
+  MyFavoriteIcon,
+  ValidationIcon,
+  ReportIcon,
+  SettingIcon,
+  RightBottomArrow,
+} from '@utils/cloudIcons';
 
 const actionList = [
   {
     text: '已联系',
     icon: AlreadyContact,
-    path: ''
+    path: '',
   },
   {
     text: '待入住',
     icon: AwaitingCheckin,
-    path: ''
+    path: '',
   },
   {
     text: '待点评',
     icon: AwaitingComment,
-    path: ''
+    path: '',
   },
   {
     text: '求宿中',
     icon: AwaitingSeeking,
-    path: ''
-  }
+    path: '',
+  },
 ];
 
 const menuList = [
   {
     text: '我的房源',
     icon: MyHouseIcon,
-    path: ''
+    path: '',
   },
   {
     text: '我的供宿',
     icon: MyOfferingIcon,
-    path: ''
+    path: '',
   },
   {
     text: '我的收藏',
     icon: MyFavoriteIcon,
-    path: ''
+    path: '',
   },
   {
     text: '实名认证',
     icon: ValidationIcon,
-    path: ''
+    path: '',
   },
   {
     text: '反馈咨询',
     icon: ReportIcon,
-    path: ''
+    path: '',
   },
   {
     text: '设置',
     icon: SettingIcon,
-    path: ''
-  }
-]
+    path: '',
+  },
+];
 
 const Index = () => {
   const [user, setUser] = useState<UserItemProps>(GlobalStore.userInfo);
@@ -91,41 +103,51 @@ const Index = () => {
       <UserInfo {...user} />
       <View className='action'>
         <View className='action-text'>
-          <Text>
-            我的求宿
-          </Text>
+          <Text>我的求宿</Text>
           <View>
             <Text>全部</Text>
-            <Image src={RightBottomArrow} style={{ width: '18px', height: '18px'}}/>
+            <Image
+              src={RightBottomArrow}
+              style={{ width: '18px', height: '18px' }}
+            />
           </View>
         </View>
         <View className='action-list'>
           {actionList.map((item, index) => (
             <View key={index} className='action-item'>
-              <Image src={item.icon} style={{ width: '24px', height: '24px'}}/>
+              <Image
+                src={item.icon}
+                style={{ width: '24px', height: '24px' }}
+              />
               <Text>{item.text}</Text>
-          </View>))}
-          </View>
+            </View>
+          ))}
+        </View>
       </View>
 
       <View className='menu'>
-        <View className='menu-title'>
-          常用功能
-        </View>
+        <View className='menu-title'>常用功能</View>
         <View className='menu-list'>
           {menuList.map((item, index) => (
             <View key={index} className='menu-item'>
               <View className='menu-text'>
-                <Image src={item.icon} style={{ width: '24px', height: '24px', 'marginRight': '10px'}}/>
+                <Image
+                  src={item.icon}
+                  style={{ width: '24px', height: '24px', marginRight: '10px' }}
+                />
                 <Text>{item.text}</Text>
               </View>
               <View>
-                <Image src={RightBottomArrow} style={{ width: '18px', height: '18px'}}/>
+                <Image
+                  src={RightBottomArrow}
+                  style={{ width: '18px', height: '18px' }}
+                />
               </View>
-              </View>))}
-              </View>
+            </View>
+          ))}
         </View>
-      
+      </View>
+
       <CustomTabBar />
     </View>
   );
