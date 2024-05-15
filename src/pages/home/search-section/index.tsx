@@ -4,7 +4,12 @@ import { useState } from 'react';
 import CustomDateRangePicker from '@components/CustomDateRangePicker';
 import { RightBottomArrow, SearchIcon } from '@utils/cloudIcons';
 
-const SearchCard = ({ onDestinationChange, onDateChange, onClickSearch }) => {
+const SearchCard = ({
+  onDestinationChange,
+  onDateChange,
+  onClickSearch,
+  searchType,
+}) => {
   const [region, setRegion] = useState('欧洲');
   // 先只保留欧洲
   // const regions = ['欧洲', '亚洲', '北美', '南美', '非洲', '大洋洲'];
@@ -58,11 +63,12 @@ const SearchCard = ({ onDestinationChange, onDateChange, onClickSearch }) => {
       <View className='search-second-line'>
         <CustomDateRangePicker onDateChange={handleDateChange} />
       </View>
-      <View className='search-button' onClick={onClickSearch}>
-        {/* <Button className='search-button'> */}
+      <View
+        className={`search-button ${searchType === 'houses' ? 'houses' : 'accommodation'}`}
+        onClick={onClickSearch}
+      >
         <Image src={SearchIcon} className='search-icon' />
-        <View>搜索房源</View>
-        {/* </Button> */}
+        <View>{searchType === 'houses' ? '搜索房源' : '搜索求宿'}</View>
       </View>
     </View>
   );

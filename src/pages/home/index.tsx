@@ -7,6 +7,7 @@ import HouseSourceSelected from '@assets/images/house-source-selected.svg';
 import AccomadationIcon from '@assets/images/accomadation.svg';
 import AccomadationIconSelected from '@assets/images/accomadation-selected.svg';
 import './index.scss';
+import SeekingAccomadation from './seeking-accomadation';
 
 const Index = () => {
   const [activeTab, setActiveTab] = useState('houses');
@@ -39,7 +40,7 @@ const Index = () => {
         </View>
       </View>
       <View className='search-area'>
-        <Houses />
+        {activeTab === 'houses' ? <Houses /> : <SeekingAccomadation />}
       </View>
     </>
   );

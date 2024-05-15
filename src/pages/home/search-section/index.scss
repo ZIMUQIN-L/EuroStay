@@ -46,7 +46,6 @@
 }
 
 .search-button {
-  background-color: #ffd111;
   margin-top: 20px;
   color: white;
   width: 100% !important;
@@ -55,6 +54,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.houses {
+  background-color: #ffd111;
+}
+.accommodation {
+  background-color: #6b63b9;
 }
 
 .search-icon {

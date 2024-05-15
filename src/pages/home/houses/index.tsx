@@ -112,6 +112,7 @@ const Houses = () => {
           onDestinationChange={handleDestinationChange}
           onDateChange={handleDateChange}
           onClickSearch={handleClickSearch}
+          searchType='houses'
         />
       )}
       {demoData.length === 0 ? (
