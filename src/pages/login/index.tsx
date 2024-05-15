@@ -7,7 +7,7 @@ import GlobalStore from '@store/GlobalStore';
 import { View } from '@tarojs/components';
 import { UserItemProps } from '@utils/interfaces';
 import { userInfoSearch, userInfoAdd } from '@common/database/user/user';
-import Loading from "./loading";
+import Loading from './loading';
 
 import { EuroStay } from '@utils/cloudIcons';
 import { set } from 'mobx';
@@ -34,7 +34,6 @@ const Index = () => {
           Taro.login({
             success: function (res) {
               if (res.code) {
-
                 Taro.cloud
                   .callFunction({
                     name: 'getUserOpenid',
@@ -50,12 +49,13 @@ const Index = () => {
                       (dbUserInfo: UserItemProps[]) => {
                         setDbUserData(dbUserInfo);
                         GlobalStore.userInfo = dbUserInfo[0];
-      
+                        console.log(callbackResult.result);
                         if (dbUserInfo.length >= 1) {
                           Taro.switchTab({
                             url: `/pages/home/index`,
                           });
                         }
+                        setIsLoading(false);
                       },
                     );
                   })
@@ -85,6 +85,7 @@ const Index = () => {
 
   // 处理用户登录请求
   const handleUserLogin = () => {
+    setIsLoading(true);
     Taro.getUserProfile({
       desc: '用户登录',
       success: res => {
@@ -100,6 +101,7 @@ const Index = () => {
               (dbUserInfo: UserItemProps[]) => {
                 GlobalStore.userInfo = dbUserInfo[0];
                 if (dbUserInfo.length >= 1) {
+                  setIsLoading(false);
                   Taro.switchTab({
                     url: `/pages/home/index`,
                   });
@@ -107,13 +109,31 @@ const Index = () => {
               },
             );
           } else {
+            setIsLoading(false);
             errorDialog('登录失败' + errMsg, 'fail');
           }
         });
       },
       fail: err => {
+        setIsLoading(false);
         errorDialog('登录失败' + err.errMsg, 'fail');
       },
+    });
+  };
+
+  const handleUserWithoutLogin = () => {
+    const NoLoginUserInfo: UserItemProps = {
+      _id: '',
+      _openid: '',
+      avatarUrl: '',
+      nickName: '',
+      userDes: '',
+      userOpenid: '',
+      userLocation: '',
+    };
+    GlobalStore.userInfo = NoLoginUserInfo;
+    Taro.switchTab({
+      url: `/pages/home/index`,
     });
   };
 
@@ -151,23 +171,32 @@ const Index = () => {
   const logo = EuroStay;
   return (
     <>
-    { !isLoading ? 
-    (<View className='login-container'>
-      <Toast className='login-toast' open={loginState}>
-        {loginStateText}
-      </Toast>
-      <View className='login-logo-container'>
-        <Image className='login-logo-image' src={logo} />
-      </View>
-      <Button
-        className='login-button'
-        color='primary'
-        onClick={() => handleUserLogin}
-      >
-        微信登陆
-      </Button>
-    </View>) : (
-    <Loading />)}
+      {!isLoading ? (
+        <View className='login-container'>
+          <Toast className='login-toast' open={loginState}>
+            {loginStateText}
+          </Toast>
+          <View className='login-logo-container'>
+            <Image className='login-logo-image' src={logo} />
+          </View>
+          <Button
+            className='login-button'
+            color='primary'
+            onClick={handleUserLogin}
+          >
+            微信登陆
+          </Button>
+          <Button
+            className='enter-button'
+            color='primary'
+            onClick={handleUserWithoutLogin}
+          >
+            直接进入
+          </Button>
+        </View>
+      ) : (
+        <Loading />
+      )}
     </>
   );
 };

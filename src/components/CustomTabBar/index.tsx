@@ -45,20 +45,56 @@ const CustomTabBar: React.FC<CustomTabBarProps> = ({ onHomeSelected }) => {
         onHomeSelected(); // Call onHomeSelected if it exists
       }
     } else {
-      GlobalStore.currentTab = page;
-      Taro.switchTab({
-        url: `/pages/${page}/index`,
-        success: () => {},
-        fail: err => {
-          // 后面可以上报服务器
-        },
-      });
+      if (page == 'user-profile' && GlobalStore.userInfo._id == '') {
+        Taro.showModal({
+          title: '转至登陆页面',
+          content: '请登录后查看个人主页~',
+          success: function (res) {
+            if (res.confirm) {
+              Taro.reLaunch({
+                url: `/pages/login/index`,
+              });
+            } else if (res.cancel) {
+              Taro.switchTab({
+                url: `/pages/home/index`,
+              });
+            }
+          },
+        });
+      } else {
+        GlobalStore.currentTab = page;
+        Taro.switchTab({
+          url: `/pages/${page}/index`,
+          success: () => {},
+          fail: err => {
+            // 后面可以上报服务器
+          },
+        });
+      }
     }
   };
   const handlePostHouseClick = () => {
-    Taro.navigateTo({
-      url: '../../packageHousePost/index',
-    });
+    if (GlobalStore.userInfo._id == '') {
+      Taro.showModal({
+        title: '转至登陆页面',
+        content: '请登录后发布房源~',
+        success: function (res) {
+          if (res.confirm) {
+            Taro.reLaunch({
+              url: `/pages/login/index`,
+            });
+          } else if (res.cancel) {
+            Taro.switchTab({
+              url: `/pages/home/index`,
+            });
+          }
+        },
+      });
+    } else {
+      Taro.navigateTo({
+        url: '../../packageHousePost/index',
+      });
+    }
     setShowPost(false);
   };
 

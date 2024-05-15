@@ -4,19 +4,20 @@ import { HouseItemProps } from '@utils/interfaces';
 import { DefaultHouse, DateIcon } from '@utils/cloudIcons';
 import { checkImageUrl } from '@utils/validationUtil';
 import { useState, useEffect } from 'react';
+import GlobalStore from '@store/GlobalStore';
 
 const HouseItem: React.FC<HouseItemProps> = house => {
-  const [imageSrc, setImageSrc] = useState('')
+  const [imageSrc, setImageSrc] = useState('');
   useEffect(() => {
     const imageUrl =
-    house.images.length > 0 && checkImageUrl(house.images[0] as string)
-      ? house.images[0]
-      : DefaultHouse;
-    setImageSrc(imageUrl)
-  })
-  
-  const handleImageError = (e) => {
-    setImageSrc(DefaultHouse)
+      house.images.length > 0 && checkImageUrl(house.images[0] as string)
+        ? house.images[0]
+        : DefaultHouse;
+    setImageSrc(imageUrl);
+  });
+
+  const handleImageError = e => {
+    setImageSrc(DefaultHouse);
   };
 
   // 跳转至房源详情
@@ -28,14 +29,51 @@ const HouseItem: React.FC<HouseItemProps> = house => {
 
   // 复制用户联系方式至剪贴板
   const onCopyContactToClipboard = () => {
-    if (house.contact == undefined || house.contact == '') {
-      if (house.xhsContact != undefined && house.xhsContact != '') {
+    if (GlobalStore.userInfo._id == '') {
+      Taro.showModal({
+        title: '转至登录页面',
+        content: '请登录后获取联系方式~',
+        success: function (res) {
+          if (res.confirm) {
+            Taro.reLaunch({
+              url: `/pages/login/index`,
+            });
+          }
+        },
+      });
+    } else {
+      if (house.contact == undefined || house.contact == '') {
+        if (house.xhsContact != undefined && house.xhsContact != '') {
+          Taro.setClipboardData({
+            data: house.xhsContact,
+            success: function (res) {
+              Taro.showModal({
+                title: '提示',
+                content: '房主的小红书已复制到剪贴板',
+              });
+            },
+            fail: function (err) {
+              Taro.showToast({
+                title: '联系方式复制失败',
+                icon: 'error',
+                duration: 2000,
+              });
+            },
+          });
+        } else {
+          Taro.showToast({
+            title: '暂无联系方式~',
+            icon: 'error',
+            duration: 2000,
+          });
+        }
+      } else {
         Taro.setClipboardData({
-          data: house.xhsContact,
+          data: house.contact,
           success: function (res) {
             Taro.showModal({
               title: '提示',
-              content: '房主的小红书已复制到剪贴板',
+              content: '房主的微信账号已复制到剪贴板',
             });
           },
           fail: function (err) {
@@ -46,36 +84,18 @@ const HouseItem: React.FC<HouseItemProps> = house => {
             });
           },
         });
-      } else {
-        Taro.showToast({
-          title: '暂无联系方式~',
-          icon: 'error',
-          duration: 2000,
-        });
       }
-    } else {
-      Taro.setClipboardData({
-        data: house.contact,
-        success: function (res) {
-          Taro.showModal({
-            title: '提示',
-            content: '房主的微信账号已复制到剪贴板',
-          });
-        },
-        fail: function (err) {
-          Taro.showToast({
-            title: '联系方式复制失败',
-            icon: 'error',
-            duration: 2000,
-          });
-        },
-      });
     }
   };
 
   return (
     <View className='house-item'>
-      <Image src={imageSrc} className='house-image' onClick={toHouseDetail} onError={handleImageError}/>
+      <Image
+        src={imageSrc}
+        className='house-image'
+        onClick={toHouseDetail}
+        onError={handleImageError}
+      />
 
       <View
         style={{
