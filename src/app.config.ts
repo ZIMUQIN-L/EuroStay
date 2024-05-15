@@ -4,7 +4,6 @@ export default {
     'pages/login/index',
     'pages/home/index',
     'pages/user-profile/index',
-    'pages/house-edit/index',
   ],
   subPackages: [
     {
@@ -13,7 +12,7 @@ export default {
     },
     {
       root: 'packageHouse/',
-      pages: ['house-detail/index', 'house-post/index'],
+      pages: ['house-detail/index', 'house-post/index', 'house-edit/index'],
     },
   ],
   window: {

@@ -7,7 +7,7 @@ const HouseItem: React.FC<HouseItemProps> = house => {
   // jump to the edit page
   const handleEditHomeClick = () => {
     Taro.redirectTo({
-      url: `/pages/house-edit/index?id=${house._id}`,
+      url: `../../packageHouse/house-edit/index?id=${house._id}`,
     });
   };
 
