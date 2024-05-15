@@ -64,3 +64,14 @@ export const FemaleUnselected = `${cloudPath}/female-unselected.svg`;
 export const MaleSelected = `${cloudPath}/male-selected.svg`;
 export const MaleUnselected = `${cloudPath}/male-unselected.svg`;
 export const NoDataLogo = `${cloudPath}/no-data-logo.svg`;
+// user-profile icons
+export const AwaitingSeeking = `${cloudPath}/awaiting_seeking.svg`;
+export const AwaitingComment = `${cloudPath}/awaiting-comment.svg`;
+export const AwaitingCheckin = `${cloudPath}/awaiting_checkin.svg`;
+export const AlreadyContact = `${cloudPath}/already_contact.svg`;
+export const SettingIcon = `${cloudPath}/setting.svg`;
+export const ReportIcon = `${cloudPath}/report.svg`;
+export const ValidationIcon = `${cloudPath}/validation.svg`;
+export const MyFavoriteIcon = `${cloudPath}/myfavorite.svg`;
+export const MyOfferingIcon = `${cloudPath}/myoffering.svg`;
+export const MyHouseIcon = `${cloudPath}/myhouse.svg`;

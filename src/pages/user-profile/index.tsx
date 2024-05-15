@@ -6,8 +6,64 @@ import './index.scss';
 import GlobalStore from '@store/GlobalStore';
 import { HouseItemProps, UserItemProps } from '@utils/interfaces';
 import UserInfo from './user-info';
-import PostedHouse from './posted-house';
 import { userHouseInfoSearch } from '@common/database/user/user';
+import { AwaitingCheckin, AwaitingComment, AwaitingSeeking, AlreadyContact } from '@utils/cloudIcons';
+
+const actionList = [
+  {
+    text: '已联系',
+    icon: AlreadyContact,
+    path: ''
+  },
+  {
+    text: '待入住',
+    icon: AwaitingCheckin,
+    path: ''
+  },
+  {
+    text: '待点评',
+    icon: AwaitingComment,
+    path: ''
+  },
+  {
+    text: '求宿中',
+    icon: AwaitingSeeking,
+    path: ''
+  }
+];
+
+const menuList = [
+  {
+    text: '我的房源',
+    icon: '',
+    path: ''
+  },
+  {
+    text: '我的供宿',
+    icon: '',
+    path: ''
+  },
+  {
+    text: '我的收藏',
+    icon: '',
+    path: ''
+  },
+  {
+    text: '实名认证',
+    icon: '',
+    path: ''
+  },
+  {
+    text: '反馈咨询',
+    icon: '',
+    path: ''
+  },
+  {
+    text: '设置',
+    icon: '',
+    path: ''
+  }
+]
 
 const Index = () => {
   const [user, setUser] = useState<UserItemProps>(GlobalStore.userInfo);
@@ -33,7 +89,7 @@ const Index = () => {
   return (
     <View className='page-container'>
       <UserInfo {...user} />
-      <PostedHouse houseList={houseList} />
+      
       <CustomTabBar />
     </View>
   );
