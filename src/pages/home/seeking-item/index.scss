@@ -1,0 +1,23 @@
+.seeking {
+    background-color: white;
+    width: 90%;
+
+    &-container {
+        padding: 20px;
+
+        Text {
+            font-size: 24px;
+        }
+    }
+
+    &-content {
+        display: flex;
+        flex-direction: row;
+        margin-top: 20px;
+    }
+
+    &-text {
+        display: flex;
+        flex-direction: column;
+    }
+}

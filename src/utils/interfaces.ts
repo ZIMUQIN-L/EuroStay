@@ -16,6 +16,20 @@ export interface HouseItemProps {
 }
 
 /**
+ * 求宿信息接口
+ */
+export interface SeekingItemProps {
+  _id: string;
+  user: string; // 用户的名称
+  avatar: string; // 用户头像的url
+  title: string;
+  gender: string;
+  destination: string;
+  start_date: string;
+  end_date: string;
+}
+
+/**
  * 用户信息接口
  */
 export interface UserItemProps {
