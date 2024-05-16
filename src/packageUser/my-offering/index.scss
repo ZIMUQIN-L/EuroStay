@@ -25,3 +25,9 @@
   background-color: #6b63b9;
   transform: translateX(-50%);
 }
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
