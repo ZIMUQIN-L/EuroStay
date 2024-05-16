@@ -4,7 +4,7 @@ export default {
   subPackages: [
     {
       root: 'packageUser/',
-      pages: ['user-edit/index'],
+      pages: ['user-edit/index', 'my-accomodation/index'],
     },
     {
       root: 'packageHouse/',

@@ -20,6 +20,7 @@ import {
   SettingIcon,
   RightBottomArrow,
 } from '@utils/cloudIcons';
+import Taro from '@tarojs/taro';
 
 const actionList = [
   {
@@ -93,6 +94,12 @@ const Index = () => {
     );
   }, [GlobalStore.userInfo]);
 
+  const handleClickAll = () => {
+    Taro.navigateTo({
+      url: '../../packageUser/my-accomodation/index',
+    });
+  };
+
   // TODO: mofidy the page if user is null
   if (!user) {
     return <Text>Loading...</Text>;
@@ -104,7 +111,7 @@ const Index = () => {
       <View className='action'>
         <View className='action-text'>
           <Text>我的求宿</Text>
-          <View>
+          <View onClick={handleClickAll}>
             <Text>全部</Text>
             <Image
               src={RightBottomArrow}
