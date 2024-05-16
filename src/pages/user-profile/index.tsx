@@ -54,7 +54,7 @@ const menuList = [
   {
     text: '我的供宿',
     icon: MyOfferingIcon,
-    path: '',
+    path: '../../packageUser/my-offering/index',
   },
   {
     text: '我的收藏',
@@ -99,6 +99,12 @@ const Index = () => {
       url: `../../packageUser/my-accommodation/index?tab=${tab}`,
     });
   }
+
+  const navigateToMenu = page => {
+    Taro.navigateTo({
+      url: page,
+    });
+  };
 
   const handleClickAll = () => {
     Taro.navigateTo({
@@ -146,7 +152,11 @@ const Index = () => {
         <View className='menu-title'>常用功能</View>
         <View className='menu-list'>
           {menuList.map((item, index) => (
-            <View key={index} className='menu-item'>
+            <View
+              key={index}
+              className='menu-item'
+              onClick={() => navigateToMenu(item.path)}
+            >
               <View className='menu-text'>
                 <Image
                   src={item.icon}

@@ -32,28 +32,28 @@ const Index = () => {
           <Text>全部</Text>
         </View>
         <View
-          className={isActive('contacted')}
-          onClick={() => setCurrentTab('contacted')}
+          className={isActive('awaitFeedback')}
+          onClick={() => setCurrentTab('awaitFeedback')}
         >
-          <Text>已联系</Text>
+          <Text>待回复</Text>
         </View>
         <View
-          className={isActive('toStay')}
-          onClick={() => setCurrentTab('toStay')}
+          className={isActive('hasFeedback')}
+          onClick={() => setCurrentTab('hasFeedback')}
+        >
+          <Text>已回复</Text>
+        </View>
+        <View
+          className={isActive('awaitStay')}
+          onClick={() => setCurrentTab('awaitStay')}
         >
           <Text>待入住</Text>
         </View>
         <View
-          className={isActive('toComment')}
-          onClick={() => setCurrentTab('toComment')}
+          className={isActive('awaitComment')}
+          onClick={() => setCurrentTab('awaitComment')}
         >
           <Text>待点评</Text>
-        </View>
-        <View
-          className={isActive('toSeek')}
-          onClick={() => setCurrentTab('toSeek')}
-        >
-          <Text>求宿中</Text>
         </View>
       </View>
     </View>
