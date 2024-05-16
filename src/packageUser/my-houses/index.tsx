@@ -43,9 +43,9 @@ const Index = () => {
               {house.capacity}人·{house.gender}
             </Text>
             <View className='house-likes'>
-                <Image src={StarIcon} />
-                <Text>{house.likes}</Text>
-                </View>
+              <Image src={StarIcon} />
+              <Text>{house.likes}</Text>
+            </View>
           </View>
         </View>
       ))}
