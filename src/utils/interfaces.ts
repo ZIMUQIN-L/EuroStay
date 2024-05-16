@@ -42,6 +42,7 @@ export interface UserItemProps {
   userLocation: string;
 }
 
+// 房源详情信息接口
 export interface HouseDetailItemProps {
   _id: string; // 微信自动生成的_id，无法修改其名称
   capacity: number;
@@ -57,4 +58,31 @@ export interface HouseDetailItemProps {
   houseSetting: { [key: string]: any };
   houseSurrounding: { [key: string]: any };
   preference: { [key: string]: any };
+}
+
+// 用户求宿数据接口
+// both for message board and for accommodation page
+export interface UserAccomMessageItemProps {
+  // 必需参数
+  _id: string; // 微信自动生成的_id，无法修改其名称
+  _openid: string;
+  end_date: string;
+  start_date: string;
+  capacity: number;
+  gender: string;
+  location: string;
+  sourceUserOpenid: string;
+  description: string;
+  // 消息类型: withTargetHouse, withoutTargetHouse, both
+  type: string;
+  // 状态: unread, read, contactReceived, booked, checkedIn, rated
+  status: string;
+
+  // optional params
+  contact: string;
+  answerToOwner: string;
+  houseId: string;
+  images: string[];
+  targetUserNickName: string;
+  targetUserOpenid: string;
 }

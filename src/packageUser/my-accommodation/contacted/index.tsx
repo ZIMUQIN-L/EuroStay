@@ -6,9 +6,7 @@ import { DefaultAvatar, DefaultHouse } from '@utils/cloudIcons';
  */
 const ContactedCard = () => {
   // TODO: 查看求宿信息
-  const clickButton = () => {
-
-  };
+  const clickButton = () => {};
   // TODO: 后面需要传入数据
 
   // TODO: 从数据中分析是否回复，并修改topText, buttonText的内容

@@ -80,9 +80,7 @@ const Index = () => {
           <Text>求宿中</Text>
         </View>
       </View>
-      <View className='content'>
-        {renderContent()}
-        </View>
+      <View className='content'>{renderContent()}</View>
     </View>
   );
 };
