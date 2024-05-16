@@ -1,14 +1,22 @@
 import { View, Text } from '@tarojs/components';
 import { observer } from 'mobx-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './index.scss';
+import Taro from '@tarojs/taro';
 
 const Index = () => {
+  const router = Taro.useRouter();
   const [currentTab, setCurrentTab] = useState('all');
 
   const renderContent = () => {
     console.log();
   };
+
+  useEffect(() => {
+    if (router.params.tab) {
+      setCurrentTab(router.params.tab);
+    }
+  }, [router.params]);
 
   const isActive = tabName => {
     return currentTab === tabName ? 'active' : '';

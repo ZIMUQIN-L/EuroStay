@@ -26,22 +26,22 @@ const actionList = [
   {
     text: '已联系',
     icon: AlreadyContact,
-    path: '',
+    tab: 'contacted',
   },
   {
     text: '待入住',
     icon: AwaitingCheckin,
-    path: '',
+    tab: 'toStay',
   },
   {
     text: '待点评',
     icon: AwaitingComment,
-    path: '',
+    tab: 'toComment',
   },
   {
     text: '求宿中',
     icon: AwaitingSeeking,
-    path: '',
+    tab: 'toSeek',
   },
 ];
 
@@ -94,9 +94,15 @@ const Index = () => {
     );
   }, [GlobalStore.userInfo]);
 
+  function navigateToAccommodation(tab) {
+    Taro.navigateTo({
+      url: `../../packageUser/my-accommodation/index?tab=${tab}`,
+    });
+  }
+
   const handleClickAll = () => {
     Taro.navigateTo({
-      url: '../../packageUser/my-accomodation/index',
+      url: '../../packageUser/my-accommodation/index',
     });
   };
 
@@ -121,7 +127,11 @@ const Index = () => {
         </View>
         <View className='action-list'>
           {actionList.map((item, index) => (
-            <View key={index} className='action-item'>
+            <View
+              key={index}
+              className='action-item'
+              onClick={() => navigateToAccommodation(item.tab)}
+            >
               <Image
                 src={item.icon}
                 style={{ width: '24px', height: '24px' }}
