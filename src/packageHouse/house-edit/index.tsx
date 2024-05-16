@@ -55,7 +55,6 @@ const Index = () => {
           preferenceDict[key] = value;
         }
       }
-      console.log(preferenceDict, genderDict);
       setPreference(preferenceDict);
       setGender(genderDict);
     });
@@ -172,7 +171,6 @@ const Index = () => {
         title: '上传中',
         mask: true,
       });
-      console.log(preference, gender);
       const mergedPreference = { ...preference, ...gender };
       houseInfoUpdate(
         houseId,

@@ -4,46 +4,124 @@ import { useEffect, useState } from 'react';
 import './index.scss';
 import Taro from '@tarojs/taro';
 import ContactedCard from './contacted';
-import { UserAccomMessageItemProps } from '@utils/interfaces';
+import { UserAccomMessageItemProps, UserItemProps } from '@utils/interfaces';
+import GlobalStore from '@store/GlobalStore';
+import { accomMessageSearch } from '@common/database/accomMessage/accomMessage';
 /**
  * @description 我的求宿页面，尽量共用一些组件，减少重复代码
  */
 const Index = () => {
   const router = Taro.useRouter();
   const [currentTab, setCurrentTab] = useState('all');
+  const [user, setUser] = useState<UserItemProps>(GlobalStore.userInfo);
+  const [userAccomData, setUserAccomData] = useState<
+    UserAccomMessageItemProps[]
+  >([]);
+  const [userContactedAccomData, setUserContactedAccomData] = useState<
+    UserAccomMessageItemProps[]
+  >([]);
+  const [userBookedAccomData, setUserBookedAccomData] = useState<
+    UserAccomMessageItemProps[]
+  >([]);
+  const [userRateAccomData, setUserRateAccomData] = useState<
+    UserAccomMessageItemProps[]
+  >([]);
+  const [userSeekAccomData, setUserSeekAccomData] = useState<
+    UserAccomMessageItemProps[]
+  >([]);
+
+  useEffect(() => {
+    const demoUser: UserItemProps = GlobalStore.userInfo;
+    setUser(demoUser);
+    accomMessageSearch(demoUser._openid).then(
+      (accomMessages: UserAccomMessageItemProps[]) => {
+        setUserAccomData(accomMessages);
+
+        const contactedAccomData = accomMessages.filter(
+          item =>
+            (item.status == 'read' ||
+              item.status == 'unread' ||
+              item.status == 'contactReceived' ||
+              item.status == 'rejected') &&
+            (item.type == 'withTargetHouse' || item.type == 'both'),
+        );
+        setUserContactedAccomData(contactedAccomData);
+
+        const bookedAccomData = accomMessages.filter(
+          item => item.status == 'booked',
+        );
+        setUserBookedAccomData(bookedAccomData);
+
+        const rateAccomData = accomMessages.filter(
+          item => item.status == 'checkedIn' || item.status == 'rated',
+        );
+        setUserRateAccomData(rateAccomData);
+
+        const seekAccomData = accomMessages.filter(
+          item =>
+            (item.status == 'read' ||
+              item.status == 'unread' ||
+              item.status == 'contactReceived' ||
+              item.status == 'rejected') &&
+            (item.type == 'withoutTargetHouse' || item.type == 'both'),
+        );
+        setUserSeekAccomData(seekAccomData);
+      },
+    );
+  }, []);
 
   const renderContent = () => {
-    const [userAccomData, setUserAccomData] = useState<
-      UserAccomMessageItemProps[]
-    >([]);
-
     switch (currentTab) {
       case 'all':
         return (
           <>
-            <ContactedCard />
-            <ContactedCard />
+            {userAccomData.map(userAccomMessage => (
+              <ContactedCard key={userAccomMessage._id} {...userAccomMessage} />
+            ))}
           </>
         );
       case 'contacted':
-        return <View>已联系</View>;
+        return (
+          <>
+            {userContactedAccomData.map(userAccomMessage => (
+              <ContactedCard key={userAccomMessage._id} {...userAccomMessage} />
+            ))}
+          </>
+        );
       case 'toStay':
-        return <View>待入住</View>;
+        return (
+          <>
+            {userBookedAccomData.map(userAccomMessage => (
+              <ContactedCard key={userAccomMessage._id} {...userAccomMessage} />
+            ))}
+          </>
+        );
       case 'toComment':
-        return <View>待点评</View>;
+        return (
+          <>
+            {userRateAccomData.map(userAccomMessage => (
+              <ContactedCard key={userAccomMessage._id} {...userAccomMessage} />
+            ))}
+          </>
+        );
       case 'toSeek':
-        return <View>求宿中</View>;
+        return (
+          <>
+            {userSeekAccomData.map(userAccomMessage => (
+              <ContactedCard key={userAccomMessage._id} {...userAccomMessage} />
+            ))}
+          </>
+        );
       default:
         return (
           <>
-            <ContactedCard />
-            <ContactedCard />
+            {userAccomData.map(userAccomMessage => (
+              <ContactedCard key={userAccomMessage._id} {...userAccomMessage} />
+            ))}
           </>
         );
     }
   };
-
-  useEffect(() => {}, []);
 
   useEffect(() => {
     if (router.params.tab) {

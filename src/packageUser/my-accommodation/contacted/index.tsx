@@ -1,24 +1,67 @@
 import CustomCard from '../../custom-card';
 import { DefaultAvatar, DefaultHouse } from '@utils/cloudIcons';
-
+import { UserAccomMessageItemProps } from '@utils/interfaces';
 /**
  * @description 我的求宿-已联系
  */
-const ContactedCard = () => {
+const ContactedCard: React.FC<UserAccomMessageItemProps> = userAccomMessage => {
   // TODO: 查看求宿信息
   const clickButton = () => {};
   // TODO: 后面需要传入数据
 
   // TODO: 从数据中分析是否回复，并修改topText, buttonText的内容
+  const handleTopText = status => {
+    switch (status) {
+      case 'unread':
+        return '等待房东联系中';
+      case 'read':
+        return '等待房东联系中';
+      case 'contactReceived':
+        return '房东已回复';
+      case 'rejected':
+        return '房东已拒绝'; // only for type with target
+      case 'booked':
+        return '房客等待入住中';
+      case 'checkedIn':
+        return '等待房客评价中';
+      case 'rated':
+        return '房客已评价';
+      default:
+        return '未知状态';
+    }
+  };
+
+  const handleButtonText = status => {
+    switch (status) {
+      case 'unread':
+        return '等待回复';
+      case 'read':
+        return '等待回复';
+      case 'rejected':
+        return '已被拒绝';
+      case 'contactReceived':
+        return '查看回复';
+      case 'booked':
+        return '等待入住';
+      case 'checkedIn':
+        return '等待评价';
+      case 'rated':
+        return '查看评价';
+      default:
+        return '未知状态';
+    }
+  };
   return (
     <CustomCard
-      title='佛罗伦萨大好房'
-      imageUrl={DefaultHouse}
+      title={userAccomMessage.location}
+      imageUrl={userAccomMessage.images[0]}
       avatarUrl={DefaultAvatar}
-      userInfo='房东: Andre' // TODO: 需要修改
-      dateInfo='2021-09-01 to 2021-09-07' // TODO: 需要修改
-      topText='房东已回复'
-      buttonText='查看回复'
+      userInfo={userAccomMessage.targetUserNickName}
+      dateInfo={
+        userAccomMessage.start_date + ' to ' + userAccomMessage.end_date
+      }
+      topText={handleTopText(userAccomMessage.status)}
+      buttonText={handleButtonText(userAccomMessage.status)}
       clickButton={() => {}}
     />
   );

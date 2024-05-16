@@ -53,9 +53,8 @@ export const accomMessageAdd = async (
   });
 };
 
-export const houseInfoSearch = async (sourceUserOpenid, skip = 0) => {
+export const accomMessageSearch = async (sourceUserOpenid, skip = 0) => {
   const db = wx.cloud.database();
-  const _ = db.command;
   return new Promise((resolve, reject) => {
     db.collection('UserAccomMessage')
       .orderBy('start_date', 'desc')

@@ -75,7 +75,7 @@ export interface UserAccomMessageItemProps {
   description: string;
   // 消息类型: withTargetHouse, withoutTargetHouse, both
   type: string;
-  // 状态: unread, read, contactReceived, booked, checkedIn, rated
+  // 状态: unread, read, contactReceived, rejected, booked, checkedIn, rated
   status: string;
 
   // optional params
