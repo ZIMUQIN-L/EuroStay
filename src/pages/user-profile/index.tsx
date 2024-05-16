@@ -49,7 +49,7 @@ const menuList = [
   {
     text: '我的房源',
     icon: MyHouseIcon,
-    path: '',
+    path: '../../packageUser/my-houses/index',
   },
   {
     text: '我的供宿',
