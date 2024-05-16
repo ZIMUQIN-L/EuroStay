@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import './index.scss';
 import Taro from '@tarojs/taro';
 import ContactedCard from './contacted';
-
+import { UserAccomMessageItemProps } from '@utils/interfaces';
 /**
  * @description 我的求宿页面，尽量共用一些组件，减少重复代码
  */
@@ -13,6 +13,10 @@ const Index = () => {
   const [currentTab, setCurrentTab] = useState('all');
 
   const renderContent = () => {
+    const [userAccomData, setUserAccomData] = useState<
+      UserAccomMessageItemProps[]
+    >([]);
+
     switch (currentTab) {
       case 'all':
         return (
@@ -38,6 +42,8 @@ const Index = () => {
         );
     }
   };
+
+  useEffect(() => {}, []);
 
   useEffect(() => {
     if (router.params.tab) {
