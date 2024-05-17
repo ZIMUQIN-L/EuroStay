@@ -55,31 +55,31 @@ const Index = () => {
     <View>
       <View className='tab-bar'>
         <View className={isActive('all')} onClick={() => setCurrentTab('all')}>
-          <Text>全部</Text>
+          <Text className={`text ${isActive('all')}`}>全部</Text>
         </View>
         <View
           className={isActive('awaitFeedback')}
           onClick={() => setCurrentTab('awaitFeedback')}
         >
-          <Text>待回复</Text>
+          <Text className={`text ${isActive('awaitFeedback')}`}>待回复</Text>
         </View>
         <View
           className={isActive('hasFeedback')}
           onClick={() => setCurrentTab('hasFeedback')}
         >
-          <Text>已回复</Text>
+          <Text className={`text ${isActive('hasFeedback')}`}>已回复</Text>
         </View>
         <View
           className={isActive('awaitStay')}
           onClick={() => setCurrentTab('awaitStay')}
         >
-          <Text>待入住</Text>
+          <Text className={`text ${isActive('awaitStay')}`}>待入住</Text>
         </View>
         <View
           className={isActive('awaitComment')}
           onClick={() => setCurrentTab('awaitComment')}
         >
-          <Text>待点评</Text>
+          <Text className={`text ${isActive('awaitComment')}`}>待点评</Text>
         </View>
       </View>
       <View className='content'>{renderContent()}</View>

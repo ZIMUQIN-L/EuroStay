@@ -10,22 +10,19 @@ const SeekingCard = ({ seekingItem }) => {
   return (
     <View className='seeking'>
       <View className='seeking-container'>
-        <View>{seekingItem.title}</View>
+        <View className='seeking-title'>{seekingItem.title}</View>
         <View className='seeking-content'>
-          <View>
-            <Image
-              src={seekingItem.avatar}
-              style={{ width: '60px', height: '60px', marginRight: '20px' }}
-            />
+          <View className='seeking-avatar'>
+            <Image src={seekingItem.avatar} />
           </View>
           <View className='seeking-text'>
             <Text>求宿者: {seekingItem.user}</Text>
             <Text>性别: {seekingItem.gender}</Text>
             <Text>求宿者: {seekingItem.destination}</Text>
-            <View>
+            <View className='seeking-text-date'>
               <Image
                 src={DateIcon}
-                style={{ width: '20px', height: '20px', marginRight: '5px' }}
+                style={{ width: '18px', height: '18px', marginRight: '5px' }}
               />
               <Text>
                 {seekingItem.start_date} to {seekingItem.end_date}

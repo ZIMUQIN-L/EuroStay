@@ -137,31 +137,31 @@ const Index = () => {
     <View>
       <View className='tab-bar'>
         <View className={isActive('all')} onClick={() => setCurrentTab('all')}>
-          <Text>全部</Text>
+          <Text className={`text ${isActive('all')}`}>全部</Text>
         </View>
         <View
           className={isActive('contacted')}
           onClick={() => setCurrentTab('contacted')}
         >
-          <Text>已联系</Text>
+          <Text className={`text ${isActive('contacted')}`}>已联系</Text>
         </View>
         <View
           className={isActive('toStay')}
           onClick={() => setCurrentTab('toStay')}
         >
-          <Text>待入住</Text>
+          <Text className={`text ${isActive('toStay')}`}>待入住</Text>
         </View>
         <View
           className={isActive('toComment')}
           onClick={() => setCurrentTab('toComment')}
         >
-          <Text>待点评</Text>
+          <Text className={`text ${isActive('toComment')}`}>待点评</Text>
         </View>
         <View
           className={isActive('toSeek')}
           onClick={() => setCurrentTab('toSeek')}
         >
-          <Text>求宿中</Text>
+          <Text className={`text ${isActive('toSeek')}`}>求宿中</Text>
         </View>
       </View>
       <View className='content'>{renderContent()}</View>

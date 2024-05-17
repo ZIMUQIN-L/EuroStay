@@ -32,7 +32,12 @@ const UserInfo: React.FC<UserItemProps> = user => {
         <View style={{ display: 'flex', alignItems: 'center' }}>
           <Image
             src={RightBottomArrow}
-            style={{ width: '40px', height: '40px' }}
+            style={{
+              width: '20px',
+              height: '20px',
+              position: 'absolute',
+              right: '20px',
+            }}
           />
         </View>
       </View>
