@@ -31,6 +31,27 @@ const ContactedCard: React.FC<UserAccomMessageItemProps> = userAccomMessage => {
     }
   };
 
+  const handleButtonClickable = status => {
+    switch (status) {
+      case 'unread':
+        return false;
+      case 'read':
+        return false;
+      case 'rejected':
+        return false;
+      case 'contactReceived':
+        return true;
+      case 'booked':
+        return true;
+      case 'checkedIn':
+        return true;
+      case 'rated':
+        return true;
+      default:
+        return false;
+    }
+  };
+
   const handleButtonText = status => {
     switch (status) {
       case 'unread':
@@ -55,7 +76,6 @@ const ContactedCard: React.FC<UserAccomMessageItemProps> = userAccomMessage => {
     <CustomCard
       title={userAccomMessage.location}
       imageUrl={userAccomMessage.images[0]}
-      avatarUrl={DefaultAvatar}
       userInfo={userAccomMessage.targetUserNickName}
       dateInfo={
         userAccomMessage.start_date + ' to ' + userAccomMessage.end_date
@@ -63,6 +83,7 @@ const ContactedCard: React.FC<UserAccomMessageItemProps> = userAccomMessage => {
       topText={handleTopText(userAccomMessage.status)}
       buttonText={handleButtonText(userAccomMessage.status)}
       clickButton={() => {}}
+      clickable={handleButtonClickable(userAccomMessage.status)}
     />
   );
 };

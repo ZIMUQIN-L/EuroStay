@@ -6,13 +6,14 @@ import './index.scss';
  */
 const CustomCard = ({
   imageUrl,
-  avatarUrl,
   title,
   userInfo,
   dateInfo,
   topText,
   buttonText,
   clickButton,
+  clickable = false,
+  avatarUrl = '',
   buttonTextSecond = '',
   clickButtonSecond = () => {}, // 第二个按钮可选参数
 }) => {
@@ -28,14 +29,21 @@ const CustomCard = ({
           <Text>{topText}</Text>
         </View>
         <View className='card-right-middle'>
-          <Image src={avatarUrl} />
+          <View>{avatarUrl != '' && <Image src={avatarUrl} />}</View>
           <View className='card-right-middle-text'>
             <Text>{userInfo}</Text>
             <Text>{dateInfo}</Text>
           </View>
         </View>
         <View className='card-right-bottom'>
-          <View onClick={clickButton} className='card-right-bottom-button'>
+          <View
+            onClick={clickable ? clickButton : null}
+            className={
+              clickable
+                ? 'card-right-bottom-button'
+                : 'card-right-bottom-button-noclick'
+            }
+          >
             <Text>{buttonText}</Text>
           </View>
           {buttonTextSecond && (
