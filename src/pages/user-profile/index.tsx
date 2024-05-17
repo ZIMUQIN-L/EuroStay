@@ -120,14 +120,20 @@ const Index = () => {
   return (
     <View className='user-page'>
       <UserInfo {...user} />
+
       <View className='action'>
         <View className='action-text'>
-          <Text>我的求宿</Text>
+          <Text className='action-text-title'>我的求宿</Text>
           <View onClick={handleClickAll}>
-            <Text>全部</Text>
+            <Text className='action-text-to-see-all'>全部</Text>
             <Image
               src={RightBottomArrow}
-              style={{ width: '18px', height: '18px' }}
+              style={{
+                width: '12px',
+                height: '12px',
+                position: 'relative',
+                top: '1px',
+              }}
             />
           </View>
         </View>
@@ -139,6 +145,7 @@ const Index = () => {
               onClick={() => navigateToAccommodation(item.tab)}
             >
               <Image
+                className='action-item-pic'
                 src={item.icon}
                 style={{ width: '24px', height: '24px' }}
               />
@@ -160,14 +167,18 @@ const Index = () => {
               <View className='menu-text'>
                 <Image
                   src={item.icon}
-                  style={{ width: '24px', height: '24px', marginRight: '10px' }}
+                  style={{
+                    width: '18px',
+                    height: '18px',
+                    marginRight: '10px',
+                  }}
                 />
                 <Text>{item.text}</Text>
               </View>
               <View>
                 <Image
                   src={RightBottomArrow}
-                  style={{ width: '18px', height: '18px' }}
+                  style={{ width: '12px', height: '12px' }}
                 />
               </View>
             </View>

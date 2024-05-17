@@ -21,9 +21,15 @@ const Index = () => {
           style={{ marginRight: '40px' }}
         >
           {activeTab === 'houses' ? (
-            <Image src={HouseSourceSelected} />
+            <Image
+              src={HouseSourceSelected}
+              style={{ width: '20px', height: '20px' }}
+            />
           ) : (
-            <Image src={HouseSource} />
+            <Image
+              src={HouseSource}
+              style={{ width: '20px', height: '20px' }}
+            />
           )}
           <Text>房源</Text>
         </View>
