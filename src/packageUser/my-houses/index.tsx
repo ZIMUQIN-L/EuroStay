@@ -2,7 +2,12 @@ import { observer } from 'mobx-react';
 import { DefaultHouse } from '@utils/cloudIcons';
 import { View, Text, Image } from '@tarojs/components';
 import StarIcon from '../icons/star.svg';
+import { useEffect, useState } from 'react';
+import GlobalStore from '@store/GlobalStore';
+import { HouseItemProps, UserItemProps } from '@utils/interfaces';
 import './index.scss';
+import Taro from '@tarojs/taro';
+import { userHouseInfoSearch } from '@common/database/user/user';
 
 const houses = [
   {
@@ -26,25 +31,42 @@ const houses = [
 ];
 
 const Index = () => {
+  const [user, setUser] = useState<UserItemProps>(GlobalStore.userInfo);
+  const [houseList, setHouseList] = useState<HouseItemProps[]>([]);
+  useEffect(() => {
+    const demoUser: UserItemProps = GlobalStore.userInfo;
+    setUser(demoUser);
+    userHouseInfoSearch(demoUser._openid).then(
+      (houseData: HouseItemProps[]) => {
+        setHouseList(houseData); // Update demoData state with the fetched data
+      },
+    );
+  }, [GlobalStore.userInfo]);
+
+  const handleHouseClick = houseId => {
+    Taro.redirectTo({
+      url: `/packageHouse/house-edit/index?id=${houseId}`,
+    });
+  };
   return (
     <View className='house-grid'>
-      {houses.map(house => (
-        <View key={house.id} className='house-card'>
+      {houseList.map(house => (
+        <View
+          key={house._id}
+          className='house-card'
+          onClick={() => handleHouseClick(house._id)}
+        >
           <Image
-            src={house.image}
+            src={house.images.length > 0 ? house.images[0] : DefaultHouse}
             mode='aspectFill'
             style={{ width: '100%', height: '100px' }}
           />
-          <Text className='house-title'>
-            {house.destination}·{house.title}
-          </Text>
+          <Text className='house-title'>{house.location}</Text>
           <View className='house-info'>
-            <Text>
-              {house.capacity}人·{house.gender}
-            </Text>
+            <Text>{house.capacity}人</Text>
             <View className='house-likes'>
               <Image src={StarIcon} />
-              <Text>{house.likes}</Text>
+              {/* <Text>{house.likes}</Text> */}
             </View>
           </View>
         </View>

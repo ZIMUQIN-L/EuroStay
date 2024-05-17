@@ -12,7 +12,7 @@ const CustomFullScreenDialog = ({ title, children, onClose, onSubmit }) => {
         <Text style={{ marginTop: '24px' }}>{title}</Text>
         {children}
         <View className='dialog-save-button' onClick={onSubmit}>
-          <Text style={{ color: 'white' }}>保存</Text>
+          <Text style={{ color: 'white' }}>确认</Text>
         </View>
       </View>
     </View>

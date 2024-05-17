@@ -1,6 +1,9 @@
 import CustomCard from '../../custom-card';
 import { DefaultAvatar, DefaultHouse } from '@utils/cloudIcons';
 import { UserAccomMessageItemProps } from '@utils/interfaces';
+import { useState } from 'react';
+import ContactInfoBoard from '../contact-info-board';
+import { View } from '@tarojs/components';
 /**
  * @description 我的求宿-已联系
  */
@@ -72,19 +75,44 @@ const ContactedCard: React.FC<UserAccomMessageItemProps> = userAccomMessage => {
         return '未知状态';
     }
   };
+
+  const handleUserClickButton = infoId => {
+    handleRetriveContactInfoBoard();
+    console.log('test now');
+  };
+
+  const handleRetriveContactInfoBoard = () => {
+    setContactInfoIsShown(true);
+  };
+
+  const [contactInfoIsShown, setContactInfoIsShown] = useState(false);
+
+  const handleCloseAllBoards = () => {
+    setContactInfoIsShown(false);
+  };
   return (
-    <CustomCard
-      title={userAccomMessage.location}
-      imageUrl={userAccomMessage.images[0]}
-      userInfo={userAccomMessage.targetUserNickName}
-      dateInfo={
-        userAccomMessage.start_date + ' to ' + userAccomMessage.end_date
-      }
-      topText={handleTopText(userAccomMessage.status)}
-      buttonText={handleButtonText(userAccomMessage.status)}
-      clickButton={() => {}}
-      clickable={handleButtonClickable(userAccomMessage.status)}
-    />
+    <View>
+      <CustomCard
+        title={userAccomMessage.location}
+        imageUrl={userAccomMessage.images[0]}
+        userInfo={userAccomMessage.targetUserNickName}
+        dateInfo={
+          userAccomMessage.start_date + ' to ' + userAccomMessage.end_date
+        }
+        topText={handleTopText(userAccomMessage.status)}
+        buttonText={handleButtonText(userAccomMessage.status)}
+        clickButton={() => {
+          handleUserClickButton(userAccomMessage._id);
+        }}
+        clickable={handleButtonClickable(userAccomMessage.status)}
+      />
+      {contactInfoIsShown && (
+        <ContactInfoBoard
+          onClose={handleCloseAllBoards}
+          onRetriveData={handleRetriveContactInfoBoard}
+        ></ContactInfoBoard>
+      )}
+    </View>
   );
 };
 
