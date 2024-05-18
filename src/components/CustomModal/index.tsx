@@ -11,11 +11,11 @@ const CustomModal = ({ isOpen, onClose, children }) => {
         <View className='modal-header'>
           <Text className='modal-title'>Custom Card</Text>
         </View>
-        <View className='modal-body'>
-          {children}
-        </View>
+        <View className='modal-body'>{children}</View>
         <View className='modal-footer'>
-          <Text className='modal-button' onClick={onClose}>确定</Text>
+          <Text className='modal-button' onClick={onClose}>
+            确定
+          </Text>
         </View>
       </View>
     </View>

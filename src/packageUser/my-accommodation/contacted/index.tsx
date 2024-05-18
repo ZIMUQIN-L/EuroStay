@@ -94,7 +94,11 @@ const ContactedCard: React.FC<UserAccomMessageItemProps> = userAccomMessage => {
     <View>
       <CustomCard
         title={userAccomMessage.location}
-        imageUrl={userAccomMessage.images[0]}
+        imageUrl={
+          userAccomMessage.images.length == 0
+            ? DefaultHouse
+            : userAccomMessage.images[0]
+        }
         userInfo={userAccomMessage.targetUserNickName}
         dateInfo={
           userAccomMessage.start_date + ' to ' + userAccomMessage.end_date

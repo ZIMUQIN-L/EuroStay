@@ -70,3 +70,21 @@ export const accomMessageSearch = async (sourceUserOpenid, skip = 0) => {
       });
   });
 };
+
+export const houseMessageSearch = async (targetUserOpenid, skip = 0) => {
+  const db = wx.cloud.database();
+  return new Promise((resolve, reject) => {
+    db.collection('UserAccomMessage')
+      .orderBy('start_date', 'desc')
+      .where({
+        targetUserOpenid: targetUserOpenid,
+      })
+      .skip(skip)
+      .limit(10)
+      .get({
+        success: function (res) {
+          resolve(res.data);
+        },
+      });
+  });
+};

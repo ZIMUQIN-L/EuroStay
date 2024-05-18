@@ -4,13 +4,62 @@ import { useEffect, useState } from 'react';
 import './index.scss';
 import Taro from '@tarojs/taro';
 import AwaitFeedback from './await-feedback';
-
+import GlobalStore from '@store/GlobalStore';
+import { UserAccomMessageItemProps, UserItemProps } from '@utils/interfaces';
+import { houseMessageSearch } from '@common/database/accomMessage/accomMessage';
 /**
  * @description 我的求宿页面，尽量共用一些组件，减少重复代码
  */
 const Index = () => {
   const router = Taro.useRouter();
   const [currentTab, setCurrentTab] = useState('all');
+  const [user, setUser] = useState<UserItemProps>(GlobalStore.userInfo);
+
+  const [userAccomData, setUserAccomData] = useState<
+    UserAccomMessageItemProps[]
+  >([]);
+  const [userToReplyAccomData, setUserToReplyAccomData] = useState<
+    UserAccomMessageItemProps[]
+  >([]);
+  const [userRepliedAccomData, setUserRepliedAccomData] = useState<
+    UserAccomMessageItemProps[]
+  >([]);
+  const [userBookedAccomData, setUserBookedAccomData] = useState<
+    UserAccomMessageItemProps[]
+  >([]);
+  const [userRateAccomData, setUserRateAccomData] = useState<
+    UserAccomMessageItemProps[]
+  >([]);
+
+  useEffect(() => {
+    const demoUser: UserItemProps = GlobalStore.userInfo;
+    setUser(demoUser);
+    houseMessageSearch(demoUser._openid).then(
+      (accomMessages: UserAccomMessageItemProps[]) => {
+        setUserAccomData(accomMessages);
+
+        const toReplyAccomData = accomMessages.filter(
+          item => item.status == 'unread' || item.status == 'read',
+        );
+        setUserToReplyAccomData(toReplyAccomData);
+
+        const repliedAccomData = accomMessages.filter(
+          item => item.status == 'contactReceived' || item.status == 'rejected',
+        );
+        setUserRepliedAccomData(repliedAccomData);
+
+        const bookedAccomData = accomMessages.filter(
+          item => item.status == 'booked',
+        );
+        setUserBookedAccomData(bookedAccomData);
+
+        const rateAccomData = accomMessages.filter(
+          item => item.status == 'checkedIn' || item.status == 'rated',
+        );
+        setUserRateAccomData(rateAccomData);
+      },
+    );
+  }, []);
 
   const renderContent = () => {
     // TODO: 根据customcard和数据创建对应的组建
@@ -19,23 +68,49 @@ const Index = () => {
         // TODO：可以以待回复、已回复、待入住、待点评为单位，按顺序分别在全部板块展示
         return (
           <>
-            <AwaitFeedback />
-            <AwaitFeedback />
+            {userAccomData.map(userAccomMessage => (
+              <AwaitFeedback key={userAccomMessage._id} {...userAccomMessage} />
+            ))}
           </>
         );
       case 'awaitFeedback':
-        return <View>待回复</View>;
+        return (
+          <>
+            {userToReplyAccomData.map(userAccomMessage => (
+              <AwaitFeedback key={userAccomMessage._id} {...userAccomMessage} />
+            ))}
+          </>
+        );
       case 'hasFeedback':
-        return <View>已回复</View>;
+        return (
+          <>
+            {userRepliedAccomData.map(userAccomMessage => (
+              <AwaitFeedback key={userAccomMessage._id} {...userAccomMessage} />
+            ))}
+          </>
+        );
       case 'awaitStay':
-        return <View>待入住</View>;
+        return (
+          <>
+            {userBookedAccomData.map(userAccomMessage => (
+              <AwaitFeedback key={userAccomMessage._id} {...userAccomMessage} />
+            ))}
+          </>
+        );
       case 'awaitComment':
-        return <View>待点评</View>;
+        return (
+          <>
+            {userRateAccomData.map(userAccomMessage => (
+              <AwaitFeedback key={userAccomMessage._id} {...userAccomMessage} />
+            ))}
+          </>
+        );
       default:
         return (
           <>
-            <AwaitFeedback />
-            <AwaitFeedback />
+            {userAccomData.map(userAccomMessage => (
+              <AwaitFeedback key={userAccomMessage._id} {...userAccomMessage} />
+            ))}
           </>
         );
     }
