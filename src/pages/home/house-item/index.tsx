@@ -6,7 +6,8 @@ import { checkImageUrl } from '@utils/validationUtil';
 import { useState, useEffect } from 'react';
 import RequestCustomCard from '../../../packageUser/request-custom-card';
 import CustomModal from '@components/CustomModal';
-import UserAccomMessageItemProps from '@utils/interfaces';
+import { UserAccomMessageItemProps, ContactInfo } from '@utils/interfaces';
+import { accomMessageAdd } from '@common/database/accomMessage/accomMessage';
 
 const initialRequestData: UserAccomMessageItemProps = {
   _id: '',
@@ -20,7 +21,7 @@ const initialRequestData: UserAccomMessageItemProps = {
   description: '',
   type: '',
   status: '',
-  contact: '',
+  contact: {} as ContactInfo,
   answerToOwner: '',
   houseId: '',
   images: [],
@@ -47,6 +48,7 @@ const HouseItem: React.FC<HouseItemProps> = house => {
       house.images.length > 0 && checkImageUrl(house.images[0] as string)
         ? house.images[0]
         : DefaultHouse;
+    console.log(house);
     setImageSrc(imageUrl);
   });
 
@@ -54,6 +56,11 @@ const HouseItem: React.FC<HouseItemProps> = house => {
     setImageSrc(DefaultHouse);
   };
 
+  const handleSendToggleEdit = (editSendToggle) => {
+    setShareToggle(editSendToggle);
+  };
+
+  // request data
   const handleRequestDesEdit = (editRequestDes: string) => {
     setRequestData(prevData => {
       const newData = { ...prevData, description: editRequestDes };
@@ -61,17 +68,36 @@ const HouseItem: React.FC<HouseItemProps> = house => {
     });
   };
 
-  const handleSendToggleEdit = (editSendToggle) => {
-    setRequestData(prevData => ({ ...prevData, sendToggle: editSendToggle }));
-  };
-
-  const handleRequestInfoSelectionEdit = (editRequestInfoSelection) => {
-    setRequestData(prevData => ({ ...prevData, requestInfoSelection: editRequestInfoSelection }));
+  const handleRequestInfoSelectionEdit = (
+    startDate: Date | undefined,
+    endDate: Date | undefined,
+    capacity: number,
+    info: ContactInfo
+  ) => {
+    setRequestData(prevData => {
+      const newStartDate = startDate && !(startDate instanceof Date) && startDate !== "" && !isNaN(new Date(startDate).getTime()) ? new Date(startDate) : startDate;
+      const newEndDate = endDate && !(endDate instanceof Date) && endDate !== "" && !isNaN(new Date(endDate).getTime()) ? new Date(endDate) : endDate;
+  
+      const newData = {
+        ...prevData,
+        start_date: newStartDate ? newStartDate.toISOString() : '',
+        end_date: newEndDate ? newEndDate.toISOString() : '',
+        capacity: capacity,
+        contact: info, // or any other relevant field
+      };
+      console.log("Updated requestData: ", newData);
+      return newData;
+    });
   };
 
   // submit message card content 
-  const handleSubmitRequestCustomCard = () => {
-    console.log("Submitted Request Data:", requestData);
+  const handleSubmitRequestCustomCard = async () => {
+    try {
+      const res = await accomMessageAdd(requestData);
+      console.log('Message added successfully:', res);
+    } catch (err) {
+      console.error('Error adding message BUG :', err);
+    }
     setModalOpen(false);
   };
 
@@ -205,49 +231,12 @@ const HouseItem: React.FC<HouseItemProps> = house => {
           onClose={() => setModalOpen(false)}
           onRequestDesEdit={handleRequestDesEdit}
           onSendToggleEdit={handleSendToggleEdit}
-          onRequestInfoSelectionEdit={handleRequestInfoSelectionEdit} >
-          
+          onRequestInfoSelectionEdit={handleRequestInfoSelectionEdit} 
+          onSubmitCard={handleSubmitRequestCustomCard}>
         </RequestCustomCard>
       
       </CustomModal>
 
-      {/* <CustomFullScreenDialog
-            title='消息卡片'
-            onClose={() => setModalOpen(false)}
-            onSubmit={() => console.log('Second button clicked')}
-        >
-      <View>
-      <RequestCustomCard
-          onClose={() => setModalOpen(false)}
-          title="Card Title"
-          userInfo="John Doe"
-          dateInfo="May 18, 2024"
-          topText="This is the top text"
-          buttonText="Click Me"
-          clickButton={() => console.log('Button clicked')}
-          clickable={true}
-          avatarUrl="https://example.com/avatar.jpg"
-          buttonTextSecond="Second Button"
-          clickButtonSecond={() => console.log('Second button clicked')}
-        />
-        </View>
-      </CustomFullScreenDialog> */}
-{/* 
-      {isModalOpen && (
-        <RequestCustomCard
-          onClose={() => setModalOpen(false)}
-          title="Card Title"
-          userInfo="John Doe"
-          dateInfo="May 18, 2024"
-          topText="This is the top text"
-          buttonText="Click Me"
-          clickButton={() => console.log('Button clicked')}
-          clickable={true}
-          avatarUrl="https://example.com/avatar.jpg"
-          buttonTextSecond="Second Button"
-          clickButtonSecond={() => console.log('Second button clicked')}
-        />
-      )} */}
 
 
     </View>

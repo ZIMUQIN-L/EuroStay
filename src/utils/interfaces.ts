@@ -79,10 +79,18 @@ export interface UserAccomMessageItemProps {
   status: string;
 
   // optional params
-  contact: string;
+  contact: ContactInfo;
   answerToOwner: string;
   houseId: string;
-  images: string[];
+  images?: string[];
   targetUserNickName: string;
   targetUserOpenid: string;
+}
+
+
+// contact info structure
+export interface ContactInfo {
+  phone?: string;
+  email?: string;
+  wechat?: string;
 }

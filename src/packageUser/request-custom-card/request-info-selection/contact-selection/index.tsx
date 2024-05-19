@@ -2,8 +2,14 @@ import { View, Input, Text, Switch, Checkbox, CheckboxGroup, Button } from '@tar
 import { useState } from 'react';
 import CustomFullScreenDialog from '@components/CustomFullScreenDialog';
 import './index.scss';
+import { ContactInfo } from '@utils/interfaces'
 
-const ContactSelection = ({ onClose, onContactSelected }) => {
+interface ContactSelectionProps {
+  onClose: () => void;
+  onContactSelected: (contactInfo: ContactInfo) => void;
+}
+
+const ContactSelection: React.FC<ContactSelectionProps>= ({ onClose, onContactSelected }) => {
   const [provideContact, setProvideContact] = useState(false);
   const [selectedContacts, setSelectedContacts] = useState<string[]>([]);
   const [wechatValue, setWechatValue] = useState('');
@@ -11,11 +17,10 @@ const ContactSelection = ({ onClose, onContactSelected }) => {
   const [phoneValue, setPhoneValue] = useState('');
 
   const handleSubmitContactSelection = () => {
-    const contactInfo = {
-      provideContact,
-      wechat: selectedContacts.includes('wechat') ? wechatValue : '',
-      email: selectedContacts.includes('email') ? emailValue : '',
-      phone: selectedContacts.includes('phone') ? phoneValue : '',
+    const contactInfo: ContactInfo = {
+      wechat: selectedContacts.includes('wechat') ? wechatValue : undefined,
+      email: selectedContacts.includes('email') ? emailValue : undefined,
+      phone: selectedContacts.includes('phone') ? phoneValue : undefined,
     };
     onContactSelected(contactInfo);
     onClose();
@@ -38,7 +43,12 @@ const ContactSelection = ({ onClose, onContactSelected }) => {
       <CheckboxGroup className='contact-input-group' onChange={handleCheckboxChange}>
         <View className='contact-input-container'>
           <View className='contact-checkbox'>
-            <Checkbox value='wechat' checked={selectedContacts.includes('wechat')} className='contact-checkbox-checkbox' />
+            <Checkbox
+              value='wechat'
+              checked={selectedContacts.includes('wechat')}
+              className='contact-checkbox-checkbox'
+              disabled={!provideContact}
+            />
             <Text className='contact-checkbox-text'>微信</Text>
           </View>
           <Input
@@ -46,13 +56,18 @@ const ContactSelection = ({ onClose, onContactSelected }) => {
             type='text'
             placeholder='填写微信'
             value={wechatValue}
-            disabled={!selectedContacts.includes('wechat')}
+            disabled={!provideContact || !selectedContacts.includes('wechat')}
             onInput={e => setWechatValue(e.detail.value)}
           />
         </View>
         <View className='contact-input-container'>
           <View className='contact-checkbox'>
-            <Checkbox value='email' checked={selectedContacts.includes('email')} className='contact-checkbox-checkbox' />
+            <Checkbox
+              value='email'
+              checked={selectedContacts.includes('email')}
+              className='contact-checkbox-checkbox'
+              disabled={!provideContact}
+            />
             <Text className='contact-checkbox-text'>邮箱</Text>
           </View>
           <Input
@@ -60,13 +75,18 @@ const ContactSelection = ({ onClose, onContactSelected }) => {
             type='text'
             placeholder='填写邮箱'
             value={emailValue}
-            disabled={!selectedContacts.includes('email')}
+            disabled={!provideContact || !selectedContacts.includes('email')}
             onInput={e => setEmailValue(e.detail.value)}
           />
         </View>
         <View className='contact-input-container'>
           <View className='contact-checkbox'>
-            <Checkbox value='phone' checked={selectedContacts.includes('phone')} className='contact-checkbox-checkbox' />
+            <Checkbox
+              value='phone'
+              checked={selectedContacts.includes('phone')}
+              className='contact-checkbox-checkbox'
+              disabled={!provideContact}
+            />
             <Text className='contact-checkbox-text'>手机号码</Text>
           </View>
           <Input
@@ -74,7 +94,7 @@ const ContactSelection = ({ onClose, onContactSelected }) => {
             type='text'
             placeholder='填写手机号'
             value={phoneValue}
-            disabled={!selectedContacts.includes('phone')}
+            disabled={!provideContact || !selectedContacts.includes('phone')}
             onInput={e => setPhoneValue(e.detail.value)}
           />
         </View>
@@ -82,5 +102,6 @@ const ContactSelection = ({ onClose, onContactSelected }) => {
     </CustomFullScreenDialog>
   );
 };
+
 
 export default ContactSelection;

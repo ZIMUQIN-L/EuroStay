@@ -11,15 +11,18 @@ import {
 import DateSelection from './date-selection';
 import CapacitySelection from './capacity-selection';
 import ContactSelection from './contact-selection';
+import { ContactInfo } from '@utils/interfaces'
 
-interface ContactInfo {
-  provideContact: boolean;
-  wechat: string;
-  email: string;
-  phone: string;
+interface RequestInfoSelectionProps {
+  onRequestInfoSelection: (
+    startDate: Date | undefined,
+    endDate: Date | undefined,
+    capacity: number,
+    contactInfo: ContactInfo
+  ) => void;
 }
 
-const RequestInfoSelection = ({ onRequestInfoSelection }) => {
+const RequestInfoSelection: React.FC<RequestInfoSelectionProps>  = ({ onRequestInfoSelection }) => {
   const [isDateSelection, setIsDateSelection] = useState(false);
   const [isCapacitySelection, setIsCapacitySelection] = useState(false);
   const [isContactSelection, setContactSelection] = useState(false);
@@ -27,7 +30,7 @@ const RequestInfoSelection = ({ onRequestInfoSelection }) => {
   const [startDate, setStartDate] = useState<Date>();
   const [endDate, setEndDate] = useState<Date>();
   const [capacity, setCapacity] = useState(0);
-  const [contactInfo, setContactInfo] = useState<ContactInfo | null>(null);
+  const [contactInfo, setContactInfo] = useState<ContactInfo>({});
 
   // close function
   const handleClose = () => {
@@ -72,15 +75,14 @@ const RequestInfoSelection = ({ onRequestInfoSelection }) => {
     setCapacity(editedCapacity);
   };
 
-  const handleUserContactEdit = (info) => {
+  const handleUserContactEdit = (info: ContactInfo) => {
     onRequestInfoSelection(
-      startDate,
-      endDate,
-      capacity,
-      info,
+      startDate, 
+      endDate, 
+      capacity, 
+      info
     );
     setContactInfo(info);
-    setContactSelection(false);
   };
 
 
