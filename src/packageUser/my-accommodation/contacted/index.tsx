@@ -84,26 +84,25 @@ const ContactedCard: React.FC<UserAccomMessageItemProps> = userAccomMessage => {
   const [replyMessage, setReplyMessage] =
     useState<HouseOwnerReplyMessageItemProps | null>();
 
-  const handleUserClickButton = infoId => {
+  const handleUserClickButton = (infoId, infoStatus) => {
     // handleRetriveContactInfoBoard();
-    Taro.showLoading({
-      title: '加载回复中',
-    });
-    replyMessageSearch(infoId).then(
-      (replyMessages: HouseOwnerReplyMessageItemProps[]) => {
-        Taro.hideLoading();
-        setContactInfoIsShown(true);
-        if (replyMessageSearch.length == 0) {
-          setReplyMessage(null);
-        } else {
-          setReplyMessage(replyMessages[0]);
-        }
-      },
-    );
-  };
-
-  const handleRetriveContactInfoBoard = () => {
-    setContactInfoIsShown(true);
+    if (infoStatus == 'contactReceived') {
+      Taro.showLoading({
+        title: '加载回复中',
+        mask: true,
+      });
+      replyMessageSearch(infoId).then(
+        (replyMessages: HouseOwnerReplyMessageItemProps[]) => {
+          Taro.hideLoading();
+          setContactInfoIsShown(true);
+          if (replyMessageSearch.length == 0) {
+            setReplyMessage(null);
+          } else {
+            setReplyMessage(replyMessages[0]);
+          }
+        },
+      );
+    }
   };
 
   const [contactInfoIsShown, setContactInfoIsShown] = useState(false);
@@ -127,7 +126,7 @@ const ContactedCard: React.FC<UserAccomMessageItemProps> = userAccomMessage => {
         topText={handleTopText(userAccomMessage.status)}
         buttonText={handleButtonText(userAccomMessage.status)}
         clickButton={() => {
-          handleUserClickButton(userAccomMessage._id);
+          handleUserClickButton(userAccomMessage._id, userAccomMessage.status);
         }}
         clickable={handleButtonClickable(userAccomMessage.status)}
       />

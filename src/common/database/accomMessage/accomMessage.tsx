@@ -84,3 +84,22 @@ export const houseMessageSearch = async (targetUserOpenid, skip = 0) => {
       });
   });
 };
+
+export const accomMessageUpdate = async (_id, status) => {
+  const db = wx.cloud.database();
+  return new Promise((resolve, reject) => {
+    db.collection('UserAccomMessage')
+      .doc(_id)
+      .update({
+        data: {
+          status: status,
+        },
+      })
+      .then(res => {
+        resolve(res.errMsg);
+      })
+      .catch(err => {
+        reject(err.errMsg);
+      });
+  });
+};

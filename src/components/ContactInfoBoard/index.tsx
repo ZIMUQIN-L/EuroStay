@@ -78,7 +78,7 @@ const ContactInfoBoard = ({
                 <Textarea
                   value={helloMessage}
                   onInput={handleUserHelloMessageEdit}
-                  placeholder='详情介绍：更详细的介绍，如房屋类型、独居合租、交通便利、区域安全、租金押金等，帮助租客更好的了解你的房源～'
+                  placeholder='请和求宿者打个招呼吧～'
                 />
               </View>
             </View>

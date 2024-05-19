@@ -1,6 +1,13 @@
 import CustomCard from '../../custom-card';
 import { DefaultAvatar, DefaultHouse } from '@utils/cloudIcons';
-import { UserAccomMessageItemProps } from '@utils/interfaces';
+import { useState, useEffect } from 'react';
+import { UserAccomMessageItemProps, UserItemProps } from '@utils/interfaces';
+import GlobalStore from '@store/GlobalStore';
+import ContactInfoBoard from '@components/ContactInfoBoard';
+import { View } from '@tarojs/components';
+import Taro from '@tarojs/taro';
+import { replyMessageAdd } from '@common/database/ownerReply/ownerReply';
+import { accomMessageUpdate } from '@common/database/accomMessage/accomMessage';
 /**
  * @description 我的供宿-等待回复中
  */
@@ -71,35 +78,76 @@ const AwaitFeedback: React.FC<UserAccomMessageItemProps> = userAccomMessage => {
     }
   };
 
-  const handleUserClickButton = infoId => {
-    handleRetriveContactInfoBoard();
-    console.log('test now');
+  const [user, setUser] = useState<UserItemProps>(GlobalStore.userInfo);
+  useEffect(() => {
+    const demoUser: UserItemProps = GlobalStore.userInfo;
+    setUser(demoUser);
+  }, []);
+
+  const [selectedInfoId, setSelectedInfoId] = useState();
+
+  const [contactInfoIsShown, setContactInfoIsShown] = useState(false);
+
+  const handleUserClickButton = (infoId, infoStatus) => {
+    setSelectedInfoId(infoId);
+    if (infoStatus == 'unread' || infoStatus == 'read') {
+      setContactInfoIsShown(true);
+    }
   };
 
-  const handleRetriveContactInfoBoard = () => {
-    console.log('for now reserved');
+  const handleUserSubmitContactInfo = (contactInfo, helloMessageInfo) => {
+    Taro.showLoading({
+      title: '上传中',
+      mask: true,
+    });
+    replyMessageAdd(
+      user.userOpenid,
+      user.nickName,
+      user.avatarUrl,
+      contactInfo,
+      helloMessageInfo,
+      selectedInfoId,
+    ).then(res => {
+      accomMessageUpdate(selectedInfoId, 'contactReceived').then(res => {
+        Taro.hideLoading();
+      });
+    });
+  };
+
+  const handleCloseAllBoards = () => {
+    setContactInfoIsShown(false);
   };
 
   // TODO: 后面需要传入数据
   return (
-    <CustomCard
-      title={userAccomMessage.location}
-      imageUrl={
-        userAccomMessage.images.length == 0
-          ? DefaultHouse
-          : userAccomMessage.images[0]
-      }
-      userInfo={userAccomMessage.targetUserNickName}
-      dateInfo={
-        userAccomMessage.start_date + ' to ' + userAccomMessage.end_date
-      }
-      topText={handleTopText(userAccomMessage.status)}
-      buttonText={handleButtonText(userAccomMessage.status)}
-      clickButton={() => {
-        handleUserClickButton(userAccomMessage._id);
-      }}
-      clickable={handleButtonClickable(userAccomMessage.status)}
-    />
+    <View>
+      <CustomCard
+        title={userAccomMessage.location}
+        imageUrl={
+          userAccomMessage.images.length == 0
+            ? DefaultHouse
+            : userAccomMessage.images[0]
+        }
+        userInfo={userAccomMessage.targetUserNickName}
+        dateInfo={
+          userAccomMessage.start_date + ' to ' + userAccomMessage.end_date
+        }
+        topText={handleTopText(userAccomMessage.status)}
+        buttonText={handleButtonText(userAccomMessage.status)}
+        clickButton={() => {
+          handleUserClickButton(userAccomMessage._id, userAccomMessage.status);
+        }}
+        clickable={handleButtonClickable(userAccomMessage.status)}
+      />
+      {contactInfoIsShown && (
+        <ContactInfoBoard
+          onClose={handleCloseAllBoards}
+          retrivedData={null}
+          editable={true}
+          onUpdateData={handleUserSubmitContactInfo}
+        ></ContactInfoBoard>
+      )}
+    </View>
   );
 };
 
