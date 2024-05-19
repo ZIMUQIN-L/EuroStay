@@ -1,9 +1,13 @@
 import CustomCard from '../../custom-card';
 import { DefaultAvatar, DefaultHouse } from '@utils/cloudIcons';
-import { UserAccomMessageItemProps } from '@utils/interfaces';
+import {
+  UserAccomMessageItemProps,
+  HouseOwnerReplyMessageItemProps,
+} from '@utils/interfaces';
 import { useState } from 'react';
 import ContactInfoBoard from '@components/ContactInfoBoard';
 import { View } from '@tarojs/components';
+import { replyMessageSearch } from '@common/database/ownerReply/ownerReply';
 /**
  * @description 我的求宿-已联系
  */
@@ -45,7 +49,7 @@ const ContactedCard: React.FC<UserAccomMessageItemProps> = userAccomMessage => {
       case 'contactReceived':
         return true;
       case 'booked':
-        return true;
+        return false;
       case 'checkedIn':
         return true;
       case 'rated':
@@ -76,9 +80,22 @@ const ContactedCard: React.FC<UserAccomMessageItemProps> = userAccomMessage => {
     }
   };
 
+  const [replyMessage, setReplyMessage] =
+    useState<HouseOwnerReplyMessageItemProps | null>();
+
   const handleUserClickButton = infoId => {
-    handleRetriveContactInfoBoard();
-    console.log('test now');
+    // handleRetriveContactInfoBoard();
+    replyMessageSearch(infoId).then(
+      (replyMessages: HouseOwnerReplyMessageItemProps[]) => {
+        console.log(replyMessages);
+        setContactInfoIsShown(true);
+        if (replyMessageSearch.length == 0) {
+          setReplyMessage(null);
+        } else {
+          setReplyMessage(replyMessages[0]);
+        }
+      },
+    );
   };
 
   const handleRetriveContactInfoBoard = () => {
@@ -113,7 +130,8 @@ const ContactedCard: React.FC<UserAccomMessageItemProps> = userAccomMessage => {
       {contactInfoIsShown && (
         <ContactInfoBoard
           onClose={handleCloseAllBoards}
-          onRetriveData={handleRetriveContactInfoBoard}
+          retrivedData={replyMessage}
+          onUpdateData={() => {}}
         ></ContactInfoBoard>
       )}
     </View>

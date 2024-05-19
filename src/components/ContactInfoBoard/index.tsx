@@ -1,10 +1,22 @@
-import { View, Text } from '@tarojs/components';
+import { View, Text, Image } from '@tarojs/components';
+import { DefaultAvatar, DefaultHouse } from '@utils/cloudIcons';
 import CustomFullScreenDialog from '@components/CustomFullScreenDialog';
 import { useEffect, useState } from 'react';
 import './index.scss';
+import { HouseOwnerReplyMessageItemProps } from '@utils/interfaces';
 
-const ContactInfoBoard = ({ onClose, onRetriveData }) => {
-  const [ownerContact, setOwnerContact] = useState('test');
+const ContactInfoBoard = ({
+  onClose,
+  retrivedData,
+  onUpdateData,
+  editable = false,
+}) => {
+  const [replyMessage, setReplyMessage] =
+    useState<HouseOwnerReplyMessageItemProps>(retrivedData);
+
+  useEffect(() => {
+    setReplyMessage(retrivedData);
+  }, [retrivedData]);
 
   return (
     <CustomFullScreenDialog
@@ -12,13 +24,28 @@ const ContactInfoBoard = ({ onClose, onRetriveData }) => {
       onClose={onClose}
       onSubmit={onClose}
     >
-      <Text className='des-title'>微信号</Text>
-      <View className='caution-text'>
-        <Text>{ownerContact}</Text>
+      <View className='avatar-image'>
+        <Image
+          src={
+            replyMessage == null
+              ? DefaultAvatar
+              : replyMessage.sourceUserAvatarUrl
+          }
+          className='avatar-image'
+        />
       </View>
-      <Text className='des-title'>房主打招呼信息</Text>
+      <Text className='text-title'>
+        {replyMessage == null ? '未知用户' : replyMessage.sourceUserNickName}
+      </Text>
+      <Text className='text-title'>微信号</Text>
       <View className='caution-text'>
-        <Text>{ownerContact}</Text>
+        <Text>{replyMessage == null ? 'unknown' : replyMessage.contact}</Text>
+      </View>
+      <Text className='text-title'>房主打招呼信息</Text>
+      <View className='caution-text'>
+        <Text>
+          {replyMessage == null ? 'unknown' : replyMessage.helloMessage}
+        </Text>
       </View>
     </CustomFullScreenDialog>
   );
