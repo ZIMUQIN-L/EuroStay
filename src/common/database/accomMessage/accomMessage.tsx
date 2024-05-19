@@ -1,7 +1,5 @@
 // 添加 userAccomMesage 信息至数据库
 export const accomMessageAdd = async (
-  _id,
-  _openid,
   end_date,
   start_date,
   capacity,
@@ -24,8 +22,6 @@ export const accomMessageAdd = async (
     db.collection('UserAccomMessage')
       .add({
         data: {
-          _id: _id,
-          _openid: _openid,
           end_date: end_date,
           start_date: start_date,
           capacity: capacity,

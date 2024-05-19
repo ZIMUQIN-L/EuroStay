@@ -86,3 +86,17 @@ export interface UserAccomMessageItemProps {
   targetUserNickName: string;
   targetUserOpenid: string;
 }
+
+// 房主回复消息数据接口
+// both for replying message board and for accommodation page
+export interface HouseOwnerReplyMessageItemProps {
+  // 必需参数
+  _id: string; // 微信自动生成的_id，无法修改其名称
+  _openid: string;
+  sourceUserOpenid: string;
+  sourceUserNickName: string;
+  sourceUserAvatarUrl: string;
+  contact: string;
+  helloMessage: string;
+  accomMessageId: string;
+}

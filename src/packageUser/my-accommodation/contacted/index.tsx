@@ -2,7 +2,7 @@ import CustomCard from '../../custom-card';
 import { DefaultAvatar, DefaultHouse } from '@utils/cloudIcons';
 import { UserAccomMessageItemProps } from '@utils/interfaces';
 import { useState } from 'react';
-import ContactInfoBoard from '../contact-info-board';
+import ContactInfoBoard from '@components/ContactInfoBoard';
 import { View } from '@tarojs/components';
 /**
  * @description 我的求宿-已联系
