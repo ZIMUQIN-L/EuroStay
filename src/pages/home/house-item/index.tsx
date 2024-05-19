@@ -4,9 +4,44 @@ import { HouseItemProps } from '@utils/interfaces';
 import { DefaultHouse, DateIcon } from '@utils/cloudIcons';
 import { checkImageUrl } from '@utils/validationUtil';
 import { useState, useEffect } from 'react';
+import RequestCustomCard from '../../../packageUser/request-custom-card';
+import CustomModal from '@components/CustomModal';
+import UserAccomMessageItemProps from '@utils/interfaces';
+
+const initialRequestData: UserAccomMessageItemProps = {
+  _id: '',
+  _openid: '',
+  end_date: '',
+  start_date: '',
+  capacity: 0,
+  gender: '',
+  location: '',
+  sourceUserOpenid: '',
+  description: '',
+  type: '',
+  status: '',
+  contact: '',
+  answerToOwner: '',
+  houseId: '',
+  images: [],
+  targetUserNickName: '',
+  targetUserOpenid: '',
+};
 
 const HouseItem: React.FC<HouseItemProps> = house => {
   const [imageSrc, setImageSrc] = useState('');
+  const [isModalOpen, setModalOpen] = useState(false);
+  const [requestData, setRequestData] = useState<UserAccomMessageItemProps>(initialRequestData);
+  // if user want to share this message to board or not
+  const [shareToggle, setShareToggle] = useState(false);
+
+  // const [requestData, setRequestData] = useState({
+  //   capacity: 0,
+  //   requestDes: '',
+  //   sendToggle: false,
+  //   requestInfoSelection: '',
+  // });
+
   useEffect(() => {
     const imageUrl =
       house.images.length > 0 && checkImageUrl(house.images[0] as string)
@@ -19,6 +54,27 @@ const HouseItem: React.FC<HouseItemProps> = house => {
     setImageSrc(DefaultHouse);
   };
 
+  const handleRequestDesEdit = (editRequestDes: string) => {
+    setRequestData(prevData => {
+      const newData = { ...prevData, description: editRequestDes };
+      return newData;
+    });
+  };
+
+  const handleSendToggleEdit = (editSendToggle) => {
+    setRequestData(prevData => ({ ...prevData, sendToggle: editSendToggle }));
+  };
+
+  const handleRequestInfoSelectionEdit = (editRequestInfoSelection) => {
+    setRequestData(prevData => ({ ...prevData, requestInfoSelection: editRequestInfoSelection }));
+  };
+
+  // submit message card content 
+  const handleSubmitRequestCustomCard = () => {
+    console.log("Submitted Request Data:", requestData);
+    setModalOpen(false);
+  };
+
   // 跳转至房源详情
   const toHouseDetail = () => {
     Taro.navigateTo({
@@ -26,7 +82,12 @@ const HouseItem: React.FC<HouseItemProps> = house => {
     });
   };
 
-  // 复制用户联系方式至剪贴板
+  //新建消息卡片
+  const onCreateCustomCardFromTenant = () => {
+    setModalOpen(true);
+  }
+
+  // 复制用户联系方式至剪贴板 -- 目前被新建消息卡片代替
   const onCopyContactToClipboard = () => {
     if (house.contact == undefined || house.contact == '') {
       if (house.xhsContact != undefined && house.xhsContact != '') {
@@ -125,7 +186,7 @@ const HouseItem: React.FC<HouseItemProps> = house => {
             alignItems: 'center',
           }}
           className='contact-button'
-          onClick={onCopyContactToClipboard}
+          onClick={onCreateCustomCardFromTenant}
         >
           <Text style={{ fontSize: '14px' }}>联系房主</Text>
         </View>
@@ -138,6 +199,57 @@ const HouseItem: React.FC<HouseItemProps> = house => {
           marginBottom: '20px',
         }}
       ></View>
+
+      <CustomModal isOpen={isModalOpen} onClose={() => setModalOpen(false)}>
+        <RequestCustomCard           
+          onClose={() => setModalOpen(false)}
+          onRequestDesEdit={handleRequestDesEdit}
+          onSendToggleEdit={handleSendToggleEdit}
+          onRequestInfoSelectionEdit={handleRequestInfoSelectionEdit} >
+          
+        </RequestCustomCard>
+      
+      </CustomModal>
+
+      {/* <CustomFullScreenDialog
+            title='消息卡片'
+            onClose={() => setModalOpen(false)}
+            onSubmit={() => console.log('Second button clicked')}
+        >
+      <View>
+      <RequestCustomCard
+          onClose={() => setModalOpen(false)}
+          title="Card Title"
+          userInfo="John Doe"
+          dateInfo="May 18, 2024"
+          topText="This is the top text"
+          buttonText="Click Me"
+          clickButton={() => console.log('Button clicked')}
+          clickable={true}
+          avatarUrl="https://example.com/avatar.jpg"
+          buttonTextSecond="Second Button"
+          clickButtonSecond={() => console.log('Second button clicked')}
+        />
+        </View>
+      </CustomFullScreenDialog> */}
+{/* 
+      {isModalOpen && (
+        <RequestCustomCard
+          onClose={() => setModalOpen(false)}
+          title="Card Title"
+          userInfo="John Doe"
+          dateInfo="May 18, 2024"
+          topText="This is the top text"
+          buttonText="Click Me"
+          clickButton={() => console.log('Button clicked')}
+          clickable={true}
+          avatarUrl="https://example.com/avatar.jpg"
+          buttonTextSecond="Second Button"
+          clickButtonSecond={() => console.log('Second button clicked')}
+        />
+      )} */}
+
+
     </View>
   );
 };
