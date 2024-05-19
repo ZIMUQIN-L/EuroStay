@@ -4,6 +4,7 @@ import {
   UserAccomMessageItemProps,
   HouseOwnerReplyMessageItemProps,
 } from '@utils/interfaces';
+import Taro from '@tarojs/taro';
 import { useState } from 'react';
 import ContactInfoBoard from '@components/ContactInfoBoard';
 import { View } from '@tarojs/components';
@@ -85,9 +86,12 @@ const ContactedCard: React.FC<UserAccomMessageItemProps> = userAccomMessage => {
 
   const handleUserClickButton = infoId => {
     // handleRetriveContactInfoBoard();
+    Taro.showLoading({
+      title: '加载回复中',
+    });
     replyMessageSearch(infoId).then(
       (replyMessages: HouseOwnerReplyMessageItemProps[]) => {
-        console.log(replyMessages);
+        Taro.hideLoading();
         setContactInfoIsShown(true);
         if (replyMessageSearch.length == 0) {
           setReplyMessage(null);
