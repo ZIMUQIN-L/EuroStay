@@ -32,7 +32,8 @@ const initialRequestData: UserAccomMessageItemProps = {
 const HouseItem: React.FC<AccomMssageHouseItemProps> = house => {
   const [imageSrc, setImageSrc] = useState('');
   const [isModalOpen, setModalOpen] = useState(false);
-  const [requestData, setRequestData] = useState<UserAccomMessageItemProps>(initialRequestData);
+  const [requestData, setRequestData] =
+    useState<UserAccomMessageItemProps>(initialRequestData);
   // if user want to share this message to board or not
   const [shareToggle, setShareToggle] = useState(false);
 
@@ -64,7 +65,7 @@ const HouseItem: React.FC<AccomMssageHouseItemProps> = house => {
     setImageSrc(DefaultHouse);
   };
 
-  const handleSendToggleEdit = (editSendToggle) => {
+  const handleSendToggleEdit = editSendToggle => {
     setShareToggle(editSendToggle);
   };
 
@@ -80,12 +81,24 @@ const HouseItem: React.FC<AccomMssageHouseItemProps> = house => {
     startDate: Date | undefined,
     endDate: Date | undefined,
     capacity: number,
-    info: ContactInfo
+    info: ContactInfo,
   ) => {
     setRequestData(prevData => {
-      const newStartDate = startDate && !(startDate instanceof Date) && startDate !== "" && !isNaN(new Date(startDate).getTime()) ? new Date(startDate) : startDate;
-      const newEndDate = endDate && !(endDate instanceof Date) && endDate !== "" && !isNaN(new Date(endDate).getTime()) ? new Date(endDate) : endDate;
-  
+      const newStartDate =
+        startDate &&
+        !(startDate instanceof Date) &&
+        startDate !== '' &&
+        !isNaN(new Date(startDate).getTime())
+          ? new Date(startDate)
+          : startDate;
+      const newEndDate =
+        endDate &&
+        !(endDate instanceof Date) &&
+        endDate !== '' &&
+        !isNaN(new Date(endDate).getTime())
+          ? new Date(endDate)
+          : endDate;
+
       const newData = {
         ...prevData,
         start_date: newStartDate ? newStartDate.toISOString() : '',
@@ -93,12 +106,12 @@ const HouseItem: React.FC<AccomMssageHouseItemProps> = house => {
         capacity: capacity,
         contact: info, // or any other relevant field
       };
-      console.log("Updated requestData: ", newData);
+      console.log('Updated requestData: ', newData);
       return newData;
     });
   };
 
-  // submit message card content 
+  // submit message card content
   const handleSubmitRequestCustomCard = async () => {
     try {
       const res = await accomMessageAdd(
@@ -136,7 +149,7 @@ const HouseItem: React.FC<AccomMssageHouseItemProps> = house => {
   //新建消息卡片
   const onCreateCustomCardFromTenant = () => {
     setModalOpen(true);
-  }
+  };
 
   // 复制用户联系方式至剪贴板 -- 目前被新建消息卡片代替
   const onCopyContactToClipboard = () => {
@@ -252,18 +265,14 @@ const HouseItem: React.FC<AccomMssageHouseItemProps> = house => {
       ></View>
 
       <CustomModal isOpen={isModalOpen} onClose={() => setModalOpen(false)}>
-        <RequestCustomCard           
+        <RequestCustomCard
           onClose={() => setModalOpen(false)}
           onRequestDesEdit={handleRequestDesEdit}
           onSendToggleEdit={handleSendToggleEdit}
-          onRequestInfoSelectionEdit={handleRequestInfoSelectionEdit} 
-          onSubmitCard={handleSubmitRequestCustomCard}>
-        </RequestCustomCard>
-      
+          onRequestInfoSelectionEdit={handleRequestInfoSelectionEdit}
+          onSubmitCard={handleSubmitRequestCustomCard}
+        ></RequestCustomCard>
       </CustomModal>
-
-
-
     </View>
   );
 };

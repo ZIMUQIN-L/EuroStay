@@ -11,18 +11,20 @@ import {
 import DateSelection from './date-selection';
 import CapacitySelection from './capacity-selection';
 import ContactSelection from './contact-selection';
-import { ContactInfo } from '@utils/interfaces'
+import { ContactInfo } from '@utils/interfaces';
 
 interface RequestInfoSelectionProps {
   onRequestInfoSelection: (
     startDate: Date | undefined,
     endDate: Date | undefined,
     capacity: number,
-    contactInfo: ContactInfo
+    contactInfo: ContactInfo,
   ) => void;
 }
 
-const RequestInfoSelection: React.FC<RequestInfoSelectionProps>  = ({ onRequestInfoSelection }) => {
+const RequestInfoSelection: React.FC<RequestInfoSelectionProps> = ({
+  onRequestInfoSelection,
+}) => {
   const [isDateSelection, setIsDateSelection] = useState(false);
   const [isCapacitySelection, setIsCapacitySelection] = useState(false);
   const [isContactSelection, setContactSelection] = useState(false);
@@ -56,36 +58,18 @@ const RequestInfoSelection: React.FC<RequestInfoSelectionProps>  = ({ onRequestI
   const handleUserDateEdit = (start, end) => {
     setStartDate(start);
     setEndDate(end);
-    onRequestInfoSelection(
-      start,
-      end,
-      capacity,
-      contactInfo,
-
-    );
+    onRequestInfoSelection(start, end, capacity, contactInfo);
   };
 
   const handleUserCapacityEdit = editedCapacity => {
-    onRequestInfoSelection(
-      startDate,
-      endDate,
-      editedCapacity,
-      contactInfo,
-    );
+    onRequestInfoSelection(startDate, endDate, editedCapacity, contactInfo);
     setCapacity(editedCapacity);
   };
 
   const handleUserContactEdit = (info: ContactInfo) => {
-    onRequestInfoSelection(
-      startDate, 
-      endDate, 
-      capacity, 
-      info
-    );
+    onRequestInfoSelection(startDate, endDate, capacity, info);
     setContactInfo(info);
   };
-
-
 
   return (
     <>
@@ -114,7 +98,6 @@ const RequestInfoSelection: React.FC<RequestInfoSelectionProps>  = ({ onRequestI
         </View>
       </View>
 
-
       <View className='selection-part'>
         <View className='selection-container'>
           <View className='selection-content'>
@@ -139,33 +122,31 @@ const RequestInfoSelection: React.FC<RequestInfoSelectionProps>  = ({ onRequestI
       </View>
 
       <View className='selection-part'>
-      <View className='selection-container'>
-        <View className='selection-content'>
-          <View className='selection-left'>
-            <View className='icon-container'>
-              <Image src={PreferenceIcon} />
+        <View className='selection-container'>
+          <View className='selection-content'>
+            <View className='selection-left'>
+              <View className='icon-container'>
+                <Image src={PreferenceIcon} />
+              </View>
+              <Text>个人联系方式</Text>
             </View>
-            <Text>个人联系方式</Text>
-          </View>
-          <View className='selection-right' onClick={handleContactSelection}>
-            {/* Optionally display the selected contact info */}
-            {contactInfo && (
-              <Text>{`${contactInfo.email || contactInfo.wechat || contactInfo.phone}`}</Text>
+            <View className='selection-right' onClick={handleContactSelection}>
+              {/* Optionally display the selected contact info */}
+              {contactInfo && (
+                <Text>{`${contactInfo.email || contactInfo.wechat || contactInfo.phone}`}</Text>
+              )}
+              {!contactInfo && <Text>请选择</Text>}
+              <Image src={RightBottomArrow} />
+            </View>
+            {isContactSelection && (
+              <ContactSelection
+                onClose={handleClose}
+                onContactSelected={handleUserContactEdit}
+              />
             )}
-            {!contactInfo && <Text>请选择</Text>}
-            <Image src={RightBottomArrow} />
           </View>
-          {isContactSelection && (
-            <ContactSelection
-              onClose={handleClose}
-              onContactSelected={handleUserContactEdit}
-            />
-          )}
         </View>
       </View>
-    </View>
-
-
     </>
   );
 };

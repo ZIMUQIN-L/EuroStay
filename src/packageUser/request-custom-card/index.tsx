@@ -16,9 +16,7 @@ const RequestCustomCard = ({
   onSendToggleEdit,
   onRequestInfoSelectionEdit,
   onSubmitCard,
-
 }) => {
-
   const handleSubmitRequestCustomCard = messageContent => {
     onSubmitCard(messageContent);
     onClose();
@@ -26,13 +24,18 @@ const RequestCustomCard = ({
 
   const handleRequestDesEdit = editRequestDes => {
     onRequestDesEdit(editRequestDes);
-  }
+  };
 
   const handleSendToggleEdit = editSendToggle => {
     onSendToggleEdit(editSendToggle);
-  }
+  };
 
-  const handleRequestInfoSelectionEdit = (startDate: Date | undefined, endDate: Date | undefined, capacity: number, info: ContactInfo) => {
+  const handleRequestInfoSelectionEdit = (
+    startDate: Date | undefined,
+    endDate: Date | undefined,
+    capacity: number,
+    info: ContactInfo,
+  ) => {
     onRequestInfoSelectionEdit(startDate, endDate, capacity, info);
   };
   // TODO: 可以传入参数来调整样式，button和上面text的颜色
@@ -43,7 +46,9 @@ const RequestCustomCard = ({
       onSubmit={handleSubmitRequestCustomCard}
     >
       <View className='index'>
-        <RequestInfoSelection onRequestInfoSelection={handleRequestInfoSelectionEdit}/>
+        <RequestInfoSelection
+          onRequestInfoSelection={handleRequestInfoSelectionEdit}
+        />
         <RequestSendToggle onChangeToggle={handleSendToggleEdit} />
         <RequestDes onRequestDes={handleRequestDesEdit} />
       </View>

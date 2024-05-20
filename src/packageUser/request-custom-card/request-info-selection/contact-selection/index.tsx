@@ -1,15 +1,26 @@
-import { View, Input, Text, Switch, Checkbox, CheckboxGroup, Button } from '@tarojs/components';
+import {
+  View,
+  Input,
+  Text,
+  Switch,
+  Checkbox,
+  CheckboxGroup,
+  Button,
+} from '@tarojs/components';
 import { useState } from 'react';
 import CustomFullScreenDialog from '@components/CustomFullScreenDialog';
 import './index.scss';
-import { ContactInfo } from '@utils/interfaces'
+import { ContactInfo } from '@utils/interfaces';
 
 interface ContactSelectionProps {
   onClose: () => void;
   onContactSelected: (contactInfo: ContactInfo) => void;
 }
 
-const ContactSelection: React.FC<ContactSelectionProps>= ({ onClose, onContactSelected }) => {
+const ContactSelection: React.FC<ContactSelectionProps> = ({
+  onClose,
+  onContactSelected,
+}) => {
   const [provideContact, setProvideContact] = useState(false);
   const [selectedContacts, setSelectedContacts] = useState<string[]>([]);
   const [wechatValue, setWechatValue] = useState('');
@@ -38,9 +49,15 @@ const ContactSelection: React.FC<ContactSelectionProps>= ({ onClose, onContactSe
     >
       <View className='contact-toggle-container'>
         <Text className='contact-toggle-text'>是否提供个人联系方式</Text>
-        <Switch checked={provideContact} onChange={e => setProvideContact(e.detail.value)} />
+        <Switch
+          checked={provideContact}
+          onChange={e => setProvideContact(e.detail.value)}
+        />
       </View>
-      <CheckboxGroup className='contact-input-group' onChange={handleCheckboxChange}>
+      <CheckboxGroup
+        className='contact-input-group'
+        onChange={handleCheckboxChange}
+      >
         <View className='contact-input-container'>
           <View className='contact-checkbox'>
             <Checkbox
@@ -102,6 +119,5 @@ const ContactSelection: React.FC<ContactSelectionProps>= ({ onClose, onContactSe
     </CustomFullScreenDialog>
   );
 };
-
 
 export default ContactSelection;

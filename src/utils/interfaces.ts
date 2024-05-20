@@ -87,7 +87,6 @@ export interface UserAccomMessageItemProps {
   targetUserOpenid: string;
 }
 
-
 // 房主回复消息数据接口
 // both for replying message board and for accommodation page
 export interface HouseOwnerReplyMessageItemProps {
@@ -102,14 +101,12 @@ export interface HouseOwnerReplyMessageItemProps {
   accomMessageId: string;
 }
 
-
 // contact info structure
 export interface ContactInfo {
   phone?: string;
   email?: string;
   wechat?: string;
 }
-
 
 /**
  * 消息卡片--房源接口

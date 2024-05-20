@@ -1,5 +1,4 @@
-
-import { ContactInfo} from '@utils/interfaces';
+import { ContactInfo } from '@utils/interfaces';
 
 // 添加 userAccomMesage 信息至数据库
 export const accomMessageAdd = async (
@@ -51,7 +50,6 @@ export const accomMessageAdd = async (
       });
   });
 };
-
 
 export const accomMessageSearch = async (sourceUserOpenid, skip = 0) => {
   const db = wx.cloud.database();
