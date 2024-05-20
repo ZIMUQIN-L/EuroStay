@@ -68,6 +68,15 @@ const config = {
       },
     },
   },
+  webpack: {
+    custom: {
+      plugins: [
+        new MiniCssExtractPlugin({
+          ignoreOrder: true, // Enable this option to remove warnings about conflicting order
+        }),
+      ],
+    },
+  },
 };
 
 module.exports = function (merge) {

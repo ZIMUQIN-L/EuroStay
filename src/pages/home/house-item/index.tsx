@@ -1,22 +1,129 @@
 import { View, Text, Image } from '@tarojs/components';
 import Taro from '@tarojs/taro';
-import { HouseItemProps } from '@utils/interfaces';
+import { AccomMssageHouseItemProps } from '@utils/interfaces';
 import { DefaultHouse, DateIcon } from '@utils/cloudIcons';
 import { checkImageUrl } from '@utils/validationUtil';
 import { useState, useEffect } from 'react';
+import RequestCustomCard from '../../../packageUser/request-custom-card';
+import CustomModal from '@components/CustomModal';
+import { UserAccomMessageItemProps, ContactInfo } from '@utils/interfaces';
+import { accomMessageAdd } from '@common/database/accomMessage/accomMessage';
 
-const HouseItem: React.FC<HouseItemProps> = house => {
+const initialRequestData: UserAccomMessageItemProps = {
+  _id: '',
+  _openid: '',
+  end_date: '',
+  start_date: '',
+  capacity: 0,
+  gender: '',
+  location: '',
+  sourceUserOpenid: '',
+  description: '',
+  type: '',
+  status: '',
+  contact: {} as ContactInfo,
+  answerToOwner: '',
+  houseId: '',
+  images: [],
+  targetUserNickName: '',
+  targetUserOpenid: '',
+};
+
+const HouseItem: React.FC<AccomMssageHouseItemProps> = house => {
   const [imageSrc, setImageSrc] = useState('');
+  const [isModalOpen, setModalOpen] = useState(false);
+  const [requestData, setRequestData] = useState<UserAccomMessageItemProps>(initialRequestData);
+  // if user want to share this message to board or not
+  const [shareToggle, setShareToggle] = useState(false);
+
+  // const [requestData, setRequestData] = useState({
+  //   capacity: 0,
+  //   requestDes: '',
+  //   sendToggle: false,
+  //   requestInfoSelection: '',
+  // });
+
   useEffect(() => {
     const imageUrl =
       house.images.length > 0 && checkImageUrl(house.images[0] as string)
         ? house.images[0]
         : DefaultHouse;
     setImageSrc(imageUrl);
+    // handleSetTargetUserOpenid(house._openid);
   });
+
+  // // initialize the var
+  // const handleSetTargetUserOpenid = (newOpenid: string) => {
+  //   setRequestData(prevData => ({
+  //     ...prevData,
+  //     targetUserOpenid: newOpenid,
+  //   }));
+  // };
 
   const handleImageError = e => {
     setImageSrc(DefaultHouse);
+  };
+
+  const handleSendToggleEdit = (editSendToggle) => {
+    setShareToggle(editSendToggle);
+  };
+
+  // request data
+  const handleRequestDesEdit = (editRequestDes: string) => {
+    setRequestData(prevData => {
+      const newData = { ...prevData, description: editRequestDes };
+      return newData;
+    });
+  };
+
+  const handleRequestInfoSelectionEdit = (
+    startDate: Date | undefined,
+    endDate: Date | undefined,
+    capacity: number,
+    info: ContactInfo
+  ) => {
+    setRequestData(prevData => {
+      const newStartDate = startDate && !(startDate instanceof Date) && startDate !== "" && !isNaN(new Date(startDate).getTime()) ? new Date(startDate) : startDate;
+      const newEndDate = endDate && !(endDate instanceof Date) && endDate !== "" && !isNaN(new Date(endDate).getTime()) ? new Date(endDate) : endDate;
+  
+      const newData = {
+        ...prevData,
+        start_date: newStartDate ? newStartDate.toISOString() : '',
+        end_date: newEndDate ? newEndDate.toISOString() : '',
+        capacity: capacity,
+        contact: info, // or any other relevant field
+      };
+      console.log("Updated requestData: ", newData);
+      return newData;
+    });
+  };
+
+  // submit message card content 
+  const handleSubmitRequestCustomCard = async () => {
+    try {
+      const res = await accomMessageAdd(
+        requestData.end_date,
+        requestData.start_date,
+        requestData.capacity,
+        requestData.gender,
+        requestData.location,
+        requestData.sourceUserOpenid,
+        requestData.description,
+        requestData.type,
+        requestData.status,
+        // optional
+        requestData.contact,
+        requestData.answerToOwner,
+        requestData.houseId,
+        requestData.images || [],
+        requestData.targetUserNickName,
+        requestData.targetUserOpenid,
+      );
+      console.log('Message added successfully:', res);
+    } catch (err) {
+      console.error('Error adding message BUG :', err);
+    }
+    setModalOpen(false);
   };
 
   // 跳转至房源详情
@@ -26,7 +133,12 @@ const HouseItem: React.FC<HouseItemProps> = house => {
     });
   };
 
-  // 复制用户联系方式至剪贴板
+  //新建消息卡片
+  const onCreateCustomCardFromTenant = () => {
+    setModalOpen(true);
+  }
+
+  // 复制用户联系方式至剪贴板 -- 目前被新建消息卡片代替
   const onCopyContactToClipboard = () => {
     if (house.contact == undefined || house.contact == '') {
       if (house.xhsContact != undefined && house.xhsContact != '') {
@@ -125,7 +237,7 @@ const HouseItem: React.FC<HouseItemProps> = house => {
             alignItems: 'center',
           }}
           className='contact-button'
-          onClick={onCopyContactToClipboard}
+          onClick={onCreateCustomCardFromTenant}
         >
           <Text style={{ fontSize: '14px' }}>联系房主</Text>
         </View>
@@ -138,6 +250,20 @@ const HouseItem: React.FC<HouseItemProps> = house => {
           marginBottom: '20px',
         }}
       ></View>
+
+      <CustomModal isOpen={isModalOpen} onClose={() => setModalOpen(false)}>
+        <RequestCustomCard           
+          onClose={() => setModalOpen(false)}
+          onRequestDesEdit={handleRequestDesEdit}
+          onSendToggleEdit={handleSendToggleEdit}
+          onRequestInfoSelectionEdit={handleRequestInfoSelectionEdit} 
+          onSubmitCard={handleSubmitRequestCustomCard}>
+        </RequestCustomCard>
+      
+      </CustomModal>
+
+
+
     </View>
   );
 };

@@ -1,3 +1,6 @@
+
+import { ContactInfo} from '@utils/interfaces';
+
 // 添加 userAccomMesage 信息至数据库
 export const accomMessageAdd = async (
   end_date,
@@ -10,7 +13,7 @@ export const accomMessageAdd = async (
   type,
   status,
   // optional
-  contact = '',
+  contact = {} as ContactInfo,
   answerToOwner = '',
   houseId = '',
   images = [],
@@ -48,6 +51,7 @@ export const accomMessageAdd = async (
       });
   });
 };
+
 
 export const accomMessageSearch = async (sourceUserOpenid, skip = 0) => {
   const db = wx.cloud.database();

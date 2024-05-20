@@ -1,0 +1,32 @@
+.des-part {
+    background-color: white;
+    margin-top: 8px;
+  }
+  .des-container {
+    display: flex;
+    flex-direction: column;
+    margin: 40px 40px;
+  }
+  .des-title {
+    color: #979797;
+    font-weight: bold;
+    font-size: 28px;
+  }
+  .des-text-container {
+    background-color: #f7f7f7;
+    border-radius: 20px;
+    margin-top: 20px;
+    Input {
+      color: #979797;
+    }
+  }
+  .des-text {
+    margin: 20px 20px;
+    color: #979797;
+  }
+  .caution-text {
+    margin: 20px 20px;
+    font-size: 30px;
+    color: #6b63b9;
+  }
+  
