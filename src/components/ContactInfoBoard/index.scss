@@ -1,0 +1,30 @@
+.text-title {
+  color: #979797;
+  font-weight: bold;
+  font-size: 28px;
+}
+.caution-text {
+  margin: 20px 20px;
+  font-size: 30px;
+  color: #6b63b9;
+}
+.avatar-image {
+  width: 80px;
+  height: 80px;
+  border-radius: 3px;
+  justify-content: center;
+  margin-top: 20px;
+  display: flex;
+}
+.input-text-container {
+  background-color: #f7f7f7;
+  border-radius: 20px;
+  margin-top: 20px;
+  Input {
+    color: #979797;
+  }
+}
+.input-text {
+  margin: 20px 20px;
+  color: #979797;
+}
