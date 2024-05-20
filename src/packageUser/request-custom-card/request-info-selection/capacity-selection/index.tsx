@@ -16,7 +16,7 @@ const CapacitySelection = ({ onClose, onCapacitySelected }) => {
 
   return (
     <CustomFullScreenDialog
-      title='选择可住人数'
+      title='选择入住人数'
       onClose={onClose}
       onSubmit={handleSubmitCapacitySelection}
     >
@@ -24,7 +24,7 @@ const CapacitySelection = ({ onClose, onCapacitySelected }) => {
         <View className='capacity-text'>
           <Input
             type='number'
-            placeholder='请输入可入住人数~'
+            placeholder='请输入入住人数~'
             onInput={handleCapacityChange}
           />
         </View>

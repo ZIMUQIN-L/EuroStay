@@ -1,10 +1,8 @@
 
-import { UserAccomMessageItemProps, ContactInfo} from '@utils/interfaces';
+import { ContactInfo} from '@utils/interfaces';
 
 // 添加 userAccomMesage 信息至数据库
-export const accomMessageAdd = async ({
-  _id,
-  _openid,
+export const accomMessageAdd = async (
   end_date,
   start_date,
   capacity,
@@ -14,20 +12,19 @@ export const accomMessageAdd = async ({
   description,
   type,
   status,
+  // optional
   contact = {} as ContactInfo,
   answerToOwner = '',
   houseId = '',
   images = [],
   targetUserNickName = '',
   targetUserOpenid = '',
-}: UserAccomMessageItemProps) => {
+) => {
   const db = wx.cloud.database();
   return new Promise((resolve, reject) => {
     db.collection('UserAccomMessage')
       .add({
         data: {
-          _id: _id,
-          _openid: _openid,
           end_date: end_date,
           start_date: start_date,
           capacity: capacity,
@@ -54,6 +51,7 @@ export const accomMessageAdd = async ({
       });
   });
 };
+
 
 export const accomMessageSearch = async (sourceUserOpenid, skip = 0) => {
   const db = wx.cloud.database();

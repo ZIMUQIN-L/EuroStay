@@ -1,6 +1,6 @@
 import { View, Text, Image } from '@tarojs/components';
 import Taro from '@tarojs/taro';
-import { HouseItemProps } from '@utils/interfaces';
+import { AccomMssageHouseItemProps } from '@utils/interfaces';
 import { DefaultHouse, DateIcon } from '@utils/cloudIcons';
 import { checkImageUrl } from '@utils/validationUtil';
 import { useState, useEffect } from 'react';
@@ -29,7 +29,7 @@ const initialRequestData: UserAccomMessageItemProps = {
   targetUserOpenid: '',
 };
 
-const HouseItem: React.FC<HouseItemProps> = house => {
+const HouseItem: React.FC<AccomMssageHouseItemProps> = house => {
   const [imageSrc, setImageSrc] = useState('');
   const [isModalOpen, setModalOpen] = useState(false);
   const [requestData, setRequestData] = useState<UserAccomMessageItemProps>(initialRequestData);
@@ -48,9 +48,17 @@ const HouseItem: React.FC<HouseItemProps> = house => {
       house.images.length > 0 && checkImageUrl(house.images[0] as string)
         ? house.images[0]
         : DefaultHouse;
-    console.log(house);
     setImageSrc(imageUrl);
+    // handleSetTargetUserOpenid(house._openid);
   });
+
+  // // initialize the var
+  // const handleSetTargetUserOpenid = (newOpenid: string) => {
+  //   setRequestData(prevData => ({
+  //     ...prevData,
+  //     targetUserOpenid: newOpenid,
+  //   }));
+  // };
 
   const handleImageError = e => {
     setImageSrc(DefaultHouse);
@@ -93,7 +101,24 @@ const HouseItem: React.FC<HouseItemProps> = house => {
   // submit message card content 
   const handleSubmitRequestCustomCard = async () => {
     try {
-      const res = await accomMessageAdd(requestData);
+      const res = await accomMessageAdd(
+        requestData.end_date,
+        requestData.start_date,
+        requestData.capacity,
+        requestData.gender,
+        requestData.location,
+        requestData.sourceUserOpenid,
+        requestData.description,
+        requestData.type,
+        requestData.status,
+        // optional
+        requestData.contact,
+        requestData.answerToOwner,
+        requestData.houseId,
+        requestData.images || [],
+        requestData.targetUserNickName,
+        requestData.targetUserOpenid,
+      );
       console.log('Message added successfully:', res);
     } catch (err) {
       console.error('Error adding message BUG :', err);

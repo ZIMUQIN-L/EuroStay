@@ -94,3 +94,22 @@ export interface ContactInfo {
   email?: string;
   wechat?: string;
 }
+
+
+/**
+ * 消息卡片--房源接口
+ */
+export interface AccomMssageHouseItemProps {
+  _id: string; // 微信自动生成的_id，无法修改其名称
+  _openid: string;
+  capacity: number;
+  description: string;
+  end_date: string; // 后期最好优化成日期格式
+  start_date: string; // 当前数据库名称是start_date和end_date, 或许可以先保持？
+  houseType: string;
+  images: string[];
+  location: string;
+  ownerTarget: string;
+  contact: string;
+  xhsContact: string;
+}
