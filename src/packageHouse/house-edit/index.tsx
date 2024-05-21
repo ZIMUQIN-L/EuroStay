@@ -234,7 +234,7 @@ const Index = () => {
       />
       <View style={{ backgroundColor: 'white' }}>
         <View className='post-submit-button' onClick={handleClickEditUpdate}>
-          <Text>发布房源</Text>
+          <Text>修改房源</Text>
         </View>
       </View>
     </View>
