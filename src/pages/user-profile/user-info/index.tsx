@@ -29,7 +29,10 @@ const UserInfo: React.FC<UserItemProps> = user => {
           <View className='sub-title'>ID: {userInfo.userOpenid}</View>
           <View className='sub-title'>所属地: {userInfo.userLocation}</View>
         </View>
-        <View style={{ display: 'flex', alignItems: 'center' }}>
+        <View
+          style={{ display: 'flex', alignItems: 'center' }}
+          onClick={editClick}
+        >
           <Image
             src={RightBottomArrow}
             style={{

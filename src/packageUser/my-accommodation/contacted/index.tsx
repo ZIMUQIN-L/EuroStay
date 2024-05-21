@@ -1,9 +1,14 @@
 import CustomCard from '../../custom-card';
 import { DefaultAvatar, DefaultHouse } from '@utils/cloudIcons';
-import { UserAccomMessageItemProps } from '@utils/interfaces';
+import {
+  UserAccomMessageItemProps,
+  HouseOwnerReplyMessageItemProps,
+} from '@utils/interfaces';
+import Taro from '@tarojs/taro';
 import { useState } from 'react';
-import ContactInfoBoard from '../contact-info-board';
+import ContactInfoBoard from '@components/ContactInfoBoard';
 import { View } from '@tarojs/components';
+import { replyMessageSearch } from '@common/database/ownerReply/ownerReply';
 /**
  * @description 我的求宿-已联系
  */
@@ -45,7 +50,7 @@ const ContactedCard: React.FC<UserAccomMessageItemProps> = userAccomMessage => {
       case 'contactReceived':
         return true;
       case 'booked':
-        return true;
+        return false;
       case 'checkedIn':
         return true;
       case 'rated':
@@ -76,13 +81,28 @@ const ContactedCard: React.FC<UserAccomMessageItemProps> = userAccomMessage => {
     }
   };
 
-  const handleUserClickButton = infoId => {
-    handleRetriveContactInfoBoard();
-    console.log('test now');
-  };
+  const [replyMessage, setReplyMessage] =
+    useState<HouseOwnerReplyMessageItemProps | null>();
 
-  const handleRetriveContactInfoBoard = () => {
-    setContactInfoIsShown(true);
+  const handleUserClickButton = (infoId, infoStatus) => {
+    // handleRetriveContactInfoBoard();
+    if (infoStatus == 'contactReceived') {
+      Taro.showLoading({
+        title: '加载回复中',
+        mask: true,
+      });
+      replyMessageSearch(infoId).then(
+        (replyMessages: HouseOwnerReplyMessageItemProps[]) => {
+          Taro.hideLoading();
+          setContactInfoIsShown(true);
+          if (replyMessageSearch.length == 0) {
+            setReplyMessage(null);
+          } else {
+            setReplyMessage(replyMessages[0]);
+          }
+        },
+      );
+    }
   };
 
   const [contactInfoIsShown, setContactInfoIsShown] = useState(false);
@@ -94,7 +114,11 @@ const ContactedCard: React.FC<UserAccomMessageItemProps> = userAccomMessage => {
     <View>
       <CustomCard
         title={userAccomMessage.location}
-        imageUrl={userAccomMessage.images[0]}
+        imageUrl={
+          userAccomMessage.images.length == 0
+            ? DefaultHouse
+            : userAccomMessage.images[0]
+        }
         userInfo={userAccomMessage.targetUserNickName}
         dateInfo={
           userAccomMessage.start_date + ' to ' + userAccomMessage.end_date
@@ -102,14 +126,15 @@ const ContactedCard: React.FC<UserAccomMessageItemProps> = userAccomMessage => {
         topText={handleTopText(userAccomMessage.status)}
         buttonText={handleButtonText(userAccomMessage.status)}
         clickButton={() => {
-          handleUserClickButton(userAccomMessage._id);
+          handleUserClickButton(userAccomMessage._id, userAccomMessage.status);
         }}
         clickable={handleButtonClickable(userAccomMessage.status)}
       />
       {contactInfoIsShown && (
         <ContactInfoBoard
           onClose={handleCloseAllBoards}
-          onRetriveData={handleRetriveContactInfoBoard}
+          retrivedData={replyMessage}
+          onUpdateData={() => {}}
         ></ContactInfoBoard>
       )}
     </View>
