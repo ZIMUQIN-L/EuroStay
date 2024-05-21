@@ -44,7 +44,7 @@ const Index = () => {
   }, [GlobalStore.userInfo]);
 
   const handleHouseClick = houseId => {
-    Taro.redirectTo({
+    Taro.navigateTo({
       url: `/packageHouse/house-edit/index?id=${houseId}`,
     });
   };
