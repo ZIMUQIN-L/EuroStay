@@ -18,7 +18,7 @@ interface RequestInfoSelectionProps {
     startDate: Date | undefined,
     endDate: Date | undefined,
     capacity: number,
-    contactInfo: ContactInfo,
+    contactInfo: string | undefined,
   ) => void;
 }
 
@@ -32,7 +32,7 @@ const RequestInfoSelection: React.FC<RequestInfoSelectionProps> = ({
   const [startDate, setStartDate] = useState<Date>();
   const [endDate, setEndDate] = useState<Date>();
   const [capacity, setCapacity] = useState(0);
-  const [contactInfo, setContactInfo] = useState<ContactInfo>({});
+  const [contactInfo, setContactInfo] = useState<string>();
 
   // close function
   const handleClose = () => {
@@ -66,7 +66,7 @@ const RequestInfoSelection: React.FC<RequestInfoSelectionProps> = ({
     setCapacity(editedCapacity);
   };
 
-  const handleUserContactEdit = (info: ContactInfo) => {
+  const handleUserContactEdit = (info: string) => {
     onRequestInfoSelection(startDate, endDate, capacity, info);
     setContactInfo(info);
   };
@@ -132,10 +132,12 @@ const RequestInfoSelection: React.FC<RequestInfoSelectionProps> = ({
             </View>
             <View className='selection-right' onClick={handleContactSelection}>
               {/* Optionally display the selected contact info */}
-              {contactInfo && (
-                <Text>{`${contactInfo.email || contactInfo.wechat || contactInfo.phone}`}</Text>
+              {contactInfo != undefined && contactInfo != '' && (
+                <Text>{`${contactInfo}`}</Text>
               )}
-              {!contactInfo && <Text>请选择</Text>}
+              {!(contactInfo != undefined && contactInfo != '') && (
+                <Text>请选择</Text>
+              )}
               <Image src={RightBottomArrow} />
             </View>
             {isContactSelection && (

@@ -5,7 +5,7 @@ import CustomFullScreenDialog from '@components/CustomFullScreenDialog';
 import RequestDes from './request-description';
 import RequestSendToggle from './request-send-toggle';
 import RequestInfoSelection from './request-info-selection';
-import { ContactInfo } from '@utils/interfaces';
+// import { ContactInfo } from '@utils/interfaces';
 
 /**
  * @description 我的供宿和我的求宿的共用组件
@@ -34,7 +34,7 @@ const RequestCustomCard = ({
     startDate: Date | undefined,
     endDate: Date | undefined,
     capacity: number,
-    info: ContactInfo,
+    info: string | undefined,
   ) => {
     onRequestInfoSelectionEdit(startDate, endDate, capacity, info);
   };

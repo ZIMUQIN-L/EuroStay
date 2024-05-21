@@ -12,7 +12,7 @@ export const accomMessageAdd = async (
   type,
   status,
   // optional
-  contact = {} as ContactInfo,
+  contact = '',
   answerToOwner = '',
   houseId = '',
   images = [],

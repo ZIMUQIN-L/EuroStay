@@ -79,7 +79,7 @@ export interface UserAccomMessageItemProps {
   status: string;
 
   // optional params
-  contact: ContactInfo;
+  contact: string;
   answerToOwner: string;
   houseId: string;
   images?: string[];
