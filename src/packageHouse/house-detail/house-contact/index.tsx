@@ -2,7 +2,6 @@ import { View, Text } from '@tarojs/components';
 import { HouseDetailItemProps } from '@utils/interfaces';
 import Taro from '@tarojs/taro';
 import './index.scss';
-import CustomModal from '@components/CustomModal';
 import { UserItemProps } from '@utils/interfaces';
 import { useState, useEffect } from 'react';
 import { accomMessageAdd } from '@common/database/accomMessage/accomMessage';
@@ -121,7 +120,7 @@ const HouseContact: React.FC<HouseDetailItemProps> = house => {
           </View>
         </View>
       </View>
-      <CustomModal isOpen={isModalOpen} onClose={() => setModalOpen(false)}>
+      {isModalOpen && (
         <RequestCustomCard
           onClose={() => setModalOpen(false)}
           onRequestDesEdit={handleRequestDesEdit}
@@ -129,7 +128,7 @@ const HouseContact: React.FC<HouseDetailItemProps> = house => {
           onRequestInfoSelectionEdit={handleRequestInfoSelectionEdit}
           onSubmitCard={handleSubmitRequestCustomCard}
         ></RequestCustomCard>
-      </CustomModal>
+      )}
     </View>
   );
 };

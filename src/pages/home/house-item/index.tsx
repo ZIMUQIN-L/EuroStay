@@ -5,7 +5,6 @@ import { DefaultHouse, DateIcon } from '@utils/cloudIcons';
 import { checkImageUrl } from '@utils/validationUtil';
 import { useState, useEffect } from 'react';
 import RequestCustomCard from '../../../packageUser/request-custom-card';
-import CustomModal from '@components/CustomModal';
 import GlobalStore from '@store/GlobalStore';
 import { accomMessageAdd } from '@common/database/accomMessage/accomMessage';
 
@@ -191,8 +190,7 @@ const HouseItem: React.FC<AccomMssageHouseItemProps> = house => {
           marginBottom: '20px',
         }}
       ></View>
-
-      <CustomModal isOpen={isModalOpen} onClose={() => setModalOpen(false)}>
+      {isModalOpen && (
         <RequestCustomCard
           onClose={() => setModalOpen(false)}
           onRequestDesEdit={handleRequestDesEdit}
@@ -200,7 +198,7 @@ const HouseItem: React.FC<AccomMssageHouseItemProps> = house => {
           onRequestInfoSelectionEdit={handleRequestInfoSelectionEdit}
           onSubmitCard={handleSubmitRequestCustomCard}
         ></RequestCustomCard>
-      </CustomModal>
+      )}
     </View>
   );
 };
