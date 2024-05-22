@@ -25,15 +25,15 @@ const HouseItem: React.FC<AccomMssageHouseItemProps> = house => {
   const [user, setUser] = useState<UserItemProps>(GlobalStore.userInfo);
 
   useEffect(() => {
-    // const demoUser: UserItemProps = GlobalStore.userInfo;
-    // setUser(demoUser);
+    const demoUser: UserItemProps = GlobalStore.userInfo;
+    setUser(demoUser);
     const imageUrl =
       house.images.length > 0 && checkImageUrl(house.images[0] as string)
         ? house.images[0]
         : DefaultHouse;
     setImageSrc(imageUrl);
     // handleSetTargetUserOpenid(house._openid);
-  });
+  }, []);
 
   const handleImageError = e => {
     setImageSrc(DefaultHouse);

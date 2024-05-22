@@ -3,6 +3,7 @@
  */
 export interface HouseItemProps {
   _id: string; // 微信自动生成的_id，无法修改其名称
+  _openid: string;
   capacity: number;
   description: string;
   end_date: string; // 后期最好优化成日期格式
@@ -20,6 +21,7 @@ export interface HouseItemProps {
  */
 export interface SeekingItemProps {
   _id: string;
+  _openid: string;
   user: string; // 用户的名称
   avatar: string; // 用户头像的url
   title: string;
@@ -45,6 +47,7 @@ export interface UserItemProps {
 // 房源详情信息接口
 export interface HouseDetailItemProps {
   _id: string; // 微信自动生成的_id，无法修改其名称
+  _openid: string;
   capacity: number;
   description: string;
   end_date: string; // 后期最好优化成日期格式

@@ -1,4 +1,3 @@
-import React from 'react';
 import { View, Text } from '@tarojs/components';
 import './index.scss'; // Import your styles here
 
