@@ -11,7 +11,6 @@ import {
 import DateSelection from './date-selection';
 import CapacitySelection from './capacity-selection';
 import ContactSelection from './contact-selection';
-import { ContactInfo } from '@utils/interfaces';
 
 interface RequestInfoSelectionProps {
   onRequestInfoSelection: (

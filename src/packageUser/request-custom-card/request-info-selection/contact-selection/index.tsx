@@ -1,4 +1,4 @@
-import { View, Input, Text, Switch } from '@tarojs/components';
+import { View, Input, Text, Switch, Checkbox } from '@tarojs/components';
 import { useState } from 'react';
 import CustomFullScreenDialog from '@components/CustomFullScreenDialog';
 import './index.scss';
@@ -31,14 +31,16 @@ const ContactSelection: React.FC<ContactSelectionProps> = ({
           <Text className='contact-toggle-text'>是否提供个人联系方式</Text>
           <Switch
             checked={provideContact}
+            type={'checkbox'}
+            color={'#A6A0E0'}
             onChange={e => setProvideContact(e.detail.value)}
           />
         </View>
-        <Text className='contact-checkbox-text'>微信</Text>
+        {/* <Text className='contact-checkbox-text'>微信</Text> */}
         <Input
           className='contact-input'
           type='text'
-          placeholder='填写微信'
+          placeholder='请填写自己的微信~'
           value={wechatValue}
           disabled={!provideContact}
           onInput={e => setWechatValue(e.detail.value)}
