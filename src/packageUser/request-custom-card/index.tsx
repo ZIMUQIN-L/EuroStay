@@ -8,7 +8,7 @@ import RequestInfoSelection from './request-info-selection';
 // import { ContactInfo } from '@utils/interfaces';
 
 /**
- * @description 我的供宿和我的求宿的共用组件
+ * @description 联系房主和求宿公用的组件
  */
 const RequestCustomCard = ({
   onClose,
@@ -17,8 +17,9 @@ const RequestCustomCard = ({
   onRequestInfoSelectionEdit,
   onSubmitCard,
 }) => {
-  const handleSubmitRequestCustomCard = messageContent => {
-    onSubmitCard(messageContent);
+  // here I remove the params for simplicity
+  const handleSubmitRequestCustomCard = () => {
+    onSubmitCard();
     onClose();
   };
 
@@ -31,10 +32,10 @@ const RequestCustomCard = ({
   };
 
   const handleRequestInfoSelectionEdit = (
-    startDate: Date | undefined,
-    endDate: Date | undefined,
+    startDate,
+    endDate,
     capacity: number,
-    info: string | undefined,
+    info,
   ) => {
     onRequestInfoSelectionEdit(startDate, endDate, capacity, info);
   };

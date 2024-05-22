@@ -1,50 +1,32 @@
 import { View, Text, Image } from '@tarojs/components';
 import Taro from '@tarojs/taro';
-import { AccomMssageHouseItemProps } from '@utils/interfaces';
+import { AccomMssageHouseItemProps, UserItemProps } from '@utils/interfaces';
 import { DefaultHouse, DateIcon } from '@utils/cloudIcons';
 import { checkImageUrl } from '@utils/validationUtil';
 import { useState, useEffect } from 'react';
 import RequestCustomCard from '../../../packageUser/request-custom-card';
 import CustomModal from '@components/CustomModal';
-import { UserAccomMessageItemProps, ContactInfo } from '@utils/interfaces';
+import GlobalStore from '@store/GlobalStore';
 import { accomMessageAdd } from '@common/database/accomMessage/accomMessage';
-
-const initialRequestData: UserAccomMessageItemProps = {
-  _id: '',
-  _openid: '',
-  end_date: '',
-  start_date: '',
-  capacity: 0,
-  gender: '',
-  location: '',
-  sourceUserOpenid: '',
-  description: '',
-  type: '',
-  status: '',
-  contact: {} as ContactInfo,
-  answerToOwner: '',
-  houseId: '',
-  images: [],
-  targetUserNickName: '',
-  targetUserOpenid: '',
-};
 
 const HouseItem: React.FC<AccomMssageHouseItemProps> = house => {
   const [imageSrc, setImageSrc] = useState('');
   const [isModalOpen, setModalOpen] = useState(false);
-  const [requestData, setRequestData] =
-    useState<UserAccomMessageItemProps>(initialRequestData);
   // if user want to share this message to board or not
   const [shareToggle, setShareToggle] = useState(false);
+  // items for message card
+  const [startDate, setStartDate] = useState<Date>();
+  const [endDate, setEndDate] = useState<Date>();
+  const [capacity, setCapacity] = useState(0);
+  const [contact, setContact] = useState('');
+  const [userDescription, setUserDescription] = useState<string>('');
 
-  // const [requestData, setRequestData] = useState({
-  //   capacity: 0,
-  //   requestDes: '',
-  //   sendToggle: false,
-  //   requestInfoSelection: '',
-  // });
+  // user information
+  const [user, setUser] = useState<UserItemProps>(GlobalStore.userInfo);
 
   useEffect(() => {
+    // const demoUser: UserItemProps = GlobalStore.userInfo;
+    // setUser(demoUser);
     const imageUrl =
       house.images.length > 0 && checkImageUrl(house.images[0] as string)
         ? house.images[0]
@@ -52,14 +34,6 @@ const HouseItem: React.FC<AccomMssageHouseItemProps> = house => {
     setImageSrc(imageUrl);
     // handleSetTargetUserOpenid(house._openid);
   });
-
-  // // initialize the var
-  // const handleSetTargetUserOpenid = (newOpenid: string) => {
-  //   setRequestData(prevData => ({
-  //     ...prevData,
-  //     targetUserOpenid: newOpenid,
-  //   }));
-  // };
 
   const handleImageError = e => {
     setImageSrc(DefaultHouse);
@@ -71,72 +45,73 @@ const HouseItem: React.FC<AccomMssageHouseItemProps> = house => {
 
   // request data
   const handleRequestDesEdit = (editRequestDes: string) => {
-    setRequestData(prevData => {
-      const newData = { ...prevData, description: editRequestDes };
-      return newData;
-    });
+    setUserDescription(editRequestDes);
   };
 
   const handleRequestInfoSelectionEdit = (
-    startDate: Date | undefined,
-    endDate: Date | undefined,
+    startDate,
+    endDate,
     capacity: number,
-    info: ContactInfo,
+    contactInfo,
   ) => {
-    setRequestData(prevData => {
-      const newStartDate =
-        startDate &&
-        !(startDate instanceof Date) &&
-        startDate !== '' &&
-        !isNaN(new Date(startDate).getTime())
-          ? new Date(startDate)
-          : startDate;
-      const newEndDate =
-        endDate &&
-        !(endDate instanceof Date) &&
-        endDate !== '' &&
-        !isNaN(new Date(endDate).getTime())
-          ? new Date(endDate)
-          : endDate;
-
-      const newData = {
-        ...prevData,
-        start_date: newStartDate ? newStartDate.toISOString() : '',
-        end_date: newEndDate ? newEndDate.toISOString() : '',
-        capacity: capacity,
-        contact: info, // or any other relevant field
-      };
-      console.log('Updated requestData: ', newData);
-      return newData;
-    });
+    setStartDate(startDate);
+    setEndDate(endDate);
+    setCapacity(capacity);
+    setContact(contactInfo);
   };
 
   // submit message card content
   const handleSubmitRequestCustomCard = async () => {
-    try {
-      const res = await accomMessageAdd(
-        requestData.end_date,
-        requestData.start_date,
-        requestData.capacity,
-        requestData.gender,
-        requestData.location,
-        requestData.sourceUserOpenid,
-        requestData.description,
-        requestData.type,
-        requestData.status,
-        // optional
-        requestData.contact,
-        requestData.answerToOwner,
-        requestData.houseId,
-        requestData.images || [],
-        requestData.targetUserNickName,
-        requestData.targetUserOpenid,
-      );
-      console.log('Message added successfully:', res);
-    } catch (err) {
-      console.error('Error adding message BUG :', err);
+    console.log(
+      startDate,
+      endDate,
+      capacity,
+      contact,
+      shareToggle,
+      userDescription,
+    );
+    if (!startDate || !endDate) {
+      Taro.showToast({
+        title: '请选择入住时间',
+        icon: 'error',
+        mask: true,
+        duration: 2000,
+      });
+    } else if (capacity == 0) {
+      Taro.showToast({
+        title: '请选择入住人数~',
+        icon: 'error',
+        mask: true,
+        duration: 2000,
+      });
+    } else if (userDescription == '') {
+      Taro.showToast({
+        title: '请填写个人描述~',
+        icon: 'error',
+        mask: true,
+        duration: 2000,
+      });
+    } else {
+      accomMessageAdd(
+        endDate,
+        startDate,
+        capacity,
+        '',
+        house.location,
+        user.userOpenid,
+        userDescription,
+        shareToggle ? 'both' : 'withTargetHouse',
+        'unread',
+        contact,
+        '',
+        house._id,
+        house.images,
+        house._openid,
+        house._openid,
+      ).then(msg => {
+        setModalOpen(false);
+      });
     }
-    setModalOpen(false);
   };
 
   // 跳转至房源详情
@@ -149,53 +124,6 @@ const HouseItem: React.FC<AccomMssageHouseItemProps> = house => {
   //新建消息卡片
   const onCreateCustomCardFromTenant = () => {
     setModalOpen(true);
-  };
-
-  // 复制用户联系方式至剪贴板 -- 目前被新建消息卡片代替
-  const onCopyContactToClipboard = () => {
-    if (house.contact == undefined || house.contact == '') {
-      if (house.xhsContact != undefined && house.xhsContact != '') {
-        Taro.setClipboardData({
-          data: house.xhsContact,
-          success: function (res) {
-            Taro.showModal({
-              title: '提示',
-              content: '房主的小红书已复制到剪贴板',
-            });
-          },
-          fail: function (err) {
-            Taro.showToast({
-              title: '联系方式复制失败',
-              icon: 'error',
-              duration: 2000,
-            });
-          },
-        });
-      } else {
-        Taro.showToast({
-          title: '暂无联系方式~',
-          icon: 'error',
-          duration: 2000,
-        });
-      }
-    } else {
-      Taro.setClipboardData({
-        data: house.contact,
-        success: function (res) {
-          Taro.showModal({
-            title: '提示',
-            content: '房主的微信账号已复制到剪贴板',
-          });
-        },
-        fail: function (err) {
-          Taro.showToast({
-            title: '联系方式复制失败',
-            icon: 'error',
-            duration: 2000,
-          });
-        },
-      });
-    }
   };
 
   return (

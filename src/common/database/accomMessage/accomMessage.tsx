@@ -1,4 +1,4 @@
-import { ContactInfo } from '@utils/interfaces';
+import { DefaultHouse } from '@utils/cloudIcons';
 
 // 添加 userAccomMesage 信息至数据库
 export const accomMessageAdd = async (
@@ -15,7 +15,7 @@ export const accomMessageAdd = async (
   contact = '',
   answerToOwner = '',
   houseId = '',
-  images = [],
+  images = [DefaultHouse],
   targetUserNickName = '',
   targetUserOpenid = '',
 ) => {
