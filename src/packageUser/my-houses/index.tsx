@@ -59,7 +59,6 @@ const Index = () => {
           <Image
             src={house.images.length > 0 ? house.images[0] : DefaultHouse}
             mode='aspectFill'
-            style={{ width: '100%', height: '100px' }}
           />
           <Text className='house-title'>{house.location}</Text>
           <View className='house-info'>

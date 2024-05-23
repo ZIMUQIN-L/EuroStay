@@ -1,16 +1,19 @@
 .card {
-  width: 90%;
+  margin: 0px auto;
+  min-width: 90%;
+  max-width: 90%;
   background-color: #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
   display: flex;
   flex-direction: row;
-  align-items: center;
-  justify-content: center;
+  // align-items: center;
+  justify-content: flex-start;
   margin-top: 20px;
+  padding: 20px;
 
   &-left {
-    padding: 20px;
-
+    margin-right: 30px;
     Image {
       width: 200px;
       height: 200px;
@@ -19,16 +22,26 @@
   }
 
   &-right {
+    position: relative;
+    margin-right: 20px;
+    flex-grow: 1;
     display: flex;
     flex-direction: column;
-    padding: 20px;
-
+    justify-content: space-between;
     &-top {
       display: flex;
       flex-direction: row;
       align-items: center;
       justify-content: space-between;
+      align-items: center;
       font-size: 24px;
+      .house-title {
+        font-weight: 600;
+      }
+      .house-status {
+        font-size: 18px;
+        color: #979797;
+      }
     }
 
     &-middle {
@@ -36,11 +49,16 @@
       flex-direction: row;
       align-items: center;
       justify-content: space-between;
-      margin-top: 10px;
+      margin-top: 20px;
 
       &-text {
+        margin-left: 10px;
         display: flex;
         flex-direction: column;
+        color: #979797;
+        .house-owner-info {
+          margin-bottom: 10px;
+        }
       }
 
       Text {
@@ -55,44 +73,53 @@
     }
 
     &-bottom {
-      margin-top: 10px;
       display: flex;
+      flex-direction: row;
       justify-content: flex-end;
-      align-items: center;
 
       &-button {
-        background-color: #ffd111;
-        color: #000;
-        border: none;
-        padding: 10px 20px;
+        padding: 15px 30px;
+        font-size: 20px;
+        display: flex;
+        align-items: center;
         border-radius: 40px;
-        height: 40px;
-        font-size: 24px;
-
-        &:hover {
-          background-color: darken(#ffd111, 10%);
+        border: 1px solid #979797;
+        &.second {
+          margin-left: 20px;
+          &.noclick {
+            background-color: #f2f2f2;
+            color: #000;
+            border: none;
+            pointer-events: none;
+            &:hover {
+              background-color: darken(#ffd111, 10%);
+            }
+          }
+          &.click {
+            background-color: #ffd111;
+            color: #000;
+            border: none;
+            &:hover {
+              background-color: darken(#ffd111, 10%);
+            }
+          }
         }
-
-        Text {
-          padding: 10px;
+        &.noclick {
+          background-color: #f2f2f2;
+          color: #000;
+          border: none;
+          pointer-events: none;
+          &:hover {
+            background-color: darken(#ffd111, 10%);
+          }
         }
-      }
-      &-button-noclick {
-        background-color: #f2f2f2;
-        color: #000;
-        border: none;
-        padding: 10px 20px;
-        border-radius: 40px;
-        height: 40px;
-        font-size: 24px;
-        pointer-events: none;
-
-        &:hover {
-          background-color: darken(#ffd111, 10%);
-        }
-
-        Text {
-          padding: 10px;
+        &.click {
+          background-color: #ffd111;
+          color: #000;
+          border: none;
+          &:hover {
+            background-color: darken(#ffd111, 10%);
+          }
         }
       }
     }
