@@ -27,6 +27,7 @@ const Index = () => {
   const handleUserEnter = () => {
     Taro.showModal({
       title: '用户协议',
+      confirmColor: '#A6A0E0',
       content: userAgreementContent,
       success: function (res) {
         if (res.confirm) {

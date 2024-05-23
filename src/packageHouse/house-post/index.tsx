@@ -76,6 +76,7 @@ const Index = () => {
 
   // post房源信息
   const handleClickPostSubmit = () => {
+    // 上传房源
     if (images.length == 0) {
       Taro.showToast({
         title: '请上传房源图片~',
@@ -137,30 +138,56 @@ const Index = () => {
         duration: 2000,
       });
     } else {
-      Taro.showLoading({
-        title: '上传中',
-        mask: true,
-      });
-      const mergedPreference = { ...preference, ...gender };
-      houseInfoPost(
-        location,
-        startDate,
-        endDate,
-        userContact,
-        capacity,
-        utility,
-        surrounding,
-        houseDescription,
-        mergedPreference,
-        images,
-        userInfo._openid,
-      ).then(res => {
-        Taro.hideLoading();
-        Taro.navigateBack({
-          delta: 1,
-        });
+      handleMessageRequest().then(res => {
+        handleUploadHouseInfo();
       });
     }
+  };
+
+  const handleMessageRequest = async () => {
+    try {
+      await Taro.showModal({
+        title: '接受消息通知（请勾选`总是保持以上选择`确保消息发送成功',
+        content:
+          '是否允许小程序在有求宿者联系您时给您发送提醒，这样你们的沟通会更有效哦~',
+        confirmColor: '#A6A0E0',
+      });
+
+      await Taro.requestSubscribeMessage({
+        tmplIds: ['I5kMb7W6-QbKBqcXLlzqZzK9N97JPkrFWdMHBI7hyA4'],
+        success: function (res) {
+          console.log('reserved for upload houseinfo');
+        },
+      });
+    } catch (error) {
+      console.info('be patient plz');
+    }
+  };
+
+  const handleUploadHouseInfo = () => {
+    Taro.showLoading({
+      title: '上传中',
+      mask: true,
+    });
+    const mergedPreference = { ...preference, ...gender };
+    houseInfoPost(
+      location,
+      startDate,
+      endDate,
+      userContact,
+      capacity,
+      utility,
+      surrounding,
+      houseDescription,
+      mergedPreference,
+      images,
+      userInfo._openid,
+    ).then(res => {
+      Taro.hideLoading();
+      Taro.navigateBack({
+        delta: 1,
+      });
+    });
   };
   return (
     <View className='index'>
