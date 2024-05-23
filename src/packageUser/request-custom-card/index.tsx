@@ -46,7 +46,7 @@ const RequestCustomCard = ({
       onClose={onClose}
       onSubmit={handleSubmitRequestCustomCard}
     >
-      <View className='index'>
+      <View className='index message-card'>
         <RequestInfoSelection
           onRequestInfoSelection={handleRequestInfoSelectionEdit}
         />

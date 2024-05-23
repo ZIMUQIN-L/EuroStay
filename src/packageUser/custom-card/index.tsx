@@ -25,13 +25,13 @@ const CustomCard = ({
       </View>
       <View className='card-right'>
         <View className='card-right-top'>
-          <Text>{title}</Text>
-          <Text>{topText}</Text>
+          <Text className='house-title'>{title}</Text>
+          <Text className='house-status'>{topText}</Text>
         </View>
         <View className='card-right-middle'>
           <View>{avatarUrl != '' && <Image src={avatarUrl} />}</View>
           <View className='card-right-middle-text'>
-            <Text>{userInfo}</Text>
+            <Text className='house-owner-info'>房东:{userInfo}</Text>
             <Text>{dateInfo}</Text>
           </View>
         </View>
@@ -40,15 +40,18 @@ const CustomCard = ({
             onClick={clickable ? clickButton : null}
             className={
               clickable
-                ? 'card-right-bottom-button'
-                : 'card-right-bottom-button-noclick'
+                ? 'card-right-bottom-button click first'
+                : 'card-right-bottom-button noclick first'
             }
           >
             <Text>{buttonText}</Text>
           </View>
           {buttonTextSecond && (
-            <View onClick={clickButtonSecond}>
-              <Text>{buttonTextSecond}</Text>
+            <View
+              className='card-right-bottom-button second'
+              onClick={clickButtonSecond}
+            >
+              {buttonTextSecond}
             </View>
           )}
         </View>
