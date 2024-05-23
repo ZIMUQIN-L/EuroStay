@@ -59,16 +59,23 @@ const HouseItem: React.FC<AccomMssageHouseItemProps> = house => {
     setContact(contactInfo);
   };
 
+  const handleMessageNotification = () => {
+    Taro.cloud.callFunction({
+      name: 'messageNotification',
+      data: {
+        content: '求宿者向您发送了一条求宿信息',
+        userName: house._openid,
+        message: userDescription,
+        userid: house._openid,
+      },
+      complete: res => {
+        console.log('callFunction test result: ', res);
+      },
+    });
+  };
+
   // submit message card content
   const handleSubmitRequestCustomCard = async () => {
-    console.log(
-      startDate,
-      endDate,
-      capacity,
-      contact,
-      shareToggle,
-      userDescription,
-    );
     if (!startDate || !endDate) {
       Taro.showToast({
         title: '请选择入住时间',
@@ -109,6 +116,7 @@ const HouseItem: React.FC<AccomMssageHouseItemProps> = house => {
         house._openid,
       ).then(msg => {
         setModalOpen(false);
+        handleMessageNotification();
       });
     }
   };
