@@ -48,14 +48,6 @@ const HouseContact: React.FC<HouseDetailItemProps> = house => {
 
   // submit message card content
   const handleSubmitRequestCustomCard = async () => {
-    console.log(
-      startDate,
-      endDate,
-      capacity,
-      contact,
-      shareToggle,
-      userDescription,
-    );
     if (!startDate || !endDate) {
       Taro.showToast({
         title: '请选择入住时间',

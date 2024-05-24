@@ -19,6 +19,9 @@ const RequestCustomCard = ({
   onSubmitCard,
 }) => {
   // here I remove the params for simplicity
+  const [startDate, setStartDate] = useState<Date>();
+  const [endDate, setEndDate] = useState<Date>();
+  const [capacity, setCapacity] = useState(0);
 
   const handleMessageRequest = async () => {
     try {
@@ -31,9 +34,6 @@ const RequestCustomCard = ({
 
       await Taro.requestSubscribeMessage({
         tmplIds: ['I5kMb7W6-QbKBqcXLlzqZzK9N97JPkrFWdMHBI7hyA4'],
-        success: function (res) {
-          console.log('reserved for upload houseinfo');
-        },
       });
     } catch (error) {
       console.info('be patient plz');
@@ -41,10 +41,26 @@ const RequestCustomCard = ({
   };
 
   const handleSubmitRequestCustomCard = () => {
-    handleMessageRequest().then(res => {
-      onSubmitCard();
-      onClose();
-    });
+    if (!startDate || !endDate) {
+      Taro.showToast({
+        title: '请选择入住时间',
+        icon: 'error',
+        mask: true,
+        duration: 2000,
+      });
+    } else if (capacity == 0) {
+      Taro.showToast({
+        title: '请选择入住人数~',
+        icon: 'error',
+        mask: true,
+        duration: 2000,
+      });
+    } else {
+      handleMessageRequest().then(res => {
+        onSubmitCard();
+        onClose();
+      });
+    }
   };
 
   const handleRequestDesEdit = editRequestDes => {
@@ -61,6 +77,9 @@ const RequestCustomCard = ({
     capacity: number,
     info,
   ) => {
+    setStartDate(startDate);
+    setEndDate(endDate);
+    setCapacity(capacity);
     onRequestInfoSelectionEdit(startDate, endDate, capacity, info);
   };
   // TODO: 可以传入参数来调整样式，button和上面text的颜色

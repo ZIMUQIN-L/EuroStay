@@ -155,9 +155,6 @@ const Index = () => {
 
       await Taro.requestSubscribeMessage({
         tmplIds: ['I5kMb7W6-QbKBqcXLlzqZzK9N97JPkrFWdMHBI7hyA4'],
-        success: function (res) {
-          console.log('reserved for upload houseinfo');
-        },
       });
     } catch (error) {
       console.info('be patient plz');
