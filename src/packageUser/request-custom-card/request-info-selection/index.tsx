@@ -71,7 +71,7 @@ const RequestInfoSelection: React.FC<RequestInfoSelectionProps> = ({
   };
 
   return (
-    <>
+    <View className='request-custome-card'>
       <View className='selection-part'>
         <View className='selection-container'>
           <View className='selection-content'>
@@ -79,13 +79,17 @@ const RequestInfoSelection: React.FC<RequestInfoSelectionProps> = ({
               <View className='icon-container'>
                 <Image src={DateSelectionIcon} />
               </View>
-              <Text>求宿时间</Text>
             </View>
             <View className='selection-right' onClick={handleDateSelection}>
-              <Text>
-                {startDate && endDate ? `${startDate} - ${endDate}` : `请选择`}{' '}
-              </Text>
-              <Image src={RightBottomArrow} />
+              <Text>求宿时间</Text>
+              <View className='selection-right-right'>
+                <Text>
+                  {startDate && endDate
+                    ? `${startDate} - ${endDate}`
+                    : `请选择`}{' '}
+                </Text>
+                <Image src={RightBottomArrow} />
+              </View>
             </View>
             {isDateSelection && (
               <DateSelection
@@ -104,11 +108,13 @@ const RequestInfoSelection: React.FC<RequestInfoSelectionProps> = ({
               <View className='icon-container'>
                 <Image src={CapacitySelectionIcon} className='capacity-pic' />
               </View>
-              <Text>入住人数</Text>
             </View>
             <View className='selection-right' onClick={handleCapacitySelection}>
-              <Text>{capacity != 0 ? `${capacity}` : `请选择`} </Text>
-              <Image src={RightBottomArrow} />
+              <Text>入住人数</Text>
+              <View className='selection-right-right'>
+                <Text>{capacity != 0 ? `${capacity}` : `请选择`} </Text>
+                <Image src={RightBottomArrow} />
+              </View>
             </View>
             {isCapacitySelection && (
               <CapacitySelection
@@ -127,17 +133,19 @@ const RequestInfoSelection: React.FC<RequestInfoSelectionProps> = ({
               <View className='icon-container'>
                 <Image src={PreferenceIcon} />
               </View>
-              <Text>个人联系方式</Text>
             </View>
             <View className='selection-right' onClick={handleContactSelection}>
-              {/* Optionally display the selected contact info */}
-              {contactInfo != undefined && contactInfo != '' && (
-                <Text>{`${contactInfo}`}</Text>
-              )}
-              {!(contactInfo != undefined && contactInfo != '') && (
-                <Text>请选择</Text>
-              )}
-              <Image src={RightBottomArrow} />
+              <Text>个人联系方式</Text>
+              <View className='selection-right-right'>
+                {/* Optionally display the selected contact info */}
+                {contactInfo != undefined && contactInfo != '' && (
+                  <Text>{`${contactInfo}`}</Text>
+                )}
+                {!(contactInfo != undefined && contactInfo != '') && (
+                  <Text>请选择</Text>
+                )}
+                <Image src={RightBottomArrow} />
+              </View>
             </View>
             {isContactSelection && (
               <ContactSelection
@@ -148,7 +156,7 @@ const RequestInfoSelection: React.FC<RequestInfoSelectionProps> = ({
           </View>
         </View>
       </View>
-    </>
+    </View>
   );
 };
 export default RequestInfoSelection;

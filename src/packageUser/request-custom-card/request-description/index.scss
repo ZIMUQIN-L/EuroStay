@@ -1,6 +1,7 @@
 .des-part {
   background-color: white;
-  margin-top: 8px;
+  margin-top: 15px;
+  border-top: 5px solid #d6d6d687;
 }
 .des-container {
   display: flex;
@@ -23,6 +24,10 @@
 .des-text {
   margin: 20px 20px;
   color: #979797;
+  .des-text-placeholder {
+    font-size: 28px;
+    color: #979797;
+  }
 }
 .caution-text {
   margin: 20px 20px;

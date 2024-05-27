@@ -62,10 +62,11 @@ const ContactInfoBoard = ({
             <Text className='text-title'>微信号</Text>
             <View
               className='input-text-container'
-              style={{ minHeight: '30px' }}
+              // style={{ minHeight: '30px' }}
             >
               <View className='input-text'>
                 <Input
+                  style={{ minHeight: '30px' }}
                   value={contact}
                   onInput={handleUserContactEdit}
                   placeholder='请填写自己的微信号，让租客更好地联系你～'
@@ -73,7 +74,10 @@ const ContactInfoBoard = ({
               </View>
             </View>
             <Text className='text-title'>房主打招呼信息</Text>
-            <View className='des-text-container' style={{ minHeight: '80px' }}>
+            <View
+              className='des-text-container contact-info-board'
+              style={{ minHeight: '80px' }}
+            >
               <View className='des-text'>
                 <Textarea
                   value={helloMessage}

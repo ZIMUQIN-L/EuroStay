@@ -88,6 +88,7 @@ const RequestCustomCard = ({
       title='消息卡片'
       onClose={onClose}
       onSubmit={handleSubmitRequestCustomCard}
+      className='request-custom-card'
     >
       <View className='index message-card'>
         <RequestInfoSelection

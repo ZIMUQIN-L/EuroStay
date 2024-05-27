@@ -14,11 +14,17 @@ const RequestSendToggle = ({ onChangeToggle }) => {
   return (
     <View className='toggle-container'>
       <Text className='toggle-text'>是否将以上求宿信息发布到求宿广场</Text>
-      <Switch
-        checked={isToggled}
-        onChange={handleToggleChange}
-        color={'#A6A0E0'}
-      />
+      <View
+        className={`switch ${isToggled ? 'active' : 'unactive'}`}
+        onClick={() => {
+          onChangeToggle(!isToggled);
+          setIsToggled(!isToggled);
+        }}
+      >
+        <View
+          className={`switch-box ${isToggled ? 'active' : 'unactive'}`}
+        ></View>
+      </View>
     </View>
   );
 };

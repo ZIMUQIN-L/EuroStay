@@ -1,5 +1,14 @@
 .message-card {
+  border-top: 1px solid #97979786;
   .des-container {
     margin: 40px 28px;
+  }
+}
+.request-custom-card {
+  .diaglog-container-title {
+    margin-bottom: 18px;
+  }
+  .dialog-save-button {
+    margin-top: 0px;
   }
 }

@@ -19,9 +19,11 @@ const RequestDes = ({ onRequestDes }) => {
         <View className='des-text-container' style={{ minHeight: '5px' }}>
           <View className='des-text'>
             <Textarea
+              style={{ height: '80px' }}
               value={des}
               onInput={handleUserDescriptionEdit}
               placeholder='详情介绍: 更详细的求宿信息或者个人介绍, 帮助房主更好的理解你的求宿诉求～'
+              placeholderClass='des-text-placeholder'
             />
           </View>
         </View>
