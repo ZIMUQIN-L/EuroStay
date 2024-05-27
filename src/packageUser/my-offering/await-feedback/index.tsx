@@ -110,6 +110,13 @@ const AwaitFeedback: React.FC<UserAccomMessageItemProps> = userAccomMessage => {
   const handleUserRejectMsg = () => {
     if (infoBoardIsShown == true) {
       setInfoBoardIsShown(false);
+      Taro.showLoading({
+        title: '回复中',
+        mask: true,
+      });
+      accomMessageUpdate(selectedInfoId, 'rejected').then(res => {
+        Taro.hideLoading();
+      });
     }
     // TODO: LOGIC FOR REJECTION
   };

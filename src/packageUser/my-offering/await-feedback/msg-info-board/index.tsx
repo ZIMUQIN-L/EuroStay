@@ -1,4 +1,4 @@
-import { View, Text, Image } from '@tarojs/components';
+import { View, Text, Image, Textarea } from '@tarojs/components';
 import './index.scss';
 import {
   DateSelectionIcon,
@@ -71,6 +71,13 @@ const MsgInfoBoard = ({ userAccomMessage, onClose, onSubmit, onReject }) => {
                 ) && <Text>无</Text>}
               </View>
             </View>
+          </View>
+        </View>
+
+        <Text className='des-title'>住客的一封自我介绍信~</Text>
+        <View className='des-text-container' style={{ minHeight: '5px' }}>
+          <View className='des-text'>
+            <Textarea disabled={true} value={userAccomMessage.description} />
           </View>
         </View>
 
