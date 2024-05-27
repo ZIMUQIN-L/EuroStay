@@ -8,6 +8,7 @@ import { View } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import { replyMessageAdd } from '@common/database/ownerReply/ownerReply';
 import { accomMessageUpdate } from '@common/database/accomMessage/accomMessage';
+import MsgInfoBoard from './msg-info-board';
 /**
  * @description 我的供宿-等待回复中
  */
@@ -85,14 +86,32 @@ const AwaitFeedback: React.FC<UserAccomMessageItemProps> = userAccomMessage => {
   }, []);
 
   const [selectedInfoId, setSelectedInfoId] = useState();
-
+  const [selectedAccomInfo, setSelectedAccomInfo] =
+    useState<UserAccomMessageItemProps>();
+  const [infoBoardIsShown, setInfoBoardIsShown] = useState(false);
   const [contactInfoIsShown, setContactInfoIsShown] = useState(false);
 
-  const handleUserClickButton = (infoId, infoStatus) => {
+  const handleUserClickButton = (accomInfo, infoId, infoStatus) => {
+    setSelectedAccomInfo(accomInfo);
     setSelectedInfoId(infoId);
     if (infoStatus == 'unread' || infoStatus == 'read') {
+      setInfoBoardIsShown(true);
+      // setContactInfoIsShown(true);
+    }
+  };
+
+  const handleUserAcceptMsg = () => {
+    if (infoBoardIsShown == true) {
+      setInfoBoardIsShown(false);
       setContactInfoIsShown(true);
     }
+  };
+
+  const handleUserRejectMsg = () => {
+    if (infoBoardIsShown == true) {
+      setInfoBoardIsShown(false);
+    }
+    // TODO: LOGIC FOR REJECTION
   };
 
   const handleUserSubmitContactInfo = (contactInfo, helloMessageInfo) => {
@@ -116,6 +135,7 @@ const AwaitFeedback: React.FC<UserAccomMessageItemProps> = userAccomMessage => {
 
   const handleCloseAllBoards = () => {
     setContactInfoIsShown(false);
+    setInfoBoardIsShown(false);
   };
 
   // TODO: 后面需要传入数据
@@ -124,7 +144,7 @@ const AwaitFeedback: React.FC<UserAccomMessageItemProps> = userAccomMessage => {
       <CustomCard
         title={userAccomMessage.location}
         imageUrl={
-          userAccomMessage.images.length == 0
+          userAccomMessage.images && userAccomMessage.images.length == 0
             ? DefaultHouse
             : userAccomMessage.images[0]
         }
@@ -135,7 +155,11 @@ const AwaitFeedback: React.FC<UserAccomMessageItemProps> = userAccomMessage => {
         topText={handleTopText(userAccomMessage.status)}
         buttonText={handleButtonText(userAccomMessage.status)}
         clickButton={() => {
-          handleUserClickButton(userAccomMessage._id, userAccomMessage.status);
+          handleUserClickButton(
+            userAccomMessage,
+            userAccomMessage._id,
+            userAccomMessage.status,
+          );
         }}
         clickable={handleButtonClickable(userAccomMessage.status)}
       />
@@ -146,6 +170,14 @@ const AwaitFeedback: React.FC<UserAccomMessageItemProps> = userAccomMessage => {
           editable={true}
           onUpdateData={handleUserSubmitContactInfo}
         ></ContactInfoBoard>
+      )}
+      {infoBoardIsShown && (
+        <MsgInfoBoard
+          userAccomMessage={selectedAccomInfo}
+          onClose={handleCloseAllBoards}
+          onSubmit={handleUserAcceptMsg}
+          onReject={handleUserRejectMsg}
+        />
       )}
     </View>
   );
