@@ -49,6 +49,7 @@ const ContactInfoBoard = ({
       title='房东联系方式'
       onClose={onClose}
       onSubmit={editable ? handleSubmitContactInfo : onClose}
+      className='contact-info-board-dialog'
     >
       <View>
         {editable ? (
@@ -88,8 +89,8 @@ const ContactInfoBoard = ({
             </View>
           </View>
         ) : (
-          <View>
-            <View className='avatar-image'>
+          <View className='contact-info-board-uneditable-container'>
+            <View className='contact-info-board-uneditable'>
               <Image
                 src={
                   replyMessage == null
@@ -98,25 +99,21 @@ const ContactInfoBoard = ({
                 }
                 className='avatar-image'
               />
-            </View>
-            <View>
-              <Text className='text-title'>
+              <View className='house-owner-name'>
+                供宿者:
                 {replyMessage == null
                   ? '未知用户'
                   : replyMessage.sourceUserNickName}
-              </Text>
-            </View>
-            <Text className='text-title'>微信号</Text>
-            <View className='caution-text'>
-              <Text>
+              </View>
+              <View className='wechat-id'>
+                微信号:
                 {replyMessage == null ? 'unknown' : replyMessage.contact}
-              </Text>
-            </View>
-            <Text className='text-title'>房主打招呼信息</Text>
-            <View className='caution-text'>
-              <Text>
-                {replyMessage == null ? 'unknown' : replyMessage.helloMessage}
-              </Text>
+              </View>
+              <View className='message-from-house-owner'>
+                {replyMessage == null
+                  ? '房主打招呼信息'
+                  : replyMessage.helloMessage}
+              </View>
             </View>
           </View>
         )}

@@ -14,7 +14,9 @@ const MsgInfoBoard = ({ userAccomMessage, onClose, onSubmit, onReject }) => {
   return (
     <View className='MsgInfoBoard' onClick={handleOuterClick}>
       <View className='msg-container' onClick={e => e.stopPropagation()}>
-        <Text style={{ marginTop: '24px' }}>住客信息卡片</Text>
+        <View style={{ marginTop: '24px' }} className='msg-container-title'>
+          住客信息卡片
+        </View>
 
         <View className='selection-part'>
           <View className='selection-container'>
@@ -23,12 +25,12 @@ const MsgInfoBoard = ({ userAccomMessage, onClose, onSubmit, onReject }) => {
                 <View className='icon-container'>
                   <Image src={DateSelectionIcon} />
                 </View>
-                <Text>求宿时间</Text>
               </View>
               <View className='selection-right'>
-                <Text>
+                <View>求宿时间</View>
+                <View className='selection-right-content'>
                   {`${userAccomMessage.start_date} - ${userAccomMessage.end_date}`}{' '}
-                </Text>
+                </View>
               </View>
             </View>
           </View>
@@ -41,10 +43,12 @@ const MsgInfoBoard = ({ userAccomMessage, onClose, onSubmit, onReject }) => {
                 <View className='icon-container'>
                   <Image src={CapacitySelectionIcon} className='capacity-pic' />
                 </View>
-                <Text>入住人数</Text>
               </View>
               <View className='selection-right'>
-                <Text>{userAccomMessage.capacity} </Text>
+                <View>入住人数</View>
+                <View className='selection-right-content'>
+                  {userAccomMessage.capacity}{' '}
+                </View>
               </View>
             </View>
           </View>
@@ -57,18 +61,18 @@ const MsgInfoBoard = ({ userAccomMessage, onClose, onSubmit, onReject }) => {
                 <View className='icon-container'>
                   <Image src={PreferenceIcon} />
                 </View>
-                <Text>个人联系方式</Text>
               </View>
               <View className='selection-right'>
+                <View>个人联系方式</View>
                 {/* Optionally display the selected contact info */}
                 {userAccomMessage.contact != undefined &&
                   userAccomMessage.contact != '' && (
-                    <Text>{`${userAccomMessage.contact}`}</Text>
+                    <View className='selection-right-content'>{`${userAccomMessage.contact}`}</View>
                   )}
                 {!(
                   userAccomMessage.contact != undefined &&
                   userAccomMessage.contact != ''
-                ) && <Text>无</Text>}
+                ) && <View className='selection-right-content'>无</View>}
               </View>
             </View>
           </View>
@@ -76,9 +80,7 @@ const MsgInfoBoard = ({ userAccomMessage, onClose, onSubmit, onReject }) => {
 
         <Text className='des-title'>住客的一封自我介绍信~</Text>
         <View className='des-text-container' style={{ minHeight: '5px' }}>
-          <View className='des-text'>
-            <Textarea disabled={true} value={userAccomMessage.description} />
-          </View>
+          <View className='des-text'>{userAccomMessage.description}</View>
         </View>
 
         <View className='button-container'>

@@ -22,6 +22,7 @@ const DateSelection = ({ onClose, onDateSelected }) => {
       title='选择可住时间'
       onClose={onClose}
       onSubmit={handleSubmitDateSelection}
+      className='request-date-selection-dialog'
     >
       <View className='date-picker'>
         <CustomDateRangePicker onDateChange={handleDateChange} />

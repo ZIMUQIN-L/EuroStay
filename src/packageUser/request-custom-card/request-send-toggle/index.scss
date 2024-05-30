@@ -8,10 +8,11 @@
   border-radius: 8px;
   font-weight: 600;
   .switch {
-    height: 50px;
+    height: 52px;
     width: 100px;
     border-radius: 40px;
     position: relative;
+    display: flex;
     &.active {
       background-color: #ffd111;
     }

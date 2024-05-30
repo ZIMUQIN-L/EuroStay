@@ -32,7 +32,7 @@ const ContactSelection: React.FC<ContactSelectionProps> = ({
           <Switch
             checked={provideContact}
             type={'checkbox'}
-            color={'#A6A0E0'}
+            color={'#FFD111'}
             onChange={e => setProvideContact(e.detail.value)}
           />
         </View>

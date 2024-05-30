@@ -14,19 +14,26 @@
   background-color: white;
   width: 90%;
   border-radius: 16px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  // display: flex;
+  // flex-direction: column;
+  // justify-content: center;
+  // align-items: center;
+  &-title {
+    // padding-top: 20px;
+    padding-bottom: 10px;
+    text-align: center;
+    border-bottom: 1px solid #97979787;
+  }
 }
 .button-container {
   background-color: white;
-  width: 90%;
+  // width: 100%;
   border-radius: 16px;
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
+  padding: 0 50px;
 }
 .msg-save-button {
   width: 40%;
@@ -65,13 +72,12 @@
 }
 
 .selection-content {
-  margin: 20px 40px;
+  margin: 20px 20px 20px 60px;
   display: flex;
-  width: 90%;
+  // width: 90%;
   flex-direction: row;
   align-items: center;
   align-content: center;
-  justify-content: space-between;
 }
 .selection-left {
   display: flex;
@@ -110,39 +116,42 @@
   }
 }
 .selection-right {
+  flex-grow: 100;
   display: flex;
   flex-direction: row;
   align-items: center;
-  align-content: center;
-  max-width: 70%;
-  Image {
-    width: 24px;
-    height: 24px;
-    margin-left: 10px;
-  }
-  Text {
-    color: #979797;
-    font-size: 28px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
+  justify-content: space-between;
+  max-width: 83%;
+  font-size: 26px;
+  color: #979797;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  border-bottom: 1px solid #97979787;
+  height: 68px;
 }
 
 .des-title {
   color: #979797;
   font-weight: bold;
   font-size: 28px;
+  padding-left: 60px;
 }
 .des-text-container {
+  margin: 0px 60px;
   background-color: #f7f7f7;
   border-radius: 20px;
   margin-top: 20px;
+  padding: 10px 20px;
   Input {
     color: #979797;
   }
 }
 .des-text {
-  margin: 20px 20px;
   color: #979797;
+  height: 200px;
+  // white-space: nowrap;
+  overflow-y: scroll;
+  word-break: break-all;
+  // text-overflow: clip;
 }

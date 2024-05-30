@@ -29,9 +29,13 @@ const CustomCard = ({
           <Text className='house-status'>{topText}</Text>
         </View>
         <View className='card-right-middle'>
-          <View>{avatarUrl != '' && <Image src={avatarUrl} />}</View>
+          <View>
+            {/* {avatarUrl != '' && ( */}
+            <Image src={avatarUrl} className='card-right-middle-avatar' />
+            {/* )} */}
+          </View>
           <View className='card-right-middle-text'>
-            <Text className='house-owner-info'>房东:{userInfo}</Text>
+            <Text className='house-owner-info'>房东 :{userInfo}</Text>
             <Text>{dateInfo}</Text>
           </View>
         </View>
