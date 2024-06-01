@@ -60,7 +60,7 @@ export const accomMessageSearch = async (sourceUserOpenid, skip = 0) => {
         sourceUserOpenid: sourceUserOpenid,
       })
       .skip(skip)
-      .limit(10)
+      //   .limit(10)
       .get({
         success: function (res) {
           resolve(res.data);
@@ -78,7 +78,7 @@ export const houseMessageSearch = async (targetUserOpenid, skip = 0) => {
         targetUserOpenid: targetUserOpenid,
       })
       .skip(skip)
-      .limit(10)
+      //   .limit(10)
       .get({
         success: function (res) {
           resolve(res.data);

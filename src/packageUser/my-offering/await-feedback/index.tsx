@@ -108,35 +108,74 @@ const AwaitFeedback: React.FC<UserAccomMessageItemProps> = userAccomMessage => {
   };
 
   const handleUserRejectMsg = () => {
-    if (infoBoardIsShown == true) {
-      setInfoBoardIsShown(false);
-      Taro.showLoading({
-        title: '回复中',
-        mask: true,
-      });
-      accomMessageUpdate(selectedInfoId, 'rejected').then(res => {
-        Taro.hideLoading();
-      });
-    }
+    handleMessageRequest().then(res => {
+      if (infoBoardIsShown == true) {
+        setInfoBoardIsShown(false);
+        Taro.showLoading({
+          title: '回复中',
+          mask: true,
+        });
+        accomMessageUpdate(selectedInfoId, 'rejected').then(res => {
+          Taro.hideLoading();
+          handleMessageNotification('房东拒绝了您的换宿', '房东已拒绝');
+        });
+      }
+    });
     // TODO: LOGIC FOR REJECTION
   };
 
   const handleUserSubmitContactInfo = (contactInfo, helloMessageInfo) => {
-    Taro.showLoading({
-      title: '上传中',
-      mask: true,
-    });
-    replyMessageAdd(
-      user.userOpenid,
-      user.nickName,
-      user.avatarUrl,
-      contactInfo,
-      helloMessageInfo,
-      selectedInfoId,
-    ).then(res => {
-      accomMessageUpdate(selectedInfoId, 'contactReceived').then(res => {
-        Taro.hideLoading();
+    handleMessageRequest().then(res => {
+      Taro.showLoading({
+        title: '上传中',
+        mask: true,
       });
+      replyMessageAdd(
+        user.userOpenid,
+        user.nickName,
+        user.avatarUrl,
+        contactInfo,
+        helloMessageInfo,
+        selectedInfoId,
+      ).then(res => {
+        accomMessageUpdate(selectedInfoId, 'contactReceived').then(res => {
+          Taro.hideLoading();
+          handleMessageNotification('房东向您发送了一条回复', helloMessageInfo);
+        });
+      });
+    });
+  };
+
+  const handleMessageRequest = async () => {
+    try {
+      await Taro.showModal({
+        title: '接受消息通知（请勾选`总是保持以上选择`确保消息发送成功',
+        content:
+          '是否允许小程序在有求宿者联系您时给您发送提醒，这样你们的沟通会更有效哦~',
+        confirmColor: '#A6A0E0',
+      });
+
+      await Taro.requestSubscribeMessage({
+        tmplIds: ['I5kMb7W6-QbKBqcXLlzqZzK9N97JPkrFWdMHBI7hyA4'],
+      });
+    } catch (error) {
+      console.info('be patient plz');
+    }
+  };
+
+  const handleMessageNotification = (content, helloMessageInfo) => {
+    console.log(userAccomMessage.sourceUserOpenid);
+    Taro.cloud.callFunction({
+      name: 'messageNotification',
+      data: {
+        content: content,
+        userName: user.nickName,
+        message: helloMessageInfo,
+        userid: userAccomMessage.sourceUserOpenid,
+      },
+      complete: res => {
+        console.log('callFunction test result: ', res);
+      },
     });
   };
 
