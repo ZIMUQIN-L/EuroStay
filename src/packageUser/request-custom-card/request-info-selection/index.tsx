@@ -6,11 +6,13 @@ import {
   CapacitySelectionIcon,
   RightBottomArrow,
   PreferenceIcon,
+  GenderIcon,
 } from '@utils/cloudIcons';
 
 import DateSelection from './date-selection';
 import CapacitySelection from './capacity-selection';
 import ContactSelection from './contact-selection';
+import GenderSelection from './gender-selection';
 
 interface RequestInfoSelectionProps {
   onRequestInfoSelection: (
@@ -27,17 +29,20 @@ const RequestInfoSelection: React.FC<RequestInfoSelectionProps> = ({
   const [isDateSelection, setIsDateSelection] = useState(false);
   const [isCapacitySelection, setIsCapacitySelection] = useState(false);
   const [isContactSelection, setContactSelection] = useState(false);
+  const [isGenderSelection, setIsGenderSelection] = useState(false);
 
   const [startDate, setStartDate] = useState<Date>();
   const [endDate, setEndDate] = useState<Date>();
   const [capacity, setCapacity] = useState(0);
   const [contactInfo, setContactInfo] = useState<string>();
+  const [gender, setGender] = useState('');
 
   // close function
   const handleClose = () => {
     setIsDateSelection(false);
     setIsCapacitySelection(false);
     setContactSelection(false);
+    setIsGenderSelection(false);
   };
 
   // select any module and shown
@@ -53,11 +58,19 @@ const RequestInfoSelection: React.FC<RequestInfoSelectionProps> = ({
     setContactSelection(true);
   };
 
+  const handleGenderSelection = () => {
+    setIsGenderSelection(true);
+  };
+
   // edit the content
   const handleUserDateEdit = (start, end) => {
     setStartDate(start);
     setEndDate(end);
     onRequestInfoSelection(start, end, capacity, contactInfo);
+  };
+
+  const handleUserGenderEdit = genderInfo => {
+    setGender(genderInfo);
   };
 
   const handleUserCapacityEdit = editedCapacity => {
@@ -151,6 +164,32 @@ const RequestInfoSelection: React.FC<RequestInfoSelectionProps> = ({
               <ContactSelection
                 onClose={handleClose}
                 onContactSelected={handleUserContactEdit}
+              />
+            )}
+          </View>
+        </View>
+      </View>
+
+      <View className='selection-part'>
+        <View className='selection-container'>
+          <View className='selection-content'>
+            <View className='selection-left'>
+              <View className='icon-container'>
+                <Image src={GenderIcon} className='capacity-pic' />
+              </View>
+            </View>
+            <View className='selection-right' onClick={handleGenderSelection}>
+              <Text>住客性别</Text>
+              <View className='selection-right-right'>
+                {/* Optionally display the selected contact info */}
+                <Text>{gender != '' ? gender : `请选择`}</Text>
+                <Image src={RightBottomArrow} />
+              </View>
+            </View>
+            {isGenderSelection && (
+              <GenderSelection
+                onClose={handleClose}
+                onGenderSelected={handleUserGenderEdit}
               />
             )}
           </View>
