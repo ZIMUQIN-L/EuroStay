@@ -20,6 +20,7 @@ interface RequestInfoSelectionProps {
     endDate: Date | undefined,
     capacity: number,
     contactInfo: string | undefined,
+    gender: string | undefined,
   ) => void;
 }
 
@@ -66,20 +67,33 @@ const RequestInfoSelection: React.FC<RequestInfoSelectionProps> = ({
   const handleUserDateEdit = (start, end) => {
     setStartDate(start);
     setEndDate(end);
-    onRequestInfoSelection(start, end, capacity, contactInfo);
+    onRequestInfoSelection(start, end, capacity, contactInfo, gender);
   };
 
   const handleUserGenderEdit = genderInfo => {
+    onRequestInfoSelection(
+      startDate,
+      endDate,
+      capacity,
+      contactInfo,
+      genderInfo,
+    );
     setGender(genderInfo);
   };
 
   const handleUserCapacityEdit = editedCapacity => {
-    onRequestInfoSelection(startDate, endDate, editedCapacity, contactInfo);
+    onRequestInfoSelection(
+      startDate,
+      endDate,
+      editedCapacity,
+      contactInfo,
+      gender,
+    );
     setCapacity(editedCapacity);
   };
 
   const handleUserContactEdit = (info: string) => {
-    onRequestInfoSelection(startDate, endDate, capacity, info);
+    onRequestInfoSelection(startDate, endDate, capacity, info, gender);
     setContactInfo(info);
   };
 

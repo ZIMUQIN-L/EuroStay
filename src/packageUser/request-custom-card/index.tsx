@@ -22,6 +22,7 @@ const RequestCustomCard = ({
   const [startDate, setStartDate] = useState<Date>();
   const [endDate, setEndDate] = useState<Date>();
   const [capacity, setCapacity] = useState(0);
+  const [gender, setGender] = useState('');
 
   const handleMessageRequest = async () => {
     try {
@@ -55,6 +56,13 @@ const RequestCustomCard = ({
         mask: true,
         duration: 2000,
       });
+    } else if (gender == '') {
+      Taro.showToast({
+        title: '请选择住客性别~',
+        icon: 'error',
+        mask: true,
+        duration: 2000,
+      });
     } else {
       handleMessageRequest().then(res => {
         onSubmitCard();
@@ -76,11 +84,13 @@ const RequestCustomCard = ({
     endDate,
     capacity: number,
     info,
+    genderInfo,
   ) => {
     setStartDate(startDate);
     setEndDate(endDate);
     setCapacity(capacity);
-    onRequestInfoSelectionEdit(startDate, endDate, capacity, info);
+    setGender(genderInfo);
+    onRequestInfoSelectionEdit(startDate, endDate, capacity, info, genderInfo);
   };
   // TODO: 可以传入参数来调整样式，button和上面text的颜色
   return (

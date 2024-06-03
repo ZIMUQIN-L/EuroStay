@@ -17,6 +17,7 @@ const HouseContact: React.FC<HouseDetailItemProps> = house => {
   const [endDate, setEndDate] = useState<Date>();
   const [capacity, setCapacity] = useState(0);
   const [contact, setContact] = useState('');
+  const [gender, setGender] = useState('');
   const [userDescription, setUserDescription] = useState<string>('');
 
   // user information
@@ -39,11 +40,13 @@ const HouseContact: React.FC<HouseDetailItemProps> = house => {
     endDate,
     capacity: number,
     contactInfo,
+    genderInfo,
   ) => {
     setStartDate(startDate);
     setEndDate(endDate);
     setCapacity(capacity);
     setContact(contactInfo);
+    setGender(genderInfo);
   };
 
   // submit message card content
@@ -62,6 +65,13 @@ const HouseContact: React.FC<HouseDetailItemProps> = house => {
         mask: true,
         duration: 2000,
       });
+    } else if (gender == '') {
+      Taro.showToast({
+        title: '请填写住客性别~',
+        icon: 'error',
+        mask: true,
+        duration: 2000,
+      });
     } else if (userDescription == '') {
       Taro.showToast({
         title: '请填写个人描述~',
@@ -74,7 +84,7 @@ const HouseContact: React.FC<HouseDetailItemProps> = house => {
         endDate,
         startDate,
         capacity,
-        '',
+        gender,
         house.location,
         user.userOpenid,
         userDescription,
