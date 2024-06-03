@@ -4,6 +4,7 @@ import {
   DateSelectionIcon,
   CapacitySelectionIcon,
   PreferenceIcon,
+  GenderIcon,
 } from '@utils/cloudIcons';
 
 const MsgInfoBoard = ({ userAccomMessage, onClose, onSubmit, onReject }) => {
@@ -73,6 +74,24 @@ const MsgInfoBoard = ({ userAccomMessage, onClose, onSubmit, onReject }) => {
                   userAccomMessage.contact != undefined &&
                   userAccomMessage.contact != ''
                 ) && <View className='selection-right-content'>无</View>}
+              </View>
+            </View>
+          </View>
+        </View>
+
+        <View className='selection-part'>
+          <View className='selection-container'>
+            <View className='selection-content'>
+              <View className='selection-left'>
+                <View className='icon-container'>
+                  <Image src={GenderIcon} className='capacity-pic' />
+                </View>
+              </View>
+              <View className='selection-right'>
+                <View>房客性别</View>
+                <View className='selection-right-content'>
+                  {userAccomMessage.gender}{' '}
+                </View>
               </View>
             </View>
           </View>
