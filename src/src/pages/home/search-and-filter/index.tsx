@@ -1,0 +1,587 @@
+import { Input, View, Text, Picker, Image } from '@tarojs/components';
+import ButtonGroup from '@components/ButtonGroup';
+import { useEffect, useState } from 'react';
+import './index.scss';
+import { formatToday } from '@utils/dateUtil';
+import { AtToast, AtCalendar } from 'taro-ui';
+import {
+  FilterSelectOff,
+  FilterSelectOn,
+  RightBottomArrowGrey,
+  YellowFilter,
+  FilterOn,
+  RightBottomArrow,
+} from '@utils/cloudIcons';
+import RoomFacility from '@components/RoomFacility';
+import RoomSurrounding from '@components/RoomSurrounding';
+import HouseGenderPreference from '@components/HouseGenderPreference';
+import HouseOwnerPreference from '@components/HouseOwnerPreference';
+import { houseInfoSearch } from '@common/database/house/house';
+import { HouseItemProps } from '@utils/interfaces';
+
+enum Gender {
+  Female,
+  Male,
+  Default,
+}
+enum Number {
+  Default,
+  One,
+  Two,
+  Three,
+  FourOrMore,
+}
+
+enum BedType {
+  Default,
+  DoubleBed,
+  TwinBed,
+  StapleBed,
+}
+enum Location {
+  Within1KM,
+  Within2KM,
+  Within4KM,
+  Within6KM,
+  Within8KM,
+  Within10KM,
+  Default,
+}
+
+export default ({
+  onDestinationChange,
+  onDateChange,
+  onClickSearch,
+  userStartDate,
+  userEndDate,
+  destination,
+  onClickFilterData,
+}) => {
+  const regions = ['欧洲'];
+  const [isFilterOn, setIsFilterOn] = useState<Boolean>(false);
+  const [region, setRegion] = useState('欧洲');
+  const today = formatToday();
+  const [errorMsg, setErrorMsg] = useState('');
+  const [isToastOpened, setIsToastOpened] = useState(false);
+  const [startDate, setStartDate] = useState(
+    userStartDate != null ? userStartDate : today,
+  );
+  const [endDate, setEndDate] = useState(
+    userEndDate != null ? userEndDate : null,
+  );
+  const [isCalendarVisible, setIsCalendarVisible] = useState(false);
+  const [curFilterOption, setCurFilterOption] = useState<String>('number');
+  const [curNum, setCurNum] = useState<Number>(Number.Default);
+  const [curGender, setCurGender] = useState<Gender>(Gender.Default);
+  const [curBed, setCurBed] = useState<BedType>(BedType.Default);
+  const [curLocation, setCurLocation] = useState<Location>(Location.Default);
+  const [userDestination, setUserDestination] = useState<string>('');
+
+  // 房源utility信息
+  const [isWiFiSelected, setIsWiFiSelected] = useState<Boolean>(false);
+  const [isBathSelected, setIsBathSelected] = useState<Boolean>(false);
+  const [isWashMachineSelected, setIsWashMachineSelected] =
+    useState<Boolean>(false);
+  const [isKitchenSelected, setIsKitchenSelected] = useState<Boolean>(false);
+  const [isRefrigeratorSelected, setIsRefrigeratorSelected] =
+    useState<Boolean>(false);
+  const [isAirConditionSelected, setIsAirConditionSelected] =
+    useState<Boolean>(false);
+  const [isSofaSelected, setIsSofaSelected] = useState<Boolean>(false);
+  const [isHeaterSelected, setIsHeaterSelected] = useState<Boolean>(false);
+
+  // 房源周边信息
+  const [isSubwaySelected, setIsSubwaySelected] = useState<Boolean>(false);
+  const [isAttractionSelected, setIsAttractionSelected] =
+    useState<Boolean>(false);
+  const [isChineseSuperMartSelected, setIsChineseSuperMartSelected] =
+    useState<Boolean>(false);
+
+  // 房源性别信息
+  const [isFemaleSelected, setIsFemaleSelected] = useState<Boolean>(false);
+  const [isMaleSelected, setIsMaleSelected] = useState<Boolean>(false);
+  const [isAllGenderSelected, setIsAllGenderSelected] =
+    useState<Boolean>(false);
+
+  //房主偏好信息
+  const [isSmokeSelected, setIsSmokeSelected] = useState<Boolean>(false);
+  const [isPetSelected, setIsPetSelected] = useState<Boolean>(false);
+  const [isExchangeSelected, setIsExchangeSelected] = useState<Boolean>(false);
+  const [isBeddingSelected, setIsBeddingSelected] = useState<Boolean>(false);
+  const [isRentSelected, setIsRentSelected] = useState<Boolean>(false);
+
+  useEffect(() => {
+    setStartDate(userStartDate != null ? userStartDate : today);
+    setEndDate(userEndDate != null ? userEndDate : null);
+    setUserDestination(!!destination ? destination : '');
+  }, []);
+
+  const handleDateChange = (startValue, endValue) => {
+    setStartDate(startValue);
+    setEndDate(endValue);
+  };
+  const handleDayClick = date => {
+    const selectedDate = date.value;
+    if (
+      selectedDate < today ||
+      (startDate != null && selectedDate < startDate)
+    ) {
+      setErrorMsg(
+        selectedDate < today
+          ? '不能选择今日之前的日期'
+          : '终止日期不能小于起始日期',
+      );
+      handleDateChange(selectedDate, null);
+      setIsToastOpened(true);
+      return; // 阻止继续
+    }
+    setIsToastOpened(false);
+    if (!startDate) {
+      handleDateChange(selectedDate, null);
+    } else if (!endDate) {
+      setEndDate(selectedDate);
+      handleDateChange(startDate, selectedDate);
+      setIsCalendarVisible(false);
+      onDateChange(startDate, selectedDate);
+      // onClickSearch();
+      handleClickFilter(userDestination, startDate, selectedDate);
+    } else {
+      setStartDate(selectedDate);
+      setEndDate(null);
+      handleDateChange(selectedDate, null);
+    }
+  };
+
+  const handleRegionChange = e => {
+    const index = e.detail.value;
+    const selectedRegion = regions[index];
+    setRegion(selectedRegion);
+  };
+
+  const handleDestinationChange = e => {
+    const inputDestination = e.detail.value;
+    setUserDestination(inputDestination);
+    onDestinationChange(e.detail.value);
+    // onClickSearch(e.detail.value);
+    handleClickFilter(e.detail.value, startDate, endDate);
+  };
+
+  const filterOptions = [
+    { text: '人数', value: 'number' },
+    { text: '性别', value: 'gender' },
+    { text: '设施', value: 'facilities' },
+    { text: '周边', value: 'surroundings' },
+    { text: '房主偏好', value: 'preference' },
+  ];
+  const numberButtonsValues = [
+    { text: '1人', value: Number.One },
+    { text: '2人', value: Number.Two },
+    { text: '3人', value: Number.Three },
+    { text: '4人及以上', value: Number.FourOrMore },
+  ];
+  const genderButtonsValues = [
+    { text: '限女生', value: Gender.Female },
+    { text: '限男生', value: Gender.Male },
+    { text: '不限性别', value: Gender.Default },
+  ];
+  const bedButtonsValues = [
+    { text: '大床房', value: BedType.DoubleBed },
+    { text: '双床房', value: BedType.TwinBed },
+    { text: '上下床', value: BedType.StapleBed },
+  ];
+  const locationButtonValues = [
+    { text: '1km以内', value: Location.Within1KM },
+    { text: '2km以内', value: Location.Within2KM },
+    { text: '4km以内', value: Location.Within4KM },
+    { text: '6km以内', value: Location.Within6KM },
+    { text: '8km以内', value: Location.Within8KM },
+    { text: '10km以内', value: Location.Within10KM },
+  ];
+
+  const selectedGenderItems = {
+    限女生: isFemaleSelected,
+    限男生: isMaleSelected,
+    不限性别: isAllGenderSelected,
+  };
+
+  const selectedUtilityItems = {
+    WIFI: isWiFiSelected,
+    独立卫浴: isBathSelected,
+    洗衣机: isWashMachineSelected,
+    独立厨房: isKitchenSelected,
+    冰箱: isRefrigeratorSelected,
+    空调: isAirConditionSelected,
+    沙发: isSofaSelected,
+    暖气: isHeaterSelected,
+  };
+  const selectedSurroundingItems = {
+    近地铁: isSubwaySelected,
+    近景点: isAttractionSelected,
+    近中超: isChineseSuperMartSelected,
+  };
+
+  const buttonValuMap = {
+    number: numberButtonsValues,
+    gender: genderButtonsValues,
+    bed: bedButtonsValues,
+    location: locationButtonValues,
+  };
+
+  const selectedPreferenceItems = {
+    可吸烟: isSmokeSelected,
+    宠物友好: isPetSelected,
+    换宿: isExchangeSelected,
+    换洗床具: isBeddingSelected,
+    短租: isRentSelected,
+  };
+
+  useEffect(() => {
+    // 有蒙层时禁止背景滚动
+    if (isFilterOn) {
+      const dom = document.getElementById('home');
+      dom && (dom.style.overflow = 'hidden');
+      dom && (dom.style.height = '100vh');
+    } else {
+      const dom = document.getElementById('home');
+      dom && (dom.style.overflow = '');
+      dom && (dom.style.height = '');
+    }
+  }, [isFilterOn]);
+
+  const handleClickFilter = (userDes?, userStart?, userEnd?) => {
+    const filteredGenderSelectedItems = Object.fromEntries(
+      Object.entries(selectedGenderItems).filter(
+        ([key, value]) => value === true,
+      ),
+    );
+    const filteredUtilitySelectedItems = Object.fromEntries(
+      Object.entries(selectedUtilityItems).filter(
+        ([key, value]) => value === true,
+      ),
+    );
+    const filteredSurroundingSelectedItems = Object.fromEntries(
+      Object.entries(selectedSurroundingItems).filter(
+        ([key, value]) => value === true,
+      ),
+    );
+    const filteredPreferenceSelectedItems = Object.fromEntries(
+      Object.entries(selectedPreferenceItems).filter(
+        ([key, value]) => value === true,
+      ),
+    );
+
+    const mergedPreference = {
+      ...filteredPreferenceSelectedItems,
+      ...filteredGenderSelectedItems,
+    };
+
+    houseInfoSearch(
+      userDes,
+      userStart,
+      userEnd,
+      curNum,
+      filteredUtilitySelectedItems,
+      filteredSurroundingSelectedItems,
+      mergedPreference,
+    ).then((houseData: HouseItemProps[]) => {
+      onClickFilterData(houseData);
+    });
+  };
+
+  return (
+    <View>
+      <View
+        className={
+          !isFilterOn
+            ? 'search-card-clicked-up'
+            : 'search-card-clicked-up filter-on'
+        }
+      >
+        <View
+          className={
+            !isFilterOn ? 'search-card-left' : 'search-card-left filter-on'
+          }
+        >
+          <Picker
+            className='region-input'
+            mode='selector'
+            range={regions}
+            onChange={handleRegionChange}
+          >
+            <View className='picker'>
+              <Text>{region}</Text>
+              <Image src={RightBottomArrow} className='right-bottom-arrow' />
+            </View>
+          </Picker>
+          <View className='vertical-line' />
+          <Input
+            className='destination-input'
+            placeholder='目的地'
+            value={userDestination}
+            onInput={handleDestinationChange}
+            placeholder-class='home-destination-input'
+          />
+          <View
+            className='date-picker'
+            onClick={() => {
+              setIsCalendarVisible(!isCalendarVisible);
+              setIsFilterOn(false);
+            }}
+          >
+            <Text className={startDate && endDate ? 'selected' : ''}>
+              {startDate != null && endDate != null
+                ? `${startDate.replace(/\-/g, '.')} - ${endDate.replace(/\-/g, '.')}`
+                : '添加日期'}
+            </Text>
+            <Image src={RightBottomArrowGrey} className='right-bottom-arrow' />
+          </View>
+          <AtToast
+            isOpened={isToastOpened}
+            text={errorMsg}
+            onClose={() => setIsToastOpened(false)}
+          />
+          {isCalendarVisible && (
+            <View className='calendar-block'>
+              <AtCalendar
+                isMultiSelect
+                currentDate={{ start: startDate, end: endDate }}
+                minDate={today}
+                onDayClick={handleDayClick}
+                style={{ width: '100%' }}
+              />
+            </View>
+          )}
+        </View>
+
+        <View className='search-card-right'>
+          <Image
+            src={isFilterOn ? FilterOn : YellowFilter}
+            className='filter'
+            onClick={() => {
+              setIsCalendarVisible(false);
+              setIsFilterOn(!isFilterOn);
+            }}
+          />
+        </View>
+      </View>
+      {isFilterOn ? (
+        <View className='search-card-clicked-down'>
+          <View className='filter-options'>
+            {filterOptions.map((item, index) => {
+              return (
+                <View
+                  id={item.value}
+                  className={
+                    curFilterOption == item.value ? 'option active' : 'option'
+                  }
+                  onClick={() => {
+                    setCurFilterOption(item.value);
+                  }}
+                >
+                  <View
+                    className={
+                      index == 0
+                        ? 'option-text-block no-border'
+                        : 'option-text-block'
+                    }
+                  >
+                    {item.text}
+                    <Image
+                      src={
+                        curFilterOption == item.value
+                          ? FilterSelectOn
+                          : FilterSelectOff
+                      }
+                      className='filter-select-icon'
+                    />
+                  </View>
+                </View>
+              );
+            })}
+          </View>
+          {curFilterOption != 'facilities' ? (
+            curFilterOption == 'surroundings' ? (
+              <RoomSurrounding
+                isAttractionSelected={isAttractionSelected}
+                isChineseSuperMartSelected={isChineseSuperMartSelected}
+                isSubwaySelected={isSubwaySelected}
+                onClick={value => {
+                  switch (value) {
+                    case 'Subway':
+                      setIsSubwaySelected(!isSubwaySelected);
+                      break;
+                    case 'Attraction':
+                      setIsAttractionSelected(!isAttractionSelected);
+                      break;
+                    case 'ChineseSuperMart':
+                      setIsChineseSuperMartSelected(
+                        !isChineseSuperMartSelected,
+                      );
+                      break;
+                  }
+                }}
+              />
+            ) : curFilterOption == 'gender' ? (
+              <HouseGenderPreference
+                isFemaleSelected={isFemaleSelected}
+                isMaleSelected={isMaleSelected}
+                isAllGenderSelected={isAllGenderSelected}
+                onClick={value => {
+                  switch (value) {
+                    case 'Female':
+                      setIsFemaleSelected(!isFemaleSelected);
+                      setIsMaleSelected(false);
+                      setIsAllGenderSelected(false);
+                      break;
+                    case 'Male':
+                      setIsFemaleSelected(false);
+                      setIsMaleSelected(!isMaleSelected);
+                      setIsAllGenderSelected(false);
+                      break;
+                    case 'AllGender':
+                      setIsFemaleSelected(false);
+                      setIsMaleSelected(false);
+                      setIsAllGenderSelected(!isAllGenderSelected);
+                      break;
+                  }
+                }}
+              />
+            ) : curFilterOption == 'preference' ? (
+              <HouseOwnerPreference
+                isSmokeSelected={isSmokeSelected}
+                isPetSelected={isPetSelected}
+                isExchangeSelected={isExchangeSelected}
+                isBeddingSelected={isBeddingSelected}
+                isRentSelected={isRentSelected}
+                className={'house-owner-preference'}
+                onClick={value => {
+                  switch (value) {
+                    case 'Smoke':
+                      setIsSmokeSelected(!isSmokeSelected);
+                      break;
+                    case 'Pet':
+                      setIsPetSelected(!isPetSelected);
+                      break;
+                    case 'Exchange':
+                      setIsExchangeSelected(!isExchangeSelected);
+                      break;
+                    case 'Bedding':
+                      setIsBeddingSelected(!isBeddingSelected);
+                      break;
+                    case 'Rent':
+                      setIsRentSelected(!isRentSelected);
+                      break;
+                  }
+                }}
+              />
+            ) : (
+              <ButtonGroup
+                // @ts-ignore
+                buttons={buttonValuMap[curFilterOption]}
+                className={curFilterOption}
+                onClickButton={value => {
+                  // @ts-ignore
+                  if (curFilterOption == 'number') {
+                    setCurNum(value);
+                  }
+                }}
+                // @ts-ignore
+                curValue={curNum}
+              />
+            )
+          ) : (
+            <RoomFacility
+              isSofaSelected={isSofaSelected}
+              isAirConditionSelected={isAirConditionSelected}
+              isBathSelected={isBathSelected}
+              isKitchenSelected={isKitchenSelected}
+              isRefrigeratorSelected={isRefrigeratorSelected}
+              isHeaterSelected={isHeaterSelected}
+              isWashMachineSelected={isWashMachineSelected}
+              isWiFiSelected={isWiFiSelected}
+              onClick={value => {
+                switch (value) {
+                  case 'WIFI':
+                    setIsWiFiSelected(!isWiFiSelected);
+                    break;
+                  case 'Bath':
+                    setIsBathSelected(!isBathSelected);
+                    break;
+                  case 'WashMachine':
+                    setIsWashMachineSelected(!isWashMachineSelected);
+                    break;
+                  case 'Kitchen':
+                    setIsKitchenSelected(!isKitchenSelected);
+                    break;
+                  case 'Refrigerator':
+                    setIsRefrigeratorSelected(!isRefrigeratorSelected);
+                    break;
+                  case 'AirCondition':
+                    setIsAirConditionSelected(!isAirConditionSelected);
+                    break;
+                  case 'Sofa':
+                    setIsSofaSelected(!isSofaSelected);
+                    break;
+                  case 'Heater':
+                    setIsHeaterSelected(!isHeaterSelected);
+                    break;
+                }
+              }}
+            />
+          )}
+
+          <View className='reset-and-save'>
+            <View
+              className='reset'
+              onClick={() => {
+                setCurBed(BedType.Default);
+                setCurGender(Gender.Default);
+                setCurNum(Number.Default);
+                setCurLocation(Location.Default);
+                setIsWiFiSelected(false);
+                setIsBathSelected(false);
+                setIsWashMachineSelected(false);
+                setIsKitchenSelected(false);
+                setIsRefrigeratorSelected(false);
+                setIsAirConditionSelected(false);
+                setIsSofaSelected(false);
+                setIsHeaterSelected(false);
+                setIsSubwaySelected(false);
+                setIsAttractionSelected(false);
+                setIsChineseSuperMartSelected(false);
+                setIsFemaleSelected(false);
+                setIsMaleSelected(false);
+                setIsAllGenderSelected(false);
+                setIsSmokeSelected(false);
+                setIsPetSelected(false);
+                setIsExchangeSelected(false);
+                setIsBeddingSelected(false);
+                setIsRentSelected(false);
+              }}
+            >
+              重置
+            </View>
+            <View
+              className='save'
+              onClick={() => {
+                setIsFilterOn(false);
+                handleClickFilter(userDestination, userStartDate, userEndDate);
+              }}
+            >
+              保存
+            </View>
+          </View>
+        </View>
+      ) : null}
+      {/* mask */}
+      <View
+        className={
+          !isFilterOn ? 'search-card-clicked' : 'search-card-clicked-filteron'
+        }
+        onClick={() => {
+          setIsFilterOn(false);
+        }}
+      />
+    </View>
+  );
+};

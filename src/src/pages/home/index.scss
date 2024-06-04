@@ -1,0 +1,88 @@
+.house-list {
+  padding: 16px;
+  margin: 40px;
+}
+page {
+  width: 100%;
+  height: 100%;
+  background-color: #fff !important;
+}
+.home {
+  border-top: 1px solid #d9d9d9;
+  position: relative;
+  z-index: 0;
+  display: flex;
+  flex-direction: column;
+  // margin-top: 1px;
+  .search-card {
+    padding-top: 20px;
+    padding-left: 30px;
+    padding-right: 30px;
+    margin: 30px 40px;
+    .search-first-line {
+      margin-top: 10px;
+      .home-destination-input {
+        color: #d9d9d9;
+      }
+      .destination-input {
+        padding-left: 10px;
+        font-size: 28px;
+      }
+    }
+    .search-second-line {
+      border-top: 1px solid #d9d9d9;
+      margin-top: 15px;
+      padding-top: 20px;
+      .date-text {
+        font-size: 28px;
+        color: #d9d9d9;
+      }
+      .nights-text {
+        font-size: 24px;
+        color: #979797;
+      }
+      .at-calendar {
+        margin-top: 15px;
+      }
+    }
+    .search-button {
+      margin-bottom: 15px;
+    }
+  }
+  .house-list {
+    padding: 0px;
+    margin-top: 0px;
+    margin-left: 40px;
+    margin-right: 40px;
+    .house-item {
+      .house-image {
+        width: 100%;
+        border-radius: 20px;
+        border: 1px solid #d9d9d9;
+      }
+      .house-date {
+        margin-top: 3px;
+        display: flex;
+        align-items: center;
+      }
+      .contact-button {
+        margin-top: 20px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      }
+    }
+    padding-bottom: 90px;
+  }
+}
+
+.home-nodata-container {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #979797;
+  .home-nodata-image {
+    width: 560px;
+    height: 100%;
+    max-height: 400px;
+  }
+}
