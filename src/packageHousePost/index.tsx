@@ -18,6 +18,13 @@ const Index = () => {
     setUserInfo(userInfoList);
   }, []);
 
+  Taro.useShareAppMessage(res => {
+    return {
+      title: 'EuroStay欧洲换宿',
+      path: '/pages/login/index',
+    };
+  });
+
   const [images, setImages] = useState<string[]>([]);
 
   // 处理照片上传的逻辑

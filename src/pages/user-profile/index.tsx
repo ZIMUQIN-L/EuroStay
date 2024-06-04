@@ -3,6 +3,7 @@ import CustomTabBar from '@components/CustomTabBar';
 import { observer } from 'mobx-react';
 import { useEffect, useState } from 'react';
 import './index.scss';
+import Taro from '@tarojs/taro';
 import GlobalStore from '@store/GlobalStore';
 import { HouseItemProps, UserItemProps } from '@utils/interfaces';
 import UserInfo from './user-info';
@@ -13,6 +14,13 @@ const Index = () => {
   const [user, setUser] = useState<UserItemProps>(GlobalStore.userInfo);
   // 用户拥有的房源信息
   const [houseList, setHouseList] = useState<HouseItemProps[]>([]); // HouseItemProps[]
+
+  Taro.useShareAppMessage(res => {
+    return {
+      title: 'EuroStay',
+      path: '/pages/login/index',
+    };
+  });
 
   // 在user修改信息后不更新，应该是page没有reload，todo
   useEffect(() => {

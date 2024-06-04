@@ -32,6 +32,14 @@ const Index = () => {
   const [surrounding, setSurrounding] = useState({});
   const [preference, setPreference] = useState({});
 
+  // 分享小程序
+  Taro.useShareAppMessage(res => {
+    return {
+      title: 'EuroStay',
+      path: '/pages/login/index',
+    };
+  });
+
   useEffect(() => {
     const userInfoList: UserItemProps = GlobalStore.userInfo;
     setUserInfo(userInfoList);

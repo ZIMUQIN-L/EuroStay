@@ -9,15 +9,16 @@ import HouseItem from './house-item';
 import { houseInfoSearch } from '@common/database/house/house';
 import { HouseItemProps } from '@utils/interfaces';
 import SearchAndFilter from './search-and-filter';
-import { formatToday } from '@utils/dateUtil';
 import { NoDataLogo } from '@utils/cloudIcons';
 const Index = () => {
-  Taro.useShareAppMessage(() => {
+  // 分享小程序
+  Taro.useShareAppMessage(res => {
     return {
       title: 'EuroStay欧洲换宿',
-      path: `/pages/index/index`,
+      path: '/pages/login/index',
     };
   });
+
   // 上拉进行加载，获取更多房源
   useReachBottom(() => {
     houseInfoSearch(
@@ -53,8 +54,7 @@ const Index = () => {
   const [demoData, setDemoData] = useState<HouseItemProps[]>([]);
 
   const fetchInitialData = () => {
-    const today = formatToday();
-    houseInfoSearch('', today, today).then((houseData: HouseItemProps[]) => {
+    houseInfoSearch('', '', '').then((houseData: HouseItemProps[]) => {
       setDemoData(houseData);
     });
   };

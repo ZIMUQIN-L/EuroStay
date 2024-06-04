@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import HouseImagesSwiper from './house-images';
 import HouseTexts from './house-texts';
 import './index.scss';
+import Taro from '@tarojs/taro';
 import { houseDetailSearch } from '@common/database/house/house';
 import { RoomDetailInfo } from './house-infos';
 import HouseContact from './house-contact';
@@ -16,6 +17,13 @@ const Index = () => {
   const [houseDetail, setHouseDetail] = useState<HouseDetailItemProps | null>(
     null,
   );
+
+  Taro.useShareAppMessage(res => {
+    return {
+      title: 'EuroStay欧洲换宿',
+      path: '/pages/login/index',
+    };
+  });
 
   useEffect(() => {
     houseDetailSearch(houseId).then((houseDetail: HouseDetailItemProps) => {

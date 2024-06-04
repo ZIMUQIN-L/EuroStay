@@ -21,7 +21,7 @@ const ImagesUpload = ({ images, onUploadImage, onDeleteImage }) => {
     });
 
     Taro.chooseImage({
-      count: 1,
+      count: 9,
       sizeType: ['original', 'compressed'],
       sourceType: ['album', 'camera'],
     })

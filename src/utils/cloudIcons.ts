@@ -1,5 +1,5 @@
 const cloudPath =
-  'cloud://cloud1-8gb29x2pbe14a4f8.636c-cloud1-8gb29x2pbe14a4f8-1324366677/images';
+  'cloud://cloud1-9gjlum193d0ee3c3.636c-cloud1-9gjlum193d0ee3c3-1326922587/images';
 
 export const DefaultHouse = `${cloudPath}/default-house.png`;
 export const DateIcon = `${cloudPath}/date-icon.svg`;
