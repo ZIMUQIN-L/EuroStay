@@ -142,6 +142,19 @@ const addressData = [
         ],
       },
       {
+        name: '北马其顿',
+        areaList: [
+            '奥赫里德',
+            '比托拉',
+            '普里莱普',
+            '雷森',
+            '斯科普里',
+            '马夫罗沃',
+            '德巴尔',
+            '其他',
+        ]
+      },
+      {
         name: '比利时',
         areaList: [
           '埃诺',
@@ -435,6 +448,12 @@ const addressData = [
         ],
       },
       {
+        name: '梵蒂冈',
+        areaList: [
+            '梵蒂冈',
+        ]
+      },
+      {
         name: '芬兰',
         areaList: [
           '埃斯波',
@@ -642,6 +661,12 @@ const addressData = [
         ],
       },
       {
+        name: '摩纳哥',
+        areaList: [
+            '摩纳哥'
+        ]
+    },
+      {
         name: '挪威',
         areaList: [
           '阿克什胡斯',
@@ -817,6 +842,12 @@ const addressData = [
           '特伦钦',
           '其他',
         ],
+      },
+      {
+        name: '圣马力诺',
+        areaList: [
+            '圣马力诺',
+        ]
       },
       {
         name: '斯洛文尼亚',
