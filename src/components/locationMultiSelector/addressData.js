@@ -448,12 +448,6 @@ const addressData = [
         ],
       },
       {
-        name: '梵蒂冈',
-        areaList: [
-            '梵蒂冈',
-        ]
-      },
-      {
         name: '芬兰',
         areaList: [
           '埃斯波',
@@ -1111,6 +1105,12 @@ const addressData = [
           '伊塞尔尼亚',
           '其他',
         ],
+      },
+      {
+        name:'其他',
+        areaList: [
+          '详见房间概况',
+        ]
       },
     ],
   },
