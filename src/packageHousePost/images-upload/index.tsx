@@ -15,17 +15,16 @@ const ImagesUpload = ({ images, onUploadImage, onDeleteImage }) => {
   };
 
   const handleUploadImage = () => {
-    Taro.showLoading({
-      title: '图片选择中',
-      mask: true,
-    });
-
     Taro.chooseImage({
       count: 9,
       sizeType: ['original', 'compressed'],
       sourceType: ['album', 'camera'],
     })
       .then(async res => {
+        Taro.showLoading({
+          title: '图片选择中',
+          mask: true,
+        });
         if (res.tempFilePaths.length > 0) {
           const tempFilePath = res.tempFilePaths[0];
           const compressedImage = Taro.compressImage({
