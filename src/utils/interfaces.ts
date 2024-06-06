@@ -128,3 +128,25 @@ export interface AccomMssageHouseItemProps {
   contact: string;
   xhsContact: string;
 }
+
+export interface UserRatingInfoItemProps {
+  _id: string; // 微信自动生成的_id，无法修改其名称
+  _openid: string;
+  accomInfoId: string; // 用户发出的求宿信息id
+  sourceUserOpenid: string; // 发送评价的用户
+  targetUserOpenid: string; // 接受评价的用户
+  houseId: string; // 房源的id
+
+  // evaluation info
+  // tohost
+  //     "desMatch": //number,
+  //     "locationEval": //number,
+  //     "cleanEval": //number,
+  //     "serviceEval": //number
+  //     "pricePerformance": //number
+  // toseeker
+  //     "rating": //number
+  evaluation: { [key: string]: any };
+  comment: string; // 评价信息
+  type: string; // 评价类别 tohost, toseeker
+}
