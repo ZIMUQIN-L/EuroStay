@@ -50,7 +50,7 @@ const Index = () => {
                       (dbUserInfo: UserItemProps[]) => {
                         setDbUserData(dbUserInfo);
                         GlobalStore.userInfo = dbUserInfo[0];
-
+                        setIsLoading(false);
                         if (dbUserInfo.length >= 1) {
                           Taro.switchTab({
                             url: `/pages/home/index`,
@@ -162,7 +162,7 @@ const Index = () => {
           <Button
             className='login-button'
             color='primary'
-            onClick={() => handleUserLogin}
+            onClick={handleUserLogin}
           >
             微信登陆
           </Button>
