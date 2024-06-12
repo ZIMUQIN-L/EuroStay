@@ -9,6 +9,7 @@ export default {
         'my-accommodation/index',
         'my-houses/index',
         'my-offering/index',
+        'review-on-house/index',
       ],
     },
     {

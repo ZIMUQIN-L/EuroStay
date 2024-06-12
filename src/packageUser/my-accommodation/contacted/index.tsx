@@ -102,6 +102,11 @@ const ContactedCard: React.FC<UserAccomMessageItemProps> = userAccomMessage => {
           }
         },
       );
+    } else if (infoStatus === 'checkedIn') {
+      // Navigates to the new page when the button is clicked and the status is 'unread' or 'read'
+      Taro.navigateTo({
+        url: '../../packageUser/review-on-house/index' // Adjust the path as necessary
+      });
     }
   };
 
