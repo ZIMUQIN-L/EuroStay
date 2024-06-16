@@ -69,6 +69,7 @@ export const accomMessageSearch = async (sourceUserOpenid, skip = 0) => {
   });
 };
 
+// 搜索我的
 export const houseMessageSearch = async (targetUserOpenid, skip = 0) => {
   const db = wx.cloud.database();
   return new Promise((resolve, reject) => {
