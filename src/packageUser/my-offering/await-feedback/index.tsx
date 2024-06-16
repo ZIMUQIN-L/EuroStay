@@ -91,12 +91,30 @@ const AwaitFeedback: React.FC<UserAccomMessageItemProps> = userAccomMessage => {
   const [infoBoardIsShown, setInfoBoardIsShown] = useState(false);
   const [contactInfoIsShown, setContactInfoIsShown] = useState(false);
 
+  const handleUserConfirmOrder = infoId => {
+    Taro.showModal({
+      title: '确认换宿/短租',
+      content: '是否确认用户入住',
+      success: function (res) {
+        if (res.confirm) {
+          accomMessageUpdate(infoId, 'booked').then(res => {
+            handleMessageNotification('房东确认了您的换宿', '房东已确认');
+          });
+        } else if (res.cancel) {
+          console.log('');
+        }
+      },
+    });
+  };
+
   const handleUserClickButton = (accomInfo, infoId, infoStatus) => {
     setSelectedAccomInfo(accomInfo);
     setSelectedInfoId(infoId);
     if (infoStatus == 'unread' || infoStatus == 'read') {
       setInfoBoardIsShown(true);
       // setContactInfoIsShown(true);
+    } else if (infoStatus == 'contactReceived') {
+      handleUserConfirmOrder(infoId);
     }
   };
 
