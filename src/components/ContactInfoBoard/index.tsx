@@ -51,73 +51,61 @@ const ContactInfoBoard = ({
       onSubmit={editable ? handleSubmitContactInfo : onClose}
       className='contact-info-board-dialog'
     >
-      <View>
-        {editable ? (
-          <View>
-            <View className='avatar-image'>
-              <Image src={user.avatarUrl} className='avatar-image' />
+      {editable ? (
+        <View className='contact-info-board-editable-container'>
+          <Image src={user.avatarUrl} className='avatar-image' />
+          <View className='contact-info-board-editable-name'>
+            <Text className='text-title'>求宿者：{user.nickName}</Text>
+          </View>
+          <View className='wechat-id-input'>
+            <Input
+              className='wechat-id-input-text'
+              style={{ minHeight: '30px', minWidth: '260px' }}
+              value={contact}
+              onInput={handleUserContactEdit}
+              placeholder='请填写自己的微信号，让租客更好地联系你～'
+            />
+          </View>
+          <View
+            className='contact-text-container'
+            style={{ minHeight: '80px' }}
+          >
+            <Textarea
+              value={helloMessage}
+              onInput={handleUserHelloMessageEdit}
+              placeholder='请和求宿者打个招呼吧～'
+            />
+          </View>
+        </View>
+      ) : (
+        <View className='contact-info-board-uneditable-container'>
+          <View className='contact-info-board-uneditable'>
+            <Image
+              src={
+                replyMessage == null
+                  ? DefaultAvatar
+                  : replyMessage.sourceUserAvatarUrl
+              }
+              className='avatar-image'
+            />
+            <View className='house-owner-name'>
+              供宿者:
+              {replyMessage == null
+                ? '未知用户'
+                : replyMessage.sourceUserNickName}
             </View>
-            <View>
-              <Text className='text-title'>{user.nickName}</Text>
+            <View className='wechat-id'>
+              微信号:
+              {replyMessage == null ? 'unknown' : replyMessage.contact}
             </View>
-            <Text className='text-title'>微信号</Text>
-            <View
-              className='input-text-container'
-              // style={{ minHeight: '30px' }}
-            >
-              <View className='input-text'>
-                <Input
-                  style={{ minHeight: '30px' }}
-                  value={contact}
-                  onInput={handleUserContactEdit}
-                  placeholder='请填写自己的微信号，让租客更好地联系你～'
-                />
-              </View>
-            </View>
-            <Text className='text-title'>房主打招呼信息</Text>
-            <View
-              className='des-text-container contact-info-board'
-              style={{ minHeight: '80px' }}
-            >
-              <View className='des-text'>
-                <Textarea
-                  value={helloMessage}
-                  onInput={handleUserHelloMessageEdit}
-                  placeholder='请和求宿者打个招呼吧～'
-                />
-              </View>
+            <View className='message-from-house-owner'>
+              {replyMessage == null
+                ? '房主打招呼信息'
+                : replyMessage.helloMessage}
             </View>
           </View>
-        ) : (
-          <View className='contact-info-board-uneditable-container'>
-            <View className='contact-info-board-uneditable'>
-              <Image
-                src={
-                  replyMessage == null
-                    ? DefaultAvatar
-                    : replyMessage.sourceUserAvatarUrl
-                }
-                className='avatar-image'
-              />
-              <View className='house-owner-name'>
-                供宿者:
-                {replyMessage == null
-                  ? '未知用户'
-                  : replyMessage.sourceUserNickName}
-              </View>
-              <View className='wechat-id'>
-                微信号:
-                {replyMessage == null ? 'unknown' : replyMessage.contact}
-              </View>
-              <View className='message-from-house-owner'>
-                {replyMessage == null
-                  ? '房主打招呼信息'
-                  : replyMessage.helloMessage}
-              </View>
-            </View>
-          </View>
-        )}
-      </View>
+        </View>
+      )}
     </CustomFullScreenDialog>
   );
 };
