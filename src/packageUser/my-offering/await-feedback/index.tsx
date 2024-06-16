@@ -182,7 +182,7 @@ const AwaitFeedback: React.FC<UserAccomMessageItemProps> = userAccomMessage => {
   };
 
   const handleMessageNotification = (content, helloMessageInfo) => {
-    console.log(userAccomMessage.sourceUserOpenid);
+    // console.log(userAccomMessage.sourceUserOpenid);
     Taro.cloud.callFunction({
       name: 'messageNotification',
       data: {
