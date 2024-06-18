@@ -75,6 +75,7 @@ export interface UserAccomMessageItemProps {
   gender: string;
   location: string;
   sourceUserOpenid: string;
+  sourceUserAvatarUrl: string;
   description: string;
   // 消息类型: withTargetHouse, withoutTargetHouse, both
   type: string;
@@ -87,6 +88,7 @@ export interface UserAccomMessageItemProps {
   houseId: string;
   images?: string[];
   targetUserNickName: string;
+  targetUserAvatarUrl: string;
   targetUserOpenid: string;
 }
 

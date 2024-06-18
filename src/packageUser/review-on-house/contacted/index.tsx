@@ -9,7 +9,6 @@ import { useState } from 'react';
 import ContactInfoBoard from '@components/ContactInfoBoard';
 import { View } from '@tarojs/components';
 import { replyMessageSearch } from '@common/database/ownerReply/ownerReply';
-import { accomMessageUpdate } from '@common/database/accomMessage/accomMessage';
 /**
  * @description 我的求宿-已联系
  */
@@ -51,7 +50,7 @@ const ContactedCard: React.FC<UserAccomMessageItemProps> = userAccomMessage => {
       case 'contactReceived':
         return true;
       case 'booked':
-        return true;
+        return false;
       case 'checkedIn':
         return true;
       case 'rated':
@@ -72,7 +71,7 @@ const ContactedCard: React.FC<UserAccomMessageItemProps> = userAccomMessage => {
       case 'contactReceived':
         return '查看回复';
       case 'booked':
-        return '确认入住';
+        return '等待入住';
       case 'checkedIn':
         return '等待评价';
       case 'rated':
@@ -103,18 +102,6 @@ const ContactedCard: React.FC<UserAccomMessageItemProps> = userAccomMessage => {
           }
         },
       );
-    } else if (infoStatus == 'booked') {
-      Taro.showModal({
-        title: '确认入住',
-        content: '是否确认已经入住~',
-        success: function (res) {
-          if (res.confirm) {
-            accomMessageUpdate(infoId, 'checkedIn');
-          } else if (res.cancel) {
-            console.log('');
-          }
-        },
-      });
     } else if (infoStatus === 'checkedIn') {
       // Navigates to the new page when the button is clicked and the status is 'unread' or 'read'
       Taro.navigateTo({

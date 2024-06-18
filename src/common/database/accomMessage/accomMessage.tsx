@@ -69,6 +69,7 @@ export const accomMessageSearch = async (sourceUserOpenid, skip = 0) => {
   });
 };
 
+// 搜索我的
 export const houseMessageSearch = async (targetUserOpenid, skip = 0) => {
   const db = wx.cloud.database();
   return new Promise((resolve, reject) => {
@@ -87,6 +88,7 @@ export const houseMessageSearch = async (targetUserOpenid, skip = 0) => {
   });
 };
 
+// 更新accom info的状态
 export const accomMessageUpdate = async (_id, status) => {
   const db = wx.cloud.database();
   return new Promise((resolve, reject) => {
@@ -102,6 +104,44 @@ export const accomMessageUpdate = async (_id, status) => {
       })
       .catch(err => {
         reject(err.errMsg);
+      });
+  });
+};
+
+// 搜索求宿信息
+export const accomPageMessageSearch = async (
+  location,
+  startDate,
+  endDate,
+  number = 1,
+  skip = 0,
+) => {
+  const db = wx.cloud.database();
+  const _ = db.command;
+  if (startDate == undefined || startDate == '') {
+    startDate = '2999-12-31';
+  }
+  if (endDate == undefined || endDate == '') {
+    endDate = '1999-01-01';
+  }
+  return new Promise((resolve, reject) => {
+    db.collection('UserAccomMessage')
+      .orderBy('start_date', 'desc')
+      .where({
+        location: db.RegExp({
+          regexp: '^.*' + location + '.*',
+        }),
+        type: _.or(['withoutTargetHouse', 'both']),
+        capacity: _.gte(Number(number)),
+        start_date: _.lte(startDate),
+        end_date: _.gte(endDate),
+      })
+      .skip(skip)
+      .limit(10)
+      .get({
+        success: function (res) {
+          resolve(res.data);
+        },
       });
   });
 };

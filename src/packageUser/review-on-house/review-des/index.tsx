@@ -1,13 +1,11 @@
-import { View, Text, Textarea } from '@tarojs/components';
+import { View, Text, Textarea, Icon } from '@tarojs/components';
+import { AtIcon } from 'taro-ui';
 import './index.scss';
 import { useEffect, useState } from 'react';
 
-const ReviewDes = ({ description="as", onUserDescriptionEdit }) => {
-  const [des, setDes] = useState(description);
-
-  useEffect(() => {
-    setDes(description);
-  }, [description]);
+const ReviewDes = ({ onUserDescriptionEdit }) => {
+  const [des, setDes] = useState("");
+  const [isPublic, setIsPublic] = useState(true); 
 
   // 用户修改房源描述
   const handleUserDescriptionEdit = e => {
@@ -16,31 +14,35 @@ const ReviewDes = ({ description="as", onUserDescriptionEdit }) => {
     onUserDescriptionEdit(inputDescription);
   };
 
+  const handleToggleClick = () => {
+    setIsPublic(!isPublic);
+  };
+
   return (
     <View className='des-part'>
       <View className='des-container'>
-        <Text className='des-title'>填写标题，简明扼要介绍你的房源吧～</Text>
-        <View className='caution-text'>
-          <Text>
-            描述注意事项，表明你的要求或者提醒，如只租女生、不允许开派对等
-          </Text>
-        </View>
+        <Text className='des-title'>说说你的换宿体验吧，给其他朋友一些帮助～</Text>
         <View className='des-text-container' style={{ minHeight: '80px' }}>
           <View className='des-text'>
             <Textarea
               value={des}
               onInput={handleUserDescriptionEdit}
-              placeholder='详情介绍：更详细的介绍，如房屋类型、独居合租、交通便利、区域安全、租金押金等，帮助租客更好的了解你的房源～'
+              placeholder='请输入评语（多多填写评语有助于提升你在本平台的等级哦～）'
             />
           </View>
         </View>
-        {/* <View className='des-text-container'>
-          <View className='des-text'>
-            <Text>
-              注意事项：描述你的要求或者提醒，如只租女生、不允许开派对等
-            </Text>
+        <View className='toggle-container'>
+          <View className='toggle-button-container'>
+              <View className='toggle-button' onClick={handleToggleClick}>
+                <AtIcon value='check' size='20' color='#fff' />
+              </View>
+              <Text className='toggle-status'>{isPublic ? '公开' : '私密'}</Text>
           </View>
-        </View> */}
+          <Text className='toggle-explanation'>
+            {isPublic ? '公开头像昵称，大家可以看到你的主页' : '私密设置，只有你自己可以看到评语'}
+          </Text>
+        </View>
+
       </View>
     </View>
   );

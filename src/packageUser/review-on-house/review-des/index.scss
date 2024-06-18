@@ -1,11 +1,11 @@
 .des-part {
   background-color: white;
-  margin-top: 8px;
+  width: 550px;
 }
 .des-container {
   display: flex;
   flex-direction: column;
-  margin: 40px 40px;
+  margin: 5px;
 }
 .des-title {
   color: #979797;
@@ -29,3 +29,43 @@
   font-size: 30px;
   color: #6b63b9;
 }
+
+.toggle-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+  padding: 0; /* Ensure no padding */
+  margin: 0;  /* Ensure no margin */
+}
+
+
+.toggle-button {
+  background-color: #fdd835;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.toggle-button-container {
+  display: flex;
+  align-items: center;
+}
+
+.toggle-status {
+  margin-left: 1px;
+  color: #666;
+  font-size: 20px;
+}
+
+.toggle-explanation {
+  color: #888;
+  font-size: 20px;
+}
+

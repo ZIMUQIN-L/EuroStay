@@ -1,6 +1,7 @@
 import { View, Image, Text, RichText } from '@tarojs/components';
 import { DateIcon } from '@utils/cloudIcons';
 import './index.scss';
+import { AccomMssageHouseItemProps } from '@utils/interfaces';
 
 const SeekingCard = ({ seekingItem }) => {
   if (!seekingItem) {
@@ -10,7 +11,7 @@ const SeekingCard = ({ seekingItem }) => {
   return (
     <View className='seeking'>
       <View className='seeking-container'>
-        <View className='seeking-title'>{seekingItem.title}</View>
+        <View className='seeking-title'>{seekingItem.location}</View>
         <View className='seeking-content'>
           <View className='seeking-avatar'>
             <Image src={seekingItem.avatar} />

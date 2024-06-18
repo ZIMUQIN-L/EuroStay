@@ -1,0 +1,38 @@
+.house-info-card {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+    border-radius: 8px;
+  
+    .house-image {
+      width: 160px;
+      height: 160px;
+      margin-right: 20px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+  
+    .house-details {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      width: 400px;
+
+      @media (max-width: 600px) {
+        flex-direction: column; // Stacks children vertically on smaller screens
+        align-items: flex-start; // Aligns items to the start of the flex container
+      }
+    }
+  
+    .house-title {
+      font-size: 20px;
+      color: #333;
+      font-weight: bold;
+    }
+  
+    .house-owner, .house-dates {
+      font-size: 20px;
+      color: #666;
+    }
+  }
+  
