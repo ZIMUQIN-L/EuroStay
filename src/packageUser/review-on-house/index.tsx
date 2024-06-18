@@ -9,34 +9,16 @@ import { DefaultAvatar, DefaultHouse } from '@utils/cloudIcons';
 import { houseDetailSearch } from '@common/database/house/house';
 import { userInfoSearch } from '@common/database/user/user';
 import StarRating from './review-star';
-import GlobalStore from '@store/GlobalStore';
-import { set } from 'mobx';
 
 const ReviewOnHouse = () => {
 
-  // Dummy data for illustration
-  const accommodationDetails = {
-    name: "精致民宿xxx房",
-    host: "Andre",
-    period: "2024-05-02 to 2024-05-10",
-    rating: 3,
-    review: "设施齐全的民宿体验，给其他朋友一些帮助~",
-    imageUrl: "path_to_accommodation_image.png" // Update path as needed
-  };
 
   const toHostAccommodationDetails = {
       "houseId": "7d8ff72c666e735f02fb906e5cc30315",
       "type": "tohost",
       // "type": "toseeker",
       "userOpenId": "owGKZ68uKjrM_-7RiYFrGcmiW_iI",
-      "accommodationDetails": {
-        "name": "精致民宿xxx房",
-        "host": "Andre",
-        "period": "2024-05-02 to 2024-05-10",
-        "rating": 3,
-        "review": "设施齐全的民宿体验，给其他朋友一些帮助~",
-        "imageUrl": "path_to_accommodation_image.png"
-    }
+
   }
 
 
@@ -49,6 +31,7 @@ const ReviewOnHouse = () => {
     rating: 3
   });
   const [comment, setComment] = useState('');
+  const [isPublic, setIsPublic] = useState(true);
 
   const [houseDetail, setHouseDetail] = useState<HouseDetailItemProps | null>(
     null,
@@ -58,7 +41,6 @@ const ReviewOnHouse = () => {
   const [host, setHost] = useState<UserItemProps | null>(null);
 
   useEffect(() => {
-    //get the houseId from the mock data toHostAccommodationDetails
     const houseId = toHostAccommodationDetails.houseId;
     setHouseId(houseId);
     setType(toHostAccommodationDetails.type);
@@ -77,6 +59,11 @@ const ReviewOnHouse = () => {
   const handleUserDescriptionEdit = inputDescription => {
     // Handle user description edit
     setComment(inputDescription);
+  }
+
+  const handleIsPublicEdit = isPublic => {
+    // Handle isPublic edit
+    setIsPublic(isPublic);
   }
 
   const handleInputChange = (e, field) => {
@@ -103,7 +90,8 @@ const ReviewOnHouse = () => {
       houseId,
       evaluation: refinedEvaluation,
       comment: comment,
-      type: type
+      type: type,
+      isPublic: isPublic
     };
 
     console.log("submitting content:", userRatingInfo);
@@ -123,7 +111,7 @@ const ReviewOnHouse = () => {
         }
 
       />
-      <ReviewDes onUserDescriptionEdit={handleUserDescriptionEdit} />
+      <ReviewDes onUserDescriptionEdit={handleUserDescriptionEdit} onIsPublicEdit={handleIsPublicEdit}/>
 
       <View className='detailed-ratings'>
       {toHostAccommodationDetails.type === 'tohost' ? (

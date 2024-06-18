@@ -1,6 +1,6 @@
 .des-part {
   background-color: white;
-  width: 550px;
+  width: 580px;
 }
 .des-container {
   display: flex;
@@ -51,6 +51,15 @@
   justify-content: center;
   align-items: center;
   cursor: pointer;
+}
+
+
+.toggle-button.public {
+  background-color: #fdd835; /* Yellow */
+}
+
+.toggle-button.private {
+  background-color: #888; /* Grey */
 }
 
 .toggle-button-container {

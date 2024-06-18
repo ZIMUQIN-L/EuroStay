@@ -3,7 +3,7 @@ import { AtIcon } from 'taro-ui';
 import './index.scss';
 import { useEffect, useState } from 'react';
 
-const ReviewDes = ({ onUserDescriptionEdit }) => {
+const ReviewDes = ({ onUserDescriptionEdit, onIsPublicEdit }) => {
   const [des, setDes] = useState("");
   const [isPublic, setIsPublic] = useState(true); 
 
@@ -16,6 +16,7 @@ const ReviewDes = ({ onUserDescriptionEdit }) => {
 
   const handleToggleClick = () => {
     setIsPublic(!isPublic);
+    onIsPublicEdit(!isPublic);
   };
 
   return (
@@ -33,7 +34,7 @@ const ReviewDes = ({ onUserDescriptionEdit }) => {
         </View>
         <View className='toggle-container'>
           <View className='toggle-button-container'>
-              <View className='toggle-button' onClick={handleToggleClick}>
+              <View className={`toggle-button ${isPublic ? 'public' : 'private'}`} onClick={handleToggleClick}>
                 <AtIcon value='check' size='20' color='#fff' />
               </View>
               <Text className='toggle-status'>{isPublic ? '公开' : '私密'}</Text>
