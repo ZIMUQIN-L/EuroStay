@@ -2,6 +2,13 @@ import { View, Text, Image } from '@tarojs/components';
 import { HouseDetailItemProps } from '@utils/interfaces';
 import './index.scss';
 import { DateIcon, CapacityIcon, LocationIcon } from '@utils/cloudIcons';
+import Taro from '@tarojs/taro';
+
+const toHostDetail = () => {
+  Taro.navigateTo({
+    url: '/packageUser/user-detail/index',
+  });
+};
 
 const HouseTexts: React.FC<HouseDetailItemProps> = house => {
   return (
@@ -21,6 +28,17 @@ const HouseTexts: React.FC<HouseDetailItemProps> = house => {
             <Text>{house.capacity}人</Text>
           </View>
         </View>
+      </View>
+      <View className='container'>
+        <View className='text-container'>
+          <Text className='title'>房东信息</Text>
+        </View>
+        <View
+            className='contact-button'
+            onClick={toHostDetail}
+          >
+            <Text className='contact-text'>房东信息</Text>
+          </View>
       </View>
       <View className='container'>
         <View className='text-container'>

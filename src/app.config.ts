@@ -6,6 +6,7 @@ export default {
       root: 'packageUser/',
       pages: [
         'user-edit/index',
+        'user-detail/index',
         'my-accommodation/index',
         'my-houses/index',
         'my-offering/index',
