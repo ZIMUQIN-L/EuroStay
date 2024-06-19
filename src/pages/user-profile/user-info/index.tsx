@@ -11,9 +11,15 @@ const UserInfo: React.FC<UserItemProps> = user => {
     setUserInfo(user);
   }, []);
 
-  const editClick = () => {
+  // const editClick = () => {
+  //   Taro.navigateTo({
+  //     url: '../../packageUser/user-edit/index',
+  //   });
+  // };
+
+  const toUserDetail = () => {
     Taro.navigateTo({
-      url: '../../packageUser/user-edit/index',
+      url: '/packageUser/user-detail/index',
     });
   };
 
@@ -31,7 +37,7 @@ const UserInfo: React.FC<UserItemProps> = user => {
         </View>
         <View
           style={{ display: 'flex', alignItems: 'center' }}
-          onClick={editClick}
+          onClick={toUserDetail}
         >
           <Image
             src={RightBottomArrow}

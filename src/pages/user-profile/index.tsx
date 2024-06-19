@@ -45,16 +45,35 @@ const actionList = [
   },
 ];
 
+const offeringList = [
+  {
+    text: '待回复',
+    // todo: icon
+    icon: AlreadyContact,
+    tab: 'awaitFeedback',
+  },
+  {
+    text: '已回复',
+    icon: AlreadyContact,
+    tab: 'hasFeedback',
+  },
+  {
+    text: '待入住',
+    icon: AwaitingCheckin,
+    tab: 'awaitStay',
+  },
+  {
+    text: '待点评',
+    icon: AwaitingComment,
+    tab: 'awaitComment',
+  }
+];
+
 const menuList = [
   {
     text: '我的房源',
     icon: MyHouseIcon,
     path: '../../packageUser/my-houses/index',
-  },
-  {
-    text: '我的供宿',
-    icon: MyOfferingIcon,
-    path: '../../packageUser/my-offering/index',
   },
   {
     text: '我的收藏',
@@ -64,11 +83,6 @@ const menuList = [
   {
     text: '实名认证',
     icon: ValidationIcon,
-    path: '',
-  },
-  {
-    text: '反馈咨询',
-    icon: ReportIcon,
     path: '',
   },
   {
@@ -100,6 +114,12 @@ const Index = () => {
     });
   }
 
+  function navigateToOffering(tab) {
+    Taro.navigateTo({
+      url: `../../packageUser/my-offering/index?tab=${tab}`,
+    });
+  }
+
   const navigateToMenu = page => {
     Taro.navigateTo({
       url: page,
@@ -109,6 +129,12 @@ const Index = () => {
   const handleClickAll = () => {
     Taro.navigateTo({
       url: '../../packageUser/my-accommodation/index',
+    });
+  };
+
+  const handleClickAllOffering = () => {
+    Taro.navigateTo({
+      url: '../../packageUser/my-offering/index',
     });
   };
 
@@ -143,6 +169,40 @@ const Index = () => {
               key={index}
               className='action-item'
               onClick={() => navigateToAccommodation(item.tab)}
+            >
+              <Image
+                className='action-item-pic'
+                src={item.icon}
+                style={{ width: '24px', height: '24px' }}
+              />
+              <Text>{item.text}</Text>
+            </View>
+          ))}
+        </View>
+      </View>
+
+      <View className='action'>
+        <View className='action-text'>
+          <Text className='action-text-title'>我的供宿</Text>
+          <View onClick={handleClickAllOffering}>
+            <Text className='action-text-to-see-all'>全部</Text>
+            <Image
+              src={RightBottomArrow}
+              style={{
+                width: '12px',
+                height: '12px',
+                position: 'relative',
+                top: '1px',
+              }}
+            />
+          </View>
+        </View>
+        <View className='action-list'>
+          {offeringList.map((item, index) => (
+            <View
+              key={index}
+              className='action-item'
+              onClick={() => navigateToOffering(item.tab)}
             >
               <Image
                 className='action-item-pic'
