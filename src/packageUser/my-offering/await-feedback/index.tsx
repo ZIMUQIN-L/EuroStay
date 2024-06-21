@@ -128,8 +128,9 @@ const AwaitFeedback: React.FC<UserAccomMessageItemProps> = userAccomMessage => {
     } else if (infoStatus == 'contactReceived') {
       handleUserConfirmOrder(infoId);
     } else if (infoStatus == 'checkedIn' || infoStatus == 'guestRated') {
-      console.log('review');
-      // TODO: @PJ 添加房主评价
+      Taro.navigateTo({
+        url: `../../packageUser/review-on-house/index?id=${userAccomMessage._id}`, // Adjust the path as necessary
+      });
     }
   };
 

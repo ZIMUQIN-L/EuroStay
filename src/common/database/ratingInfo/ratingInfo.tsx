@@ -23,11 +23,16 @@
 export const ratingInfoAdd = async (
   accomInfoId,
   sourceUserOpenid,
+  sourceUserNickname,
+  sourceUserAvatarUrl,
   targetUserOpenid,
+  targetUserNickname,
+  targetUserAvatarUrl,
   houseId,
   evaluation, // a dictionary,
   comment, // string, the comment of this rating
   type, // string, type of this comment
+  toPublic, // bool, 是否公开展示名称信息
 ) => {
   const db = wx.cloud.database();
   return new Promise((resolve, reject) => {
@@ -36,11 +41,16 @@ export const ratingInfoAdd = async (
         data: {
           accomInfoId: accomInfoId,
           sourceUserOpenid: sourceUserOpenid,
+          sourceUserNickname: sourceUserNickname,
+          sourceUserAvatarUrl: sourceUserAvatarUrl,
           targetUserOpenid: targetUserOpenid,
+          targetUserNickname: targetUserNickname,
+          targetUserAvatarUrl: targetUserAvatarUrl,
           houseId: houseId,
           evaluation: evaluation,
           comment: comment,
           type: type,
+          toPublic: toPublic,
         },
       })
       .then(res => {

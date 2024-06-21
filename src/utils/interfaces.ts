@@ -136,7 +136,11 @@ export interface UserRatingInfoItemProps {
   _openid: string;
   accomInfoId: string; // 用户发出的求宿信息id
   sourceUserOpenid: string; // 发送评价的用户
-  targetUserOpenid: string; // 接受评价的用户
+  sourceUserNickname: string; //发送评价用户的nickname
+  sourceUserAvatarUrl: string; //发送评价用户的avatarUrl
+  targetUserOpenid: string; // 接收评价的用户
+  targetUserNickname: string; //接收评价用户的nickname
+  targetUserAvatarUrl: string; //接收评价用户的avatarUrl
   houseId: string; // 房源的id
 
   // evaluation info
@@ -151,4 +155,5 @@ export interface UserRatingInfoItemProps {
   evaluation: { [key: string]: any };
   comment: string; // 评价信息
   type: string; // 评价类别 tohost, toseeker
+  toPublic: boolean; //是否公开展示
 }

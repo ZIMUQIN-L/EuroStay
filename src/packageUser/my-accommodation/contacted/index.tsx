@@ -129,8 +129,6 @@ const ContactedCard: React.FC<UserAccomMessageItemProps> = userAccomMessage => {
       });
     } else if (infoStatus === 'checkedIn' || infoStatus == 'ownerRated') {
       // Navigates to the new page when the button is clicked and the status is 'unread' or 'read'
-      // here the accomid need to be passed and some modification needed
-      // TODO!!! @PJ
       Taro.navigateTo({
         url: `../../packageUser/review-on-house/index?id=${userAccomMessage._id}`, // Adjust the path as necessary
       });
