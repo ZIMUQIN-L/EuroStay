@@ -13,7 +13,7 @@ const StarRating: React.FC<StarRatingProps> = ({
   initialRating,
   outOf = 5,
   label,
-  onRatingChange
+  onRatingChange,
 }) => {
   const [rating, setRating] = useState(initialRating);
   const ratingLabels = ['很差', '差', '一般', '较好', '非常好'];

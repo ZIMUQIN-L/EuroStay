@@ -75,11 +75,11 @@ export interface UserAccomMessageItemProps {
   gender: string;
   location: string;
   sourceUserOpenid: string;
-  sourceUserAvatarUrl: string;
+  //   sourceUserAvatarUrl: string;
   description: string;
   // 消息类型: withTargetHouse, withoutTargetHouse, both
   type: string;
-  // 状态: unread, read, contactReceived, rejected, booked, checkedIn, rated
+  // 状态: unread, read, contactReceived, rejected, booked, checkedIn, ownerRated, guestRated, bothRated
   status: string;
 
   // optional params
@@ -88,7 +88,7 @@ export interface UserAccomMessageItemProps {
   houseId: string;
   images?: string[];
   targetUserNickName: string;
-  targetUserAvatarUrl: string;
+  //   targetUserAvatarUrl: string;
   targetUserOpenid: string;
 }
 

@@ -30,73 +30,8 @@ const Index = () => {
     UserAccomMessageItemProps[]
   >([]);
 
-  //test
-  const mockUserAccomMessageData: UserAccomMessageItemProps[] = [
-    {
-      _id: "1",
-      _openid: "openid1",
-      end_date: "2024-06-20",
-      start_date: "2024-06-15",
-      capacity: 2,
-      gender: "male",
-      location: "New York",
-      sourceUserOpenid: "sourceOpenid1",
-      description: "Spacious two-bedroom apartment close to Central Park.",
-      type: "withTargetHouse",
-      status: "contactReceived",
-      contact: "1234567890",
-      answerToOwner: "Looking forward to staying!",
-      houseId: "house1",
-      images: [],
-      targetUserNickName: "JohnDoe",
-      targetUserOpenid: "targetOpenid1"
-    },
-    {
-      _id: "2",
-      _openid: "openid2",
-      end_date: "2024-07-05",
-      start_date: "2024-07-01",
-      capacity: 3,
-      gender: "female",
-      location: "San Francisco",
-      sourceUserOpenid: "sourceOpenid2",
-      description: "Cozy studio apartment near the Golden Gate Bridge.",
-      type: "withoutTargetHouse",
-      status: "checkedIn",
-      contact: "0987654321",
-      answerToOwner: "Please confirm the booking details.",
-      houseId: "house2",
-      images: [],
-      targetUserNickName: "JaneDoe",
-      targetUserOpenid: "targetOpenid2"
-    },
-    {
-      _id: "3",
-      _openid: "openid3",
-      end_date: "2024-06-30",
-      start_date: "2024-06-25",
-      capacity: 1,
-      gender: "male",
-      location: "Los Angeles",
-      sourceUserOpenid: "sourceOpenid3",
-      description: "Modern loft near downtown LA.",
-      type: "both",
-      status: "checkedIn",
-      contact: "123987456",
-      answerToOwner: "Sorry, the dates don't work for me.",
-      houseId: "house3",
-      images: [],
-      targetUserNickName: "MikeSmith",
-      targetUserOpenid: "targetOpenid3"
-    }
-  ];
-  
-  
-
   useEffect(() => {
     const demoUser: UserItemProps = GlobalStore.userInfo;
-      // Set the mock data to your state
-    setUserRateAccomData(mockUserAccomMessageData);
     setUser(demoUser);
     accomMessageSearch(demoUser._openid).then(
       (accomMessages: UserAccomMessageItemProps[]) => {
@@ -118,10 +53,14 @@ const Index = () => {
         setUserBookedAccomData(bookedAccomData);
 
         //test
-        // const rateAccomData = accomMessages.filter(
-        //   item => item.status == 'checkedIn' || item.status == 'rated',
-        // );
-        // setUserRateAccomData(rateAccomData);
+        const rateAccomData = accomMessages.filter(
+          item =>
+            item.status == 'checkedIn' ||
+            item.status == 'ownerRated' ||
+            item.status == 'guestRated' ||
+            item.status == 'bothRated',
+        );
+        setUserRateAccomData(rateAccomData);
 
         const seekAccomData = accomMessages.filter(
           item =>

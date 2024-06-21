@@ -36,9 +36,8 @@
   align-items: center;
   margin-top: 20px;
   padding: 0; /* Ensure no padding */
-  margin: 0;  /* Ensure no margin */
+  margin: 0; /* Ensure no margin */
 }
-
 
 .toggle-button {
   background-color: #fdd835;
@@ -52,7 +51,6 @@
   align-items: center;
   cursor: pointer;
 }
-
 
 .toggle-button.public {
   background-color: #fdd835; /* Yellow */
@@ -77,4 +75,3 @@
   color: #888;
   font-size: 20px;
 }
-
