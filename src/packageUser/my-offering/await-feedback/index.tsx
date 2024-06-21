@@ -29,9 +29,13 @@ const AwaitFeedback: React.FC<UserAccomMessageItemProps> = userAccomMessage => {
       case 'booked':
         return '等待房客入住中';
       case 'checkedIn':
-        return '待评价';
-      case 'rated':
-        return '已完成';
+        return '等待房东评价中';
+        case 'guestRated':
+            return '等待房东评价中';
+    case 'ownerRated':
+        return '等待房客评价中';
+      case 'bothRated':
+        return '评价已完成';
       default:
         return '未知状态';
     }
@@ -51,8 +55,12 @@ const AwaitFeedback: React.FC<UserAccomMessageItemProps> = userAccomMessage => {
         return false;
       case 'checkedIn': //可评价
         return true;
-      case 'rated': //查看评价
-        return true;
+    case 'guestRated':
+            return true;
+    case 'ownerRated':
+        return false;
+      case 'bothRated': // TODO: 之后可以改为点击查看评价内容 @PJ
+        return false;
       default:
         return false;
     }
@@ -71,9 +79,13 @@ const AwaitFeedback: React.FC<UserAccomMessageItemProps> = userAccomMessage => {
       case 'booked':
         return '等待入住';
       case 'checkedIn':
-        return '待评价';
-      case 'rated':
-        return '查看评价';
+        return '请评价房客';
+        case 'guestRated':
+            return '请评价房客';
+    case 'ownerRated':
+        return '评价已完成';
+      case 'bothRated': 
+        return '评价已完成';
       default:
         return '未知状态';
     }
@@ -94,7 +106,7 @@ const AwaitFeedback: React.FC<UserAccomMessageItemProps> = userAccomMessage => {
   const handleUserConfirmOrder = infoId => {
     Taro.showModal({
       title: '确认换宿/短租',
-      content: '是否确认用户入住',
+      content: '是否确认已换宿/短租',
       success: function (res) {
         if (res.confirm) {
           accomMessageUpdate(infoId, 'booked').then(res => {
@@ -115,6 +127,10 @@ const AwaitFeedback: React.FC<UserAccomMessageItemProps> = userAccomMessage => {
       // setContactInfoIsShown(true);
     } else if (infoStatus == 'contactReceived') {
       handleUserConfirmOrder(infoId);
+    }
+    else if (infoStatus == 'checkedIn' || infoStatus == 'guestRated') {
+        console.log("review");
+        // TODO: @PJ 添加房主评价
     }
   };
 
