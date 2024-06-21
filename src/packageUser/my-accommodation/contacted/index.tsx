@@ -35,7 +35,7 @@ const ContactedCard: React.FC<UserAccomMessageItemProps> = userAccomMessage => {
         return '等待房客评价中';
       case 'ownerRated':
         return '等待房客评价中';
-      case "guestRated":
+      case 'guestRated':
         return '等待房东评价中';
       case 'bothRated':
         return '评价已完成'; // TODO: @PJ 可以改为查看房东评价
@@ -58,11 +58,11 @@ const ContactedCard: React.FC<UserAccomMessageItemProps> = userAccomMessage => {
         return true;
       case 'checkedIn':
         return true;
-    case 'ownerRated':
+      case 'ownerRated':
         return true;
-    case "guestRated":
+      case 'guestRated':
         return false;
-    case 'bothRated':
+      case 'bothRated':
         return false; // 或者可以改为查看房东评价
       default:
         return false;
@@ -83,12 +83,12 @@ const ContactedCard: React.FC<UserAccomMessageItemProps> = userAccomMessage => {
         return '确认入住';
       case 'checkedIn':
         return '请评价房源';
-        case 'ownerRated':
-            return "请评价房源";
-        case "guestRated":
-            return "评价已完成";
-        case 'bothRated':
-            return "评价已完成"; // 或者可以改为查看房东评价
+      case 'ownerRated':
+        return '请评价房源';
+      case 'guestRated':
+        return '评价已完成';
+      case 'bothRated':
+        return '评价已完成'; // 或者可以改为查看房东评价
       default:
         return '未知状态';
     }
@@ -132,7 +132,7 @@ const ContactedCard: React.FC<UserAccomMessageItemProps> = userAccomMessage => {
       // here the accomid need to be passed and some modification needed
       // TODO!!! @PJ
       Taro.navigateTo({
-        url: '../../packageUser/review-on-house/index' // Adjust the path as necessary
+        url: '../../packageUser/review-on-house/index', // Adjust the path as necessary
       });
     }
   };

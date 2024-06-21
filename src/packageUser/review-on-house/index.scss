@@ -16,13 +16,17 @@
   object-fit: cover;
 }
 
-.accommodation-name, .host-name, .date-range {
+.accommodation-name,
+.host-name,
+.date-range {
   font-size: 16px;
   color: #333;
   margin: 5px 0;
 }
 
-.rating-section, .interaction-buttons, .detailed-ratings {
+.rating-section,
+.interaction-buttons,
+.detailed-ratings {
   margin-top: 20px;
 }
 
@@ -35,7 +39,9 @@
   color: blue; // Change as needed
 }
 
-.upload-photo, .upload-video, .submit-button {
+.upload-photo,
+.upload-video,
+.submit-button {
   margin: 10px;
 }
 
@@ -56,7 +62,9 @@
   justify-content: center;
 }
 
-.accommodation-name, .host-name, .date-range {
+.accommodation-name,
+.host-name,
+.date-range {
   font-size: 14px; // Adjust size as needed
   color: #333; // Ensure text is easily readable
 }
@@ -65,8 +73,8 @@
   font-weight: bold; // Highlight the accommodation name more
 }
 
-.host-name, .date-range {
+.host-name,
+.date-range {
   color: #666; // Lighter color for less important details
   font-weight: normal; // Regular weight for these details
 }
-

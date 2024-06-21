@@ -33,12 +33,9 @@ const HouseTexts: React.FC<HouseDetailItemProps> = house => {
         <View className='text-container'>
           <Text className='title'>房东信息</Text>
         </View>
-        <View
-            className='contact-button'
-            onClick={toHostDetail}
-          >
-            <Text className='contact-text'>房东信息</Text>
-          </View>
+        <View className='contact-button' onClick={toHostDetail}>
+          <Text className='contact-text'>房东信息</Text>
+        </View>
       </View>
       <View className='container'>
         <View className='text-container'>

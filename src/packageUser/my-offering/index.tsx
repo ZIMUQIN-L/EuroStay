@@ -54,7 +54,11 @@ const Index = () => {
         setUserBookedAccomData(bookedAccomData);
 
         const rateAccomData = accomMessages.filter(
-          item => item.status == 'checkedIn' || item.status == 'ownerRated' || item.status == 'guestRated' || item.status == 'bothRated',
+          item =>
+            item.status == 'checkedIn' ||
+            item.status == 'ownerRated' ||
+            item.status == 'guestRated' ||
+            item.status == 'bothRated',
         );
         setUserRateAccomData(rateAccomData);
       },

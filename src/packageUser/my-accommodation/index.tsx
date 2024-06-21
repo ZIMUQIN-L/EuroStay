@@ -29,7 +29,7 @@ const Index = () => {
   const [userSeekAccomData, setUserSeekAccomData] = useState<
     UserAccomMessageItemProps[]
   >([]);
-  
+
   useEffect(() => {
     const demoUser: UserItemProps = GlobalStore.userInfo;
     setUser(demoUser);
@@ -54,7 +54,11 @@ const Index = () => {
 
         //test
         const rateAccomData = accomMessages.filter(
-          item => item.status == 'checkedIn' || item.status == 'ownerRated' || item.status == 'guestRated' || item.status == 'bothRated',
+          item =>
+            item.status == 'checkedIn' ||
+            item.status == 'ownerRated' ||
+            item.status == 'guestRated' ||
+            item.status == 'bothRated',
         );
         setUserRateAccomData(rateAccomData);
 

@@ -66,7 +66,7 @@ const offeringList = [
     text: '待点评',
     icon: AwaitingComment,
     tab: 'awaitComment',
-  }
+  },
 ];
 
 const menuList = [

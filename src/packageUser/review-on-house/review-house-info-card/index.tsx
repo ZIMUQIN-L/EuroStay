@@ -12,11 +12,11 @@ const HouseInfoCard: React.FC<HouseInfoCardProps> = ({
   imageUrl,
   title,
   userInfo,
-  dateInfo
+  dateInfo,
 }) => {
   return (
     <View className='house-info-card'>
-      <Image className='house-image' src={imageUrl} mode="aspectFill" />
+      <Image className='house-image' src={imageUrl} mode='aspectFill' />
       <View className='house-details'>
         <Text className='house-title'>{title}</Text>
         <Text className='house-owner'>房东: {userInfo}</Text>

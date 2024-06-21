@@ -1,4 +1,4 @@
-console.log('test')
+console.log('test');
 import { View, Image, Input, Text } from '@tarojs/components';
 import { observer } from 'mobx-react';
 import { useEffect, useState } from 'react';
