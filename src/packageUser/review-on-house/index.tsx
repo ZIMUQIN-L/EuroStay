@@ -3,24 +3,33 @@ import Taro from '@tarojs/taro';
 import './index.scss';
 import ReviewDes from './review-des';
 import { useEffect, useState } from 'react';
+import { useRouter } from '@tarojs/taro';
 import {
   HouseDetailItemProps,
   UserRatingInfoItemProps,
+  UserAccomMessageItemProps,
   UserItemProps,
 } from '@utils/interfaces';
+import GlobalStore from '@store/GlobalStore';
 import HouseInfoCard from './review-house-info-card';
 import { DefaultAvatar, DefaultHouse } from '@utils/cloudIcons';
 import { houseDetailSearch } from '@common/database/house/house';
 import { userInfoSearch } from '@common/database/user/user';
+import { accomMessageSearchWithId } from '@common/database/accomMessage/accomMessage';
 import StarRating from './review-star';
 
 const ReviewOnHouse = () => {
-  const toHostAccommodationDetails = {
-    houseId: '7d8ff72c666e735f02fb906e5cc30315',
-    type: 'tohost',
-    // "type": "toseeker",
-    userOpenId: 'owGKZ68uKjrM_-7RiYFrGcmiW_iI',
-  };
+  const router = useRouter();
+  const accomInfoId = router?.params?.id;
+  const [user, setUser] = useState<UserItemProps>(GlobalStore.userInfo);
+  //   const toHostAccommodationDetails = {
+  //     houseId: '7d8ff72c666e735f02fb906e5cc30315',
+  //     type: "toseeker",
+  //     // "type": "toseeker",
+  //     userOpenId: 'owGKZ68uKjrM_-7RiYFrGcmiW_iI',
+  //   };
+  const [accommodationDetails, setAccommodationDetails] =
+    useState<UserAccomMessageItemProps>();
 
   const [evaluation, setEvaluation] = useState({
     desMatch: 3, // Default values, change as needed
@@ -41,17 +50,38 @@ const ReviewOnHouse = () => {
   const [host, setHost] = useState<UserItemProps | null>(null);
 
   useEffect(() => {
-    const houseId = toHostAccommodationDetails.houseId;
-    setHouseId(houseId);
-    setType(toHostAccommodationDetails.type);
-
-    houseDetailSearch(houseId).then((houseDetail: HouseDetailItemProps) => {
-      setHouseDetail(houseDetail);
-    });
-
-    userInfoSearch(toHostAccommodationDetails.userOpenId).then(
-      (user: UserItemProps) => {
-        setHost(user[0]);
+    const demoUser: UserItemProps = GlobalStore.userInfo;
+    setUser(demoUser);
+    const accomInfoId = router?.params?.id;
+    accomMessageSearchWithId(accomInfoId).then(
+      (accomInfo: UserAccomMessageItemProps) => {
+        setAccommodationDetails(accomInfo);
+        setHouseId(accomInfo.houseId);
+        if (demoUser._openid == accomInfo.sourceUserOpenid) {
+          setType('tohost');
+          houseDetailSearch(accomInfo.houseId).then(
+            (houseDetail: HouseDetailItemProps) => {
+              setHouseDetail(houseDetail);
+              userInfoSearch(houseDetail._openid).then(
+                (ownerInfo: UserItemProps[]) => {
+                  setHost(ownerInfo[0]);
+                },
+              );
+            },
+          );
+        } else {
+          setType('seeker');
+          houseDetailSearch(accomInfo.houseId).then(
+            (houseDetail: HouseDetailItemProps) => {
+              setHouseDetail(houseDetail);
+              userInfoSearch(accomInfo.sourceUserOpenid).then(
+                (ownerInfo: UserItemProps[]) => {
+                  setHost(ownerInfo[0]);
+                },
+              );
+            },
+          );
+        }
       },
     );
   }, []);
@@ -108,7 +138,7 @@ const ReviewOnHouse = () => {
         dateInfo={
           houseDetail
             ? houseDetail.start_date + ' to ' + houseDetail.end_date
-            : '2024-05-02 to 2024-05-10'
+            : 'unknown'
         }
       />
       <ReviewDes
@@ -117,7 +147,7 @@ const ReviewOnHouse = () => {
       />
 
       <View className='detailed-ratings'>
-        {toHostAccommodationDetails.type === 'tohost' ? (
+        {accommodationDetails && accommodationDetails.type === 'tohost' ? (
           <>
             <StarRating
               initialRating={3}

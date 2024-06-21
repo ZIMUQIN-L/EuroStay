@@ -132,7 +132,7 @@ const ContactedCard: React.FC<UserAccomMessageItemProps> = userAccomMessage => {
       // here the accomid need to be passed and some modification needed
       // TODO!!! @PJ
       Taro.navigateTo({
-        url: '../../packageUser/review-on-house/index', // Adjust the path as necessary
+        url: `../../packageUser/review-on-house/index?id=${userAccomMessage._id}`, // Adjust the path as necessary
       });
     }
   };
