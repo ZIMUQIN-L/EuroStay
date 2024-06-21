@@ -145,3 +145,20 @@ export const accomPageMessageSearch = async (
       });
   });
 };
+
+// 根据id搜索求宿信息
+export const accomMessageSearchWithId = async _id => {
+  const db = wx.cloud.database();
+  return new Promise((resolve, reject) => {
+    db.collection('UserAccomMessage')
+      .where({
+        _id: _id,
+      })
+      //   .limit(10)
+      .get({
+        success: function (res) {
+          resolve(res.data[0]);
+        },
+      });
+  });
+};

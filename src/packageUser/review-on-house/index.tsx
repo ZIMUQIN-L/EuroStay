@@ -3,24 +3,28 @@ import Taro from '@tarojs/taro';
 import './index.scss';
 import ReviewDes from './review-des';
 import { useEffect, useState } from 'react';
+import { useRouter } from '@tarojs/taro';
+import { accomMessageUpdate } from '@common/database/accomMessage/accomMessage';
 import {
   HouseDetailItemProps,
-  UserRatingInfoItemProps,
+  UserAccomMessageItemProps,
   UserItemProps,
 } from '@utils/interfaces';
+import GlobalStore from '@store/GlobalStore';
 import HouseInfoCard from './review-house-info-card';
 import { DefaultAvatar, DefaultHouse } from '@utils/cloudIcons';
 import { houseDetailSearch } from '@common/database/house/house';
 import { userInfoSearch } from '@common/database/user/user';
+import { accomMessageSearchWithId } from '@common/database/accomMessage/accomMessage';
+import { ratingInfoAdd } from '@common/database/ratingInfo/ratingInfo';
 import StarRating from './review-star';
 
 const ReviewOnHouse = () => {
-  const toHostAccommodationDetails = {
-    houseId: '7d8ff72c666e735f02fb906e5cc30315',
-    type: 'tohost',
-    // "type": "toseeker",
-    userOpenId: 'owGKZ68uKjrM_-7RiYFrGcmiW_iI',
-  };
+  const router = useRouter();
+  const accomInfoId = router?.params?.id;
+  const [user, setUser] = useState<UserItemProps>(GlobalStore.userInfo);
+  const [accommodationDetails, setAccommodationDetails] =
+    useState<UserAccomMessageItemProps>();
 
   const [evaluation, setEvaluation] = useState({
     desMatch: 3, // Default values, change as needed
@@ -38,20 +42,44 @@ const ReviewOnHouse = () => {
   );
   const [houseId, setHouseId] = useState<string>('');
   const [type, setType] = useState<string>('tohost');
-  const [host, setHost] = useState<UserItemProps | null>(null);
+  const [reviewTarget, setReviewTarget] = useState<UserItemProps | null>(null);
 
   useEffect(() => {
-    const houseId = toHostAccommodationDetails.houseId;
-    setHouseId(houseId);
-    setType(toHostAccommodationDetails.type);
-
-    houseDetailSearch(houseId).then((houseDetail: HouseDetailItemProps) => {
-      setHouseDetail(houseDetail);
-    });
-
-    userInfoSearch(toHostAccommodationDetails.userOpenId).then(
-      (user: UserItemProps) => {
-        setHost(user[0]);
+    const demoUser: UserItemProps = GlobalStore.userInfo;
+    setUser(demoUser);
+    const accomInfoId = router?.params?.id;
+    accomMessageSearchWithId(accomInfoId).then(
+      (accomInfo: UserAccomMessageItemProps) => {
+        setAccommodationDetails(accomInfo);
+        setHouseId(accomInfo.houseId);
+        if (
+          demoUser._openid == accomInfo.sourceUserOpenid &&
+          demoUser._openid != accomInfo.targetUserOpenid
+        ) {
+          setType('tohost');
+          houseDetailSearch(accomInfo.houseId).then(
+            (houseDetail: HouseDetailItemProps) => {
+              setHouseDetail(houseDetail);
+              userInfoSearch(houseDetail._openid).then(
+                (ownerInfo: UserItemProps[]) => {
+                  setReviewTarget(ownerInfo[0]);
+                },
+              );
+            },
+          );
+        } else {
+          setType('toseeker');
+          houseDetailSearch(accomInfo.houseId).then(
+            (houseDetail: HouseDetailItemProps) => {
+              setHouseDetail(houseDetail);
+              userInfoSearch(accomInfo.sourceUserOpenid).then(
+                (ownerInfo: UserItemProps[]) => {
+                  setReviewTarget(ownerInfo[0]);
+                },
+              );
+            },
+          );
+        }
       },
     );
   }, []);
@@ -66,12 +94,7 @@ const ReviewOnHouse = () => {
     setIsPublic(isPublic);
   };
 
-  const handleInputChange = (e, field) => {
-    const value = parseFloat(e.target.value); // Assuming input type='number'
-    setEvaluation(prev => ({ ...prev, [field]: value }));
-  };
-
-  const onCreateReviewFromSeeker = () => {
+  const onCreateReview = () => {
     // 提交review 内容
 
     // Refine evaluation based on the type of review: tohost or toseeker
@@ -88,27 +111,63 @@ const ReviewOnHouse = () => {
             rating: evaluation.rating, // Only rating is relevant for 'toseeker'
           };
 
-    const userRatingInfo = {
+    // const userRatingInfo = {
+    //   houseId,
+    //   evaluation: refinedEvaluation,
+    //   comment: comment,
+    //   type: type,
+    //   isPublic: isPublic,
+    // };
+    ratingInfoAdd(
+      accommodationDetails?._id,
+      user._openid,
+      user.nickName,
+      user.avatarUrl,
+      reviewTarget?._openid,
+      reviewTarget?.nickName,
+      reviewTarget?.avatarUrl,
       houseId,
-      evaluation: refinedEvaluation,
-      comment: comment,
-      type: type,
-      isPublic: isPublic,
-    };
+      refinedEvaluation,
+      comment,
+      type,
+      isPublic,
+    ).then(res => {
+      if (accommodationDetails?.status == 'checkedIn' && type == 'tohost') {
+        accomMessageUpdate(accommodationDetails._id, 'guestRated');
+      } else if (
+        accommodationDetails?.status == 'ownerRated' &&
+        type == 'tohost'
+      ) {
+        accomMessageUpdate(accommodationDetails._id, 'bothRated');
+      } else if (
+        accommodationDetails?.status == 'checkedIn' &&
+        type == 'toseeker'
+      ) {
+        accomMessageUpdate(accommodationDetails._id, 'ownerRated');
+      } else if (
+        accommodationDetails?.status == 'guestRated' &&
+        type == 'toseeker'
+      ) {
+        accomMessageUpdate(accommodationDetails._id, 'bothRated');
+      }
+      Taro.navigateBack({
+        delta: 1,
+      });
+    });
 
-    console.log('submitting content:', userRatingInfo);
+    // console.log('submitting content:', userRatingInfo);
   };
 
   return (
     <View className='page'>
       <HouseInfoCard
         title={houseDetail ? houseDetail.location : 'location'}
-        imageUrl={host ? host.avatarUrl : DefaultAvatar}
-        userInfo={host ? host.nickName : 'Host'}
+        imageUrl={reviewTarget ? reviewTarget.avatarUrl : DefaultAvatar}
+        userInfo={reviewTarget ? reviewTarget.nickName : 'Host'}
         dateInfo={
           houseDetail
             ? houseDetail.start_date + ' to ' + houseDetail.end_date
-            : '2024-05-02 to 2024-05-10'
+            : 'unknown'
         }
       />
       <ReviewDes
@@ -117,7 +176,7 @@ const ReviewOnHouse = () => {
       />
 
       <View className='detailed-ratings'>
-        {toHostAccommodationDetails.type === 'tohost' ? (
+        {type === 'tohost' ? (
           <>
             <StarRating
               initialRating={3}
@@ -172,7 +231,7 @@ const ReviewOnHouse = () => {
           marginBottom: '20px',
         }}
         className='review-submit-button'
-        onClick={onCreateReviewFromSeeker}
+        onClick={onCreateReview}
       >
         <Text>发表评价</Text>
       </View>
