@@ -41,7 +41,7 @@ export const userInfoAdd = async (
 
 // 更新用户信息
 export const userInfoUpdate = async (
-  userOpenid,
+  userInfoid,
   avatarUrl,
   userDes,
   nickName,
@@ -50,7 +50,7 @@ export const userInfoUpdate = async (
   const db = wx.cloud.database();
   return new Promise((resolve, reject) => {
     db.collection('UserInfo')
-      .doc(userOpenid)
+      .doc(userInfoid)
       .update({
         data: {
           avatarUrl: avatarUrl,
@@ -77,6 +77,94 @@ export const userHouseInfoSearch = async userOpenid => {
       .get({
         success: function (res) {
           resolve(res.data);
+        },
+      });
+  });
+};
+
+// 添加用户个性化信息
+export const userDetailAdd = async (
+  userOpenid,
+  nickName,
+  userDes,
+  avatarUrl,
+  userLocation,
+  guestRating,
+  guestRatingNumber,
+  hostRating,
+  hostRatingNumber,
+  gender,
+  tags,
+  verified,
+  aboutMe,
+) => {
+  const db = wx.cloud.database();
+  return new Promise((resolve, reject) => {
+    db.collection('UserInfo')
+      .add({
+        data: {
+          userOpenid: userOpenid,
+          nickName: nickName,
+          avatarUrl: avatarUrl,
+          userDes: userDes,
+          userLocation: userLocation,
+          guestRating: guestRating,
+          guestRatingNumber: guestRatingNumber,
+          hostRating: hostRating,
+          hostRatingNumber: hostRatingNumber,
+          gender: gender,
+          tags: tags,
+          verified: verified,
+          aboutMe: aboutMe,
+        },
+      })
+      .then(res => {
+        resolve(res.errMsg);
+      });
+  });
+};
+
+// 更新用户作为房东的评论信息
+export const userHostRatingInfoUpdate = async (
+  userInfoid,
+  hostRating,
+  hostRatingNumber,
+) => {
+  const db = wx.cloud.database();
+  const _ = db.command;
+  return new Promise((resolve, reject) => {
+    db.collection('UserInfo')
+      .doc(userInfoid)
+      .update({
+        data: {
+          hostRating: _.set(hostRating),
+          hostRatingNumber: _.set(hostRatingNumber),
+        },
+        success: function (res) {
+          resolve(res.errMsg);
+        },
+      });
+  });
+};
+
+// 更新用户作为房客的评论信息
+export const userGuestRatingInfoUpdate = async (
+  userInfoid,
+  guestRating,
+  guestRatingNumber,
+) => {
+  const db = wx.cloud.database();
+  const _ = db.command;
+  return new Promise((resolve, reject) => {
+    db.collection('UserInfo')
+      .doc(userInfoid)
+      .update({
+        data: {
+          guestRating: _.set(guestRating),
+          guestRatingNumber: _.set(guestRatingNumber),
+        },
+        success: function (res) {
+          resolve(res.errMsg);
         },
       });
   });

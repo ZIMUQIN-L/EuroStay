@@ -61,6 +61,8 @@ export interface HouseDetailItemProps {
   houseSetting: { [key: string]: any };
   houseSurrounding: { [key: string]: any };
   preference: { [key: string]: any };
+  rating: number; //房源当前评分
+  ratingNumber: number; //房源当前评分数量
 }
 
 // 用户求宿数据接口
@@ -156,4 +158,37 @@ export interface UserRatingInfoItemProps {
   comment: string; // 评价信息
   type: string; // 评价类别 tohost, toseeker
   toPublic: boolean; //是否公开展示
+}
+
+export interface UserDetailInfoItemProps {
+  _id: string; // 该条信息的id
+  _openid: string; // 该条信息用户的openid
+  userOpenid: string; // 该条信息用户的openid
+  nickName: string; //用户名称 string
+  userDes: string; //用户简介 string
+  avatarUrl: string; //用户头像 string
+  userLocation: string; //用户位置 string
+  guestRating: number; //作为房客时的rating, default -1, float
+  guestRatingNumber: number; //作为房客时的rating的数量 default 0, int
+  hostRating: number; //作为房东时的rating, default -1, float
+  hostRatingNumber: number; //作为房东时的rating的数量 default 0, int
+  gender: string; //用户性别 male, female, non-binary, str
+  tags: string[]; //用户个性化tag list
+
+  // verified: { //用户认证信息
+  //     student: // bool
+  //     gov: // bool, gov issued id
+  // }
+  verified: { [key: string]: any };
+
+  // aboutMe: { // 关于TA。。。//可以和UIUX对接看看需要保留的必须部分
+  //     interests: // str，兴趣爱好
+  //     major: // str，专业领域
+  //     languages: // str, 我会的语言
+  //     skills: // str， 我会的技能
+  //     funFact: // str， fun facts about me
+  //     visitedCountries: // str, 我游览过的国家
+  //     serviceProvided: // str, 我可以向求宿者提供什么
+  // }
+  aboutMe: { [key: string]: any };
 }
