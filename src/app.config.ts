@@ -15,7 +15,12 @@ export default {
     },
     {
       root: 'packageHouse/',
-      pages: ['house-detail/index', 'house-post/index', 'house-edit/index'],
+      pages: [
+        'house-detail/index',
+        'house-post/index',
+        'house-edit/index',
+        'house-review/index',
+      ],
     },
   ],
   window: {

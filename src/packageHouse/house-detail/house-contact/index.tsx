@@ -116,7 +116,15 @@ const HouseContact: React.FC<HouseDetailItemProps> = house => {
               <Image src={RightBottomArrow} className='right-bottom-arrow' />
             </View>
           </View>
-          <View className='review-cards-container'>
+          <View
+            className='review-cards-container'
+            onClick={() => {
+              //todo house-id
+              Taro.redirectTo({
+                url: '/packageHouse/house-review/index',
+              });
+            }}
+          >
             <View className='review-card'>
               <View className='review-card-top'>
                 <View className='reviewer-info'>
