@@ -14,7 +14,10 @@ import {
 import GlobalStore from '@store/GlobalStore';
 import HouseInfoCard from './review-house-info-card';
 import { DefaultAvatar, DefaultHouse } from '@utils/cloudIcons';
-import { houseDetailSearch } from '@common/database/house/house';
+import {
+  houseDetailSearch,
+  houseRatingInfoUpdate,
+} from '@common/database/house/house';
 import {
   userInfoSearch,
   userHostRatingInfoUpdate,
@@ -23,6 +26,7 @@ import {
 import { accomMessageSearchWithId } from '@common/database/accomMessage/accomMessage';
 import { ratingInfoAdd } from '@common/database/ratingInfo/ratingInfo';
 import StarRating from './review-star';
+import { assert } from 'XrFrame/core/utils';
 
 const ReviewOnHouse = () => {
   const router = useRouter();
@@ -102,7 +106,6 @@ const ReviewOnHouse = () => {
 
   const onCreateReview = () => {
     // 提交review 内容
-    console.log(reviewTarget);
 
     // Refine evaluation based on the type of review: tohost or toseeker
     const refinedEvaluation =
@@ -117,47 +120,59 @@ const ReviewOnHouse = () => {
         : {
             rating: evaluation.rating, // Only rating is relevant for 'toseeker'
           };
-
-    var avgTargetScore, targetRatingNumber;
+    const currentScore =
+      type === 'tohost'
+        ? (evaluation.desMatch +
+            evaluation.locationEval +
+            evaluation.cleanEval +
+            evaluation.serviceEval +
+            evaluation.pricePerformance) /
+          5
+        : evaluation.rating;
+    var avgTargetScore, targetRatingNumber, avgHouseScore, houseRatingNumber;
     if (
-      reviewTarget?.guestRatingNumber == undefined ||
-      reviewTarget?.guestRatingNumber == 0
+      houseDetail?.ratingNumber == undefined ||
+      houseDetail.ratingNumber == 0
     ) {
-      avgTargetScore =
+      avgHouseScore = currentScore;
+      houseRatingNumber = 1;
+    } else {
+      avgHouseScore =
         type === 'tohost'
-          ? (evaluation.desMatch +
-              evaluation.locationEval +
-              evaluation.cleanEval +
-              evaluation.serviceEval +
-              evaluation.pricePerformance) /
-            5
-          : evaluation.rating;
-
+          ? (currentScore + houseDetail.rating * houseDetail.ratingNumber) /
+            (houseDetail.ratingNumber + 1)
+          : houseDetail.rating;
+      houseRatingNumber =
+        type === 'tohost'
+          ? houseDetail.ratingNumber + 1
+          : houseDetail.ratingNumber;
+    }
+    if (
+      ((reviewTarget?.guestRatingNumber == undefined ||
+        reviewTarget?.guestRatingNumber == 0) &&
+        type === 'toseeker') ||
+      ((reviewTarget?.hostRatingNumber == undefined ||
+        reviewTarget?.hostRatingNumber == 0) &&
+        type === 'tohost')
+    ) {
+      avgTargetScore = currentScore;
       targetRatingNumber = 1;
     } else {
-      const currentScore =
-        type === 'tohost'
-          ? (evaluation.desMatch +
-              evaluation.locationEval +
-              evaluation.cleanEval +
-              evaluation.serviceEval +
-              evaluation.pricePerformance) /
-            5
-          : evaluation.rating;
+      if (reviewTarget) {
+        avgTargetScore =
+          type === 'tohost'
+            ? (currentScore +
+                reviewTarget.hostRating * reviewTarget.hostRatingNumber) /
+              (reviewTarget.hostRatingNumber + 1)
+            : (currentScore +
+                reviewTarget.guestRating * reviewTarget.guestRatingNumber) /
+              (reviewTarget.guestRatingNumber + 1);
 
-      avgTargetScore =
-        type === 'tohost'
-          ? (currentScore +
-              reviewTarget.hostRating * reviewTarget.hostRatingNumber) /
-            (reviewTarget.hostRatingNumber + 1)
-          : (currentScore +
-              reviewTarget.guestRating * reviewTarget.guestRatingNumber) /
-            (reviewTarget.guestRatingNumber + 1);
-
-      targetRatingNumber =
-        type === 'tohost'
-          ? reviewTarget.hostRatingNumber + 1
-          : reviewTarget.guestRatingNumber + 1;
+        targetRatingNumber =
+          type === 'tohost'
+            ? reviewTarget.hostRatingNumber + 1
+            : reviewTarget.guestRatingNumber + 1;
+      }
     }
 
     ratingInfoAdd(
@@ -182,6 +197,11 @@ const ReviewOnHouse = () => {
         ).then(res => {
           console.log(res);
         });
+        houseRatingInfoUpdate(
+          houseDetail?._id,
+          avgHouseScore,
+          houseRatingNumber,
+        );
       } else {
         userGuestRatingInfoUpdate(
           reviewTarget?._id,

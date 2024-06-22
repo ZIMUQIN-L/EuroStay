@@ -145,3 +145,22 @@ export const houseInfoUpdate = async (
       });
   });
 };
+
+// 更新房源的评论信息
+export const houseRatingInfoUpdate = async (_id, rating, ratingNumber) => {
+  const db = wx.cloud.database();
+  const _ = db.command;
+  return new Promise((resolve, reject) => {
+    db.collection('CleanHouseInfo')
+      .doc(_id)
+      .update({
+        data: {
+          rating: _.set(rating),
+          ratingNumber: _.set(ratingNumber),
+        },
+        success: function (res) {
+          resolve(res.errMsg);
+        },
+      });
+  });
+};

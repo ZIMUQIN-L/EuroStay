@@ -61,6 +61,8 @@ export interface HouseDetailItemProps {
   houseSetting: { [key: string]: any };
   houseSurrounding: { [key: string]: any };
   preference: { [key: string]: any };
+  rating: number; //房源当前评分
+  ratingNumber: number; //房源当前评分数量
 }
 
 // 用户求宿数据接口
