@@ -59,8 +59,8 @@ const ReviewOnHouse = () => {
         setAccommodationDetails(accomInfo);
         setHouseId(accomInfo.houseId);
         if (
-          demoUser._openid == accomInfo.sourceUserOpenid &&
-          demoUser._openid != accomInfo.targetUserOpenid
+          demoUser._openid == accomInfo.sourceUserOpenid
+          //   && demoUser._openid != accomInfo.targetUserOpenid
         ) {
           setType('tohost');
           houseDetailSearch(accomInfo.houseId).then(
@@ -176,16 +176,20 @@ const ReviewOnHouse = () => {
     ).then(res => {
       if (type == 'tohost') {
         userHostRatingInfoUpdate(
-          reviewTarget?._openid,
+          reviewTarget?._id,
           avgTargetScore,
           targetRatingNumber,
-        );
+        ).then(res => {
+          console.log(res);
+        });
       } else {
         userGuestRatingInfoUpdate(
-          reviewTarget?._openid,
+          reviewTarget?._id,
           avgTargetScore,
           targetRatingNumber,
-        );
+        ).then(res => {
+          console.log(res);
+        });
       }
       if (accommodationDetails?.status == 'checkedIn' && type == 'tohost') {
         accomMessageUpdate(accommodationDetails._id, 'guestRated');

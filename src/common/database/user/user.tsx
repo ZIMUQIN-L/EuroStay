@@ -41,7 +41,7 @@ export const userInfoAdd = async (
 
 // 更新用户信息
 export const userInfoUpdate = async (
-  userOpenid,
+  userInfoid,
   avatarUrl,
   userDes,
   nickName,
@@ -50,7 +50,7 @@ export const userInfoUpdate = async (
   const db = wx.cloud.database();
   return new Promise((resolve, reject) => {
     db.collection('UserInfo')
-      .doc(userOpenid)
+      .doc(userInfoid)
       .update({
         data: {
           avatarUrl: avatarUrl,
@@ -126,18 +126,19 @@ export const userDetailAdd = async (
 
 // 更新用户作为房东的评论信息
 export const userHostRatingInfoUpdate = async (
-  userOpenid,
+  userInfoid,
   hostRating,
   hostRatingNumber,
 ) => {
   const db = wx.cloud.database();
+  const _ = db.command;
   return new Promise((resolve, reject) => {
     db.collection('UserInfo')
-      .doc(userOpenid)
+      .doc(userInfoid)
       .update({
         data: {
-          hostRating: hostRating,
-          hostRatingNumber: hostRatingNumber,
+          hostRating: _.set(hostRating),
+          hostRatingNumber: _.set(hostRatingNumber),
         },
         success: function (res) {
           resolve(res.errMsg);
@@ -148,18 +149,19 @@ export const userHostRatingInfoUpdate = async (
 
 // 更新用户作为房客的评论信息
 export const userGuestRatingInfoUpdate = async (
-  userOpenid,
+  userInfoid,
   guestRating,
   guestRatingNumber,
 ) => {
   const db = wx.cloud.database();
+  const _ = db.command;
   return new Promise((resolve, reject) => {
     db.collection('UserInfo')
-      .doc(userOpenid)
+      .doc(userInfoid)
       .update({
         data: {
-          guestRating: guestRating,
-          guestRatingNumber: guestRatingNumber,
+          guestRating: _.set(guestRating),
+          guestRatingNumber: _.set(guestRatingNumber),
         },
         success: function (res) {
           resolve(res.errMsg);
