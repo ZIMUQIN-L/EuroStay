@@ -14,11 +14,8 @@ import { accomMessageUpdate } from '@common/database/accomMessage/accomMessage';
  * @description 我的求宿-已联系
  */
 const ContactedCard: React.FC<UserAccomMessageItemProps> = userAccomMessage => {
-  // TODO: 查看求宿信息
   const clickButton = () => {};
-  // TODO: 后面需要传入数据
 
-  // TODO: 从数据中分析是否回复，并修改topText, buttonText的内容
   const handleTopText = status => {
     switch (status) {
       case 'unread':

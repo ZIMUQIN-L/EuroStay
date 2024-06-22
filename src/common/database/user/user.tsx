@@ -81,3 +81,45 @@ export const userHouseInfoSearch = async userOpenid => {
       });
   });
 };
+
+// 添加用户个性化信息
+export const userDetailAdd = async (
+  userOpenid,
+  nickName,
+  userDes,
+  avatarUrl,
+  userLocation,
+  guestRating,
+  guestRatingNumber,
+  hostRating,
+  hostRatingNumber,
+  gender,
+  tags,
+  verified,
+  aboutMe,
+) => {
+  const db = wx.cloud.database();
+  return new Promise((resolve, reject) => {
+    db.collection('UserInfo')
+      .add({
+        data: {
+          userOpenid: userOpenid,
+          nickName: nickName,
+          avatarUrl: avatarUrl,
+          userDes: userDes,
+          userLocation: userLocation,
+          guestRating: guestRating,
+          guestRatingNumber: guestRatingNumber,
+          hostRating: hostRating,
+          hostRatingNumber: hostRatingNumber,
+          gender: gender,
+          tags: tags,
+          verified: verified,
+          aboutMe: aboutMe,
+        },
+      })
+      .then(res => {
+        resolve(res.errMsg);
+      });
+  });
+};
