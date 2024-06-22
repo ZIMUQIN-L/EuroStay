@@ -9,12 +9,17 @@ import {
   HouseDetailItemProps,
   UserAccomMessageItemProps,
   UserItemProps,
+  UserDetailInfoItemProps,
 } from '@utils/interfaces';
 import GlobalStore from '@store/GlobalStore';
 import HouseInfoCard from './review-house-info-card';
 import { DefaultAvatar, DefaultHouse } from '@utils/cloudIcons';
 import { houseDetailSearch } from '@common/database/house/house';
-import { userInfoSearch } from '@common/database/user/user';
+import {
+  userInfoSearch,
+  userHostRatingInfoUpdate,
+  userGuestRatingInfoUpdate,
+} from '@common/database/user/user';
 import { accomMessageSearchWithId } from '@common/database/accomMessage/accomMessage';
 import { ratingInfoAdd } from '@common/database/ratingInfo/ratingInfo';
 import StarRating from './review-star';
@@ -42,7 +47,8 @@ const ReviewOnHouse = () => {
   );
   const [houseId, setHouseId] = useState<string>('');
   const [type, setType] = useState<string>('tohost');
-  const [reviewTarget, setReviewTarget] = useState<UserItemProps | null>(null);
+  const [reviewTarget, setReviewTarget] =
+    useState<UserDetailInfoItemProps | null>(null);
 
   useEffect(() => {
     const demoUser: UserItemProps = GlobalStore.userInfo;
@@ -61,7 +67,7 @@ const ReviewOnHouse = () => {
             (houseDetail: HouseDetailItemProps) => {
               setHouseDetail(houseDetail);
               userInfoSearch(houseDetail._openid).then(
-                (ownerInfo: UserItemProps[]) => {
+                (ownerInfo: UserDetailInfoItemProps[]) => {
                   setReviewTarget(ownerInfo[0]);
                 },
               );
@@ -73,7 +79,7 @@ const ReviewOnHouse = () => {
             (houseDetail: HouseDetailItemProps) => {
               setHouseDetail(houseDetail);
               userInfoSearch(accomInfo.sourceUserOpenid).then(
-                (ownerInfo: UserItemProps[]) => {
+                (ownerInfo: UserDetailInfoItemProps[]) => {
                   setReviewTarget(ownerInfo[0]);
                 },
               );
@@ -96,6 +102,7 @@ const ReviewOnHouse = () => {
 
   const onCreateReview = () => {
     // 提交review 内容
+    console.log(reviewTarget);
 
     // Refine evaluation based on the type of review: tohost or toseeker
     const refinedEvaluation =
@@ -111,13 +118,48 @@ const ReviewOnHouse = () => {
             rating: evaluation.rating, // Only rating is relevant for 'toseeker'
           };
 
-    // const userRatingInfo = {
-    //   houseId,
-    //   evaluation: refinedEvaluation,
-    //   comment: comment,
-    //   type: type,
-    //   isPublic: isPublic,
-    // };
+    var avgTargetScore, targetRatingNumber;
+    if (
+      reviewTarget?.guestRatingNumber == undefined ||
+      reviewTarget?.guestRatingNumber == 0
+    ) {
+      avgTargetScore =
+        type === 'tohost'
+          ? (evaluation.desMatch +
+              evaluation.locationEval +
+              evaluation.cleanEval +
+              evaluation.serviceEval +
+              evaluation.pricePerformance) /
+            5
+          : evaluation.rating;
+
+      targetRatingNumber = 1;
+    } else {
+      const currentScore =
+        type === 'tohost'
+          ? (evaluation.desMatch +
+              evaluation.locationEval +
+              evaluation.cleanEval +
+              evaluation.serviceEval +
+              evaluation.pricePerformance) /
+            5
+          : evaluation.rating;
+
+      avgTargetScore =
+        type === 'tohost'
+          ? (currentScore +
+              reviewTarget.hostRating * reviewTarget.hostRatingNumber) /
+            (reviewTarget.hostRatingNumber + 1)
+          : (currentScore +
+              reviewTarget.guestRating * reviewTarget.guestRatingNumber) /
+            (reviewTarget.guestRatingNumber + 1);
+
+      targetRatingNumber =
+        type === 'tohost'
+          ? reviewTarget.hostRatingNumber + 1
+          : reviewTarget.guestRatingNumber + 1;
+    }
+
     ratingInfoAdd(
       accommodationDetails?._id,
       user._openid,
@@ -132,6 +174,19 @@ const ReviewOnHouse = () => {
       type,
       isPublic,
     ).then(res => {
+      if (type == 'tohost') {
+        userHostRatingInfoUpdate(
+          reviewTarget?._openid,
+          avgTargetScore,
+          targetRatingNumber,
+        );
+      } else {
+        userGuestRatingInfoUpdate(
+          reviewTarget?._openid,
+          avgTargetScore,
+          targetRatingNumber,
+        );
+      }
       if (accommodationDetails?.status == 'checkedIn' && type == 'tohost') {
         accomMessageUpdate(accommodationDetails._id, 'guestRated');
       } else if (

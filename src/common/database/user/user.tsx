@@ -123,3 +123,47 @@ export const userDetailAdd = async (
       });
   });
 };
+
+// 更新用户作为房东的评论信息
+export const userHostRatingInfoUpdate = async (
+  userOpenid,
+  hostRating,
+  hostRatingNumber,
+) => {
+  const db = wx.cloud.database();
+  return new Promise((resolve, reject) => {
+    db.collection('UserInfo')
+      .doc(userOpenid)
+      .update({
+        data: {
+          hostRating: hostRating,
+          hostRatingNumber: hostRatingNumber,
+        },
+        success: function (res) {
+          resolve(res.errMsg);
+        },
+      });
+  });
+};
+
+// 更新用户作为房客的评论信息
+export const userGuestRatingInfoUpdate = async (
+  userOpenid,
+  guestRating,
+  guestRatingNumber,
+) => {
+  const db = wx.cloud.database();
+  return new Promise((resolve, reject) => {
+    db.collection('UserInfo')
+      .doc(userOpenid)
+      .update({
+        data: {
+          guestRating: guestRating,
+          guestRatingNumber: guestRatingNumber,
+        },
+        success: function (res) {
+          resolve(res.errMsg);
+        },
+      });
+  });
+};
