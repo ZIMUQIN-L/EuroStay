@@ -8,6 +8,7 @@ import { accomMessageAdd } from '@common/database/accomMessage/accomMessage';
 import GlobalStore from '@store/GlobalStore';
 import RequestCustomCard from '../../../packageUser/request-custom-card';
 import { RightBottomArrow } from '@utils/cloudIcons';
+import { houseReceivedRatingSearch } from '@common/database/ratingInfo/ratingInfo';
 const HouseContact: React.FC<HouseDetailItemProps> = house => {
   const [isModalOpen, setModalOpen] = useState(false);
   // if user want to share this message to board or not

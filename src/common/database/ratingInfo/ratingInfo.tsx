@@ -95,12 +95,12 @@ export const userSentRatingSearch = async sourceUserOpenid => {
 };
 
 // 搜索用户收到的rating信息
-export const userReceivedRatingSearch = async houseId => {
+export const userReceivedRatingSearch = async targetUserOpenid => {
   const db = wx.cloud.database();
   return new Promise((resolve, reject) => {
     db.collection('UserRatingInfo')
       .where({
-        houseId: houseId,
+        targetUserOpenid: targetUserOpenid,
       })
       .get({
         success: function (res) {
@@ -111,13 +111,15 @@ export const userReceivedRatingSearch = async houseId => {
 };
 
 // 搜索该房源相关的rating信息
-export const houseReceivedRatingSearch = async targetUserOpenid => {
+export const houseReceivedRatingSearch = async (houseId, skip = 0) => {
   const db = wx.cloud.database();
   return new Promise((resolve, reject) => {
     db.collection('UserRatingInfo')
       .where({
-        targetUserOpenid: targetUserOpenid,
+        houseId: houseId,
       })
+      .skip(skip)
+      .limit(5)
       .get({
         success: function (res) {
           resolve(res.data);

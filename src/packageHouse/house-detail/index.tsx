@@ -9,6 +9,7 @@ import './index.scss';
 import { houseDetailSearch } from '@common/database/house/house';
 import { RoomDetailInfo } from './house-infos';
 import HouseContact from './house-contact';
+import HouseReview from './house-review';
 
 const Index = () => {
   const router = useRouter();
@@ -37,6 +38,7 @@ const Index = () => {
         roomSurrounding={houseDetail.houseSurrounding}
         roomPreference={houseDetail.preference}
       />
+      <HouseReview {...houseDetail} />
       <HouseContact {...houseDetail} />
     </>
   );
