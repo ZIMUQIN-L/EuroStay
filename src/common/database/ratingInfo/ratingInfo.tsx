@@ -1,34 +1,44 @@
 // 数据表项信息
-// {
-//     _id: ,
-//     _openid: ,
-//     accomInfoId: //用户发出的求宿信息id ,
-//     sourceUserOpenid: //发送评价的用户 ,
-//     targetUserOpenid: //接受评价的用户 ,
-//     houseId: //房源的id,
-//     evaluation: {
-//     // tohost
-//         "desMatch": //number,
-//         "locationEval": //number,
-//         "cleanEval": //number,
-//         "serviceEval": //number
-//         "pricePerformance": //number
-//     // toseeker
-//         "rating": //number
-//     }// number, overall评价等级,
-//     comment: // 评价信息,
-//     type: // tohost, toseeker
-// }
+// _id: string; // 微信自动生成的_id，无法修改其名称
+// _openid: string;
+// accomInfoId: string; // 用户发出的求宿信息id
+// sourceUserOpenid: string; // 发送评价的用户
+// sourceUserNickname: string; //发送评价用户的nickname
+// sourceUserAvatarUrl: string; //发送评价用户的avatarUrl
+// sourceUserLocation: string; // 发送评价用户的位置
+// targetUserOpenid: string; // 接收评价的用户
+// targetUserNickname: string; //接收评价用户的nickname
+// targetUserAvatarUrl: string; //接收评价用户的avatarUrl
+// houseId: string; // 房源的id
+// start_date: string; // 房源开始时间
+// end_date: string; // 房源结束时间
+
+// // evaluation info
+// // tohost
+// //     "desMatch": //number,
+// //     "locationEval": //number,
+// //     "cleanEval": //number,
+// //     "serviceEval": //number
+// //     "pricePerformance": //number
+// // toseeker
+// //     "rating": //number
+// evaluation: { [key: string]: any };
+// comment: string; // 评价信息
+// type: string; // 评价类别 tohost, toseeker
+// toPublic: boolean; //是否公开展示
 
 export const ratingInfoAdd = async (
   accomInfoId,
   sourceUserOpenid,
   sourceUserNickname,
   sourceUserAvatarUrl,
+  sourceUserLocation,
   targetUserOpenid,
   targetUserNickname,
   targetUserAvatarUrl,
   houseId,
+  start_date,
+  end_date,
   evaluation, // a dictionary,
   comment, // string, the comment of this rating
   type, // string, type of this comment
@@ -43,10 +53,13 @@ export const ratingInfoAdd = async (
           sourceUserOpenid: sourceUserOpenid,
           sourceUserNickname: sourceUserNickname,
           sourceUserAvatarUrl: sourceUserAvatarUrl,
+          sourceUserLocation: sourceUserLocation,
           targetUserOpenid: targetUserOpenid,
           targetUserNickname: targetUserNickname,
           targetUserAvatarUrl: targetUserAvatarUrl,
           houseId: houseId,
+          start_date: start_date,
+          end_date: end_date,
           evaluation: evaluation,
           comment: comment,
           type: type,

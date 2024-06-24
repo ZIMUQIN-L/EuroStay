@@ -59,7 +59,12 @@ const HouseReview: React.FC<HouseDetailItemProps> = house => {
                     </View>
                     <View className='review-card-top-right'>
                       <View className='review-ratings'>
-                        {rating.evaluation['desMatch']}
+                        {(rating.evaluation['desMatch'] +
+                          rating.evaluation['locationEval'] +
+                          rating.evaluation['cleanEval'] +
+                          rating.evaluation['serviceEval'] +
+                          rating.evaluation['pricePerformance']) /
+                          5}
                       </View>
                       {/* todo */}
                       <View className='review-date'>
@@ -69,7 +74,7 @@ const HouseReview: React.FC<HouseDetailItemProps> = house => {
                   </View>
 
                   <View className='review-card-bottom'>
-                    <View className='review-card-des'></View>
+                    <View className='review-card-des'>{rating.comment}</View>
                     <View className='review-card-pic'></View>
                     {/* todo */}
                   </View>
