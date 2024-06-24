@@ -120,6 +120,7 @@ const ReviewOnHouse = () => {
         : {
             rating: evaluation.rating, // Only rating is relevant for 'toseeker'
           };
+
     const currentScore =
       type === 'tohost'
         ? (evaluation.desMatch +
@@ -129,23 +130,53 @@ const ReviewOnHouse = () => {
             evaluation.pricePerformance) /
           5
         : evaluation.rating;
-    var avgTargetScore, targetRatingNumber, avgHouseScore, houseRatingNumber;
+
+    // scores for houses and users to be updated
+    var avgTargetScore,
+      targetRatingNumber,
+      avgHouseScore,
+      houseRatingNumber,
+      houseEvaluationNumbers;
+
     if (
       houseDetail?.ratingNumber == undefined ||
       houseDetail.ratingNumber == 0
     ) {
       avgHouseScore = currentScore;
       houseRatingNumber = 1;
+      houseEvaluationNumbers =
+        type === 'tohost'
+          ? {
+              desMatch: evaluation.desMatch,
+              locationEval: evaluation.locationEval,
+              cleanEval: evaluation.cleanEval,
+              serviceEval: evaluation.serviceEval,
+              pricePerformance: evaluation.pricePerformance,
+            }
+          : {
+              rating: evaluation.rating,
+            };
     } else {
       avgHouseScore =
         type === 'tohost'
           ? (currentScore + houseDetail.rating * houseDetail.ratingNumber) /
             (houseDetail.ratingNumber + 1)
           : houseDetail.rating;
+
       houseRatingNumber =
         type === 'tohost'
           ? houseDetail.ratingNumber + 1
           : houseDetail.ratingNumber;
+
+      houseEvaluationNumbers = houseDetail.evaluationNumbers;
+      if (type === 'tohost') {
+        Object.keys(houseEvaluationNumbers).forEach(key => {
+          houseEvaluationNumbers[key] =
+            (houseEvaluationNumbers[key] * houseDetail.ratingNumber +
+              refinedEvaluation[key]) /
+            (houseDetail.ratingNumber + 1);
+        });
+      }
     }
     if (
       ((reviewTarget?.guestRatingNumber == undefined ||
@@ -180,10 +211,13 @@ const ReviewOnHouse = () => {
       user._openid,
       user.nickName,
       user.avatarUrl,
+      user.userLocation,
       reviewTarget?._openid,
       reviewTarget?.nickName,
       reviewTarget?.avatarUrl,
       houseId,
+      accommodationDetails?.start_date,
+      accommodationDetails?.end_date,
       refinedEvaluation,
       comment,
       type,
@@ -200,6 +234,7 @@ const ReviewOnHouse = () => {
         houseRatingInfoUpdate(
           houseDetail?._id,
           avgHouseScore,
+          houseEvaluationNumbers,
           houseRatingNumber,
         );
       } else {

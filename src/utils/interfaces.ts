@@ -63,6 +63,7 @@ export interface HouseDetailItemProps {
   preference: { [key: string]: any };
   rating: number; //房源当前评分
   ratingNumber: number; //房源当前评分数量
+  evaluationNumbers: { [key: string]: number }; // 房源的各项评分
 }
 
 // 用户求宿数据接口
@@ -140,10 +141,13 @@ export interface UserRatingInfoItemProps {
   sourceUserOpenid: string; // 发送评价的用户
   sourceUserNickname: string; //发送评价用户的nickname
   sourceUserAvatarUrl: string; //发送评价用户的avatarUrl
+  sourceUserLocation: string; // 发送评价用户的位置
   targetUserOpenid: string; // 接收评价的用户
   targetUserNickname: string; //接收评价用户的nickname
   targetUserAvatarUrl: string; //接收评价用户的avatarUrl
   houseId: string; // 房源的id
+  end_date: string; // 房源结束时间
+  start_date: string; // 房源开始时间
 
   // evaluation info
   // tohost
@@ -154,7 +158,7 @@ export interface UserRatingInfoItemProps {
   //     "pricePerformance": //number
   // toseeker
   //     "rating": //number
-  evaluation: { [key: string]: any };
+  evaluation: { [key: string]: number };
   comment: string; // 评价信息
   type: string; // 评价类别 tohost, toseeker
   toPublic: boolean; //是否公开展示
