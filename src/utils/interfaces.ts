@@ -158,7 +158,7 @@ export interface UserRatingInfoItemProps {
   //     "pricePerformance": //number
   // toseeker
   //     "rating": //number
-  evaluation: { [key: string]: any };
+  evaluation: { [key: string]: number };
   comment: string; // 评价信息
   type: string; // 评价类别 tohost, toseeker
   toPublic: boolean; //是否公开展示

@@ -130,6 +130,7 @@ export const houseReceivedRatingSearch = async (houseId, skip = 0) => {
     db.collection('UserRatingInfo')
       .where({
         houseId: houseId,
+        type: 'tohost',
       })
       .skip(skip)
       .limit(5)

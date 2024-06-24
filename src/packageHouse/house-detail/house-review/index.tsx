@@ -68,7 +68,7 @@ const HouseReview: React.FC<HouseDetailItemProps> = house => {
                       </View>
                       {/* todo */}
                       <View className='review-date'>
-                        2023-07-02 to 2023-07-07
+                        {rating.start_date} - {rating.end_date}
                       </View>
                     </View>
                   </View>

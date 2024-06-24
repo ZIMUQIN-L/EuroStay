@@ -7,8 +7,6 @@ import { useState, useEffect } from 'react';
 import { accomMessageAdd } from '@common/database/accomMessage/accomMessage';
 import GlobalStore from '@store/GlobalStore';
 import RequestCustomCard from '../../../packageUser/request-custom-card';
-import { RightBottomArrow } from '@utils/cloudIcons';
-import { houseReceivedRatingSearch } from '@common/database/ratingInfo/ratingInfo';
 const HouseContact: React.FC<HouseDetailItemProps> = house => {
   const [isModalOpen, setModalOpen] = useState(false);
   // if user want to share this message to board or not
@@ -109,48 +107,6 @@ const HouseContact: React.FC<HouseDetailItemProps> = house => {
   return (
     <View>
       <View className='lists'>
-        <View className='reviews-container'>
-          <View className='container-title'>
-            <View className='container-title-left'>住客评价</View>
-            <View className='container-title-right'>
-              查看更多
-              <Image src={RightBottomArrow} className='right-bottom-arrow' />
-            </View>
-          </View>
-          <View
-            className='review-cards-container'
-            onClick={() => {
-              //todo house-id
-              Taro.redirectTo({
-                url: '/packageHouse/house-review/index',
-              });
-            }}
-          >
-            <View className='review-card'>
-              <View className='review-card-top'>
-                <View className='reviewer-info'>
-                  <View className='reviewer-info-avatar'></View>
-                  <View className='reviewer-info-details'>
-                    <View className='reviewer-info-name'>素食主义</View>
-                    <View className='reviewer-info-location'>意大利-米兰</View>
-                  </View>
-                </View>
-                <View className='review-card-top-right'>
-                  <View className='review-ratings'>三星</View>
-                  {/* todo */}
-                  <View className='review-date'>2023-07-02 to 2023-07-07</View>
-                </View>
-              </View>
-
-              <View className='review-card-bottom'>
-                <View className='review-card-des'></View>
-                <View className='review-card-pic'></View>
-                {/* todo */}
-              </View>
-              <View className='review-card-view-more'>显示更多</View>
-            </View>
-          </View>
-        </View>
         <View className='contact-container'>
           <View
             className='contact-button'
