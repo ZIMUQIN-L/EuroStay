@@ -2,14 +2,46 @@ import { View, Text, Image } from '@tarojs/components';
 import { observer } from 'mobx-react';
 import { useState, useEffect } from 'react';
 import { useRouter } from '@tarojs/taro';
-
+import {
+  UserItemProps,
+  UserRatingInfoItemProps,
+  HouseDetailItemProps,
+} from '@utils/interfaces';
 import './index.scss';
-import Taro from '@tarojs/taro';
-import GlobalStore from '@store/GlobalStore';
+import { useReachBottom } from '@tarojs/taro';
+import { DefaultAvatar } from '@utils/cloudIcons';
+import { houseDetailSearch } from '@common/database/house/house';
+import {
+  houseReceivedRatingSearch,
+  ratingInfoAdd,
+} from '@common/database/ratingInfo/ratingInfo';
 
 const HouseReview = () => {
   const router = useRouter();
   const houseId = router?.params?.id;
+  const [ratingInfo, setRatingInfo] = useState<UserRatingInfoItemProps[]>([]);
+  const [houseDetail, setHouseDetail] = useState<HouseDetailItemProps | null>(
+    null,
+  );
+
+  useReachBottom(() => {
+    houseReceivedRatingSearch(houseId, 10, ratingInfo?.length).then(
+      (res: UserRatingInfoItemProps[]) => {
+        setRatingInfo(prevData => [...prevData, ...res]);
+      },
+    );
+  });
+
+  useEffect(() => {
+    houseReceivedRatingSearch(houseId, 10).then(
+      (res: UserRatingInfoItemProps[]) => {
+        setRatingInfo(res);
+      },
+    );
+    houseDetailSearch(houseId).then((houseDetail: HouseDetailItemProps) => {
+      setHouseDetail(houseDetail);
+    });
+  }, []);
 
   //todo:评分的星，review中的照片（以及怎么处理放大看图片），评价者的头像
 
@@ -17,78 +49,88 @@ const HouseReview = () => {
     <>
       <View className='house-detail-review'>
         <View className='overall-ratings'>
-          <View className='average-ratings'>4.2</View>
+          <View className='average-ratings'>
+            {houseDetail?.rating?.toFixed(2)}
+          </View>
           <View className='ratings-details'>
             <View className='rating-container'>
               <View className='rating-title'>描述相符</View>
-              <View className='rating-number'>4.1</View>
+              <View className='rating-number'>
+                {houseDetail?.evaluationNumbers['desMatch']?.toFixed(2)}
+              </View>
             </View>
             <View className='rating-container'>
               <View className='rating-title'>地理位置</View>
-              <View className='rating-number'>4.1</View>
+              <View className='rating-number'>
+                {houseDetail?.evaluationNumbers['locationEval']?.toFixed(2)}
+              </View>
             </View>
             <View className='rating-container'>
               <View className='rating-title'>清洁程度</View>
-              <View className='rating-number'>4.1</View>
+              <View className='rating-number'>
+                {houseDetail?.evaluationNumbers['cleanEval']?.toFixed(2)}
+              </View>
             </View>
             <View className='rating-container'>
               <View className='rating-title'>服务体验</View>
-              <View className='rating-number'>4.1</View>
+              <View className='rating-number'>
+                {houseDetail?.evaluationNumbers['serviceEval']?.toFixed(2)}
+              </View>
             </View>
             <View className='rating-container'>
               <View className='rating-title'>性价比</View>
-              <View className='rating-number'>4.1</View>
+              <View className='rating-number'>
+                {houseDetail?.evaluationNumbers['pricePerformance']?.toFixed(2)}
+              </View>
             </View>
           </View>
         </View>
+
         <View className='reviews'>
-          <View className='review-card-count'>102条评论</View>
-          <View className='review-card-container'>
-            <View className='review-card-top'>
-              <View className='review-card-reviewer-detail'>
-                <View className='reviewer-detail-avatar'>{/* todo */}</View>
-                <View className='reviewer-detail-info'>
-                  <View className='reviewer-detail-name'>玉兰花</View>
-                  <View className='reviewer-detail-location'>意大利-米兰</View>
+          <View className='review-card-count'>
+            {houseDetail?.ratingNumber}条评论
+          </View>
+
+          {ratingInfo &&
+            ratingInfo.map((rating, index) => (
+              <View className='review-card-container'>
+                <View className='review-card-top'>
+                  <View className='review-card-reviewer-detail'>
+                    <View className='reviewer-detail-avatar'>
+                      <Image
+                        src={
+                          rating.toPublic
+                            ? rating.sourceUserAvatarUrl
+                            : DefaultAvatar
+                        }
+                        className='reviewer-detail-avatar'
+                      />
+                    </View>
+                    <View className='reviewer-detail-info'>
+                      <View className='reviewer-detail-name'>
+                        {rating.toPublic
+                          ? rating.sourceUserNickname
+                          : '匿名用户'}
+                      </View>
+                      <View className='reviewer-detail-location'>
+                        {rating.sourceUserLocation}
+                      </View>
+                    </View>
+                  </View>
+                  <View className='review-card-top-right'>
+                    <View className='stars'></View>
+                    <View className='duration'>
+                      {rating.start_date} - {rating.end_date}
+                    </View>
+                  </View>
+                </View>
+                <View className='review-card-text'>{rating.comment}</View>
+                <View className='review-card-pictures'>
+                  <Image src='' />
+                  <Image src='' />
                 </View>
               </View>
-              <View className='review-card-top-right'>
-                <View className='stars'></View>
-                <View className='duration'>2023-07-02 to 2023-07-07</View>
-              </View>
-            </View>
-            <View className='review-card-text'>
-              非常好的房间，交通便利，很卫生干净！小姐姐回复沟通也特别及时！xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-              xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-            </View>
-            <View className='review-card-pictures'>
-              <Image src='' />
-              <Image src='' />
-            </View>
-          </View>
-          <View className='review-card-container'>
-            <View className='review-card-top'>
-              <View className='review-card-reviewer-detail'>
-                <View className='reviewer-detail-avatar'>{/* todo */}</View>
-                <View className='reviewer-detail-info'>
-                  <View className='reviewer-detail-name'>玉兰花</View>
-                  <View className='reviewer-detail-location'>意大利-米兰</View>
-                </View>
-              </View>
-              <View className='review-card-top-right'>
-                <View className='stars'></View>
-                <View className='duration'>2023-07-02 to 2023-07-07</View>
-              </View>
-            </View>
-            <View className='review-card-text'>
-              非常好的房间，交通便利，很卫生干净！小姐姐回复沟通也特别及时！xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-              xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-            </View>
-            <View className='review-card-pictures'>
-              <Image src='' />
-              <Image src='' />
-            </View>
-          </View>
+            ))}
         </View>
       </View>
     </>

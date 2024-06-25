@@ -124,7 +124,11 @@ export const userReceivedRatingSearch = async targetUserOpenid => {
 };
 
 // 搜索该房源相关的rating信息
-export const houseReceivedRatingSearch = async (houseId, skip = 0) => {
+export const houseReceivedRatingSearch = async (
+  houseId,
+  limit = 5,
+  skip = 0,
+) => {
   const db = wx.cloud.database();
   return new Promise((resolve, reject) => {
     db.collection('UserRatingInfo')
@@ -133,7 +137,7 @@ export const houseReceivedRatingSearch = async (houseId, skip = 0) => {
         type: 'tohost',
       })
       .skip(skip)
-      .limit(5)
+      .limit(limit)
       .get({
         success: function (res) {
           resolve(res.data);
