@@ -4,12 +4,11 @@ import Taro from '@tarojs/taro';
 import './index.scss';
 import { UserItemProps, UserRatingInfoItemProps } from '@utils/interfaces';
 import { useState, useEffect } from 'react';
-import { accomMessageAdd } from '@common/database/accomMessage/accomMessage';
 import GlobalStore from '@store/GlobalStore';
-import { RightBottomArrow } from '@utils/cloudIcons';
+import { RightBottomArrow, DefaultAvatar } from '@utils/cloudIcons';
 import { houseReceivedRatingSearch } from '@common/database/ratingInfo/ratingInfo';
 
-const HouseReview: React.FC<HouseDetailItemProps> = house => {
+const HouseReviewCard: React.FC<HouseDetailItemProps> = house => {
   // user information
   const [user, setUser] = useState<UserItemProps>(GlobalStore.userInfo);
   const [ratingInfo, setRatingInfo] = useState<UserRatingInfoItemProps[]>();
@@ -30,7 +29,14 @@ const HouseReview: React.FC<HouseDetailItemProps> = house => {
         <View className='reviews-container'>
           <View className='container-title'>
             <View className='container-title-left'>住客评价</View>
-            <View className='container-title-right'>
+            <View
+              className='container-title-right'
+              onClick={() => {
+                Taro.redirectTo({
+                  url: `/packageHouse/house-review/index?id=${house._id}`,
+                });
+              }}
+            >
               查看更多
               <Image src={RightBottomArrow} className='right-bottom-arrow' />
             </View>
@@ -38,9 +44,8 @@ const HouseReview: React.FC<HouseDetailItemProps> = house => {
           <View
             className='review-cards-container'
             onClick={() => {
-              //todo house-id
               Taro.redirectTo({
-                url: '/packageHouse/house-review/index',
+                url: `/packageHouse/house-review/index?id=${house._id}`,
               });
             }}
           >
@@ -49,12 +54,25 @@ const HouseReview: React.FC<HouseDetailItemProps> = house => {
                 <View className='review-card'>
                   <View className='review-card-top'>
                     <View className='reviewer-info'>
-                      <View className='reviewer-info-avatar'></View>
+                      <View className='reviewer-info-avatar'>
+                        <Image
+                          src={
+                            rating.toPublic
+                              ? rating.sourceUserAvatarUrl
+                              : DefaultAvatar
+                          }
+                          className='reviewer-info-avatar'
+                        />
+                      </View>
                       <View className='reviewer-info-details'>
                         <View className='reviewer-info-name'>
-                          {rating.sourceUserNickname}
+                          {rating.toPublic
+                            ? rating.sourceUserNickname
+                            : '匿名用户'}
                         </View>
-                        <View className='reviewer-info-location'></View>
+                        <View className='reviewer-info-location'>
+                          {rating.sourceUserLocation}
+                        </View>
                       </View>
                     </View>
                     <View className='review-card-top-right'>
@@ -88,4 +106,4 @@ const HouseReview: React.FC<HouseDetailItemProps> = house => {
   );
 };
 
-export default HouseReview;
+export default HouseReviewCard;
