@@ -2,12 +2,13 @@ import { useState, useEffect } from 'react';
 import SearchCard from '../search-section';
 import './index.scss';
 import { View } from '@tarojs/components';
-import { SeekingItemProps, AccomMssageHouseItemProps } from '@utils/interfaces';
+import { UserAccomMessageItemProps } from '@utils/interfaces';
 import Taro, { useReachBottom } from '@tarojs/taro';
 import DefaultAvatar from '@assets/images/default-avatar.png';
 import SeekingCard from '../seeking-item';
 import CustomTabBar from '@components/CustomTabBar';
 import { accomPageMessageSearch } from '@common/database/accomMessage/accomMessage';
+import ContactInfoBoard from '@components/ContactInfoBoard';
 
 /**
  * 求宿页面
@@ -19,6 +20,7 @@ const SeekingAccommodation = () => {
       path: `/pages/index/index`,
     };
   });
+  const [contactInfoIsShown, setContactInfoIsShown] = useState(false);
 
   const [userDestination, setUserDestination] = useState<string>('');
 
@@ -37,7 +39,7 @@ const SeekingAccommodation = () => {
 
   const handleClickSearch = () => {
     accomPageMessageSearch(userDestination, userStartDate, userEndDate).then(
-      (seekingAccomData: AccomMssageHouseItemProps[]) => {
+      (seekingAccomData: UserAccomMessageItemProps[]) => {
         setSeekingData(seekingAccomData);
       },
     );
@@ -46,17 +48,21 @@ const SeekingAccommodation = () => {
 
   const fetchInitialData = () => {
     accomPageMessageSearch('', '', '').then(
-      (seekingAccomData: AccomMssageHouseItemProps[]) => {
+      (seekingAccomData: UserAccomMessageItemProps[]) => {
         setSeekingData(seekingAccomData);
       },
     );
+  };
+
+  const handleCloseAllBoards = () => {
+    setContactInfoIsShown(false);
   };
 
   useEffect(() => {
     fetchInitialData();
   }, []);
 
-  const [seekingData, setSeekingData] = useState<AccomMssageHouseItemProps[]>(
+  const [seekingData, setSeekingData] = useState<UserAccomMessageItemProps[]>(
     [],
   );
 
@@ -71,9 +77,7 @@ const SeekingAccommodation = () => {
       />
       <View className='house-list'>
         {seekingData.length > 0 &&
-          seekingData.map(item => (
-            <SeekingCard key={item._id} seekingItem={item} />
-          ))}
+          seekingData.map(item => <SeekingCard key={item._id} {...item} />)}
       </View>
       <CustomTabBar />
     </View>

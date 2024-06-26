@@ -32,12 +32,14 @@ const HouseReviewCard: React.FC<HouseDetailItemProps> = house => {
             <View
               className='container-title-right'
               onClick={() => {
-                Taro.redirectTo({
-                  url: `/packageHouse/house-review/index?id=${house._id}`,
-                });
+                if (ratingInfo?.length != 0) {
+                  Taro.redirectTo({
+                    url: `/packageHouse/house-review/index?id=${house._id}`,
+                  });
+                }
               }}
             >
-              查看更多
+              {ratingInfo?.length === 0 ? '暂无评价' : '查看更多'}
               <Image src={RightBottomArrow} className='right-bottom-arrow' />
             </View>
           </View>

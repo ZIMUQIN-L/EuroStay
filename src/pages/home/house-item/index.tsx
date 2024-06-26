@@ -115,6 +115,8 @@ const HouseItem: React.FC<AccomMssageHouseItemProps> = house => {
         gender,
         house.location,
         user.userOpenid,
+        user.nickName,
+        user.avatarUrl,
         userDescription,
         shareToggle ? 'both' : 'withTargetHouse',
         'unread',

@@ -86,6 +86,8 @@ const HouseContact: React.FC<HouseDetailItemProps> = house => {
         gender,
         house.location,
         user.userOpenid,
+        user.nickName,
+        user.avatarUrl,
         userDescription,
         shareToggle ? 'both' : 'withTargetHouse',
         'unread',
