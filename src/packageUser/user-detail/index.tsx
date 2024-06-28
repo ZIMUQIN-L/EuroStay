@@ -1,164 +1,104 @@
-console.log('test');
-import { View, Image, Input, Text } from '@tarojs/components';
-import { observer } from 'mobx-react';
-import { useEffect, useState } from 'react';
-import { UserItemProps } from '@utils/interfaces';
+import React, { useState, useEffect } from 'react';
+import { UserItemProps, UserDetailInfoItemProps } from '@utils/interfaces';
+import { View, Image, Text } from '@tarojs/components';
 import './index.scss';
 import Taro from '@tarojs/taro';
+import { RightBottomArrow } from '@utils/cloudIcons';
 import GlobalStore from '@store/GlobalStore';
-import { cloudAvatarUpload } from '@common/database/cloudstorage/files';
-import { userInfoUpdate } from '@common/database/user/user';
-import CustomTabBar from '@components/CustomTabBar';
 
-const Index = () => {
-  const [userInfo, setUserInfo] = useState<UserItemProps>(GlobalStore.userInfo);
-  const [userAvatarUrl, setUserAvatarUrl] = useState<string>(
-    GlobalStore.userInfo.avatarUrl,
-  );
-  const [userDescription, setUserDescription] = useState<string>(
-    GlobalStore.userInfo.userDes,
-  );
-  const [userLocation, setUserLocation] = useState<string>(
-    GlobalStore.userInfo.userLocation,
-  );
+// const UserDetail = () => {
+  // const [userInfo, setUserInfo] = useState<UserItemProps>(GlobalStore.userInfo);
+  // useEffect(() => {
+  //   const globalUserInfo: UserItemProps = GlobalStore.userInfo;
+  //   setUserInfo(globalUserInfo);
+  //   console.log('User attributes:', globalUserInfo);
+  // }, []);
 
-  useEffect(() => {
-    const globalUserInfo: UserItemProps = GlobalStore.userInfo;
-    setUserInfo(globalUserInfo);
-    setUserAvatarUrl(globalUserInfo.avatarUrl);
-    setUserDescription(globalUserInfo.userDes);
-    setUserLocation(globalUserInfo.userLocation);
-  }, []);
 
-  const handleUserImageEdit = () => {
-    Taro.chooseImage({
-      count: 1,
-      sizeType: ['original', 'compressed'],
-      sourceType: ['album', 'camera'],
-      success: function (res) {
-        const tempFilePaths = res.tempFilePaths;
-        Taro.showLoading({
-          title: '上传中',
-          mask: true,
-        });
-        cloudAvatarUpload(tempFilePaths[0]).then(
-          (uploadedImagePath: string) => {
-            setUserAvatarUrl(uploadedImagePath);
-            Taro.hideLoading();
-          },
-        );
-      },
-      fail: function (err) {
-        Taro.showToast({
-          title: '图片上传失败',
-          icon: 'error',
-          duration: 2000,
-        });
-      },
-    });
-  };
 
-  const handleUserDescriptionEdit = e => {
-    const inputDescription = e.detail.value;
-    setUserDescription(inputDescription);
-  };
+  // const UserDetail: React.FC<UserItemProps> = user => {
+  // const [userInfo, setUserInfo] = useState<UserItemProps>(user) ;
+  // useEffect(() => {
+  //   const userData: UserDetailInfoItemProps = Taro.getStorageSync('userDetail');
+  //   if (userData) {
+  //     setUserInfo(userData);
+  //   }
+  //   console.log('User attributes:', user);
+  // }, [user]);
 
-  // 添加用户位置信息
-  const handleUserLocationEdit = e => {
-    const inputLocation = e.detail.value;
-    setUserLocation(inputLocation);
-  };
-
-  // 用户信息修改
-  const handleUserInfoChange = () => {
-    Taro.showLoading({
-      title: '信息修改中',
-      mask: true,
-    });
-    userInfoUpdate(
-      userInfo?._id,
-      userAvatarUrl,
-      userDescription,
-      userInfo?.nickName,
-      userLocation,
-    ).then(res => {
-      if (res == 'document.update:ok') {
-        const updatedGlobalUserInfo: UserItemProps = {
-          _id: userInfo._id,
-          _openid: userInfo._openid,
-          avatarUrl: userAvatarUrl,
-          nickName: userInfo.nickName,
-          userDes: userDescription,
-          userOpenid: userInfo.userOpenid,
-          userLocation: userInfo.userLocation,
-        };
-        GlobalStore.userInfo = updatedGlobalUserInfo;
-        Taro.hideLoading();
-        Taro.reLaunch({
-          url: `/pages/user-profile/index`,
-        });
-      } else {
-        Taro.hideLoading();
-        Taro.showToast({
-          title: '个人信息修改失败',
-          icon: 'error',
-          duration: 2000,
-        });
-        Taro.switchTab({
-          url: `/pages/user-profile/index`,
-        });
+  const UserDetail: React.FC= () => {
+    const [userInfo, setUserInfo] = useState<UserDetailInfoItemProps | null>(null);
+    useEffect(() => {
+      const userData: UserDetailInfoItemProps = Taro.getStorageSync('userDetail');
+      if (userData) {
+        setUserInfo(userData);
       }
-    });
-  };
+      console.log('User attributes:', userData);
+    }, []);
+    if (!userInfo) {
+      return <View>Loading...</View>;
+    }
+
 
   return (
-    <text>还没搞完</text>
-    // <View className='index'>
-    //   <Image
-    //     src={userAvatarUrl}
-    //     className='avatar-img'
-    //     onClick={handleUserImageEdit}
-    //   />
-    //   <View>
-    //     <View className='user-texts'>
-    //       <View className='user-name'>
-    //         <Text>{userInfo.nickName}</Text>
-    //       </View>
-    //       <View className='sub-title'>ID:{userInfo.userOpenid}</View>
-    //     </View>
-    //   </View>
-    //   <View className='user-location'>
-    //     <Input
-    //       type='text'
-    //       value={userLocation}
-    //       placeholder={
-    //         userLocation !== '' && userLocation != undefined
-    //           ? `${userLocation}`
-    //           : `请填写个人所在地（国家地区）`
-    //       }
-    //       className='location-input'
-    //       onInput={handleUserLocationEdit}
-    //     />
-    //   </View>
-    //   <View className='user-des'>
-    //     <Input
-    //       type='text'
-    //       value={userDescription}
-    //       placeholder={
-    //         userDescription
-    //           ? `${userDescription}`
-    //           : `个人描述：简单介绍一下自己吧`
-    //       }
-    //       className='des-input'
-    //       onInput={handleUserDescriptionEdit}
-    //     />
-    //   </View>
-    //   <View className='save-button' onClick={handleUserInfoChange}>
-    //     <Text>保存修改</Text>
-    //   </View>
-    //   <CustomTabBar />
-    // </View>
+    <View>
+      {/* <View style={{ width: '100%' }}>
+        <View className="profile-header">
+          <View>
+            <Image src={userInfo.avatarUrl} className="avatar-img" />
+          </View>
+          <View className="user-texts">
+            <View className="title">{userInfo.nickName}</View>
+          </View>
+        </View>
+      </View> */}
+
+      <View className="profile-header">
+        <Image src={userInfo.avatarUrl} className="profile-image" />
+        <View className="info">
+          <Text className="profile-name">
+          {userInfo.nickName}<Text style={{ color: 'green' }}>实名认证</Text>
+          </Text>
+          <View className="badges">
+            <Text>INTP</Text>
+            <Text>意大利米兰</Text>
+            <Text>米兰理工大学</Text>
+          </View>
+          <View className="stats">
+            <Text>房东评分: 4.5 颗星</Text>
+            <Text>房客评分: 4.6 颗星</Text>
+            <Text>获赞与收藏: 100 次</Text>
+          </View>
+        </View>
+      </View>
+      <View className="tabs">
+        <View className="tab active">概况</View>
+        <View className="tab">供宿</View>
+        <View className="tab">发帖</View>
+      </View>
+      <View className="content">
+        <View className="section">
+          <Text className="section-title">关于她</Text>
+          <View className="section-content">
+            <Text><strong>兴趣爱好:</strong></Text>
+            <Text>游泳, 电影, 滑雪</Text>
+          </View>
+          <View className="section-content">
+            <Text><strong>专业领域:</strong></Text>
+            <Text>迭佛鹃即佛卟卟卟卟啊啊; 卟佛; 卟佛了的; jf</Text>
+          </View>
+          <View className="section-content">
+            <Text><strong>fun facts about me:</strong></Text>
+            <Text>迭佛鹃即佛卟卟卟卟啊啊; 卟佛; 卟佛了的; jf</Text>
+          </View>
+          <View className="section-content">
+            <Text><strong>我游览过的国家:</strong></Text>
+            <Text>迭佛鹃即佛卟卟卟卟啊啊; 卟佛; 卟佛了的; jf</Text>
+          </View>
+        </View>
+      </View>
+    </View>
   );
 };
 
-export default observer(Index);
+export default UserDetail;

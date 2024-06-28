@@ -4,6 +4,7 @@ import { View, Image } from '@tarojs/components';
 import './index.scss';
 import Taro from '@tarojs/taro';
 import { RightBottomArrow } from '@utils/cloudIcons';
+import UserDetail from '../../../packageUser/user-detail';
 
 const UserInfo: React.FC<UserItemProps> = user => {
   const [userInfo, setUserInfo] = useState<UserItemProps>(user);
@@ -18,6 +19,7 @@ const UserInfo: React.FC<UserItemProps> = user => {
   // };
 
   const toUserDetail = () => {
+    Taro.setStorageSync('userDetail', userInfo);
     Taro.navigateTo({
       url: '/packageUser/user-detail/index',
     });

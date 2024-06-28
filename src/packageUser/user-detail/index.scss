@@ -1,0 +1,86 @@
+.profile-header {
+  background-color: white;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+}
+
+.profile-image {
+  border-radius: 50%;
+  width: 80px;
+  height: 80px;
+  margin-right: 20px;
+}
+
+.info {
+  flex-grow: 1;
+}
+
+.profile-name {
+  font-size: 24px;
+  margin: 0;
+}
+
+.badges {
+  margin-top: 5px;
+}
+
+.badges text {
+  background-color: #e0e0e0;
+  border-radius: 4px;
+  padding: 2px 8px;
+  margin-right: 5px;
+  font-size: 12px;
+}
+
+.stats {
+  margin-top: 10px;
+  display: flex;
+  gap: 10px;
+}
+
+.stats text {
+  font-size: 14px;
+}
+
+.tabs {
+  display: flex;
+  justify-content: center;
+  background-color: white;
+  padding: 10px 0;
+  margin-top: 20px;
+}
+
+.tab {
+  margin: 0 20px;
+  text-decoration: none;
+  color: black;
+  font-weight: bold;
+}
+
+.tab.active {
+  border-bottom: 2px solid black;
+}
+
+.content {
+  background-color: white;
+  padding: 20px;
+  margin-top: 10px;
+}
+
+.section {
+  margin-bottom: 20px;
+}
+
+.section-title {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.section-content {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.6;
+}
+

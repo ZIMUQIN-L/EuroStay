@@ -16,7 +16,8 @@ import {
   MyOfferingIcon,
   MyFavoriteIcon,
   ValidationIcon,
-  ReportIcon,
+  AwaitingResponse,
+  FeedbackIcon,
   SettingIcon,
   RightBottomArrow,
 } from '@utils/cloudIcons';
@@ -48,8 +49,7 @@ const actionList = [
 const offeringList = [
   {
     text: '待回复',
-    // todo: icon
-    icon: AlreadyContact,
+    icon: AwaitingResponse,
     tab: 'awaitFeedback',
   },
   {
@@ -83,6 +83,11 @@ const menuList = [
   {
     text: '实名认证',
     icon: ValidationIcon,
+    path: '',
+  },
+  {
+    text: '反馈咨询',
+    icon: FeedbackIcon,
     path: '',
   },
   {

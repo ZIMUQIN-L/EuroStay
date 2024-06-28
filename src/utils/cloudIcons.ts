@@ -75,3 +75,5 @@ export const ValidationIcon = `${cloudPath}/validation.svg`;
 export const MyFavoriteIcon = `${cloudPath}/myfavorite.svg`;
 export const MyOfferingIcon = `${cloudPath}/myoffering.svg`;
 export const MyHouseIcon = `${cloudPath}/myhouse.svg`;
+export const FeedbackIcon = `${cloudPath}/feedback.svg`;
+export const AwaitingResponse = `${cloudPath}/awaiting_response.svg`;

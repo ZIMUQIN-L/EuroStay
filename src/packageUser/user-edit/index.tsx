@@ -27,6 +27,9 @@ const Index = () => {
     setUserAvatarUrl(globalUserInfo.avatarUrl);
     setUserDescription(globalUserInfo.userDes);
     setUserLocation(globalUserInfo.userLocation);
+
+      console.log('User attributes:', globalUserInfo);
+
   }, []);
 
   const handleUserImageEdit = () => {
