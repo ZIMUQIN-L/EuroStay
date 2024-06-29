@@ -9,6 +9,7 @@ import SeekingCard from '../seeking-item';
 import CustomTabBar from '@components/CustomTabBar';
 import { accomPageMessageSearch } from '@common/database/accomMessage/accomMessage';
 import ContactInfoBoard from '@components/ContactInfoBoard';
+import MsgInfoBoard from '@components/MsgInfoBoard';
 
 /**
  * 求宿页面
@@ -20,6 +21,7 @@ const SeekingAccommodation = () => {
       path: `/pages/index/index`,
     };
   });
+  const [infoBoardIsShown, setInfoBoardIsShown] = useState(false);
   const [contactInfoIsShown, setContactInfoIsShown] = useState(false);
 
   const [userDestination, setUserDestination] = useState<string>('');
@@ -54,8 +56,17 @@ const SeekingAccommodation = () => {
     );
   };
 
+  const [selectedInfoId, setSelectedInfoId] = useState();
+  const [selectedAccomInfo, setSelectedAccomInfo] =
+    useState<UserAccomMessageItemProps>();
+  const handleUserClickButton = accomInfo => {
+    setSelectedAccomInfo(accomInfo);
+    setInfoBoardIsShown(true);
+  };
+
   const handleCloseAllBoards = () => {
     setContactInfoIsShown(false);
+    setInfoBoardIsShown(false);
   };
 
   useEffect(() => {
@@ -65,6 +76,22 @@ const SeekingAccommodation = () => {
   const [seekingData, setSeekingData] = useState<UserAccomMessageItemProps[]>(
     [],
   );
+
+  const handleUserSubmitContactInfo = () => {
+    // TODO: logic change @PJ
+    console.log('do sth PJ');
+  };
+
+  const handleUserRejectMsg = () => {
+    setInfoBoardIsShown(false);
+  };
+
+  const handleUserAcceptMsg = () => {
+    if (infoBoardIsShown == true) {
+      setInfoBoardIsShown(false);
+      setContactInfoIsShown(true);
+    }
+  };
 
   // 样式可以直接用房源页面的
   return (
@@ -77,8 +104,32 @@ const SeekingAccommodation = () => {
       />
       <View className='house-list'>
         {seekingData.length > 0 &&
-          seekingData.map(item => <SeekingCard key={item._id} {...item} />)}
+          seekingData.map(item => (
+            <SeekingCard
+              key={item._id}
+              seekingItem={item}
+              onClick={() => {
+                handleUserClickButton(item);
+              }}
+            />
+          ))}
       </View>
+      {infoBoardIsShown && (
+        <MsgInfoBoard
+          userAccomMessage={selectedAccomInfo}
+          onClose={handleCloseAllBoards}
+          onSubmit={handleUserAcceptMsg}
+          onReject={handleUserRejectMsg}
+        />
+      )}
+      {contactInfoIsShown && (
+        <ContactInfoBoard
+          onClose={handleCloseAllBoards}
+          retrivedData={null}
+          editable={true}
+          onUpdateData={handleUserSubmitContactInfo}
+        ></ContactInfoBoard>
+      )}
       <CustomTabBar />
     </View>
   );

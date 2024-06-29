@@ -28,8 +28,7 @@ const Index = () => {
     setUserDescription(globalUserInfo.userDes);
     setUserLocation(globalUserInfo.userLocation);
 
-      console.log('User attributes:', globalUserInfo);
-
+    console.log('User attributes:', globalUserInfo);
   }, []);
 
   const handleUserImageEdit = () => {
