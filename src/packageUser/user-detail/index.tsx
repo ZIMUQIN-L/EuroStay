@@ -47,7 +47,11 @@ const userData: UserDetailInfoItemProps = {
     if (!userInfo) {
       return <View>Loading...</View>;
     }
-
+    console.log('User attributes:', userData);
+  }, []);
+  if (!userInfo) {
+    return <View>Loading...</View>;
+  }
 
   return (
     <View>
@@ -81,23 +85,31 @@ const userData: UserDetailInfoItemProps = {
         <View className="tab">供宿</View>
         <View className="tab">发帖</View>
       </View>
-      <View className="content">
-        <View className="section">
-          <Text className="section-title">关于她</Text>
-          <View className="section-content">
-            <Text><strong>兴趣爱好:</strong></Text>
+      <View className='content'>
+        <View className='section'>
+          <Text className='section-title'>关于她</Text>
+          <View className='section-content'>
+            <Text>
+              <strong>兴趣爱好:</strong>
+            </Text>
             <Text>游泳, 电影, 滑雪</Text>
           </View>
-          <View className="section-content">
-            <Text><strong>专业领域:</strong></Text>
+          <View className='section-content'>
+            <Text>
+              <strong>专业领域:</strong>
+            </Text>
             <Text>迭佛鹃即佛卟卟卟卟啊啊; 卟佛; 卟佛了的; jf</Text>
           </View>
-          <View className="section-content">
-            <Text><strong>fun facts about me:</strong></Text>
+          <View className='section-content'>
+            <Text>
+              <strong>fun facts about me:</strong>
+            </Text>
             <Text>迭佛鹃即佛卟卟卟卟啊啊; 卟佛; 卟佛了的; jf</Text>
           </View>
-          <View className="section-content">
-            <Text><strong>我游览过的国家:</strong></Text>
+          <View className='section-content'>
+            <Text>
+              <strong>我游览过的国家:</strong>
+            </Text>
             <Text>迭佛鹃即佛卟卟卟卟啊啊; 卟佛; 卟佛了的; jf</Text>
           </View>
         </View>

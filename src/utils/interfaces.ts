@@ -64,7 +64,7 @@ export interface UserAccomMessageItemProps {
   location: string;
   sourceUserOpenid: string;
   sourceUserNickName: string;
-  sourceUserAvatarUrl: string; // TODO @PJ add it in db
+  sourceUserAvatarUrl: string;
   description: string;
   // 消息类型: withTargetHouse, withoutTargetHouse, both
   type: string;

@@ -8,7 +8,7 @@ import { View } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import { replyMessageAdd } from '@common/database/ownerReply/ownerReply';
 import { accomMessageUpdate } from '@common/database/accomMessage/accomMessage';
-import MsgInfoBoard from './msg-info-board';
+import MsgInfoBoard from '@components/MsgInfoBoard';
 /**
  * @description 我的供宿-等待回复中
  */
