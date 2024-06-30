@@ -11,7 +11,7 @@ const userData: UserDetailInfoItemProps = {
   _openid: 'openid-001',
   userOpenid: 'user-openid-001',
   nickName: '偷心小白菜',
-  userDes: 'A friendly and outgoing person who loves to explore new places and meet new people.',
+  userDes: '欢迎和我进行换宿体验～',
   avatarUrl: 'https://via.placeholder.com/80',
   userLocation: 'Milan, Italy',
   guestRating: 4.8,
@@ -19,7 +19,7 @@ const userData: UserDetailInfoItemProps = {
   hostRating: 4.7,
   hostRatingNumber: 18,
   gender: 'female',
-  tags: ['INTP', '意大利米兰', '米兰理工大学', 'superrrrrrrlongggggggggggggg'],
+  tags: ['INTP', '意大利米兰', '米兰理工大学'],
   verified: {
     student: true,
     gov: true
@@ -47,11 +47,6 @@ const userData: UserDetailInfoItemProps = {
     if (!userInfo) {
       return <View>Loading...</View>;
     }
-    console.log('User attributes:', userData);
-  }, []);
-  if (!userInfo) {
-    return <View>Loading...</View>;
-  }
 
   return (
     <View>
