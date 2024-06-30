@@ -63,14 +63,28 @@ const userData: UserDetailInfoItemProps = {
                 <Text key={index} className="badge-item">{tag}</Text>
               ))}
             </View>
-            <Text className="description">我的简介：{userData.userDes}</Text>
-            <View className="stats">
-              <Text>房东评分: 4.5 颗星</Text>
-              <Text>房客评分: 4.6 颗星</Text>
-              <Text>获赞与收藏: 100 次</Text>
-            </View>
           </View>
           
+          <View className="additional-info">
+            <Text className="description">我的简介：{userData.userDes}</Text>
+            <View className="ratings-container">
+              <View className="ratings">
+                <View className="rating-item">
+                  <Text className="rating-title">房东评分</Text>
+                  <Text className="rating-value">{userInfo.hostRating} 颗星</Text>
+                </View>
+                <View className="rating-item">
+                  <Text className="rating-title">房客评分</Text>
+                  <Text className="rating-value">{userInfo.guestRating} 颗星</Text>
+                </View>
+              </View>
+              <View className="edit-button">
+                <Text>编辑资料</Text>
+              </View>
+            </View>
+          </View>
+
+
           </View>
         </View>
 

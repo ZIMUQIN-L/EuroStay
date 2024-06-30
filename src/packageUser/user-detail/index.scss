@@ -10,13 +10,14 @@
 
 .profile-container {
   position: relative;
+  // display: flex;
+  // flex-direction: column;
 }
 
 .profile-header {
   background-color: white;
   padding: 20px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  display: flex;
   align-items: center;
   margin-top: 150px; // Adjust based on the height of the purple background
   border-radius: 8px;
@@ -32,6 +33,16 @@
   position: absolute; // Make the profile image position absolute
   top: -50px; // Adjust the value to move the image upwards
   left: 20px; // Adjust the value to position it horizontally
+}
+
+.profile-header-wrapper {
+  background-color: white;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-top: 150px; // Adjust based on the height of the purple background
+  border-radius: 8px;
+  position: relative;
+  z-index: 1;
 }
 
 .info {
@@ -60,20 +71,60 @@
   font-size: 20px;
 }
 
+// .description {
+//   margin-top: 7px;
+//   font-size: 22px;
+//   color: #666;
+// }
+
+.additional-info {
+  margin-top: 20px;
+  left: 20px;
+}
+
 .description {
   margin-top: 7px;
   font-size: 22px;
   color: #666;
+  line-height: 1.2; // Adjust the value as needed to reduce line spacing
+  margin-left: 20px; // Align with the left part of the profile image
 }
 
-.stats {
-  margin-top: 10px;
+.ratings-container {
   display: flex;
-  gap: 10px;
+  justify-content: space-between; // Distribute space between ratings and edit button
+  align-items: center;
+  margin-top: 10px;
+  padding: 0 20px; // Ensure alignment with the left part of the profile image
 }
 
-.stats text {
-  font-size: 14px;
+.ratings {
+  display: flex;
+  gap: 20px; // Space between rating items
+}
+
+.rating-item {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.rating-title {
+  font-size: 18px;
+  color: #666;
+}
+
+.rating-value {
+  font-size: 20px;
+  color: #333;
+}
+
+.edit-button {
+  background-color: #f5f5f5;
+  border-radius: 4px;
+  padding: 5px 10px;
+  text-align: center;
+  cursor: pointer;
 }
 
 .tabs {
