@@ -1,37 +1,70 @@
+.profile-background {
+  width: 100%;
+  height: 150px; // Adjust the height as needed
+  background: linear-gradient(to bottom, #6B63B9, #A6A0E0); // Using a gradient for a similar effect
+  position: absolute;
+  top: -150px;
+  left: 0;
+  z-index: -1; // Ensure it is behind the content
+}
+
+.profile-container {
+  position: relative;
+}
+
 .profile-header {
   background-color: white;
   padding: 20px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   display: flex;
   align-items: center;
+  margin-top: 150px; // Adjust based on the height of the purple background
+  border-radius: 8px;
+  position: relative;
+  z-index: 1;
 }
 
 .profile-image {
   border-radius: 50%;
-  width: 80px;
-  height: 80px;
-  margin-right: 20px;
+  width: 150px;
+  height: 150px;
+  border: 3px solid white; // To add a border around the image
+  position: absolute; // Make the profile image position absolute
+  top: -50px; // Adjust the value to move the image upwards
+  left: 20px; // Adjust the value to position it horizontally
 }
 
 .info {
   flex-grow: 1;
+  margin-left: 180px; // Ensure the info section does not overlap with the image
 }
 
 .profile-name {
-  font-size: 24px;
+  font-size: 35px;
   margin: 0;
 }
 
 .badges {
+  display: flex;
+  flex-wrap: wrap; // Allow tags to wrap to the next line if needed
   margin-top: 5px;
 }
 
-.badges text {
-  background-color: #e0e0e0;
-  border-radius: 4px;
+.badge-item {
+  background-color: #f5f3f3;
+  color: #979797;
+  border-radius: 7px;
   padding: 2px 8px;
-  margin-right: 5px;
-  font-size: 12px;
+  margin-right: 10px;
+  margin-bottom: 10px; // Add some space below for wrapping
+  font-size: 20px;
+}
+
+.description {
+  margin-top: 10px;
+  font-size: 20px;
+  color: #666;
+  margin-left: -160px;
 }
 
 .stats {
@@ -83,4 +116,27 @@
   font-size: 14px;
   line-height: 1.6;
 }
+
+.profile-name {
+  position: relative;
+}
+
+.badge {
+  position: absolute;
+  top: 5px;
+  right: -70px;
+  padding: 1px 2px;
+  border-radius: 4px 0px 0px 0px;
+  background-color: rgb(220, 252, 220);
+  color: green;
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+
+
+
 
