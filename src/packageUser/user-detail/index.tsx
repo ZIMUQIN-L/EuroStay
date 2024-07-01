@@ -97,7 +97,7 @@ const UserDetail: React.FC = () => {
           </View>
 
           <View className='additional-info'>
-            <Text className='description'>我的简介：{userData.userDes}</Text>
+            <Text className='description'>我的简介：{userDetailInfo.userDes}</Text>
             <View className='ratings-container'>
               <View className='ratings'>
                 <View className='rating-item'>
