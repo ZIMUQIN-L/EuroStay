@@ -7,6 +7,8 @@ import { useState, useEffect } from 'react';
 import { accomMessageAdd } from '@common/database/accomMessage/accomMessage';
 import GlobalStore from '@store/GlobalStore';
 import RequestCustomCard from '../../../packageUser/request-custom-card';
+import { Star } from '@utils/cloudIcons';
+
 const HouseContact: React.FC<HouseDetailItemProps> = house => {
   const [isModalOpen, setModalOpen] = useState(false);
   // if user want to share this message to board or not
@@ -103,6 +105,13 @@ const HouseContact: React.FC<HouseDetailItemProps> = house => {
     }
   };
 
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const month = (`0${date.getMonth() + 1}`).slice(-2); // Add leading zero and slice last two digits
+    const day = (`0${date.getDate()}`).slice(-2); // Add leading zero and slice last two digits
+    return `${month}月${day}日`;
+  };
+
   const onCreateCustomCardFromTenant = () => {
     setModalOpen(true);
   };
@@ -110,12 +119,19 @@ const HouseContact: React.FC<HouseDetailItemProps> = house => {
     <View>
       <View className='lists'>
         <View className='contact-container'>
-          <View
-            className='contact-button'
-            onClick={onCreateCustomCardFromTenant}
-          >
-            <Text className='contact-text'>联系房东</Text>
+        <View className="date-container">
+          <Text className="date-text">{formatDate(house.start_date)}</Text>
+          <Text className="date-separator">至</Text>
+          <Text className="date-text">{formatDate(house.end_date)}</Text>
+        </View>
+        <View className="right-section">
+          {/* <View className="icon-container">
+            <Image src={Star} className="star-icon" />
+          </View> */}
+          <View className="contact-button" onClick={onCreateCustomCardFromTenant}>
+            联系房主
           </View>
+        </View>
         </View>
       </View>
       {isModalOpen && (

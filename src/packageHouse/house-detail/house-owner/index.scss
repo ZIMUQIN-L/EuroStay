@@ -73,27 +73,66 @@
 
 .contact-container {
   background-color: white;
-  width: 100%;
+  height: 150px;
   position: fixed; // Fixes the container at the bottom
-  bottom: 0; // Aligns it to the bottom
+  bottom: -20px; // Aligns it to the bottom
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   padding: 10px 0; // Optional: Add some padding for spacing
   box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1); // Optional: Add a top shadow for separation
 }
 
-.contact-button {
-  height: 80px;
-  border-radius: 80px;
-  width: 40%;
-  background-color: #ffd111;
-  color: white;
-  font-size: 28px;
-  margin: 4% 0;
+.date-container {
+  // display: flex;
+  align-items: center;
+  margin-left: 53px;
+}
+
+.date-text {
+  font-size: 25px;
+  color: #333;
+  margin-left: 7px;
+  border-bottom: 2px solid #333; // Add underline with desired color and thickness
+}
+
+.date-separator {
+  font-size: 25px;
+  color: #333;
+  margin: 0 7px;
+  border-bottom: 2px solid transparent; // Ensure the separator text is aligned properly
+}
+
+.right-section {
+  display: flex;
+  align-items: center;
+  margin-right: 60px;
+}
+
+.icon-container {
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-right: 20px; // Optional: Add additional margin to increase the gap
+}
+
+.star-icon {
+  width: 80px; // Adjust the size as needed
+  height: 80px;
+}
+
+.contact-button {
+  height: 70px;
+  border-radius: 80px;
+  width: 250px;
+  background-color: #ffd111;
+  color: white;
+  font-size: 27px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+
 }
 
 .contact-text {
