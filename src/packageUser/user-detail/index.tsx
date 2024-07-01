@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { UserDetailInfoItemProps } from '@utils/interfaces';
+import { UserDetailInfoItemProps, UserItemProps } from '@utils/interfaces';
 import { View, Image, Text } from '@tarojs/components';
 import './index.scss';
+import GlobalStore from '@store/GlobalStore';
 import Taro from '@tarojs/taro';
 import { Point } from '@utils/cloudIcons';
 import { useRouter } from '@tarojs/taro';
 import { userInfoSearch } from '@common/database/user/user';
+import UserDetailContent from './user-detail-content';
 
 const userData: UserDetailInfoItemProps = {
   _id: 'user-001',
@@ -47,14 +49,14 @@ const UserDetail: React.FC = () => {
   const [userDetailInfo, setUserDetailInfo] =
     useState<UserDetailInfoItemProps>();
   const [activeTab, setActiveTab] = useState('概况');
+  const [currentUser, setCurrentUser] = useState<UserItemProps>(
+    GlobalStore.userInfo,
+  );
+
   useEffect(() => {
     userInfoSearch(userOpenid).then((ownerInfo: UserDetailInfoItemProps[]) => {
       setUserDetailInfo(ownerInfo[0]);
     });
-    //   if (userData) {
-    //     setUserInfo(userData);
-    //   }
-    //   console.log('User attributes:', userData);
   }, []);
 
   if (!userDetailInfo) {
@@ -103,9 +105,13 @@ const UserDetail: React.FC = () => {
                   <Text className='rating-value'>{userData.guestRating}</Text>
                 </View>
               </View>
-              <View className='edit-button' onClick={toEdit}>
-                <Text>编辑资料</Text>
-              </View>
+              {userDetailInfo._openid == currentUser._openid ? (
+                <View className='edit-button' onClick={toEdit}>
+                  <Text>编辑资料</Text>
+                </View>
+              ) : (
+                <View></View>
+              )}
             </View>
           </View>
         </View>
@@ -131,61 +137,7 @@ const UserDetail: React.FC = () => {
           发帖
         </View>
       </View>
-      <View className='content'>
-        <View className='section'>
-          <Text className='section-title'>关于{userData.nickName}</Text>
-          {aboutMeEntries.map(([key, value], index) => (
-            <View key={index} className='section-content'>
-              <View className='key-container'>
-                <Image src={Point} className='point-image' />
-                <Text className='section-key'>{key}:</Text>
-              </View>
-              <Text className='section-value'>{value}</Text>
-            </View>
-          ))}
-        </View>
-      </View>
-
-      <View className='comment-section'>
-        <Text className='section-title-comment'>我的评价</Text>
-        <View className='tags'>
-          <Text className='badge-item'>INTP</Text>
-          <Text className='badge-item'>意大利米兰</Text>
-          <Text className='badge-item'>米兰理工大学</Text>
-        </View>
-        <View className='comment-card'>
-          <View className='comment-header'>
-            <View className='comment-profile'>
-              <Image src={profileImageUrl} className='profile-image-comment' />
-              <View className='profile-info-comment'>
-                <Text className='profile-name-comment'>素食主义</Text>
-                <Text className='profile-location-comment'>意大利-米兰</Text>
-              </View>
-            </View>
-            <View className='comment-rating'>
-              {ratingStars.map((star, index) => (
-                <Text
-                  key={index}
-                  className={`star ${index < 3 ? 'filled' : ''}`}
-                >
-                  ★
-                </Text>
-              ))}
-              <Text className='rating-dates'>2023-07-02 to 2023-07-07</Text>
-            </View>
-          </View>
-          <View className='comment-body'>
-            <Text className='comment-text'>
-              非常好的房间，交通便利，很卫生干净！小姐姐回复沟通也特别及时！
-              xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-            </Text>
-            <Image src={roomImageUrl} className='room-image' />
-          </View>
-          <View className='comment-footer'>
-            <Text className='show-more'>显示更多</Text>
-          </View>
-        </View>
-      </View>
+      <UserDetailContent {...userDetailInfo}></UserDetailContent>
     </View>
   );
 };
