@@ -113,50 +113,122 @@ const Index = () => {
   };
 
   return (
-    <View className='index'>
-      <Image
-        src={userAvatarUrl}
-        className='avatar-img'
-        onClick={handleUserImageEdit}
-      />
-      <View>
-        <View className='user-texts'>
-          <View className='user-name'>
-            <Text>{userInfo.nickName}</Text>
-          </View>
-          <View className='sub-title'>ID:{userInfo.userOpenid}</View>
+    // <View className='index'>
+    //   <Image
+    //     src={userAvatarUrl}
+    //     className='avatar-img'
+    //     onClick={handleUserImageEdit}
+    //   />
+    //   <View>
+    //     <View className='user-texts'>
+    //       <View className='user-name'>
+    //         <Text>{userInfo.nickName}</Text>
+    //       </View>
+    //       <View className='sub-title'>ID:{userInfo.userOpenid}</View>
+    //     </View>
+    //   </View>
+    //   <View className='user-location'>
+    //     <Input
+    //       type='text'
+    //       value={userLocation}
+    //       placeholder={
+    //         userLocation !== '' && userLocation != undefined
+    //           ? `${userLocation}`
+    //           : `请填写个人所在地（国家地区）`
+    //       }
+    //       className='location-input'
+    //       onInput={handleUserLocationEdit}
+    //     />
+    //   </View>
+    //   <View className='user-des'>
+    //     <Input
+    //       type='text'
+    //       value={userDescription}
+    //       placeholder={
+    //         userDescription
+    //           ? `${userDescription}`
+    //           : `个人描述：简单介绍一下自己吧`
+    //       }
+    //       className='des-input'
+    //       onInput={handleUserDescriptionEdit}
+    //     />
+    //   </View>
+    //   <View className='save-button' onClick={handleUserInfoChange}>
+    //     <Text>保存修改</Text>
+    //   </View>
+    //   <CustomTabBar />
+    // </View>
+    <View className="edit-profile-page">
+      <View className="profile-background"/>
+      <View className="profile-avatar">
+        <Image src={userAvatarUrl} className="avatar-image" />
+      </View>
+      <View className="section">
+        <Text className="section-title">我的简介</Text>
+        <View className="description-container">
+          <Text className="description-text">欢迎和我进行换宿体验～</Text>
         </View>
       </View>
-      <View className='user-location'>
-        <Input
-          type='text'
-          value={userLocation}
-          placeholder={
-            userLocation !== '' && userLocation != undefined
-              ? `${userLocation}`
-              : `请填写个人所在地（国家地区）`
-          }
-          className='location-input'
-          onInput={handleUserLocationEdit}
-        />
+      <View className="section">
+        <Text className="section-title">基本信息</Text>
+        <View className="info-container">
+          <View className="info-item">
+            <Text className="info-label">昵称</Text>
+            <Text className="info-value">偷心小白菜</Text>
+          </View>
+          <View className="info-item">
+            <Text className="info-label">性别</Text>
+            <Text className="info-value">女</Text>
+          </View>
+          <View className="info-item">
+            <Text className="info-label">个人居住地</Text>
+            <Text className="info-value">意大利米兰</Text>
+          </View>
+          <View className="info-item">
+            <Text className="info-label">生日</Text>
+            <Text className="info-value">2000-08-16</Text>
+          </View>
+          <View className="info-item">
+            <Text className="info-label">身份</Text>
+            <Text className="info-value">学生</Text>
+          </View>
+        </View>
       </View>
-      <View className='user-des'>
-        <Input
-          type='text'
-          value={userDescription}
-          placeholder={
-            userDescription
-              ? `${userDescription}`
-              : `个人描述：简单介绍一下自己吧`
-          }
-          className='des-input'
-          onInput={handleUserDescriptionEdit}
-        />
+      <View className="section">
+        <Text className="section-title">关于我</Text>
+        <View className="info-container">
+          <View className="info-item">
+            <Text className="info-label">兴趣爱好</Text>
+            <Text className="info-value">游泳, 电影, 滑雪</Text>
+          </View>
+          <View className="info-item">
+            <Text className="info-label">专业领域</Text>
+            <Text className="info-value">xxxx</Text>
+          </View>
+          <View className="info-item">
+            <Text className="info-label">fun facts about me</Text>
+            <Text className="info-value">xxxx</Text>
+          </View>
+          <View className="info-item">
+            <Text className="info-label">我游览过的国家</Text>
+            <Text className="info-value">xxxx</Text>
+          </View>
+          <View className="info-item">
+            <Text className="info-label">我居住过的国家</Text>
+            <Text className="info-value">xxxx</Text>
+          </View>
+          <View className="info-item">
+            <Text className="info-label">我可以向求宿者提供什么</Text>
+            <Text className="info-value">xxxx</Text>
+          </View>
+        </View>
       </View>
-      <View className='save-button' onClick={handleUserInfoChange}>
-        <Text>保存修改</Text>
-      </View>
-      <CustomTabBar />
+      <View className="save-button-container">
+        <View className='save-button' onClick={handleUserInfoChange}>
+          <Text>保存修改</Text>
+        </View>
+       </View>
+       <CustomTabBar />
     </View>
   );
 };
