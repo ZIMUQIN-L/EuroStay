@@ -8,6 +8,7 @@ import GlobalStore from '@store/GlobalStore';
 import { cloudAvatarUpload } from '@common/database/cloudstorage/files';
 import { userInfoUpdate } from '@common/database/user/user';
 import CustomTabBar from '@components/CustomTabBar';
+import { RightBottomArrow, RightBottomArrowGrey } from '@utils/cloudIcons';
 
 const Index = () => {
   const [userInfo, setUserInfo] = useState<UserItemProps>(GlobalStore.userInfo);
@@ -158,31 +159,55 @@ const Index = () => {
     //   </View>
     //   <CustomTabBar />
     // </View>
-    <View className='edit-profile-page'>
-      <View className='profile-background' />
-      <View className='profile-avatar'>
-        <Image src={userAvatarUrl} className='avatar-image' />
+    <View className="edit-profile-page">
+      <View className="profile-background"/>
+      <View className="profile-avatar">
+        <Image src={userAvatarUrl} className="avatar-image" onClick={handleUserImageEdit}/>
       </View>
-      <View className='section'>
-        <Text className='section-title'>我的简介</Text>
-        <View className='description-container'>
-          <Text className='description-text'>欢迎和我进行换宿体验～</Text>
+      <View className="section">
+        <Text className="section-title">我的简介</Text>
+        <View className="description-container">
+        <View className='description-text'>
+         <Input
+          type='text'
+          value={userDescription}
+          placeholder={
+            userDescription
+              ? `${userDescription}`
+              : `简单介绍一下自己吧`
+          }
+          className='description-text'
+          onInput={handleUserDescriptionEdit}
+        />
+      </View>
         </View>
       </View>
-      <View className='section'>
-        <Text className='section-title'>基本信息</Text>
-        <View className='info-container'>
-          <View className='info-item'>
-            <Text className='info-label'>昵称</Text>
-            <Text className='info-value'>偷心小白菜</Text>
+      <View className="section">
+        <Text className="section-title">基本信息</Text>
+        <View className="info-container">
+          <View className="info-item">
+            <Text className="info-label">昵称</Text>
+            <Text className="info-value">{userInfo.nickName}</Text>
           </View>
           <View className='info-item'>
             <Text className='info-label'>性别</Text>
             <Text className='info-value'>女</Text>
           </View>
-          <View className='info-item'>
-            <Text className='info-label'>个人居住地</Text>
-            <Text className='info-value'>意大利米兰</Text>
+          <View className="info-item">
+            <Text className="info-label">个人居住地</Text>
+            <View className="info-value">
+              <Input
+              type='text'
+              value={userLocation}
+              placeholder={
+                userLocation !== '' && userLocation != undefined
+                  ? `${userLocation}`
+                  : `请填写个人所在地`
+              }
+              className='info-value'
+              onInput={handleUserLocationEdit}
+            />
+          </View>
           </View>
           <View className='info-item'>
             <Text className='info-label'>生日</Text>
