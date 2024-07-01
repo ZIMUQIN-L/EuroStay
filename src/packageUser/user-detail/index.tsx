@@ -39,10 +39,6 @@ const userData: UserDetailInfoItemProps = {
   },
 };
 
-const profileImageUrl = 'https://via.placeholder.com/50';
-const roomImageUrl = 'https://via.placeholder.com/80';
-const ratingStars = [1, 2, 3, 4, 5];
-
 const UserDetail: React.FC = () => {
   const router = useRouter();
   const userOpenid = router?.params?.id;
@@ -69,9 +65,6 @@ const UserDetail: React.FC = () => {
     });
   };
 
-  const aboutMeEntries = Object.entries(userData.aboutMe);
-  console.log('About Me entries:', aboutMeEntries);
-
   return (
     <View>
       <View className='profile-container'>
@@ -97,7 +90,9 @@ const UserDetail: React.FC = () => {
           </View>
 
           <View className='additional-info'>
-            <Text className='description'>我的简介：{userDetailInfo.userDes}</Text>
+            <Text className='description'>
+              我的简介：{userDetailInfo.userDes}
+            </Text>
             <View className='ratings-container'>
               <View className='ratings'>
                 <View className='rating-item'>

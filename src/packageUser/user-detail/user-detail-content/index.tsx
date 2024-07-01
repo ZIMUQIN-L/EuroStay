@@ -10,10 +10,6 @@ import { Point } from '@utils/cloudIcons';
 import UserCommentCard from './user-content-comment';
 import { userReceivedRatingSearch } from '@common/database/ratingInfo/ratingInfo';
 
-const profileImageUrl = 'https://via.placeholder.com/50';
-const roomImageUrl = 'https://via.placeholder.com/80';
-const ratingStars = [1, 2, 3, 4, 5];
-
 const UserDetailContent: React.FC<UserDetailInfoItemProps> = userDetailInfo => {
   const [aboutMeEntries, setAboutMeEntries] = useState<{
     [key: string]: string;
@@ -77,9 +73,11 @@ const UserDetailContent: React.FC<UserDetailInfoItemProps> = userDetailInfo => {
               </Text>
             ))}
         </View>
-        {userReceivedRatings.map(ratingInfo => (
-          <UserCommentCard {...ratingInfo}></UserCommentCard>
-        ))}
+        <View className='comment-cards-container'>
+          {userReceivedRatings.map(ratingInfo => (
+            <UserCommentCard {...ratingInfo}></UserCommentCard>
+          ))}
+        </View>
       </View>
     </View>
   );

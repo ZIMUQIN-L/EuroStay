@@ -1,18 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import {
-  UserDetailInfoItemProps,
-  UserRatingInfoItemProps,
-} from '@utils/interfaces';
+import { UserRatingInfoItemProps } from '@utils/interfaces';
 import { View, Image, Text } from '@tarojs/components';
 import './index.scss';
-import Taro from '@tarojs/taro';
-import { Point, DefaultAvatar } from '@utils/cloudIcons';
+import { DefaultAvatar } from '@utils/cloudIcons';
 
-const profileImageUrl = 'https://via.placeholder.com/50';
-const roomImageUrl = 'https://via.placeholder.com/80';
 const ratingStars = [1, 2, 3, 4, 5];
 
 const UserCommentCard: React.FC<UserRatingInfoItemProps> = userRatingInfo => {
+  const ratingNumber =
+    userRatingInfo.type === 'tohost'
+      ? (userRatingInfo.evaluation['desMatch'] +
+          userRatingInfo.evaluation['locationEval'] +
+          userRatingInfo.evaluation['cleanEval'] +
+          userRatingInfo.evaluation['serviceEval'] +
+          userRatingInfo.evaluation['pricePerformance']) /
+        5
+      : userRatingInfo.evaluation['rating'];
   return (
     <View>
       <View className='comment-card'>
@@ -38,15 +41,18 @@ const UserCommentCard: React.FC<UserRatingInfoItemProps> = userRatingInfo => {
             </View>
           </View>
           <View className='comment-rating'>
-            {ratingStars.map((star, index) => (
-              <Text
-                // @PJ TODO
-                key={index}
-                className={`star ${index < 3 ? 'filled' : ''}`}
-              >
-                ★
-              </Text>
-            ))}
+            <View className='rating-stars'>
+              {ratingStars.map((star, index) => (
+                <Text
+                  // @PJ TODO
+                  key={index}
+                  className={`star ${index < ratingNumber ? 'filled' : ''}`}
+                >
+                  ★
+                </Text>
+              ))}
+              <Text className='rating-number'>{ratingNumber}</Text>
+            </View>
             <Text className='rating-dates'>
               {userRatingInfo.start_date} - {userRatingInfo.end_date}
             </Text>
