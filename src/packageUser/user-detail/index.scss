@@ -71,12 +71,6 @@
   font-size: 20px;
 }
 
-// .description {
-//   margin-top: 7px;
-//   font-size: 22px;
-//   color: #666;
-// }
-
 .additional-info {
   margin-top: 20px;
   left: 20px;
@@ -115,16 +109,18 @@
 }
 
 .rating-value {
-  font-size: 20px;
+  font-size: 22px;
   color: #333;
+  font-weight: bold;
 }
 
 .edit-button {
   background-color: #f5f5f5;
-  border-radius: 4px;
-  padding: 5px 10px;
+  border-radius: 30px;
+  padding: 15px 40px;
   text-align: center;
   cursor: pointer;
+  font-size: 22px;
 }
 
 .tabs {
@@ -132,39 +128,83 @@
   justify-content: center;
   background-color: white;
   padding: 10px 0;
-  margin-top: 20px;
+  position: -webkit-sticky; // For Safari
+  position: sticky;
+  z-index: 1000;
+  top: 0;
+  margin-top: 5px;
+  margin-bottom: 5px;
 }
 
 .tab {
-  margin: 0 20px;
+  margin: 0 50px;
   text-decoration: none;
-  color: black;
+  color: #4D4D4D;
+  font-size: 28px; // Adjust the font size to match the design
+  position: relative;
+  padding: 20px 0;
+}
+
+
+.tab.active {
+  color: #6B63B9; // Adjust the color to match the active tab color
   font-weight: bold;
 }
 
-.tab.active {
-  border-bottom: 2px solid black;
+.tab.active::after {
+  content: '';
+  display: block;
+  width: 100%;
+  height: 2px;
+  background-color: #6B63B9; // Adjust the underline color to match the active tab color
+  position: absolute;
+  bottom: -2px; // Adjust the position of the underline
+  left: 0;
 }
 
 .content {
   background-color: white;
   padding: 20px;
-  margin-top: 10px;
 }
 
 .section {
-  margin-bottom: 20px;
+  margin-top: 50px;
+  left: 20px;
 }
 
 .section-title {
-  font-size: 18px;
-  margin-bottom: 10px;
+  font-size: 35px;
+  color: #4D4D4D;
+  padding: 200px 20px;
+  text-align: center;
 }
 
 .section-content {
-  margin: 0;
-  font-size: 14px;
-  line-height: 1.6;
+  padding: 15px 20px;
+}
+
+.key-container {
+  display: flex;
+  align-items: center; // Ensure the image and text are aligned in the center vertically
+}
+
+.point-image {
+  width: 30px; // Adjust size as needed
+  height: 30px;
+  margin-right: 10px; // Space between the point and the text
+}
+
+.section-key {
+  font-size: 25px;
+  color: #999; // Light gray color
+  display: block;
+}
+
+.section-value {
+  font-size: 25px;
+  color: #333; // Darker color for the values
+  display: block;
+  margin-top: 5px;
 }
 
 .profile-name {

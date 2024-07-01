@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { UserItemProps, UserDetailInfoItemProps } from '@utils/interfaces';
+import { UserDetailInfoItemProps } from '@utils/interfaces';
 import { View, Image, Text } from '@tarojs/components';
 import './index.scss';
 import Taro from '@tarojs/taro';
-import { RightBottomArrow } from '@utils/cloudIcons';
-import GlobalStore from '@store/GlobalStore';
+import { Point } from '@utils/cloudIcons';
+
 
 const userData: UserDetailInfoItemProps = {
   _id: 'user-001',
@@ -37,6 +37,7 @@ const userData: UserDetailInfoItemProps = {
 
   const UserDetail: React.FC= () => {
     const [userInfo, setUserInfo] = useState<UserDetailInfoItemProps | null>(null);
+    const [activeTab, setActiveTab] = useState('概况');
     useEffect(() => {
       const userData: UserDetailInfoItemProps = Taro.getStorageSync('userDetail');
       if (userData) {
@@ -47,6 +48,16 @@ const userData: UserDetailInfoItemProps = {
     if (!userInfo) {
       return <View>Loading...</View>;
     }
+
+    const toEdit = () => {
+      Taro.navigateTo({
+        url: '/packageUser/user-edit/index',
+      });
+    };
+
+
+    const aboutMeEntries = Object.entries(userData.aboutMe);
+    console.log('About Me entries:', aboutMeEntries);
 
   return (
     <View>
@@ -71,56 +82,53 @@ const userData: UserDetailInfoItemProps = {
               <View className="ratings">
                 <View className="rating-item">
                   <Text className="rating-title">房东评分</Text>
-                  <Text className="rating-value">{userInfo.hostRating} 颗星</Text>
+                  <Text className="rating-value">{userData.hostRating}</Text>
                 </View>
                 <View className="rating-item">
                   <Text className="rating-title">房客评分</Text>
-                  <Text className="rating-value">{userInfo.guestRating} 颗星</Text>
+                  <Text className="rating-value">{userData.guestRating}</Text>
                 </View>
               </View>
-              <View className="edit-button">
+              <View className="edit-button" onClick={toEdit}>
                 <Text>编辑资料</Text>
               </View>
             </View>
           </View>
-
-
           </View>
         </View>
 
-      
       <View className="tabs">
-        <View className="tab active">概况</View>
-        <View className="tab">供宿</View>
-        <View className="tab">发帖</View>
+        <View
+          className={`tab ${activeTab === '概况' ? 'active' : ''}`}
+          onClick={() => setActiveTab('概况')}
+        >
+          概况
+        </View>
+        <View
+          className={`tab ${activeTab === '供宿' ? 'active' : ''}`}
+          onClick={() => setActiveTab('供宿')}
+        >
+          供宿
+        </View>
+        <View
+          className={`tab ${activeTab === '发帖' ? 'active' : ''}`}
+          onClick={() => setActiveTab('发帖')}
+        >
+          发帖
+        </View>
       </View>
       <View className='content'>
         <View className='section'>
-          <Text className='section-title'>关于她</Text>
-          <View className='section-content'>
-            <Text>
-              <strong>兴趣爱好:</strong>
-            </Text>
-            <Text>游泳, 电影, 滑雪</Text>
-          </View>
-          <View className='section-content'>
-            <Text>
-              <strong>专业领域:</strong>
-            </Text>
-            <Text>迭佛鹃即佛卟卟卟卟啊啊; 卟佛; 卟佛了的; jf</Text>
-          </View>
-          <View className='section-content'>
-            <Text>
-              <strong>fun facts about me:</strong>
-            </Text>
-            <Text>迭佛鹃即佛卟卟卟卟啊啊; 卟佛; 卟佛了的; jf</Text>
-          </View>
-          <View className='section-content'>
-            <Text>
-              <strong>我游览过的国家:</strong>
-            </Text>
-            <Text>迭佛鹃即佛卟卟卟卟啊啊; 卟佛; 卟佛了的; jf</Text>
-          </View>
+          <Text className='section-title'>关于{userData.nickName}</Text>
+          {aboutMeEntries.map(([key, value], index) => (
+            <View key={index} className="section-content">
+              <View className="key-container">
+                <Image src={Point} className="point-image" />
+                <Text className="section-key">{key}:</Text>
+              </View>
+              <Text className="section-value">{value}</Text>
+            </View>
+          ))}
         </View>
       </View>
     </View>
