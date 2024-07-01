@@ -10,6 +10,7 @@ import { houseDetailSearch } from '@common/database/house/house';
 import { RoomDetailInfo } from './house-infos';
 import HouseContact from './house-contact';
 import HouseReviewCard from './house-review-card';
+import HouseOwner from './house-owner';
 
 const Index = () => {
   const router = useRouter();
@@ -39,6 +40,7 @@ const Index = () => {
         roomPreference={houseDetail.preference}
       />
       <HouseReviewCard {...houseDetail} />
+      <HouseOwner {...houseDetail} />
       <HouseContact {...houseDetail} />
     </>
   );

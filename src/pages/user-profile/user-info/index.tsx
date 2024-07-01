@@ -18,9 +18,8 @@ const UserInfo: React.FC<UserItemProps> = user => {
   // };
 
   const toUserDetail = () => {
-    Taro.setStorageSync('userDetail', userInfo);
     Taro.navigateTo({
-      url: '/packageUser/user-detail/index',
+      url: `/packageUser/user-detail/index?id=${user._openid}`,
     });
   };
 
