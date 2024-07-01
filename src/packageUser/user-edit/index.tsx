@@ -158,77 +158,77 @@ const Index = () => {
     //   </View>
     //   <CustomTabBar />
     // </View>
-    <View className="edit-profile-page">
-      <View className="profile-background"/>
-      <View className="profile-avatar">
-        <Image src={userAvatarUrl} className="avatar-image" />
+    <View className='edit-profile-page'>
+      <View className='profile-background' />
+      <View className='profile-avatar'>
+        <Image src={userAvatarUrl} className='avatar-image' />
       </View>
-      <View className="section">
-        <Text className="section-title">我的简介</Text>
-        <View className="description-container">
-          <Text className="description-text">欢迎和我进行换宿体验～</Text>
+      <View className='section'>
+        <Text className='section-title'>我的简介</Text>
+        <View className='description-container'>
+          <Text className='description-text'>欢迎和我进行换宿体验～</Text>
         </View>
       </View>
-      <View className="section">
-        <Text className="section-title">基本信息</Text>
-        <View className="info-container">
-          <View className="info-item">
-            <Text className="info-label">昵称</Text>
-            <Text className="info-value">偷心小白菜</Text>
+      <View className='section'>
+        <Text className='section-title'>基本信息</Text>
+        <View className='info-container'>
+          <View className='info-item'>
+            <Text className='info-label'>昵称</Text>
+            <Text className='info-value'>偷心小白菜</Text>
           </View>
-          <View className="info-item">
-            <Text className="info-label">性别</Text>
-            <Text className="info-value">女</Text>
+          <View className='info-item'>
+            <Text className='info-label'>性别</Text>
+            <Text className='info-value'>女</Text>
           </View>
-          <View className="info-item">
-            <Text className="info-label">个人居住地</Text>
-            <Text className="info-value">意大利米兰</Text>
+          <View className='info-item'>
+            <Text className='info-label'>个人居住地</Text>
+            <Text className='info-value'>意大利米兰</Text>
           </View>
-          <View className="info-item">
-            <Text className="info-label">生日</Text>
-            <Text className="info-value">2000-08-16</Text>
+          <View className='info-item'>
+            <Text className='info-label'>生日</Text>
+            <Text className='info-value'>2000-08-16</Text>
           </View>
-          <View className="info-item">
-            <Text className="info-label">身份</Text>
-            <Text className="info-value">学生</Text>
-          </View>
-        </View>
-      </View>
-      <View className="section">
-        <Text className="section-title">关于我</Text>
-        <View className="info-container">
-          <View className="info-item">
-            <Text className="info-label">兴趣爱好</Text>
-            <Text className="info-value">游泳, 电影, 滑雪</Text>
-          </View>
-          <View className="info-item">
-            <Text className="info-label">专业领域</Text>
-            <Text className="info-value">xxxx</Text>
-          </View>
-          <View className="info-item">
-            <Text className="info-label">fun facts about me</Text>
-            <Text className="info-value">xxxx</Text>
-          </View>
-          <View className="info-item">
-            <Text className="info-label">我游览过的国家</Text>
-            <Text className="info-value">xxxx</Text>
-          </View>
-          <View className="info-item">
-            <Text className="info-label">我居住过的国家</Text>
-            <Text className="info-value">xxxx</Text>
-          </View>
-          <View className="info-item">
-            <Text className="info-label">我可以向求宿者提供什么</Text>
-            <Text className="info-value">xxxx</Text>
+          <View className='info-item'>
+            <Text className='info-label'>身份</Text>
+            <Text className='info-value'>学生</Text>
           </View>
         </View>
       </View>
-      <View className="save-button-container">
+      <View className='section'>
+        <Text className='section-title'>关于我</Text>
+        <View className='info-container'>
+          <View className='info-item'>
+            <Text className='info-label'>兴趣爱好</Text>
+            <Text className='info-value'>游泳, 电影, 滑雪</Text>
+          </View>
+          <View className='info-item'>
+            <Text className='info-label'>专业领域</Text>
+            <Text className='info-value'>xxxx</Text>
+          </View>
+          <View className='info-item'>
+            <Text className='info-label'>fun facts about me</Text>
+            <Text className='info-value'>xxxx</Text>
+          </View>
+          <View className='info-item'>
+            <Text className='info-label'>我游览过的国家</Text>
+            <Text className='info-value'>xxxx</Text>
+          </View>
+          <View className='info-item'>
+            <Text className='info-label'>我居住过的国家</Text>
+            <Text className='info-value'>xxxx</Text>
+          </View>
+          <View className='info-item'>
+            <Text className='info-label'>我可以向求宿者提供什么</Text>
+            <Text className='info-value'>xxxx</Text>
+          </View>
+        </View>
+      </View>
+      <View className='save-button-container'>
         <View className='save-button' onClick={handleUserInfoChange}>
           <Text>保存修改</Text>
         </View>
-       </View>
-       <CustomTabBar />
+      </View>
+      <CustomTabBar />
     </View>
   );
 };

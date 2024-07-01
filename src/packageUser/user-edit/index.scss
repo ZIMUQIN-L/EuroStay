@@ -6,19 +6,21 @@
 .profile-background {
   width: 100%;
   height: 300px; // Adjust the height as needed
-  background: linear-gradient(to bottom, #6B63B9, #A6A0E0); // Using a gradient for a similar effect
+  background: linear-gradient(
+    to bottom,
+    #6b63b9,
+    #a6a0e0
+  ); // Using a gradient for a similar effect
   position: absolute;
   top: -225px;
   left: 0;
   z-index: -1; // Ensure it is behind the content
-
 }
 
 .profile-avatar {
   display: flex;
   justify-content: center;
   margin-top: 175px;
-
 }
 
 .avatar-image {
@@ -34,7 +36,7 @@
 
 .section-title {
   font-size: 22px;
-  color: #4D4D4D;
+  color: #4d4d4d;
   margin-bottom: 10px;
 }
 
@@ -68,7 +70,7 @@
 
 .info-label {
   font-size: 16px;
-  color: #4D4D4D;
+  color: #4d4d4d;
 }
 
 .info-value {
@@ -81,10 +83,6 @@
   justify-content: center;
   margin-top: 20px;
 }
-
-
-
-
 
 // .index {
 //   width: 100%;
@@ -177,4 +175,3 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   margin-top: 30px;
 }
-
