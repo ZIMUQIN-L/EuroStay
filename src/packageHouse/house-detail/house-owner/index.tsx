@@ -31,7 +31,7 @@ const HouseOwner: React.FC<HouseDetailItemProps> = house => {
     <View className='lists'>
       <View className='container'>
         <View className='text-container'>
-          <Text className='title'>房东信息</Text>
+          <Text className='title'>房主信息</Text>
         </View>
         <View className='parent-container'>
           <View className='profile-card'>
