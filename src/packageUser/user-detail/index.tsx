@@ -84,11 +84,15 @@ const UserDetail: React.FC = () => {
               <Text className='badge'>实名认证</Text>
             </Text>
             <View className='badges'>
-              {userData.tags.map((tag, index) => (
-                <Text key={index} className='badge-item'>
-                  {tag}
-                </Text>
-              ))}
+              {userDetailInfo.tags ? (
+                userDetailInfo.tags.map((tag, index) => (
+                  <Text key={index} className='badge-item'>
+                    {tag}
+                  </Text>
+                ))
+              ) : (
+                <Text className='badge-item'>暂无个性标签</Text>
+              )}
             </View>
           </View>
 
