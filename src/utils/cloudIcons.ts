@@ -79,3 +79,6 @@ export const FeedbackIcon = `${cloudPath}/feedback.svg`;
 export const AwaitingResponse = `${cloudPath}/awaiting_response.svg`;
 export const Point = `${cloudPath}/point.svg`;
 export const Star = `${cloudPath}/star.svg`;
+
+// point system
+export const PointIcon = `${cloudPath}/point-icon.svg`;

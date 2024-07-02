@@ -20,6 +20,7 @@ import {
   FeedbackIcon,
   SettingIcon,
   RightBottomArrow,
+  PointIcon,
 } from '@utils/cloudIcons';
 import Taro from '@tarojs/taro';
 
@@ -76,23 +77,18 @@ const menuList = [
     path: '../../packageUser/my-houses/index',
   },
   {
-    text: '我的收藏',
-    icon: MyFavoriteIcon,
-    path: '',
-  },
-  {
     text: '我的活动',
     icon: MyFavoriteIcon,
     path: '../../packageActivity/my-activities/index',
   },
   {
-    text: '实名认证',
-    icon: ValidationIcon,
-    path: '',
+    text: '我的积分',
+    icon: PointIcon,
+    path: "../../packageUser/my-points/index",
   },
   {
-    text: '反馈咨询',
-    icon: FeedbackIcon,
+    text: '实名认证',
+    icon: ValidationIcon,
     path: '',
   },
   {

@@ -16,6 +16,8 @@ export default {
         'my-houses/index',
         'my-offering/index',
         'review-on-house/index',
+        'my-points/index',
+        'point-details/index',
       ],
     },
     {

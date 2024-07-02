@@ -1,0 +1,65 @@
+.points {
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.my-points {
+    margin-top: 5%;
+    padding: 10px;
+    width: 90%;
+    height: 120px;
+    background-color: #FFD111;
+    border-radius: 16px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 28px;
+    color: black;
+
+    &-points {
+        display: flex;
+        align-items: center;
+        width: 60%;
+    }
+
+    &-value {
+        margin-left: 5%;
+        font-size: 48px;
+        font-weight: 1000;
+        color: #4D4D4D;
+    }
+    
+    Image {
+        margin-left: 16%;
+        width: 40px;
+        height: 40px;
+    }
+
+    &-details {
+        .details-button {
+        margin-right: 20px;
+        padding: 10px 30px;
+        border: black 1px solid;
+        border-radius: 40px;
+        cursor: pointer;
+        font-size: 24px;
+    }
+    }
+}
+
+.get-points {
+    margin-top: 5%;
+    padding: 10px;
+    width: 90%;
+    height: 120px;
+    background-color:#fff;
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 28px;
+    color: black;
+}
