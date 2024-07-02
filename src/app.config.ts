@@ -25,6 +25,7 @@ export default {
         'house-post/index',
         'house-edit/index',
         'house-review/index',
+        'seek-post/index',
       ],
     },
     {

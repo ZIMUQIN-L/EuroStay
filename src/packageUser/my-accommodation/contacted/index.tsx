@@ -81,7 +81,7 @@ const ContactedCard: React.FC<UserAccomMessageItemProps> = userAccomMessage => {
 
   const handleButtonText = (status, type) => {
     if (type == 'withoutTargetHouse') {
-      return '删除求宿信息';
+      return '编辑求宿信息';
     }
     switch (status) {
       case 'unread':
@@ -113,19 +113,22 @@ const ContactedCard: React.FC<UserAccomMessageItemProps> = userAccomMessage => {
   const handleUserClickButton = (infoId, infoStatus, type) => {
     // handleRetriveContactInfoBoard();
     if (type == 'withoutTargetHouse') {
-      Taro.showModal({
-        title: '删除确认',
-        content: '是否确认删除这条求宿信息',
-        success: function (res) {
-          if (res.confirm) {
-            accomMessageDelete(infoId).then(res => {
-              Taro.redirectTo({
-                url: `../../packageUser/my-accommodation/index?tab=toSeek`,
-              });
-            });
-          }
-        },
+      Taro.navigateTo({
+        url: `../../packageHouse/seek-post/index?id=${infoId}`,
       });
+      //   Taro.showModal({
+      //     title: '删除确认',
+      //     content: '是否确认删除这条求宿信息',
+      //     success: function (res) {
+      //       if (res.confirm) {
+      //         accomMessageDelete(infoId).then(res => {
+      //           Taro.redirectTo({
+      //             url: `../../packageUser/my-accommodation/index?tab=toSeek`,
+      //           });
+      //         });
+      //       }
+      //     },
+      //   });
     } else if (infoStatus == 'contactReceived') {
       Taro.showLoading({
         title: '加载回复中',

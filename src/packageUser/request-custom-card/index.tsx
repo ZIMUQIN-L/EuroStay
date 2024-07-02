@@ -100,7 +100,7 @@ const RequestCustomCard = ({
       onSubmit={handleSubmitRequestCustomCard}
       className='request-custom-card'
     >
-      <View className='index message-card'>
+      <View className='message-card'>
         <RequestInfoSelection
           onRequestInfoSelection={handleRequestInfoSelectionEdit}
         />

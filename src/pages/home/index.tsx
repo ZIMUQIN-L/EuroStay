@@ -1,6 +1,7 @@
 import { View, Text, Image } from '@tarojs/components';
 import { observer } from 'mobx-react';
 import Houses from './houses';
+import Taro from '@tarojs/taro';
 import { useState } from 'react';
 import HouseSource from '@assets/images/house-source.svg';
 import HouseSourceSelected from '@assets/images/house-source-selected.svg';
@@ -11,6 +12,12 @@ import SeekingAccommodation from './seeking-accomadation';
 
 const Index = () => {
   const [activeTab, setActiveTab] = useState('houses');
+
+  const onClickPostSeek = () => {
+    Taro.navigateTo({
+      url: `../../packageHouse/seek-post/index?id=none`,
+    });
+  };
 
   return (
     <>
@@ -44,6 +51,9 @@ const Index = () => {
           )}
           <Text>求宿</Text>
         </View>
+      </View>
+      <View className='add-button' onClick={onClickPostSeek}>
+        <Text>+</Text>
       </View>
       <View className='search-area'>
         {activeTab === 'houses' ? <Houses /> : <SeekingAccommodation />}
