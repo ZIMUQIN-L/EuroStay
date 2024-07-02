@@ -6,11 +6,7 @@ const TagBar = () => {
   const tags = ['#workshop', '#一起探店', '#剧本杀', '#KTV', '#其它标签'];
 
   return (
-    <ScrollView
-      className='tag-bar'
-      scrollX
-      enableFlex
-    >
+    <ScrollView className='tag-bar' scrollX enableFlex>
       {tags.map((tag, index) => (
         <View key={index} className='tag-item'>
           <Text>{tag}</Text>

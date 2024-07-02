@@ -46,7 +46,7 @@ const UserCommentCard: React.FC<UserRatingInfoItemProps> = userRatingInfo => {
                 <Text
                   // @PJ TODO
                   key={index}
-                  className={`star ${index < ratingNumber ? 'filled' : ''}`}
+                  className={`star ${star <= ratingNumber ? 'filled' : ''}`}
                 >
                   ★
                 </Text>

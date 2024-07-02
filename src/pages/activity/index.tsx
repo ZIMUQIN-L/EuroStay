@@ -45,15 +45,15 @@ const Index = () => {
       username: 'username',
       images: [''], // Add image URLs here
     },
-    
+
     // Add more activity data as needed
   ];
 
-  const navigateToPage = (page) => {
+  const navigateToPage = page => {
     Taro.switchTab({
       url: `/pages/${page}/index`,
       success: () => {},
-      fail: (err) => {
+      fail: err => {
         // Handle error
       },
     });

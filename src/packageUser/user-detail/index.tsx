@@ -8,7 +8,7 @@ import { Point } from '@utils/cloudIcons';
 import { useRouter } from '@tarojs/taro';
 import { userInfoSearch } from '@common/database/user/user';
 import UserDetailContent from './user-detail-content';
-import UserAccomContent from './user-accom-content'
+import UserAccomContent from './user-accom-content';
 
 const userData: UserDetailInfoItemProps = {
   _id: 'user-001',
@@ -138,10 +138,10 @@ const UserDetail: React.FC = () => {
         </View>
       </View>
       {activeTab === '概况' ? (
-          <UserDetailContent {...userDetailInfo} />
-        ) : activeTab === '供宿' ?(
-          <UserAccomContent {...userDetailInfo} />
-        ): null}
+        <UserDetailContent {...userDetailInfo} />
+      ) : activeTab === '供宿' ? (
+        <UserAccomContent {...userDetailInfo} />
+      ) : null}
     </View>
   );
 };

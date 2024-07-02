@@ -9,27 +9,6 @@ import './index.scss';
 import Taro from '@tarojs/taro';
 import { userHouseInfoSearch } from '@common/database/user/user';
 
-const houses = [
-  {
-    id: '1',
-    image: DefaultHouse,
-    title: '宽敞大床房',
-    destination: '意大利罗马',
-    capacity: 2,
-    gender: '仅限女生',
-    likes: 20,
-  },
-  {
-    id: '2',
-    image: DefaultHouse,
-    destination: '意大利米兰',
-    title: '现代风格套房',
-    capacity: 3,
-    gender: '性别不限',
-    likes: 40,
-  },
-];
-
 const Index = () => {
   const [user, setUser] = useState<UserItemProps>(GlobalStore.userInfo);
   const [houseList, setHouseList] = useState<HouseItemProps[]>([]);
