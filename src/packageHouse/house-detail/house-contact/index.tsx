@@ -105,10 +105,10 @@ const HouseContact: React.FC<HouseDetailItemProps> = house => {
     }
   };
 
-  const formatDate = (dateString) => {
+  const formatDate = dateString => {
     const date = new Date(dateString);
-    const month = (`0${date.getMonth() + 1}`).slice(-2); // Add leading zero and slice last two digits
-    const day = (`0${date.getDate()}`).slice(-2); // Add leading zero and slice last two digits
+    const month = `0${date.getMonth() + 1}`.slice(-2); // Add leading zero and slice last two digits
+    const day = `0${date.getDate()}`.slice(-2); // Add leading zero and slice last two digits
     return `${month}月${day}日`;
   };
 
@@ -119,19 +119,22 @@ const HouseContact: React.FC<HouseDetailItemProps> = house => {
     <View>
       <View className='lists'>
         <View className='contact-container'>
-        <View className="date-container">
-          <Text className="date-text">{formatDate(house.start_date)}</Text>
-          <Text className="date-separator">至</Text>
-          <Text className="date-text">{formatDate(house.end_date)}</Text>
-        </View>
-        <View className="right-section">
-          {/* <View className="icon-container">
+          <View className='date-container'>
+            <Text className='date-text'>{formatDate(house.start_date)}</Text>
+            <Text className='date-separator'>至</Text>
+            <Text className='date-text'>{formatDate(house.end_date)}</Text>
+          </View>
+          <View className='right-section'>
+            {/* <View className="icon-container">
             <Image src={Star} className="star-icon" />
           </View> */}
-          <View className="contact-button" onClick={onCreateCustomCardFromTenant}>
-            联系房主
+            <View
+              className='contact-button'
+              onClick={onCreateCustomCardFromTenant}
+            >
+              联系房主
+            </View>
           </View>
-        </View>
         </View>
       </View>
       {isModalOpen && (

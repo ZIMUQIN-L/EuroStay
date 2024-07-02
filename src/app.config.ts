@@ -1,6 +1,11 @@
 export default {
   lazyCodeLoading: 'requiredComponents',
-  pages: ['pages/login/index', 'pages/home/index', 'pages/user-profile/index', 'pages/activity/index'],
+  pages: [
+    'pages/login/index',
+    'pages/home/index',
+    'pages/user-profile/index',
+    'pages/activity/index',
+  ],
   subPackages: [
     {
       root: 'packageUser/',
@@ -10,7 +15,7 @@ export default {
         'my-accommodation/index',
         'my-houses/index',
         'my-offering/index',
-        'review-on-house/index'
+        'review-on-house/index',
       ],
     },
     {
@@ -24,9 +29,7 @@ export default {
     },
     {
       root: 'packageActivity/',
-      pages: [
-        'my-activities/index',
-      ],
+      pages: ['my-activities/index'],
     },
   ],
   window: {
@@ -49,7 +52,7 @@ export default {
       {
         pagePath: 'pages/activity/index',
         text: '活动',
-      }
+      },
     ],
   },
 };

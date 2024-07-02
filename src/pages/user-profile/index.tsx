@@ -99,7 +99,7 @@ const menuList = [
     text: '设置',
     icon: SettingIcon,
     path: '',
-  }
+  },
 ];
 
 const Index = () => {

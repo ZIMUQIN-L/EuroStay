@@ -193,9 +193,7 @@ const Index = () => {
             <Input
               type='text'
               value={userInfo.nickName}
-              placeholder={
-                `写下你的昵称吧` 
-              }
+              placeholder={`写下你的昵称吧`}
               className='info-value'
               // onInput={handleUserDescriptionEdit}
             />
@@ -229,9 +227,7 @@ const Index = () => {
             <Input
               type='text'
               value='学生'
-              placeholder={
-                `写下你的身份吧` 
-              }
+              placeholder={`写下你的身份吧`}
               className='info-value'
               // onInput={handleUserDescriptionEdit}
             />
@@ -246,9 +242,7 @@ const Index = () => {
             <Input
               type='text'
               value='游泳，电影，滑雪'
-              placeholder={
-                `介绍你的兴趣爱好~` 
-              }
+              placeholder={`介绍你的兴趣爱好~`}
               className='info-value'
               // onInput={handleUserDescriptionEdit}
             />
@@ -258,9 +252,7 @@ const Index = () => {
             <Input
               type='text'
               value='xxxx'
-              placeholder={
-                `介绍你专业领域~` 
-              }
+              placeholder={`介绍你专业领域~`}
               className='info-value'
               // onInput={handleUserDescriptionEdit}
             />
@@ -270,9 +262,7 @@ const Index = () => {
             <Input
               type='text'
               value='xxxx'
-              placeholder={
-                `介绍你fun facts~` 
-              }
+              placeholder={`介绍你fun facts~`}
               className='info-value'
               // onInput={handleUserDescriptionEdit}
             />
@@ -282,9 +272,7 @@ const Index = () => {
             <Input
               type='text'
               value='xxxx'
-              placeholder={
-                `介绍你游览过的国家~` 
-              }
+              placeholder={`介绍你游览过的国家~`}
               className='info-value'
               // onInput={handleUserDescriptionEdit}
             />
@@ -294,9 +282,7 @@ const Index = () => {
             <Input
               type='text'
               value='xxxx'
-              placeholder={
-                `介绍你居住过的国家~` 
-              }
+              placeholder={`介绍你居住过的国家~`}
               className='info-value'
               // onInput={handleUserDescriptionEdit}
             />
@@ -306,9 +292,7 @@ const Index = () => {
             <Input
               type='text'
               value='xxxx'
-              placeholder={
-                `介绍你可以向求宿者提供什么~` 
-              }
+              placeholder={`介绍你可以向求宿者提供什么~`}
               className='info-value'
               // onInput={handleUserDescriptionEdit}
             />

@@ -115,6 +115,7 @@ export const userReceivedRatingSearch = async targetUserOpenid => {
       .where({
         targetUserOpenid: targetUserOpenid,
       })
+      .limit(10)
       .get({
         success: function (res) {
           resolve(res.data);

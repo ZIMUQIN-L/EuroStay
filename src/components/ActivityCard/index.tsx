@@ -1,6 +1,11 @@
 import React from 'react';
 import { View, Text, Image } from '@tarojs/components';
-import { UserCircleOutlined, LocationOutlined, GoldCoinOutlined, FriendsOutlined } from '@taroify/icons';
+import {
+  UserCircleOutlined,
+  LocationOutlined,
+  GoldCoinOutlined,
+  FriendsOutlined,
+} from '@taroify/icons';
 import './index.scss';
 
 interface ActivityCardProps {
@@ -17,7 +22,7 @@ interface ActivityCardProps {
 
 const ActivityCard: React.FC<ActivityCardProps> = ({ activity }) => {
   const [imageSrc, setImageSrc] = React.useState(
-    activity.images.length > 0 ? activity.images[0] : ''
+    activity.images.length > 0 ? activity.images[0] : '',
   );
 
   const handleImageError = () => {
@@ -31,10 +36,10 @@ const ActivityCard: React.FC<ActivityCardProps> = ({ activity }) => {
         className='activity-image'
         onError={handleImageError}
       />
-     <View className='activity-content'>
+      <View className='activity-content'>
         <Text className='title'>{activity.title}</Text>
         <View className='organizer'>
-            <UserCircleOutlined className='icon' />
+          <UserCircleOutlined className='icon' />
           <Text>由 {activity.username} 发起</Text>
         </View>
         <View className='details'>
@@ -48,7 +53,9 @@ const ActivityCard: React.FC<ActivityCardProps> = ({ activity }) => {
           </View>
           <View className='tags'>
             {activity.tags.map((tag, index) => (
-              <Text key={index} className='tag'>{tag}</Text>
+              <Text key={index} className='tag'>
+                {tag}
+              </Text>
             ))}
           </View>
           <View className='right-detail-item' style='margin-right: 4px;'>

@@ -6,7 +6,7 @@ const Banner = () => {
   const images = [
     'https://via.placeholder.com/300x150', // Add your image URLs here
     'https://via.placeholder.com/300x150',
-    'https://via.placeholder.com/300x150'
+    'https://via.placeholder.com/300x150',
   ];
 
   return (
