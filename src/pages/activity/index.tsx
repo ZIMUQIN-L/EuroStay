@@ -59,13 +59,25 @@ const Index = () => {
     });
   };
 
+  const navigateToDetail = (activity) => {
+    // you can get the activity data here.
+    console.log(activity);
+    Taro.navigateTo({
+      url: `/packageActivity/activity-detail/index?id={demoActivityId}`,
+    });
+    // Taro.navigateTo({
+    //   url: `/pages/detail-page/index?title=${activity.title}&location=${activity.location}&price=${activity.price}&date=${activity.date}&time=${activity.time}&duration=${activity.duration}&organizer=${activity.organizer}&description=${activity.description}`,
+    // });
+  };
+  
+
   return (
     <View className='index'>
       <Banner />
       <TagBar />
       <View className='cards'>
-        {activities.map((activity, index) => (
-          <ActivityCard key={index} activity={activity} />
+      {activities.map((activity, index) => (
+          <ActivityCard key={index} activity={activity} onClick={() => navigateToDetail(activity)} />
         ))}
       </View>
       <View className='add-button' onClick={() => navigateToPage('add')}>

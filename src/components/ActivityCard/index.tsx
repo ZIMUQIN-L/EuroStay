@@ -13,9 +13,10 @@ interface ActivityCardProps {
     username: string;
     images: string[];
   };
+  onClick: () => void;
 }
 
-const ActivityCard: React.FC<ActivityCardProps> = ({ activity }) => {
+const ActivityCard: React.FC<ActivityCardProps> = ({ activity, onClick }) => {
   const [imageSrc, setImageSrc] = React.useState(
     activity.images.length > 0 ? activity.images[0] : ''
   );
@@ -25,7 +26,7 @@ const ActivityCard: React.FC<ActivityCardProps> = ({ activity }) => {
   };
 
   return (
-    <View className='activity-card'>
+    <View className='activity-card' onClick={onClick}>
       <Image
         src={imageSrc}
         className='activity-image'
