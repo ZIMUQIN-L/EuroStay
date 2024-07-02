@@ -10,7 +10,7 @@ export default {
         'my-accommodation/index',
         'my-houses/index',
         'my-offering/index',
-        'review-on-house/index',
+        'review-on-house/index'
       ],
     },
     {
@@ -20,6 +20,12 @@ export default {
         'house-post/index',
         'house-edit/index',
         'house-review/index',
+      ],
+    },
+    {
+      root: 'packageActivity/',
+      pages: [
+        'my-activities/index',
       ],
     },
   ],

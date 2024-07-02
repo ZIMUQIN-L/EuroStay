@@ -81,6 +81,11 @@ const menuList = [
     path: '',
   },
   {
+    text: '我的活动',
+    icon: MyFavoriteIcon,
+    path: '../../packageActivity/my-activities/index',
+  },
+  {
     text: '实名认证',
     icon: ValidationIcon,
     path: '',
@@ -89,7 +94,7 @@ const menuList = [
     text: '设置',
     icon: SettingIcon,
     path: '',
-  },
+  }
 ];
 
 const Index = () => {
