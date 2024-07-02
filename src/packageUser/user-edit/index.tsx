@@ -9,6 +9,7 @@ import { cloudAvatarUpload } from '@common/database/cloudstorage/files';
 import { userInfoUpdate } from '@common/database/user/user';
 import CustomTabBar from '@components/CustomTabBar';
 import { RightBottomArrow, RightBottomArrowGrey } from '@utils/cloudIcons';
+import CustomDateRangePicker from '@components/CustomDateRangePicker';
 
 const Index = () => {
   const [userInfo, setUserInfo] = useState<UserItemProps>(GlobalStore.userInfo);
@@ -189,7 +190,15 @@ const Index = () => {
         <View className='info-container'>
           <View className='info-item'>
             <Text className='info-label'>昵称</Text>
-            <Text className='info-value'>{userInfo.nickName}</Text>
+            <Input
+              type='text'
+              value={userInfo.nickName}
+              placeholder={
+                `写下你的昵称吧` 
+              }
+              className='info-value'
+              // onInput={handleUserDescriptionEdit}
+            />
           </View>
           <View className='info-item'>
             <Text className='info-label'>性别</Text>
@@ -217,7 +226,15 @@ const Index = () => {
           </View>
           <View className='info-item'>
             <Text className='info-label'>身份</Text>
-            <Text className='info-value'>学生</Text>
+            <Input
+              type='text'
+              value='学生'
+              placeholder={
+                `写下你的身份吧` 
+              }
+              className='info-value'
+              // onInput={handleUserDescriptionEdit}
+            />
           </View>
         </View>
       </View>
@@ -226,27 +243,75 @@ const Index = () => {
         <View className='info-container'>
           <View className='info-item'>
             <Text className='info-label'>兴趣爱好</Text>
-            <Text className='info-value'>游泳, 电影, 滑雪</Text>
+            <Input
+              type='text'
+              value='游泳，电影，滑雪'
+              placeholder={
+                `介绍你的兴趣爱好~` 
+              }
+              className='info-value'
+              // onInput={handleUserDescriptionEdit}
+            />
           </View>
           <View className='info-item'>
             <Text className='info-label'>专业领域</Text>
-            <Text className='info-value'>xxxx</Text>
+            <Input
+              type='text'
+              value='xxxx'
+              placeholder={
+                `介绍你专业领域~` 
+              }
+              className='info-value'
+              // onInput={handleUserDescriptionEdit}
+            />
           </View>
           <View className='info-item'>
             <Text className='info-label'>fun facts about me</Text>
-            <Text className='info-value'>xxxx</Text>
+            <Input
+              type='text'
+              value='xxxx'
+              placeholder={
+                `介绍你fun facts~` 
+              }
+              className='info-value'
+              // onInput={handleUserDescriptionEdit}
+            />
           </View>
           <View className='info-item'>
             <Text className='info-label'>我游览过的国家</Text>
-            <Text className='info-value'>xxxx</Text>
+            <Input
+              type='text'
+              value='xxxx'
+              placeholder={
+                `介绍你游览过的国家~` 
+              }
+              className='info-value'
+              // onInput={handleUserDescriptionEdit}
+            />
           </View>
           <View className='info-item'>
             <Text className='info-label'>我居住过的国家</Text>
-            <Text className='info-value'>xxxx</Text>
+            <Input
+              type='text'
+              value='xxxx'
+              placeholder={
+                `介绍你居住过的国家~` 
+              }
+              className='info-value'
+              // onInput={handleUserDescriptionEdit}
+            />
           </View>
           <View className='info-item'>
             <Text className='info-label'>我可以向求宿者提供什么</Text>
-            <Text className='info-value'>xxxx</Text>
+            <Input
+              type='text'
+              value='xxxx'
+              placeholder={
+                `介绍你可以向求宿者提供什么~` 
+              }
+              className='info-value'
+              // onInput={handleUserDescriptionEdit}
+            />
           </View>
         </View>
       </View>
