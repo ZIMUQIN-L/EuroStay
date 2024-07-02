@@ -118,7 +118,7 @@ const HouseItem: React.FC<AccomMssageHouseItemProps> = house => {
         user.nickName,
         user.avatarUrl,
         userDescription,
-        shareToggle ? 'both' : 'withTargetHouse',
+        'withTargetHouse',
         'unread',
         contact,
         '',
@@ -130,6 +130,23 @@ const HouseItem: React.FC<AccomMssageHouseItemProps> = house => {
         setModalOpen(false);
         handleMessageNotification();
       });
+      if (shareToggle) {
+        accomMessageAdd(
+          endDate,
+          startDate,
+          capacity,
+          gender,
+          house.location,
+          user.userOpenid,
+          user.nickName,
+          user.avatarUrl,
+          userDescription,
+          'withoutTargetHouse',
+          'unread',
+          contact,
+          '',
+        );
+      }
     }
   };
 

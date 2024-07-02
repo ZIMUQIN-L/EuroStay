@@ -75,6 +75,7 @@ const UserDetail: React.FC = () => {
           <View className='info'>
             <Text className='profile-name'>
               {userDetailInfo?.nickName}
+              {/* // TODO, @PJ */}
               <Text className='badge'>实名认证</Text>
             </Text>
             <View className='badges'>
@@ -98,11 +99,19 @@ const UserDetail: React.FC = () => {
               <View className='ratings'>
                 <View className='rating-item'>
                   <Text className='rating-title'>房东评分</Text>
-                  <Text className='rating-value'>{userData.hostRating}</Text>
+                  <Text className='rating-value'>
+                    {userDetailInfo && userDetailInfo.hostRating
+                      ? userDetailInfo.hostRating
+                      : '暂无评分'}
+                  </Text>
                 </View>
                 <View className='rating-item'>
                   <Text className='rating-title'>房客评分</Text>
-                  <Text className='rating-value'>{userData.guestRating}</Text>
+                  <Text className='rating-value'>
+                    {userDetailInfo && userDetailInfo.guestRating
+                      ? userDetailInfo.guestRating
+                      : '暂无评分'}
+                  </Text>
                 </View>
               </View>
               {userDetailInfo._openid == currentUser._openid ? (

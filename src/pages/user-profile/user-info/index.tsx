@@ -32,7 +32,7 @@ const UserInfo: React.FC<UserItemProps> = user => {
         </View>
         <View className='user-texts'>
           <View className='tilte'>{userInfo.nickName}</View>
-          <View className='sub-title'>ID: {userInfo.userOpenid}</View>
+          {/* <View className='sub-title'>ID: {userInfo.userOpenid}</View> */}
           <View className='sub-title'>所属地: {userInfo.userLocation}</View>
         </View>
         <View

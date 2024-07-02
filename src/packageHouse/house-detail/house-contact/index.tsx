@@ -1,5 +1,8 @@
 import { View, Text, Image } from '@tarojs/components';
-import { HouseDetailItemProps } from '@utils/interfaces';
+import {
+  HouseDetailItemProps,
+  UserDetailInfoItemProps,
+} from '@utils/interfaces';
 import Taro from '@tarojs/taro';
 import './index.scss';
 import { UserItemProps } from '@utils/interfaces';
@@ -8,6 +11,7 @@ import { accomMessageAdd } from '@common/database/accomMessage/accomMessage';
 import GlobalStore from '@store/GlobalStore';
 import RequestCustomCard from '../../../packageUser/request-custom-card';
 import { Star } from '@utils/cloudIcons';
+import { userInfoSearch } from '@common/database/user/user';
 
 const HouseContact: React.FC<HouseDetailItemProps> = house => {
   const [isModalOpen, setModalOpen] = useState(false);
@@ -20,6 +24,8 @@ const HouseContact: React.FC<HouseDetailItemProps> = house => {
   const [contact, setContact] = useState('');
   const [gender, setGender] = useState('');
   const [userDescription, setUserDescription] = useState<string>('');
+  const [ownerUserInfo, setOwnerUserInfo] =
+    useState<UserDetailInfoItemProps | null>(null);
 
   // user information
   const [user, setUser] = useState<UserItemProps>(GlobalStore.userInfo);
@@ -27,6 +33,11 @@ const HouseContact: React.FC<HouseDetailItemProps> = house => {
   useEffect(() => {
     const demoUser: UserItemProps = GlobalStore.userInfo;
     setUser(demoUser);
+    userInfoSearch(house._openid).then(
+      (ownerInfo: UserDetailInfoItemProps[]) => {
+        setOwnerUserInfo(ownerInfo[0]);
+      },
+    );
   }, []);
 
   const handleSendToggleEdit = editSendToggle => {
@@ -91,7 +102,7 @@ const HouseContact: React.FC<HouseDetailItemProps> = house => {
         user.nickName,
         user.avatarUrl,
         userDescription,
-        shareToggle ? 'both' : 'withTargetHouse',
+        'withTargetHouse',
         'unread',
         contact,
         '',
@@ -102,6 +113,23 @@ const HouseContact: React.FC<HouseDetailItemProps> = house => {
       ).then(msg => {
         setModalOpen(false);
       });
+      if (shareToggle) {
+        accomMessageAdd(
+          endDate,
+          startDate,
+          capacity,
+          gender,
+          house.location,
+          user.userOpenid,
+          user.nickName,
+          user.avatarUrl,
+          userDescription,
+          'withoutTargetHouse',
+          'unread',
+          contact,
+          '',
+        );
+      }
     }
   };
 
