@@ -63,6 +63,11 @@
           word-wrap: break-word;
         }
       }
+      &-avatar {
+        width: 80px;
+        height: 80px;
+        margin-top: 10px;
+      }
 
       Text {
         font-size: 20px;

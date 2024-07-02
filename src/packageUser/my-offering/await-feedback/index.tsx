@@ -224,7 +224,7 @@ const AwaitFeedback: React.FC<UserAccomMessageItemProps> = userAccomMessage => {
       <CustomCard
         title={userAccomMessage.location}
         imageUrl={
-          userAccomMessage.images && userAccomMessage.images.length == 0
+          !userAccomMessage.images || userAccomMessage.images.length == 0
             ? DefaultHouse
             : userAccomMessage.images[0]
         }
@@ -242,6 +242,7 @@ const AwaitFeedback: React.FC<UserAccomMessageItemProps> = userAccomMessage => {
           );
         }}
         clickable={handleButtonClickable(userAccomMessage.status)}
+        avatarUrl={userAccomMessage.targetUserAvatarUrl}
       />
       {contactInfoIsShown && (
         <ContactInfoBoard

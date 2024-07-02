@@ -134,6 +134,7 @@ const ContactedCard: React.FC<UserAccomMessageItemProps> = userAccomMessage => {
           handleUserClickButton(userAccomMessage._id, userAccomMessage.status);
         }}
         clickable={handleButtonClickable(userAccomMessage.status)}
+        avatarUrl={userAccomMessage.targetUserAvatarUrl}
       />
       {contactInfoIsShown && (
         <ContactInfoBoard

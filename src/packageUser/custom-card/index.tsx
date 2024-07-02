@@ -1,5 +1,6 @@
 import { View, Image, Text } from '@tarojs/components';
 import './index.scss';
+import { DefaultAvatar } from '@utils/cloudIcons';
 
 /**
  * @description 我的供宿和我的求宿的共用组件
@@ -13,7 +14,8 @@ const CustomCard = ({
   buttonText,
   clickButton,
   clickable = false,
-  avatarUrl = '',
+  avatarUrl = DefaultAvatar,
+  withTarget = true,
   buttonTextSecond = '',
   clickButtonSecond = () => {}, // 第二个按钮可选参数
 }) => {
@@ -21,7 +23,7 @@ const CustomCard = ({
   return (
     <View className='card'>
       <View className='card-left'>
-        <Image src={imageUrl} />
+        {withTarget && <Image src={imageUrl} />}
       </View>
       <View className='card-right'>
         <View className='card-right-top'>
@@ -31,7 +33,10 @@ const CustomCard = ({
         <View className='card-right-middle'>
           <View>
             {/* {avatarUrl != '' && ( */}
-            <Image src={avatarUrl} className='card-right-middle-avatar' />
+            <Image
+              src={avatarUrl ? avatarUrl : DefaultAvatar}
+              className='card-right-middle-avatar'
+            />
             {/* )} */}
           </View>
           <View className='card-right-middle-text'>

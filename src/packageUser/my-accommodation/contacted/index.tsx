@@ -140,9 +140,13 @@ const ContactedCard: React.FC<UserAccomMessageItemProps> = userAccomMessage => {
   return (
     <View>
       <CustomCard
-        title={userAccomMessage.location}
+        title={
+          userAccomMessage.type != 'withoutTargetHouse'
+            ? userAccomMessage.location
+            : userAccomMessage.location + '求宿中'
+        }
         imageUrl={
-          userAccomMessage.images && userAccomMessage.images.length == 0
+          !userAccomMessage.images || userAccomMessage.images.length == 0
             ? DefaultHouse
             : userAccomMessage.images[0]
         }
@@ -156,6 +160,8 @@ const ContactedCard: React.FC<UserAccomMessageItemProps> = userAccomMessage => {
           handleUserClickButton(userAccomMessage._id, userAccomMessage.status);
         }}
         clickable={handleButtonClickable(userAccomMessage.status)}
+        avatarUrl={userAccomMessage.targetUserAvatarUrl}
+        withTarget={userAccomMessage.type != 'withoutTargetHouse'}
       />
       {contactInfoIsShown && (
         <ContactInfoBoard
