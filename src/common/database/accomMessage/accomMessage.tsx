@@ -20,6 +20,7 @@ export const accomMessageAdd = async (
   images = [DefaultHouse],
   targetUserNickName = '',
   targetUserOpenid = '',
+  targetUserAvatarUrl = '',
 ) => {
   const db = wx.cloud.database();
   return new Promise((resolve, reject) => {
@@ -44,6 +45,7 @@ export const accomMessageAdd = async (
           images: images,
           targetUserNickName: targetUserNickName,
           targetUserOpenid: targetUserOpenid,
+          targetUserAvatarUrl: targetUserAvatarUrl,
         },
       })
       .then(res => {

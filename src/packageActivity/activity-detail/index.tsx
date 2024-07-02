@@ -1,7 +1,20 @@
 import React from 'react';
-import { View, Text, Image, Swiper, SwiperItem, Button } from '@tarojs/components';
+import {
+  View,
+  Text,
+  Image,
+  Swiper,
+  SwiperItem,
+  Button,
+} from '@tarojs/components';
 import './index.scss';
-import { StarOutlined, LocationOutlined, NotesOutlined, GoldCoinOutlined, FriendsOutlined } from '@taroify/icons';
+import {
+  StarOutlined,
+  LocationOutlined,
+  NotesOutlined,
+  GoldCoinOutlined,
+  FriendsOutlined,
+} from '@taroify/icons';
 import { PreferenceIcon } from '@utils/cloudIcons';
 const DetailPage = () => {
   // Hardcoded demo data
@@ -18,19 +31,25 @@ const DetailPage = () => {
     images: [
       'https://via.placeholder.com/300x150',
       'https://via.placeholder.com/300x150',
-      'https://via.placeholder.com/300x150'
-    ]
+      'https://via.placeholder.com/300x150',
+    ],
   };
 
   const host = {
     name: 'Username',
     info: '设计师，艺术疗愈，手工爱好者',
     avatar: 'https://via.placeholder.com/50x50',
-  }
+  };
 
   return (
     <View className='detail-page'>
-      <Swiper className='swiper' indicatorDots autoplay interval={5000} duration={500}>
+      <Swiper
+        className='swiper'
+        indicatorDots
+        autoplay
+        interval={5000}
+        duration={500}
+      >
         {activity.images.map((image, index) => (
           <SwiperItem key={index}>
             <Image src={image} className='slide-image' />
@@ -51,7 +70,9 @@ const DetailPage = () => {
         <View className='details'>
           <View className='date-container'>
             <NotesOutlined className='icon' />
-            <Text>{activity.date},{activity.time}</Text>
+            <Text>
+              {activity.date},{activity.time}
+            </Text>
           </View>
           <View className='date-container'>
             <Text>{activity.duration}</Text>
@@ -67,15 +88,17 @@ const DetailPage = () => {
         <View className='description'>
           <Image src={PreferenceIcon} className='description-image' />
           <View className='description-info'>
-              <Text className='description-title'>活动亮点介绍</Text>
-              <Text className='description-content'>{activity.description}</Text>
+            <Text className='description-title'>活动亮点介绍</Text>
+            <Text className='description-content'>{activity.description}</Text>
           </View>
         </View>
       </View>
       <View className='contact-container'>
         <View className='price-info'>
           <Text className='price'>{activity.price}</Text>
-          <Text className='participants'>预估人数 {activity.participants}人</Text>
+          <Text className='participants'>
+            预估人数 {activity.participants}人
+          </Text>
         </View>
         <View className='right-section'>
           <View className='icon-container'>

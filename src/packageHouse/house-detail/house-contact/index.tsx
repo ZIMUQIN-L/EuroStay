@@ -10,7 +10,6 @@ import { useState, useEffect } from 'react';
 import { accomMessageAdd } from '@common/database/accomMessage/accomMessage';
 import GlobalStore from '@store/GlobalStore';
 import RequestCustomCard from '../../../packageUser/request-custom-card';
-import { Star } from '@utils/cloudIcons';
 import { userInfoSearch } from '@common/database/user/user';
 
 const HouseContact: React.FC<HouseDetailItemProps> = house => {
@@ -108,8 +107,9 @@ const HouseContact: React.FC<HouseDetailItemProps> = house => {
         '',
         house._id,
         house.images,
+        ownerUserInfo?.nickName,
         house._openid,
-        house._openid,
+        ownerUserInfo?.avatarUrl,
       ).then(msg => {
         setModalOpen(false);
       });

@@ -79,6 +79,7 @@ export interface UserAccomMessageItemProps {
   targetUserNickName: string;
   //   targetUserAvatarUrl: string;
   targetUserOpenid: string;
+  targetUserAvatarUrl: string;
 }
 
 // 房主回复消息数据接口

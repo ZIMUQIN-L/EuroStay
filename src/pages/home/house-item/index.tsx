@@ -1,12 +1,17 @@
 import { View, Text, Image } from '@tarojs/components';
 import Taro from '@tarojs/taro';
-import { AccomMssageHouseItemProps, UserItemProps } from '@utils/interfaces';
+import {
+  AccomMssageHouseItemProps,
+  UserItemProps,
+  UserDetailInfoItemProps,
+} from '@utils/interfaces';
 import { DefaultHouse, DateIcon } from '@utils/cloudIcons';
 import { checkImageUrl } from '@utils/validationUtil';
 import { useState, useEffect } from 'react';
 import RequestCustomCard from '../../../packageUser/request-custom-card';
 import GlobalStore from '@store/GlobalStore';
 import { accomMessageAdd } from '@common/database/accomMessage/accomMessage';
+import { userInfoSearch } from '@common/database/user/user';
 
 const HouseItem: React.FC<AccomMssageHouseItemProps> = house => {
   const [imageSrc, setImageSrc] = useState('');
@@ -23,10 +28,17 @@ const HouseItem: React.FC<AccomMssageHouseItemProps> = house => {
 
   // user information
   const [user, setUser] = useState<UserItemProps>(GlobalStore.userInfo);
+  const [ownerUserInfo, setOwnerUserInfo] =
+    useState<UserDetailInfoItemProps | null>(null);
 
   useEffect(() => {
     const demoUser: UserItemProps = GlobalStore.userInfo;
     setUser(demoUser);
+    userInfoSearch(house._openid).then(
+      (ownerInfo: UserDetailInfoItemProps[]) => {
+        setOwnerUserInfo(ownerInfo[0]);
+      },
+    );
     const imageUrl =
       house.images.length > 0 && checkImageUrl(house.images[0] as string)
         ? house.images[0]
@@ -124,8 +136,9 @@ const HouseItem: React.FC<AccomMssageHouseItemProps> = house => {
         '',
         house._id,
         house.images,
+        ownerUserInfo?.nickName,
         house._openid,
-        house._openid,
+        ownerUserInfo?.avatarUrl,
       ).then(msg => {
         setModalOpen(false);
         handleMessageNotification();
