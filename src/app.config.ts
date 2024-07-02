@@ -1,6 +1,6 @@
 export default {
   lazyCodeLoading: 'requiredComponents',
-  pages: ['pages/login/index', 'pages/home/index', 'pages/user-profile/index'],
+  pages: ['pages/login/index', 'pages/home/index', 'pages/user-profile/index', 'pages/activity/index'],
   subPackages: [
     {
       root: 'packageUser/',
@@ -46,6 +46,10 @@ export default {
         pagePath: 'pages/user-profile/index',
         text: '用户profile',
       },
+      {
+        pagePath: 'pages/activity/index',
+        text: '活动',
+      }
     ],
   },
 };

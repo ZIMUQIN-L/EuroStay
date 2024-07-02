@@ -1,7 +1,6 @@
 import { observer } from 'mobx-react';
 import { DefaultHouse } from '@utils/cloudIcons';
 import { View, Text, Image } from '@tarojs/components';
-
 import { useEffect, useState } from 'react';
 import GlobalStore from '@store/GlobalStore';
 import { HouseItemProps, UserItemProps } from '@utils/interfaces';
@@ -64,7 +63,6 @@ const Index = () => {
           <View className='house-info'>
             <Text>{house.capacity}人</Text>
             <View className='house-likes'>
-              {/* <Image src={StarIcon} /> */}
               {/* <Text>{house.likes}</Text> */}
             </View>
           </View>

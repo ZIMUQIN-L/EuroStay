@@ -4,9 +4,11 @@ import Taro from '@tarojs/taro';
 import './index.scss';
 import HomeIcon from '@assets/images/home.png';
 import RepostIcon from '@assets/images/repost.png';
+import ActivityIcon from '@assets/images/repost.png';
 import UserIcon from '@assets/images/user.png';
 import HomeSelectedIcon from '@assets/images/home-selected.png';
 import RepostSelectedIcon from '@assets/images/repost-selected.png';
+import ActivitySelectedIcon from '@assets/images/repost-selected.png';
 import UserSelectedIcon from '@assets/images/user-selected.png';
 import { useMemo } from 'react';
 import GlobalStore from '@store/GlobalStore';
@@ -117,6 +119,13 @@ const CustomTabBar: React.FC<CustomTabBarProps> = ({ onHomeSelected }) => {
             <Image src={showPost ? RepostSelectedIcon : RepostIcon} />
           </View>
           <Text className={`tab-text ${showPost ? 'active' : ''}`}>发布</Text>
+        </View>
+
+        <View className='tab-item' onClick={() => handleTabClick('activity')}>
+          <View className='tab-icon'>
+            <Image src={showPost ? ActivitySelectedIcon : ActivityIcon} />
+          </View>
+          <Text className={`tab-text ${showPost ? 'active' : ''}`}>活动</Text>
         </View>
 
         <View
