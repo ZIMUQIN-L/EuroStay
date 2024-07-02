@@ -342,3 +342,11 @@
   color: #4d90fe;
   cursor: pointer;
 }
+
+.comment-cards-container {
+  padding: 10px 0px 10px 10px;
+  overflow-x: scroll;
+  overflow-y: visible;
+  display: flex;
+  flex-direction: row;
+}

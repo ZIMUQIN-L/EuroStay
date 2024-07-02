@@ -1,164 +1,144 @@
-console.log('test');
-import { View, Image, Input, Text } from '@tarojs/components';
-import { observer } from 'mobx-react';
-import { useEffect, useState } from 'react';
-import { UserItemProps } from '@utils/interfaces';
+import React, { useState, useEffect } from 'react';
+import { UserDetailInfoItemProps, UserItemProps } from '@utils/interfaces';
+import { View, Image, Text } from '@tarojs/components';
 import './index.scss';
-import Taro from '@tarojs/taro';
 import GlobalStore from '@store/GlobalStore';
-import { cloudAvatarUpload } from '@common/database/cloudstorage/files';
-import { userInfoUpdate } from '@common/database/user/user';
-import CustomTabBar from '@components/CustomTabBar';
+import Taro from '@tarojs/taro';
+import { Point } from '@utils/cloudIcons';
+import { useRouter } from '@tarojs/taro';
+import { userInfoSearch } from '@common/database/user/user';
+import UserDetailContent from './user-detail-content';
 
-const Index = () => {
-  const [userInfo, setUserInfo] = useState<UserItemProps>(GlobalStore.userInfo);
-  const [userAvatarUrl, setUserAvatarUrl] = useState<string>(
-    GlobalStore.userInfo.avatarUrl,
-  );
-  const [userDescription, setUserDescription] = useState<string>(
-    GlobalStore.userInfo.userDes,
-  );
-  const [userLocation, setUserLocation] = useState<string>(
-    GlobalStore.userInfo.userLocation,
+const userData: UserDetailInfoItemProps = {
+  _id: 'user-001',
+  _openid: 'openid-001',
+  userOpenid: 'user-openid-001',
+  nickName: '偷心小白菜',
+  userDes: '欢迎和我进行换宿体验～',
+  avatarUrl: 'https://via.placeholder.com/80',
+  userLocation: 'Milan, Italy',
+  guestRating: 4.8,
+  guestRatingNumber: 25,
+  hostRating: 4.7,
+  hostRatingNumber: 18,
+  gender: 'female',
+  tags: ['INTP', '意大利米兰', '米兰理工大学'],
+  verified: {
+    student: true,
+    gov: true,
+  },
+  aboutMe: {
+    interests: 'Swimming, Movies, Skiing',
+    major: 'Computer Science',
+    languages: 'English, Italian, Chinese',
+    skills: 'Coding, Cooking, Photography',
+    funFact: 'I have visited 30 countries and counting!',
+    visitedCountries: 'Italy, France, Germany, USA, China, Japan',
+    serviceProvided:
+      'I can offer a cozy place to stay and a local tour around Milan.',
+  },
+};
+
+const UserDetail: React.FC = () => {
+  const router = useRouter();
+  const userOpenid = router?.params?.id;
+  const [userDetailInfo, setUserDetailInfo] =
+    useState<UserDetailInfoItemProps>();
+  const [activeTab, setActiveTab] = useState('概况');
+  const [currentUser, setCurrentUser] = useState<UserItemProps>(
+    GlobalStore.userInfo,
   );
 
   useEffect(() => {
-    const globalUserInfo: UserItemProps = GlobalStore.userInfo;
-    setUserInfo(globalUserInfo);
-    setUserAvatarUrl(globalUserInfo.avatarUrl);
-    setUserDescription(globalUserInfo.userDes);
-    setUserLocation(globalUserInfo.userLocation);
+    userInfoSearch(userOpenid).then((ownerInfo: UserDetailInfoItemProps[]) => {
+      setUserDetailInfo(ownerInfo[0]);
+    });
   }, []);
 
-  const handleUserImageEdit = () => {
-    Taro.chooseImage({
-      count: 1,
-      sizeType: ['original', 'compressed'],
-      sourceType: ['album', 'camera'],
-      success: function (res) {
-        const tempFilePaths = res.tempFilePaths;
-        Taro.showLoading({
-          title: '上传中',
-          mask: true,
-        });
-        cloudAvatarUpload(tempFilePaths[0]).then(
-          (uploadedImagePath: string) => {
-            setUserAvatarUrl(uploadedImagePath);
-            Taro.hideLoading();
-          },
-        );
-      },
-      fail: function (err) {
-        Taro.showToast({
-          title: '图片上传失败',
-          icon: 'error',
-          duration: 2000,
-        });
-      },
-    });
-  };
+  if (!userDetailInfo) {
+    return <View>Loading...</View>;
+  }
 
-  const handleUserDescriptionEdit = e => {
-    const inputDescription = e.detail.value;
-    setUserDescription(inputDescription);
-  };
-
-  // 添加用户位置信息
-  const handleUserLocationEdit = e => {
-    const inputLocation = e.detail.value;
-    setUserLocation(inputLocation);
-  };
-
-  // 用户信息修改
-  const handleUserInfoChange = () => {
-    Taro.showLoading({
-      title: '信息修改中',
-      mask: true,
-    });
-    userInfoUpdate(
-      userInfo?._id,
-      userAvatarUrl,
-      userDescription,
-      userInfo?.nickName,
-      userLocation,
-    ).then(res => {
-      if (res == 'document.update:ok') {
-        const updatedGlobalUserInfo: UserItemProps = {
-          _id: userInfo._id,
-          _openid: userInfo._openid,
-          avatarUrl: userAvatarUrl,
-          nickName: userInfo.nickName,
-          userDes: userDescription,
-          userOpenid: userInfo.userOpenid,
-          userLocation: userInfo.userLocation,
-        };
-        GlobalStore.userInfo = updatedGlobalUserInfo;
-        Taro.hideLoading();
-        Taro.reLaunch({
-          url: `/pages/user-profile/index`,
-        });
-      } else {
-        Taro.hideLoading();
-        Taro.showToast({
-          title: '个人信息修改失败',
-          icon: 'error',
-          duration: 2000,
-        });
-        Taro.switchTab({
-          url: `/pages/user-profile/index`,
-        });
-      }
+  const toEdit = () => {
+    Taro.navigateTo({
+      url: '/packageUser/user-edit/index',
     });
   };
 
   return (
-    <text>还没搞完</text>
-    // <View className='index'>
-    //   <Image
-    //     src={userAvatarUrl}
-    //     className='avatar-img'
-    //     onClick={handleUserImageEdit}
-    //   />
-    //   <View>
-    //     <View className='user-texts'>
-    //       <View className='user-name'>
-    //         <Text>{userInfo.nickName}</Text>
-    //       </View>
-    //       <View className='sub-title'>ID:{userInfo.userOpenid}</View>
-    //     </View>
-    //   </View>
-    //   <View className='user-location'>
-    //     <Input
-    //       type='text'
-    //       value={userLocation}
-    //       placeholder={
-    //         userLocation !== '' && userLocation != undefined
-    //           ? `${userLocation}`
-    //           : `请填写个人所在地（国家地区）`
-    //       }
-    //       className='location-input'
-    //       onInput={handleUserLocationEdit}
-    //     />
-    //   </View>
-    //   <View className='user-des'>
-    //     <Input
-    //       type='text'
-    //       value={userDescription}
-    //       placeholder={
-    //         userDescription
-    //           ? `${userDescription}`
-    //           : `个人描述：简单介绍一下自己吧`
-    //       }
-    //       className='des-input'
-    //       onInput={handleUserDescriptionEdit}
-    //     />
-    //   </View>
-    //   <View className='save-button' onClick={handleUserInfoChange}>
-    //     <Text>保存修改</Text>
-    //   </View>
-    //   <CustomTabBar />
-    // </View>
+    <View>
+      <View className='profile-container'>
+        <View className='profile-background' />
+        <View className='profile-header'>
+          <Image src={userDetailInfo?.avatarUrl} className='profile-image' />
+          <View className='info'>
+            <Text className='profile-name'>
+              {userDetailInfo?.nickName}
+              <Text className='badge'>实名认证</Text>
+            </Text>
+            <View className='badges'>
+              {userDetailInfo.tags ? (
+                userDetailInfo.tags.map((tag, index) => (
+                  <Text key={index} className='badge-item'>
+                    {tag}
+                  </Text>
+                ))
+              ) : (
+                <Text className='badge-item'>暂无个性标签</Text>
+              )}
+            </View>
+          </View>
+
+          <View className='additional-info'>
+            <Text className='description'>
+              我的简介：{userDetailInfo.userDes}
+            </Text>
+            <View className='ratings-container'>
+              <View className='ratings'>
+                <View className='rating-item'>
+                  <Text className='rating-title'>房东评分</Text>
+                  <Text className='rating-value'>{userData.hostRating}</Text>
+                </View>
+                <View className='rating-item'>
+                  <Text className='rating-title'>房客评分</Text>
+                  <Text className='rating-value'>{userData.guestRating}</Text>
+                </View>
+              </View>
+              {userDetailInfo._openid == currentUser._openid ? (
+                <View className='edit-button' onClick={toEdit}>
+                  <Text>编辑资料</Text>
+                </View>
+              ) : (
+                <View></View>
+              )}
+            </View>
+          </View>
+        </View>
+      </View>
+
+      <View className='tabs'>
+        <View
+          className={`tab ${activeTab === '概况' ? 'active' : ''}`}
+          onClick={() => setActiveTab('概况')}
+        >
+          概况
+        </View>
+        <View
+          className={`tab ${activeTab === '供宿' ? 'active' : ''}`}
+          onClick={() => setActiveTab('供宿')}
+        >
+          供宿
+        </View>
+        <View
+          className={`tab ${activeTab === '发帖' ? 'active' : ''}`}
+          onClick={() => setActiveTab('发帖')}
+        >
+          发帖
+        </View>
+      </View>
+      <UserDetailContent {...userDetailInfo}></UserDetailContent>
+    </View>
   );
 };
 
-export default observer(Index);
+export default UserDetail;

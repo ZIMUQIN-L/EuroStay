@@ -19,7 +19,7 @@ const UserInfo: React.FC<UserItemProps> = user => {
 
   const toUserDetail = () => {
     Taro.navigateTo({
-      url: '/packageUser/user-detail/index',
+      url: `/packageUser/user-detail/index?id=${user._openid}`,
     });
   };
 
