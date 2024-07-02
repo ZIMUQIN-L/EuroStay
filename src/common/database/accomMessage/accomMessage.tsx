@@ -168,3 +168,17 @@ export const accomMessageSearchWithId = async _id => {
       });
   });
 };
+
+// 删除求宿信息
+export const accomMessageDelete = async _id => {
+  const db = wx.cloud.database();
+  return new Promise((resolve, reject) => {
+    db.collection('UserAccomMessage')
+      .doc(_id)
+      .remove({
+        success: function (res) {
+          resolve(res.data);
+        },
+      });
+  });
+};

@@ -9,14 +9,24 @@ import { useState } from 'react';
 import ContactInfoBoard from '@components/ContactInfoBoard';
 import { View } from '@tarojs/components';
 import { replyMessageSearch } from '@common/database/ownerReply/ownerReply';
-import { accomMessageUpdate } from '@common/database/accomMessage/accomMessage';
+import {
+  accomMessageUpdate,
+  accomMessageDelete,
+} from '@common/database/accomMessage/accomMessage';
 /**
  * @description 我的求宿-已联系
  */
 const ContactedCard: React.FC<UserAccomMessageItemProps> = userAccomMessage => {
   const clickButton = () => {};
 
-  const handleTopText = status => {
+  const handleTopText = (status, type) => {
+    if (type == 'withoutTargetHouse') {
+      if (status == 'unread') {
+        return '等待房东联系中';
+      } else {
+        return '已有房东联系';
+      }
+    }
     switch (status) {
       case 'unread':
         return '等待房东联系中';
@@ -41,7 +51,10 @@ const ContactedCard: React.FC<UserAccomMessageItemProps> = userAccomMessage => {
     }
   };
 
-  const handleButtonClickable = status => {
+  const handleButtonClickable = (status, type) => {
+    if (type == 'withoutTargetHouse') {
+      return true;
+    }
     switch (status) {
       case 'unread':
         return false;
@@ -66,7 +79,10 @@ const ContactedCard: React.FC<UserAccomMessageItemProps> = userAccomMessage => {
     }
   };
 
-  const handleButtonText = status => {
+  const handleButtonText = (status, type) => {
+    if (type == 'withoutTargetHouse') {
+      return '删除求宿信息';
+    }
     switch (status) {
       case 'unread':
         return '等待回复';
@@ -94,9 +110,23 @@ const ContactedCard: React.FC<UserAccomMessageItemProps> = userAccomMessage => {
   const [replyMessage, setReplyMessage] =
     useState<HouseOwnerReplyMessageItemProps | null>();
 
-  const handleUserClickButton = (infoId, infoStatus) => {
+  const handleUserClickButton = (infoId, infoStatus, type) => {
     // handleRetriveContactInfoBoard();
-    if (infoStatus == 'contactReceived') {
+    if (type == 'withoutTargetHouse') {
+      Taro.showModal({
+        title: '删除确认',
+        content: '是否确认删除这条求宿信息',
+        success: function (res) {
+          if (res.confirm) {
+            accomMessageDelete(infoId).then(res => {
+              Taro.redirectTo({
+                url: `../../packageUser/my-accommodation/index?tab=toSeek`,
+              });
+            });
+          }
+        },
+      });
+    } else if (infoStatus == 'contactReceived') {
       Taro.showLoading({
         title: '加载回复中',
         mask: true,
@@ -154,12 +184,22 @@ const ContactedCard: React.FC<UserAccomMessageItemProps> = userAccomMessage => {
         dateInfo={
           userAccomMessage.start_date + ' to ' + userAccomMessage.end_date
         }
-        topText={handleTopText(userAccomMessage.status)}
-        buttonText={handleButtonText(userAccomMessage.status)}
+        topText={handleTopText(userAccomMessage.status, userAccomMessage.type)}
+        buttonText={handleButtonText(
+          userAccomMessage.status,
+          userAccomMessage.type,
+        )}
         clickButton={() => {
-          handleUserClickButton(userAccomMessage._id, userAccomMessage.status);
+          handleUserClickButton(
+            userAccomMessage._id,
+            userAccomMessage.status,
+            userAccomMessage.type,
+          );
         }}
-        clickable={handleButtonClickable(userAccomMessage.status)}
+        clickable={handleButtonClickable(
+          userAccomMessage.status,
+          userAccomMessage.type,
+        )}
         avatarUrl={userAccomMessage.targetUserAvatarUrl}
         withTarget={userAccomMessage.type != 'withoutTargetHouse'}
       />

@@ -64,11 +64,11 @@ const Index = () => {
 
         const seekAccomData = accomMessages.filter(
           item =>
-            (item.status == 'read' ||
-              item.status == 'unread' ||
-              item.status == 'contactReceived' ||
-              item.status == 'rejected') &&
-            (item.type == 'withoutTargetHouse' || item.type == 'both'),
+            // (item.status == 'read' ||
+            //   item.status == 'unread' ||
+            //   item.status == 'contactReceived' ||
+            //   item.status == 'rejected') &&
+            item.type == 'withoutTargetHouse',
         );
         setUserSeekAccomData(seekAccomData);
       },
