@@ -5,7 +5,6 @@ import {
 } from '@utils/interfaces';
 import { View, Image, Text } from '@tarojs/components';
 import './index.scss';
-import Taro from '@tarojs/taro';
 import { Point } from '@utils/cloudIcons';
 import UserCommentCard from './user-content-comment';
 import { userReceivedRatingSearch } from '@common/database/ratingInfo/ratingInfo';
