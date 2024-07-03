@@ -84,7 +84,7 @@ const menuList = [
   {
     text: '我的积分',
     icon: PointIcon,
-    path: "../../packageUser/my-points/index",
+    path: '../../packageUser/my-points/index',
   },
   {
     text: '实名认证',

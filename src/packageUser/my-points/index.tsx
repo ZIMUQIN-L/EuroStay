@@ -90,18 +90,18 @@ const Index = () => {
         <View className='points-section'>
           <Text className='points-subtitle'>获取积分：</Text>
           <View className='points-list'>
-          <View className='points-item'>
-            <Text>发布房源：+10分</Text>
-          </View>
-          <View className='points-item'>
-            <Text>完善个人信息：每增加一个板块 +5分</Text>
-          </View>
-          <View className='points-item'>
-            <Text>进行身份认证（学生/实名）：+20分</Text>
-          </View>
-          <View className='points-item'>
-            <Text>评价房东/房客：+5分</Text>
-          </View>
+            <View className='points-item'>
+              <Text>发布房源：+10分</Text>
+            </View>
+            <View className='points-item'>
+              <Text>完善个人信息：每增加一个板块 +5分</Text>
+            </View>
+            <View className='points-item'>
+              <Text>进行身份认证（学生/实名）：+20分</Text>
+            </View>
+            <View className='points-item'>
+              <Text>评价房东/房客：+5分</Text>
+            </View>
           </View>
         </View>
 
@@ -111,8 +111,8 @@ const Index = () => {
           <Text className='points-subtitle'>消耗积分：</Text>
           <View className='points-list'>
             <View className='points-item'>
-                <Text>
-              报名参加活动：依据活动需要消耗的积分数量确定消耗积分值
+              <Text>
+                报名参加活动：依据活动需要消耗的积分数量确定消耗积分值
               </Text>
             </View>
           </View>
