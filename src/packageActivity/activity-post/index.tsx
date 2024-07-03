@@ -8,6 +8,7 @@ import Taro from '@tarojs/taro';
 import { UserItemProps } from '@utils/interfaces';
 import GlobalStore from '@store/GlobalStore';
 import TagAdd from './tag-add';
+import InfoSelection from './info-selection';
 
 const Index = () => {
   const router = useRouter();
@@ -28,12 +29,22 @@ const Index = () => {
   // 填写的描述等
   const [activityTitle, setActivityTitle] = useState('');
   const [activityDescription, setActivityDescription] = useState('');
+  const [activityHello, setActivityHello] = useState('');
 
   // 活动的tag
   const [activityTags, setActivityTags] = useState<string[]>([]);
 
   // 活动照片
   const [images, setImages] = useState<string[]>([]);
+
+  // infos
+  const [location, setLocation] = useState('');
+  const [startTime, setStartTime] = useState('');
+  const [endTime, setEndTime] = useState('');
+  const [capacity, setCapacity] = useState(0);
+  const [contact, setContact] = useState('');
+  const [price, setPrice] = useState(0);
+  const [point, setPoint] = useState(0);
 
   useEffect(() => {
     const userInfoList: UserItemProps = GlobalStore.userInfo;
@@ -57,6 +68,10 @@ const Index = () => {
     setActivityTitle(e.detail.value);
   };
 
+  const handleUserEditHello = e => {
+    setActivityHello(e.detail.value);
+  };
+
   const handleUserEditDescription = e => {
     setActivityDescription(e.detail.value);
   };
@@ -69,6 +84,25 @@ const Index = () => {
   const handleDeleteTag = deletedTag => {
     const updatedTags = activityTags.filter(tag => tag != deletedTag);
     setActivityTags(updatedTags);
+  };
+
+  // logic for act info
+  const handleActivityInfoEdit = (
+    location,
+    startTime,
+    endTime,
+    capacity,
+    contact,
+    price,
+    point,
+  ) => {
+    setLocation(location);
+    setStartTime(startTime);
+    setEndTime(endTime);
+    setCapacity(capacity);
+    setContact(contact);
+    setPoint(point);
+    setPrice(price);
   };
 
   return (
@@ -117,6 +151,28 @@ const Index = () => {
             </Text>
           </View>
           <View className='act-lineDiv' />
+        </View>
+      </View>
+      <InfoSelection
+        onActivityInfoEdit={handleActivityInfoEdit}
+        activityId={activityId}
+      ></InfoSelection>
+
+      <View className='act-des-part'>
+        <View className='act-des-container'>
+          <View className='act-lineDiv' />
+          <View
+            className='act-des-text-container'
+            style={{ minHeight: '30px' }}
+          >
+            <View className='act-des-text' style={{ minHeight: '30px' }}>
+              <Textarea
+                value={activityHello}
+                onInput={handleUserEditHello}
+                placeholder='和报名成功的朋友打个招呼吧~'
+              />
+            </View>
+          </View>
         </View>
       </View>
 
