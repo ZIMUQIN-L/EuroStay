@@ -1,65 +1,169 @@
 .points {
-    color: white;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .my-points {
-    margin-top: 5%;
-    padding: 10px;
-    width: 90%;
-    height: 120px;
-    background-color: #FFD111;
-    border-radius: 16px;
+  margin-top: 6%;
+  padding: 10px;
+  width: 90%;
+  height: 120px;
+  background-color: #ffd111;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 28px;
+  color: black;
+
+  &-points {
+    display: flex;
+    align-items: center;
+    width: 60%;
+  }
+
+  &-value {
+    margin-left: 5%;
+    font-size: 48px;
+    font-weight: 1000;
+    color: #4d4d4d;
+  }
+
+  Image {
+    margin-left: 16%;
+    width: 40px;
+    height: 40px;
+  }
+
+  &-details {
+    .details-button {
+      margin-right: 20px;
+      padding: 10px 30px;
+      border: black 0.5px solid;
+      border-radius: 40px;
+      cursor: pointer;
+      font-size: 24px;
+    }
+  }
+}
+
+.get-points {
+  margin-top: 6%;
+  padding: 10px;
+  width: 90%;
+  height: 400;
+  background-color: #fff;
+  border-radius: 16px;
+  font-size: 28px;
+  color: black;
+
+  &-header {
+    margin-top: 20px;
+    margin-left: 5%;
+    font-size: 32px;
+  }
+
+  &-list {
+    margin-left: 10%;
+
+    .line-div {
+      width: 90%;
+      position: relative;
+      border-top: 1px solid #d6d6d6;
+      box-sizing: border-box;
+      height: 1px;
+      opacity: 0.2;
+    }
+  }
+
+  &-item {
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    font-size: 28px;
-    color: black;
-
-    &-points {
-        display: flex;
-        align-items: center;
-        width: 60%;
-    }
-
-    &-value {
-        margin-left: 5%;
-        font-size: 48px;
-        font-weight: 1000;
-        color: #4D4D4D;
-    }
-    
-    Image {
-        margin-left: 16%;
-        width: 40px;
-        height: 40px;
-    }
-
-    &-details {
-        .details-button {
-        margin-right: 20px;
-        padding: 10px 30px;
-        border: black 1px solid;
-        border-radius: 40px;
-        cursor: pointer;
-        font-size: 24px;
-    }
-    }
-}
-
-.get-points {
-    margin-top: 5%;
-    padding: 10px;
     width: 90%;
-    height: 120px;
-    background-color:#fff;
-    border-radius: 16px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    height: 60px;
+    margin-top: 10px;
+    padding: 10px;
     font-size: 28px;
     color: black;
+
+    Text {
+      text-align: left;
+    }
+
+    .get-button {
+      background-color: #ffd111;
+      padding: 10px 30px;
+      border-radius: 40px;
+      font-size: 24px;
+    }
+  }
 }
+
+.points-rules {
+    margin-top: 4%;
+  padding: 10px;
+  width: 90%;
+  height: 400;
+  background-color: #fff;
+  border-radius: 16px;
+  font-size: 28px;
+  color: black;
+  
+    .section-title {
+        margin-left: 5%;
+        margin-top: 20px;
+      font-size: 30px;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+  
+    .points-section {
+        margin-left: 10%;
+      margin-bottom: 20px;
+  
+      .points-subtitle {
+        font-size: 28px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+      }
+  
+      .points-value {
+        font-size: 28px;
+        margin-left: 10px;
+      }
+  
+      .points-list {
+        padding-left: 20px;
+        padding: 5px;
+  
+        .points-item {
+          font-size: 28px;
+          margin-bottom: 5px;
+          padding: 5px;
+
+          &::before {
+            content: '•';
+            margin-right: 10px; 
+            color: black;
+          }
+        }
+      }
+    }
+
+    .line-div {
+        margin: 20px;
+        margin-left: 10%;
+        width: 90%;
+        position: relative;
+        border-top: 1px solid #d6d6d6;
+        box-sizing: border-box;
+        height: 1px;
+        opacity: 0.2;
+      }
+  }
+  
