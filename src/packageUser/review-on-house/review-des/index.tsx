@@ -29,6 +29,7 @@ const ReviewDes = ({ onUserDescriptionEdit, onIsPublicEdit }) => {
           <View className='des-text'>
             <Textarea
               value={des}
+              style={{ color: '#979797' }}
               onInput={handleUserDescriptionEdit}
               placeholder='请输入评语（多多填写评语有助于提升你在本平台的等级哦～）'
             />
@@ -40,7 +41,7 @@ const ReviewDes = ({ onUserDescriptionEdit, onIsPublicEdit }) => {
               className={`toggle-button ${isPublic ? 'public' : 'private'}`}
               onClick={handleToggleClick}
             >
-              <AtIcon value='check' size='20' color='#fff' />
+              <AtIcon value='check' size='12' color='#fff' />
             </View>
             <Text className='toggle-status'>{isPublic ? '公开' : '私密'}</Text>
           </View>
