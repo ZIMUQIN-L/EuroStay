@@ -35,6 +35,8 @@ const ReviewOnHouse = () => {
   const [accommodationDetails, setAccommodationDetails] =
     useState<UserAccomMessageItemProps>();
 
+  const [overallRatings, setOverallRatings] = useState<number>(3);
+
   const [evaluation, setEvaluation] = useState({
     desMatch: 3, // Default values, change as needed
     locationEval: 3,
@@ -273,7 +275,7 @@ const ReviewOnHouse = () => {
   };
 
   return (
-    <View className='page'>
+    <View className='review-on-house-page'>
       <HouseInfoCard
         title={houseDetail ? houseDetail.location : 'location'}
         imageUrl={reviewTarget ? reviewTarget.avatarUrl : DefaultAvatar}
@@ -284,6 +286,16 @@ const ReviewOnHouse = () => {
             : 'unknown'
         }
       />
+      <View className='overall-ratings'>
+        {/* todo:newRating关联请求 */}
+        <StarRating
+          initialRating={3}
+          label='描述相符'
+          onRatingChange={newRating => {
+            setOverallRatings(newRating);
+          }}
+        />
+      </View>
       <ReviewDes
         onUserDescriptionEdit={handleUserDescriptionEdit}
         onIsPublicEdit={handleIsPublicEdit}
@@ -330,23 +342,7 @@ const ReviewOnHouse = () => {
           />
         )}
       </View>
-      <View
-        style={{
-          backgroundColor: '#FFD111',
-          color: 'black',
-          width: '80%',
-          justifyContent: 'center',
-          height: '50px',
-          fontSize: '15px',
-          borderRadius: '32px',
-          display: 'flex',
-          alignItems: 'center',
-          marginTop: '40px',
-          marginBottom: '20px',
-        }}
-        className='review-submit-button'
-        onClick={onCreateReview}
-      >
+      <View className='review-submit-button' onClick={onCreateReview}>
         <Text>发表评价</Text>
       </View>
     </View>
