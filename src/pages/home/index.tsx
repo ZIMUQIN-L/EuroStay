@@ -9,9 +9,17 @@ import AccommodationIcon from '@assets/images/accommodation.svg';
 import AccommodationIconSelected from '@assets/images/accommodation-selected.svg';
 import './index.scss';
 import SeekingAccommodation from './seeking-accomadation';
+import {
+  PostButton,
+  PurpleClose,
+  HouseRequest,
+  PostActivity,
+  PostHouse,
+} from '@utils/cloudIcons';
 
 const Index = () => {
   const [activeTab, setActiveTab] = useState('houses');
+  const [isShowPost, setIsShowPost] = useState(false);
 
   const onClickPostSeek = () => {
     Taro.navigateTo({
@@ -52,12 +60,37 @@ const Index = () => {
           <Text>求宿</Text>
         </View>
       </View>
-      <View className='add-button' onClick={onClickPostSeek}>
-        <Text>+</Text>
+      <View
+        className='add-button'
+        onClick={() => {
+          setIsShowPost(true);
+        }}
+      >
+        <Image src={PostButton}></Image>
       </View>
       <View className='search-area'>
         {activeTab === 'houses' ? <Houses /> : <SeekingAccommodation />}
       </View>
+      {/* 蒙层 */}
+      {isShowPost && (
+        <View
+          className='page-post-modal'
+          onClick={() => {
+            setIsShowPost(false);
+          }}
+        >
+          <Image
+            src={PurpleClose}
+            className='post-close'
+            onClick={() => {
+              setIsShowPost(false);
+            }}
+          />
+          <Image src={PostActivity} className='post-activity' />
+          <Image src={PostHouse} className='post-house' />
+          <Image src={HouseRequest} className='house-request' />
+        </View>
+      )}
     </>
   );
 };
