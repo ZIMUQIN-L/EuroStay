@@ -79,6 +79,10 @@ export const FeedbackIcon = `${cloudPath}/feedback.svg`;
 export const AwaitingResponse = `${cloudPath}/awaiting_response.svg`;
 export const Point = `${cloudPath}/point.svg`;
 export const Star = `${cloudPath}/star.svg`;
-
+export const PostButton = `${cloudPath}/post-button.svg`;
+export const PurpleClose = `${cloudPath}/purple-close.svg`;
+export const HouseRequest = `${cloudPath}/house-request.svg`;
+export const PostHouse = `${cloudPath}/post-house.svg`;
+export const PostActivity = `${cloudPath}/post-activity.svg`;
 // point system
 export const PointIcon = `${cloudPath}/point-icon.svg`;
