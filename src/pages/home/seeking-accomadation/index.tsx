@@ -8,7 +8,7 @@ import DefaultAvatar from '@assets/images/default-avatar.png';
 import SeekingCard from '../seeking-item';
 import CustomTabBar from '@components/CustomTabBar';
 import { accomPageMessageSearch } from '@common/database/accomMessage/accomMessage';
-import ContactInfoBoard from '@components/ContactInfoBoard';
+import SeekReplyBoard from '@components/SeekContactInfoBoard';
 import MsgInfoBoard from '@components/MsgInfoBoard';
 
 /**
@@ -123,12 +123,12 @@ const SeekingAccommodation = () => {
         />
       )}
       {contactInfoIsShown && (
-        <ContactInfoBoard
+        <SeekReplyBoard
           onClose={handleCloseAllBoards}
           retrivedData={null}
           editable={true}
           onUpdateData={handleUserSubmitContactInfo}
-        ></ContactInfoBoard>
+        ></SeekReplyBoard>
       )}
       <CustomTabBar />
     </View>

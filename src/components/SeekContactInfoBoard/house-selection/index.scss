@@ -1,0 +1,76 @@
+.seek-house-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  padding: 10px 30px;
+  .seek-house-card {
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    // display: flex;
+    // flex-direction: column;
+    // align-items: center;
+    Image {
+      width: 300px;
+      height: 300px;
+    }
+    .seek-house-title {
+      font-size: 0.8rem;
+      font-weight: bold;
+      margin-bottom: 6px;
+    }
+    .seek-house-info {
+      font-size: 0.7rem;
+      margin-top: 6px;
+      color: #f0e5e5;
+      position: relative;
+      .seek-house-likes {
+        position: absolute;
+        top: 0px;
+        right: 0px;
+        image {
+          width: 20px;
+          height: 20px;
+          margin-right: 5px;
+        }
+      }
+    }
+  }
+  .seek-house-card.chosen {
+    padding: 20px;
+    background-color: #f2f2f2;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    // display: flex;
+    // flex-direction: column;
+    // align-items: center;
+    Image {
+      width: 300px;
+      height: 300px;
+    }
+    .seek-house-title {
+      font-size: 0.8rem;
+      font-weight: bold;
+      margin-bottom: 6px;
+    }
+    .seek-house-info {
+      font-size: 0.7rem;
+      margin-top: 6px;
+      color: #979797;
+      position: relative;
+      .seek-house-likes {
+        position: absolute;
+        top: 0px;
+        right: 0px;
+        image {
+          width: 20px;
+          height: 20px;
+          margin-right: 5px;
+        }
+      }
+    }
+  }
+}
