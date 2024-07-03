@@ -1,0 +1,64 @@
+.act-upload-part {
+  background-color: white;
+  display: flex;
+  flex-direction: row;
+  margin-top: 5px;
+}
+.act-image-container {
+  display: flex;
+  flex-direction: row;
+  margin: 40px 40px;
+  overflow-x: scroll;
+  .act-image {
+    padding: 0 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 120px;
+    height: 120px;
+    justify-content: space-between;
+    .pic {
+      width: 100px !important;
+      height: 80px !important;
+      border-radius: 20px;
+    }
+    .image-delete {
+      font-size: 20px;
+      width: 120px !important;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 20px;
+      height: 30px;
+      background-color: #f7f7f7;
+      color: #979797;
+    }
+  }
+}
+.act-image {
+  // width: 120px !important;
+  // height: 120px !important;
+  // background-color: #f7f7f7;
+  border-radius: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  margin-right: 10px;
+  border-radius: 20px;
+}
+.act-upload {
+  width: 120px;
+  height: 120px;
+  max-width: 120px;
+  min-width: 120px;
+  background-color: #f7f7f7;
+  color: #979797;
+  margin-right: 20px;
+  border-radius: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  flex-direction: column;
+}

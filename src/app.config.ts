@@ -32,7 +32,11 @@ export default {
     },
     {
       root: 'packageActivity/',
-      pages: ['my-activities/index', 'activity-detail/index'],
+      pages: [
+        'my-activities/index',
+        'activity-detail/index',
+        'activity-post/index',
+      ],
     },
   ],
   window: {

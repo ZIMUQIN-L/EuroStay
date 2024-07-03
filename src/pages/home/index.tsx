@@ -27,6 +27,12 @@ const Index = () => {
     });
   };
 
+  const onClickPostActivity = () => {
+    Taro.navigateTo({
+      url: `../../packageActivity/activity-post/index?id=none`,
+    });
+  };
+
   return (
     <>
       <View className='tab-bar'>
@@ -86,9 +92,17 @@ const Index = () => {
               setIsShowPost(false);
             }}
           />
-          <Image src={PostActivity} className='post-activity' />
+          <Image
+            src={PostActivity}
+            className='post-activity'
+            onClick={onClickPostActivity}
+          />
           <Image src={PostHouse} className='post-house' />
-          <Image src={HouseRequest} className='house-request' />
+          <Image
+            src={HouseRequest}
+            className='house-request'
+            onClick={onClickPostSeek}
+          />
         </View>
       )}
     </>

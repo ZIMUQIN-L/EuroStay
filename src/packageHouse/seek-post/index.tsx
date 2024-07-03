@@ -62,7 +62,7 @@ const Index = () => {
   };
 
   return (
-    <View className='index'>
+    <View className='seek-post-index'>
       <SeekInfoSelection
         seekInfoId={seekInfoId}
         onSeekInfoSelection={handleRequestInfoSelectionEdit}
@@ -73,7 +73,8 @@ const Index = () => {
       ></SeekDescription>
       <View style={{ backgroundColor: 'white' }}>
         <View className='post-submit-button' onClick={handleClickSeekSubmit}>
-          <Text>修改房源</Text>
+          <Text>发布求宿</Text>
+          {/* // to be changed @PJ  */}
         </View>
       </View>
     </View>
