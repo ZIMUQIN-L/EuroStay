@@ -1,6 +1,6 @@
 import { View, Text } from '@tarojs/components';
 import { observer } from 'mobx-react';
-import PointsInfo  from '../my-points/points-info';
+import PointsInfo from '../my-points/points-info';
 import './index.scss';
 import PointsTable from './points-table';
 
@@ -10,7 +10,7 @@ const Index = () => {
       <PointsInfo Detail={true} />
 
       <View className='points-data'>
-      <PointsTable data={[]} />
+        <PointsTable data={[]} />
       </View>
     </View>
   );

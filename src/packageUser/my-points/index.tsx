@@ -5,7 +5,6 @@ import Taro from '@tarojs/taro';
 import PointsInfo from './points-info';
 
 const Index = () => {
-
   const navigateToPost = () => {
     Taro.navigateTo({
       url: '../../packageHouse/house-post/index',
@@ -24,12 +23,8 @@ const Index = () => {
     });
   };
 
-  
-
   return (
     <View className='points'>
-      
-      
       <PointsInfo Detail={false} />
 
       <View className='get-points'>

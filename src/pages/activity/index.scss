@@ -1,4 +1,4 @@
-.index {
+.activity-index {
   .header {
     text-align: center;
     font-size: 24px;
@@ -16,12 +16,49 @@
     right: 70px;
     width: 100px;
     height: 100px;
-    background-color: #6b63b9;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: #fff;
-    font-size: 70px;
+    // background-color: #6b63b9;
+    Image {
+      width: 100px;
+      height: 100px;
+    }
+    // border-radius: 50%;
+    // display: flex;
+    // justify-content: center;
+    // align-items: center;
+    // color: #fff;
+    // font-size: 70px;
+    z-index: 2;
+  }
+  .page-post-modal {
+    z-index: 1001; //依赖另一个zindex 勿改
+    top: 0;
+    left: 0;
+    position: fixed;
+    width: 100vh;
+    height: 100vh;
+    background-color: rgba(5, 5, 5, 0.5);
+    Image {
+      height: 80px;
+      width: 160px;
+      position: fixed;
+      right: 83px;
+    }
+    .post-close {
+      width: 100px;
+      height: 100px;
+      right: 70px;
+    }
+    .post-close {
+      bottom: 240px;
+    }
+    .post-activity {
+      bottom: 550px;
+    }
+    .post-house {
+      bottom: 350px;
+    }
+    .house-request {
+      bottom: 450px;
+    }
   }
 }

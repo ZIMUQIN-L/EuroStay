@@ -74,7 +74,7 @@ const CustomTabBar: React.FC<CustomTabBarProps> = ({ onHomeSelected }) => {
 
   return (
     <>
-      {showPost && (
+      {/* {showPost && (
         <View className='popup' onClick={handleClosePopup}>
           <View className='popup-content' onClick={e => e.stopPropagation()}>
             <Text className='popup-title'>发布类型</Text>
@@ -103,7 +103,7 @@ const CustomTabBar: React.FC<CustomTabBarProps> = ({ onHomeSelected }) => {
             </View>
           </View>
         </View>
-      )}
+      )} */}
       <View className='custom-tab-bar' style={{ height: tabBarHeight }}>
         <View className='tab-item' onClick={() => handleTabClick('home')}>
           <View className='tab-icon'>
@@ -114,18 +114,26 @@ const CustomTabBar: React.FC<CustomTabBarProps> = ({ onHomeSelected }) => {
           </Text>
         </View>
 
-        <View className='tab-item' onClick={handlePostClick}>
+        {/* <View className='tab-item' onClick={handlePostClick}>
           <View className='tab-icon'>
             <Image src={showPost ? RepostSelectedIcon : RepostIcon} />
           </View>
           <Text className={`tab-text ${showPost ? 'active' : ''}`}>发布</Text>
-        </View>
+        </View> */}
 
         <View className='tab-item' onClick={() => handleTabClick('activity')}>
           <View className='tab-icon'>
-            <Image src={showPost ? ActivitySelectedIcon : ActivityIcon} />
+            <Image
+              src={
+                currentTab === 'activity' ? ActivitySelectedIcon : ActivityIcon
+              }
+            />
           </View>
-          <Text className={`tab-text ${showPost ? 'active' : ''}`}>活动</Text>
+          <Text
+            className={`tab-text ${currentTab === 'activity' ? 'active' : ''}`}
+          >
+            活动
+          </Text>
         </View>
 
         <View

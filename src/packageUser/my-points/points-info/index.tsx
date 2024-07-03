@@ -7,28 +7,30 @@ interface PointsInfoProps {
   Detail: boolean;
 }
 
-const PointsInfo: React.FC<PointsInfoProps> = ({Detail}) => {
-    const navigateToDetails = () => {
-        Taro.navigateTo({
-          url: '../../packageUser/point-details/index',
-        });
-      };
+const PointsInfo: React.FC<PointsInfoProps> = ({ Detail }) => {
+  const navigateToDetails = () => {
+    Taro.navigateTo({
+      url: '../../packageUser/point-details/index',
+    });
+  };
 
-    return (
-        <View className='my-points'>
-        <View className='my-points-points'>
-          <Text style={{ marginLeft: '5%' }}>我的积分</Text>
-          <Image src={PointIcon} />
-          <Text className='my-points-value'>0</Text>{' '}
-          {/* GlobalStore.userInfo.point */}
-        </View>
-        {!Detail && <View className='my-points-details'>
+  return (
+    <View className='my-points'>
+      <View className='my-points-points'>
+        <Text style={{ marginLeft: '5%' }}>我的积分</Text>
+        <Image src={PointIcon} />
+        <Text className='my-points-value'>0</Text>{' '}
+        {/* GlobalStore.userInfo.point */}
+      </View>
+      {!Detail && (
+        <View className='my-points-details'>
           <Text className='details-button' onClick={navigateToDetails}>
             明细
           </Text>
-        </View>}
-      </View>
-    )
+        </View>
+      )}
+    </View>
+  );
 };
 
 export default PointsInfo;

@@ -33,6 +33,12 @@ const Index = () => {
     });
   };
 
+  const onClickPostHouse = () => {
+    Taro.navigateTo({
+      url: '../../packageHouse/house-post/index',
+    });
+  };
+
   return (
     <>
       <View className='tab-bar'>
@@ -97,7 +103,11 @@ const Index = () => {
             className='post-activity'
             onClick={onClickPostActivity}
           />
-          <Image src={PostHouse} className='post-house' />
+          <Image
+            src={PostHouse}
+            className='post-house'
+            onClick={onClickPostHouse}
+          />
           <Image
             src={HouseRequest}
             className='house-request'

@@ -1,5 +1,13 @@
 import React from 'react';
-import { View, Text } from '@tarojs/components';
+import { View, Text, Image } from '@tarojs/components';
+import { useState } from 'react';
+import {
+  PostButton,
+  PurpleClose,
+  HouseRequest,
+  PostActivity,
+  PostHouse,
+} from '@utils/cloudIcons';
 import Taro from '@tarojs/taro';
 import CustomTabBar from '@components/CustomTabBar';
 import ActivityCard from '@components/ActivityCard';
@@ -8,6 +16,7 @@ import TagBar from '@components/TagBar';
 import './index.scss';
 
 const Index = () => {
+  const [isShowPost, setIsShowPost] = useState(false);
   const activities = [
     {
       title: '活动标题剧本杀密室逃脱手工workshop之类的',
@@ -49,6 +58,24 @@ const Index = () => {
     // Add more activity data as needed
   ];
 
+  const onClickPostSeek = () => {
+    Taro.navigateTo({
+      url: `../../packageHouse/seek-post/index?id=none`,
+    });
+  };
+
+  const onClickPostActivity = () => {
+    Taro.navigateTo({
+      url: `../../packageActivity/activity-post/index?id=none`,
+    });
+  };
+
+  const onClickPostHouse = () => {
+    Taro.navigateTo({
+      url: '../../packageHouse/house-post/index',
+    });
+  };
+
   const navigateToPage = page => {
     Taro.switchTab({
       url: `/pages/${page}/index`,
@@ -71,7 +98,7 @@ const Index = () => {
   };
 
   return (
-    <View className='index'>
+    <View className='activity-index'>
       <Banner />
       <TagBar />
       <View className='cards'>
@@ -83,10 +110,47 @@ const Index = () => {
           />
         ))}
       </View>
-      <View className='add-button' onClick={() => navigateToPage('add')}>
-        <Text>+</Text>
+      <View
+        className='add-button'
+        onClick={() => {
+          setIsShowPost(true);
+        }}
+      >
+        <Image src={PostButton}></Image>
       </View>
       <CustomTabBar />
+      {/* 蒙层 */}
+      {isShowPost && (
+        <View
+          className='page-post-modal'
+          onClick={() => {
+            setIsShowPost(false);
+          }}
+        >
+          <Image
+            src={PurpleClose}
+            className='post-close'
+            onClick={() => {
+              setIsShowPost(false);
+            }}
+          />
+          <Image
+            src={PostActivity}
+            className='post-activity'
+            onClick={onClickPostActivity}
+          />
+          <Image
+            src={PostHouse}
+            className='post-house'
+            onClick={onClickPostHouse}
+          />
+          <Image
+            src={HouseRequest}
+            className='house-request'
+            onClick={onClickPostSeek}
+          />
+        </View>
+      )}
     </View>
   );
 };
