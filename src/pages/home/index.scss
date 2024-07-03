@@ -48,3 +48,19 @@ page {
   // background-color: #f5f5f5;
   padding-top: 90px;
 }
+
+.add-button {
+  position: fixed;
+  bottom: 180px;
+  right: 70px;
+  width: 100px;
+  height: 100px;
+  background-color: #6b63b9;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  font-size: 70px;
+  z-index: 2;
+}
