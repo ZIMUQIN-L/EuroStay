@@ -8,8 +8,6 @@ import GlobalStore from '@store/GlobalStore';
 import { cloudAvatarUpload } from '@common/database/cloudstorage/files';
 import { userInfoUpdate } from '@common/database/user/user';
 import CustomTabBar from '@components/CustomTabBar';
-import { RightBottomArrow, RightBottomArrowGrey } from '@utils/cloudIcons';
-import CustomDateRangePicker from '@components/CustomDateRangePicker';
 
 const Index = () => {
   const [userInfo, setUserInfo] = useState<UserItemProps>(GlobalStore.userInfo);
@@ -115,51 +113,6 @@ const Index = () => {
   };
 
   return (
-    // <View className='index'>
-    //   <Image
-    //     src={userAvatarUrl}
-    //     className='avatar-img'
-    //     onClick={handleUserImageEdit}
-    //   />
-    //   <View>
-    //     <View className='user-texts'>
-    //       <View className='user-name'>
-    //         <Text>{userInfo.nickName}</Text>
-    //       </View>
-    //       <View className='sub-title'>ID:{userInfo.userOpenid}</View>
-    //     </View>
-    //   </View>
-    //   <View className='user-location'>
-    //     <Input
-    //       type='text'
-    //       value={userLocation}
-    //       placeholder={
-    //         userLocation !== '' && userLocation != undefined
-    //           ? `${userLocation}`
-    //           : `请填写个人所在地（国家地区）`
-    //       }
-    //       className='location-input'
-    //       onInput={handleUserLocationEdit}
-    //     />
-    //   </View>
-    //   <View className='user-des'>
-    //     <Input
-    //       type='text'
-    //       value={userDescription}
-    //       placeholder={
-    //         userDescription
-    //           ? `${userDescription}`
-    //           : `个人描述：简单介绍一下自己吧`
-    //       }
-    //       className='des-input'
-    //       onInput={handleUserDescriptionEdit}
-    //     />
-    //   </View>
-    //   <View className='save-button' onClick={handleUserInfoChange}>
-    //     <Text>保存修改</Text>
-    //   </View>
-    //   <CustomTabBar />
-    // </View>
     <View className='edit-profile-page'>
       <View className='profile-background' />
       <View className='profile-avatar'>
