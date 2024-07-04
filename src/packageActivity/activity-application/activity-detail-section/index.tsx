@@ -12,7 +12,7 @@ const ActivityDetailSection = ({
 }) => {
 
   return (
-    <View className='house-info-card'>
+    <View className='activity-app-detail-card'>
       <Image className='activity-image' src={imageUrls[0]} mode='aspectFill' />
       <View className='application-details'>
         <Text className='application-title'>{title}</Text>

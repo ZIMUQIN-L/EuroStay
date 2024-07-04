@@ -19,6 +19,7 @@ const ReviewDes = ({ onUserDescriptionEdit }) => {
   };
 
   return (
+      <View className='activity-app-detail-card'>
     <View className='des-part'>
       <View className='des-container'>
         <Text className='des-title'>
@@ -35,6 +36,7 @@ const ReviewDes = ({ onUserDescriptionEdit }) => {
           </View>
         </View>
       </View>
+    </View>
     </View>
   );
 };

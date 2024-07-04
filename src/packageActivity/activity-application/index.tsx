@@ -91,7 +91,7 @@ const ActicityApplicationPage = () => {
 
 
   return (
-    <View className='review-on-house-page'>
+    <View className='activity-application-page'>
       <ActivityDetailSection
         title={activity.title}
         imageUrls={activity.images}

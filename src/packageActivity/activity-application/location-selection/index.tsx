@@ -24,10 +24,10 @@ const LocationSelection = ({ prevLocation, onClose, onLocationSelected }) => {
       onSubmit={handleSubmitLocationSelection}
     >
       <View
-        className='act-location-text-container'
+        className='activity-app-location-text-container'
         style={{ minHeight: '30px' }}
       >
-        <View className='act-location-text'>
+        <View className='activity-app-location-text'>
           <Input
             type='text'
             value={location}
