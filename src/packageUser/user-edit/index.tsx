@@ -196,20 +196,7 @@ const Index = () => {
           onClick={handleUserImageEdit}
         />
       </View>
-      <View className='user-edit-badges'>
-        {userTags.map((tag, index) => (
-          <Text
-            key={index}
-            className='user-edit-badge-item'
-            onClick={() => handleDeleteTag(tag)}
-          >
-            {tag}
-          </Text>
-        ))}
-        <Text className='user-edit-badge-item-add' onClick={handleOpenTagEdit}>
-          点击添加个性标签
-        </Text>
-      </View>
+
       <View className='section'>
         <Text className='section-title'>我的简介</Text>
         <View className='description-container'>
@@ -299,6 +286,23 @@ const Index = () => {
       <View className='section'>
         <Text className='section-title'>关于我</Text>
         <View className='info-container'>
+          <View className='info-item'>
+            <Text className='info-label'>个性标签</Text>
+            {!userTags || userTags.length === 0 ? (
+              <Text className='info-value' onClick={handleOpenTagEdit}>
+                添加个性标签 +
+              </Text>
+            ) : (
+              <View className='info-value'>
+                {userTags.map((tag, index) => (
+                  <Text key={index} onClick={() => handleDeleteTag(tag)}>
+                    {tag + '  '}
+                  </Text>
+                ))}
+                <Text onClick={handleOpenTagEdit}>+</Text>
+              </View>
+            )}
+          </View>
           <View className='info-item'>
             <Text className='info-label'>兴趣爱好</Text>
             <Input
