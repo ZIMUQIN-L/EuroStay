@@ -13,6 +13,8 @@ import GlobalStore from '@store/GlobalStore';
 
 const Index = () => {
   const [userInfo, setUserInfo] = useState<UserItemProps>(GlobalStore.userInfo);
+  const [clickable, setClickable] = useState(false);
+
   useEffect(() => {
     const userInfoList: UserItemProps = GlobalStore.userInfo;
     setUserInfo(userInfoList);
@@ -23,24 +25,28 @@ const Index = () => {
   // 处理照片上传的逻辑
   const handleUploadImage = uploadedImagePath => {
     setImages([...images, uploadedImagePath]);
+    handleButtonClickable();
   };
 
   // 删除image
   const handleDeleteImage = deletedImagePath => {
     const updatedImages = images.filter(image => image !== deletedImagePath);
     setImages(updatedImages);
+    handleButtonClickable();
   };
 
   // 用户修改房源描述
   const [houseDescription, setHouseDescription] = useState<string>('');
   const handleUserDescriptionEdit = inputDescription => {
     setHouseDescription(inputDescription);
+    handleButtonClickable();
   };
 
   // 用户联系方式描述
   const [userContact, setUserContact] = useState<string>('');
   const handleUserContactEdit = inputContact => {
     setUserContact(inputContact);
+    handleButtonClickable();
   };
 
   // 房源info属性
@@ -52,6 +58,26 @@ const Index = () => {
   const [utility, setUtility] = useState({});
   const [surrounding, setSurrounding] = useState({});
   const [preference, setPreference] = useState({});
+
+  const handleButtonClickable = () => {
+    if (
+      images.length != 0 &&
+      houseDescription != '' &&
+      userContact != '' &&
+      location != '' &&
+      startDate &&
+      endDate &&
+      capacity != 0 &&
+      Object.keys(gender).length != 0 &&
+      (Object.keys(utility).length != 0 ||
+        Object.keys(surrounding).length != 0 ||
+        Object.keys(surrounding).length != 0)
+    ) {
+      setClickable(true);
+    } else {
+      setClickable(false);
+    }
+  };
 
   // 获取房源info信息
   const handleUserInfoEdit = (
@@ -72,7 +98,24 @@ const Index = () => {
     setUtility(utility);
     setSurrounding(surrounding);
     setPreference(preference);
+    handleButtonClickable();
   };
+
+  useEffect(() => {
+    handleButtonClickable();
+  }, [
+    images,
+    location,
+    startDate,
+    endDate,
+    userContact,
+    capacity,
+    utility,
+    surrounding,
+    houseDescription,
+    preference,
+    gender,
+  ]);
 
   // post房源信息
   const handleClickPostSubmit = () => {
@@ -197,7 +240,11 @@ const Index = () => {
       <HouseContact onUserContactEdit={handleUserContactEdit} />
       <InfoSelection onUserInfoEdit={handleUserInfoEdit} />
       <View style={{ backgroundColor: 'white' }}>
-        <View className='post-submit-button' onClick={handleClickPostSubmit}>
+        <View
+          className='post-submit-button'
+          style={{ backgroundColor: clickable ? '#FFD111' : '#d6d6d6' }}
+          onClick={handleClickPostSubmit}
+        >
           <Text>发布房源</Text>
         </View>
       </View>

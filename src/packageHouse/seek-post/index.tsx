@@ -4,14 +4,21 @@ import { useState, useEffect } from 'react';
 import './index.scss';
 import { loadFontFace, useRouter } from '@tarojs/taro';
 import Taro from '@tarojs/taro';
-import { UserAccomMessageItemProps } from '@utils/interfaces';
+import { UserAccomMessageItemProps, UserItemProps } from '@utils/interfaces';
 import GlobalStore from '@store/GlobalStore';
-import { accomMessageSearchWithId } from '@common/database/accomMessage/accomMessage';
+import {
+  accomMessageSearchWithId,
+  accomMessageAdd,
+  accomMessageDetailUpdate,
+} from '@common/database/accomMessage/accomMessage';
 import SeekInfoSelection from './seek-info-selection';
 import SeekDescription from './seek-description';
+
 const Index = () => {
   const router = useRouter();
   const seekInfoId = router?.params?.id;
+  const [clickable, setClickable] = useState(false);
+  const [userInfo, setUserInfo] = useState<UserItemProps>(GlobalStore.userInfo);
 
   const [location, setLocation] = useState('');
   const [startDate, setStartDate] = useState<string | Date>();
@@ -22,6 +29,8 @@ const Index = () => {
   const [description, setDescription] = useState('');
 
   useEffect(() => {
+    const userInfoList: UserItemProps = GlobalStore.userInfo;
+    setUserInfo(userInfoList);
     if (seekInfoId != 'none') {
       accomMessageSearchWithId(seekInfoId).then(
         (accomInfo: UserAccomMessageItemProps) => {
@@ -37,6 +46,25 @@ const Index = () => {
     }
   }, []);
 
+  const handleButtonClickable = () => {
+    if (
+      gender != '' &&
+      location != '' &&
+      startDate &&
+      endDate &&
+      capacity != 0 &&
+      description != ''
+    ) {
+      setClickable(true);
+    } else {
+      setClickable(false);
+    }
+  };
+
+  useEffect(() => {
+    handleButtonClickable();
+  }, [description, location, startDate, endDate, capacity, gender, contact]);
+
   const handleRequestInfoSelectionEdit = (
     location,
     startDate,
@@ -51,14 +79,93 @@ const Index = () => {
     setCapacity(capacity);
     setContact(info);
     setGender(genderInfo);
+    handleButtonClickable();
   };
 
   const handleSeekDesEdit = editRequestDes => {
     setDescription(editRequestDes);
+    handleButtonClickable();
   };
 
   const handleClickSeekSubmit = () => {
-    //@PJ TODO
+    if (location == '') {
+      Taro.showToast({
+        title: '请填写求宿地点~',
+        icon: 'error',
+        mask: true,
+        duration: 2000,
+      });
+    } else if (!startDate || !endDate) {
+      Taro.showToast({
+        title: '请选择求宿时间',
+        icon: 'error',
+        mask: true,
+        duration: 2000,
+      });
+    } else if (capacity == 0) {
+      Taro.showToast({
+        title: '请填写求宿人数~',
+        icon: 'error',
+        mask: true,
+        duration: 2000,
+      });
+    } else if (gender == '') {
+      Taro.showToast({
+        title: '请填写住客性别~',
+        icon: 'error',
+        mask: true,
+        duration: 2000,
+      });
+    } else if (description == '') {
+      Taro.showToast({
+        title: '请填写房源描述~',
+        icon: 'error',
+        mask: true,
+        duration: 2000,
+      });
+    } else {
+      Taro.showLoading({
+        title: '上传中',
+        mask: true,
+      });
+      if (seekInfoId == 'none') {
+        accomMessageAdd(
+          endDate,
+          startDate,
+          capacity,
+          gender,
+          location,
+          userInfo._openid,
+          userInfo.nickName,
+          userInfo.avatarUrl,
+          description,
+          'withoutTargetHouse',
+          'unread',
+          contact,
+        ).then(res => {
+          Taro.hideLoading();
+          Taro.navigateBack({
+            delta: 1,
+          });
+        });
+      } else {
+        accomMessageDetailUpdate(
+          seekInfoId,
+          endDate,
+          startDate,
+          capacity,
+          gender,
+          location,
+          description,
+          contact,
+        ).then(res => {
+          Taro.hideLoading();
+          Taro.navigateBack({
+            delta: 1,
+          });
+        });
+      }
+    }
   };
 
   return (
@@ -72,9 +179,12 @@ const Index = () => {
         onChangeDes={handleSeekDesEdit}
       ></SeekDescription>
       <View style={{ backgroundColor: 'white' }}>
-        <View className='post-submit-button' onClick={handleClickSeekSubmit}>
+        <View
+          className='post-submit-button'
+          style={{ backgroundColor: clickable ? '#FFD111' : '#d6d6d6' }}
+          onClick={handleClickSeekSubmit}
+        >
           <Text>发布求宿</Text>
-          {/* // to be changed @PJ  */}
         </View>
       </View>
     </View>

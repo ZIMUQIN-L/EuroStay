@@ -100,6 +100,7 @@ const Index = () => {
               (dbUserInfo: UserItemProps[]) => {
                 GlobalStore.userInfo = dbUserInfo[0];
                 if (dbUserInfo.length >= 1) {
+                  setIsLoading(false);
                   Taro.switchTab({
                     url: `/pages/home/index`,
                   });
@@ -107,11 +108,13 @@ const Index = () => {
               },
             );
           } else {
+            setIsLoading(false);
             errorDialog('登录失败' + errMsg, 'fail');
           }
         });
       },
       fail: err => {
+        setIsLoading(false);
         errorDialog('登录失败' + err.errMsg, 'fail');
       },
     });

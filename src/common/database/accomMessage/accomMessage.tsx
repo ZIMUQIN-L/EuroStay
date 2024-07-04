@@ -182,3 +182,37 @@ export const accomMessageDelete = async _id => {
       });
   });
 };
+
+export const accomMessageDetailUpdate = async (
+  _id,
+  end_date,
+  start_date,
+  capacity,
+  gender,
+  location,
+  description,
+  contact,
+) => {
+  const db = wx.cloud.database();
+  return new Promise((resolve, reject) => {
+    db.collection('UserAccomMessage')
+      .doc(_id)
+      .update({
+        data: {
+          end_date: end_date,
+          start_date: start_date,
+          capacity: capacity,
+          gender: gender,
+          location: location,
+          description: description,
+          contact: contact,
+        },
+      })
+      .then(res => {
+        resolve(res.errMsg);
+      })
+      .catch(err => {
+        reject(err.errMsg);
+      });
+  });
+};
