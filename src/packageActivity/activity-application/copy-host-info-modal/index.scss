@@ -1,0 +1,53 @@
+.tag-text-container {
+  background-color: #f7f7f7;
+  border-radius: 20px;
+  margin-top: 20px;
+  Input {
+    color: #979797;
+  }
+}
+.tag-text {
+  margin: 20px 20px;
+  color: #979797;
+}
+
+.modal-content {
+  margin-top: 20px;
+}
+
+.activity-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.location-container, .date-container, .organizer-info {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+
+  .icon {
+    width: 16px;
+    height: 16px;
+    margin-right: 6px;
+  }
+
+  .location, .date, .organizer-name, .organizer-contact {
+    font-size: 16px;
+    color: #333;
+  }
+}
+
+.organizer-info {
+  .organizer-image {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+  }
+
+  .organizer-details {
+    display: flex;
+    flex-direction: column;
+  }
+}

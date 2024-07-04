@@ -19,9 +19,16 @@ const cloudPath =
   'cloud://cloud1-8gb29x2pbe14a4f8.636c-cloud1-8gb29x2pbe14a4f8-1324366677/images';
 export const LocationSelectionIcon = `${cloudPath}/location-selection-icon.svg`;
 export const RightBottomArrow = `${cloudPath}/right-arrow.svg`;
+import CopyHostInfoModal from './copy-host-info-modal';
 
 const ActicityApplicationPage = () => {
 
+
+    const demohost = {
+      avatar: 'https://via.placeholder.com/50x50',
+      wechatId: 'wechatId_demo',
+
+    }
     const activity = {
         title: '活动标题线下艺术疗愈workshop',
         location: 'Paris, 2nd ARR',
@@ -43,11 +50,20 @@ const ActicityApplicationPage = () => {
   const [location, setLocation] = useState('');
   const accomInfoId = router?.params?.id;
   const [user, setUser] = useState<UserItemProps>(GlobalStore.userInfo);
+  const [isShowSuccessModal, setShowSuccessModal] = useState(false);
 
   useEffect(() => {
     const demoUser: UserItemProps = GlobalStore.userInfo;
     setUser(demoUser);
   }, []);
+
+  const handleCloseAllWindows = () => {
+    setShowSuccessModal(false);
+  };
+
+  const showSuccessModalEdit = () => {
+    setShowSuccessModal(true);
+  };
 
   const handleLocationSelection = () => {
     setIsLocationSelection(true);
@@ -67,9 +83,10 @@ const ActicityApplicationPage = () => {
   };
 
   const handleGetHostInfoClick = () => {
-    Taro.navigateTo({
-      url: `/packageActivity/activity-application/index?id=anyid`,
-    });
+    showSuccessModalEdit();
+    // Taro.navigateTo({
+    //   url: `/packageActivity/activity-application/index?id=anyid`,
+    // });
   }
 
 
@@ -130,6 +147,19 @@ const ActicityApplicationPage = () => {
       <ActivityAppCom
         onUserDescriptionEdit={handleActivityAppComEdit}
       />
+
+      {isShowSuccessModal && (
+        <CopyHostInfoModal
+          onClose={handleCloseAllWindows}
+          title={activity.title}
+          date={activity.date}
+          time={activity.time}
+          location={activity.location}
+          username={activity.organizer}
+          avatar={demohost.avatar}
+          wechatId={demohost.wechatId}
+        ></CopyHostInfoModal>
+      )}
 
     </View>
   );

@@ -184,13 +184,6 @@ const Index = () => {
           <Text>发布活动</Text>
         </View>
       </View>
-
-      {isTagEdit && (
-        <TagAdd
-          onClose={handleCloseAllWindows}
-          onTagAdded={handleAddTag}
-        ></TagAdd>
-      )}
     </View>
   );
 };
