@@ -203,7 +203,12 @@ const ContactedCard: React.FC<UserAccomMessageItemProps> = userAccomMessage => {
           userAccomMessage.status,
           userAccomMessage.type,
         )}
-        avatarUrl={userAccomMessage.targetUserAvatarUrl}
+        avatarUrl={
+          userAccomMessage.type != 'withoutTargetHouse' &&
+          userAccomMessage.targetUserAvatarUrl
+            ? userAccomMessage.targetUserAvatarUrl
+            : userAccomMessage.sourceUserAvatarUrl
+        }
         withTarget={userAccomMessage.type != 'withoutTargetHouse'}
         houseId={
           userAccomMessage.type != 'withoutTargetHouse' &&
@@ -215,7 +220,7 @@ const ContactedCard: React.FC<UserAccomMessageItemProps> = userAccomMessage => {
           userAccomMessage.type != 'withoutTargetHouse' &&
           userAccomMessage.targetUserOpenid
             ? userAccomMessage.targetUserOpenid
-            : ''
+            : userAccomMessage.sourceUserOpenid
         }
       />
       {contactInfoIsShown && (

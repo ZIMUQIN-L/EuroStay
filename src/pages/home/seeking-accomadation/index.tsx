@@ -5,7 +5,6 @@ import './index.scss';
 import { View } from '@tarojs/components';
 import { UserAccomMessageItemProps, UserItemProps } from '@utils/interfaces';
 import Taro, { useReachBottom } from '@tarojs/taro';
-import DefaultAvatar from '@assets/images/default-avatar.png';
 import GlobalStore from '@store/GlobalStore';
 import SeekingCard from '../seeking-item';
 import CustomTabBar from '@components/CustomTabBar';
@@ -15,7 +14,6 @@ import {
 } from '@common/database/accomMessage/accomMessage';
 import SeekReplyBoard from '@components/SeekContactInfoBoard';
 import MsgInfoBoard from '@components/MsgInfoBoard';
-import { houseInfoPost } from '@common/database/house/house';
 
 /**
  * 求宿页面
