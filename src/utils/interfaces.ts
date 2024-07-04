@@ -157,6 +157,7 @@ export interface UserDetailInfoItemProps {
   userOpenid: string; // 该条信息用户的openid
   nickName: string; //用户名称 string
   userDes: string; //用户简介 string
+  birthday: string;
   avatarUrl: string; //用户头像 string
   userLocation: string; //用户位置 string
   guestRating: number; //作为房客时的rating, default -1, float

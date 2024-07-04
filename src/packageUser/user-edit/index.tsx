@@ -1,48 +1,65 @@
 import { View, Image, Input, Text, Picker } from '@tarojs/components';
 import { observer } from 'mobx-react';
 import { useEffect, useState } from 'react';
-import { UserItemProps } from '@utils/interfaces';
+import { useRouter } from '@tarojs/taro';
+import { DefaultAvatar, DefaultHouse } from '@utils/cloudIcons';
+import { UserItemProps, UserDetailInfoItemProps } from '@utils/interfaces';
 import './index.scss';
 import Taro from '@tarojs/taro';
 import GlobalStore from '@store/GlobalStore';
 import { cloudAvatarUpload } from '@common/database/cloudstorage/files';
 import { userInfoUpdate } from '@common/database/user/user';
 import CustomTabBar from '@components/CustomTabBar';
+import { userInfoSearch } from '@common/database/user/user';
 
 const Index = () => {
-  const [userInfo, setUserInfo] = useState<UserItemProps>(GlobalStore.userInfo);
-  const [userAvatarUrl, setUserAvatarUrl] = useState<string>(
-    GlobalStore.userInfo.avatarUrl,
-  );
-  const [userDescription, setUserDescription] = useState<string>(
-    GlobalStore.userInfo.userDes,
-  );
-  const [userLocation, setUserLocation] = useState<string>(
-    GlobalStore.userInfo.userLocation,
-  );
 
-  // TODO: 需要补充用户生日信息
+const router = useRouter();
+const userOpenid = router?.params?.id;
+  const [userInfo, setUserInfo] = useState<UserDetailInfoItemProps>();
+
+  useEffect(() => {
+    userInfoSearch(userOpenid).then((ownerInfo: UserDetailInfoItemProps[]) => {
+      setUserInfo(ownerInfo[0]);
+      setUserAvatarUrl(ownerInfo[0].avatarUrl);
+        setUserDescription(ownerInfo[0].userDes);
+        setUserLocation(ownerInfo[0].userLocation);
+        setBirthInput(ownerInfo[0].birthday);
+        setUserBirthday(ownerInfo[0].birthday);
+        setUserGender(ownerInfo[0].gender);
+        setUserNickname(ownerInfo[0].nickName);
+        setAboutMe(ownerInfo[0].aboutMe);
+    });
+
+  }, []);
+
+  const [userAvatarUrl, setUserAvatarUrl] = useState<string>();
+  const [userDescription, setUserDescription] = useState<string>();
+  const [userLocation, setUserLocation] = useState<string>();
   const [userBirthday, setUserBirthday] = useState<string>('');
+  const [userNickname, setUserNickname] = useState<string>('');
+  const [aboutMe, setAboutMe] = useState<{ [key: string]: any }>(
+    {
+    interests: '',
+    major: '',
+    languages: '',
+    skills: '',
+    funFact: '',
+    visitedCountries: '',
+    serviceProvided: '',
+  }
+  )
+  
+  
+  
   const [birthInput, setBirthInput] = useState<string>(userBirthday);
   // TODO: 其他信息从数据库中获取
 
-  const genderOptions = ['男', '女', ''];
-  // const [userGender, setUserGender] = useState<string>(GlobalStore.userInfo.gender || '');
+  const genderOptions = ['男', '女', '非二元'];
   const [userGender, setUserGender] = useState<string>('');
-  // const [genderIndex, setGenderIndex] = useState<number>(['男', '女', ''].indexOf(GlobalStore.userInfo.gender || ''));
   const [genderIndex, setGenderIndex] = useState<number>(
     genderOptions.indexOf(''),
   );
-
-  useEffect(() => {
-    const globalUserInfo: UserItemProps = GlobalStore.userInfo;
-    setUserInfo(globalUserInfo);
-    setUserAvatarUrl(globalUserInfo.avatarUrl);
-    setUserDescription(globalUserInfo.userDes);
-    setUserLocation(globalUserInfo.userLocation);
-
-    console.log('User attributes: ', globalUserInfo);
-  }, []);
 
   const handleBirthdayChange = e => {
     setBirthInput(e.target.value);
@@ -141,52 +158,19 @@ const Index = () => {
     setUserDescription(inputDescription);
   };
 
-  // 添加用户位置信息
   const handleUserLocationEdit = e => {
     const inputLocation = e.detail.value;
     setUserLocation(inputLocation);
   };
 
+  const handleUserNickNameEdit = e => {
+      setUserNickname(e.detail.value);
+  }
+
   // 用户信息修改
   const handleUserInfoChange = () => {
-    Taro.showLoading({
-      title: '信息修改中',
-      mask: true,
-    });
-    userInfoUpdate(
-      userInfo?._id,
-      userAvatarUrl,
-      userDescription,
-      userInfo?.nickName,
-      userLocation,
-    ).then(res => {
-      if (res == 'document.update:ok') {
-        const updatedGlobalUserInfo: UserItemProps = {
-          _id: userInfo._id,
-          _openid: userInfo._openid,
-          avatarUrl: userAvatarUrl,
-          nickName: userInfo.nickName,
-          userDes: userDescription,
-          userOpenid: userInfo.userOpenid,
-          userLocation: userInfo.userLocation,
-        };
-        GlobalStore.userInfo = updatedGlobalUserInfo;
-        Taro.hideLoading();
-        Taro.reLaunch({
-          url: `/pages/user-profile/index`,
-        });
-      } else {
-        Taro.hideLoading();
-        Taro.showToast({
-          title: '个人信息修改失败',
-          icon: 'error',
-          duration: 2000,
-        });
-        Taro.switchTab({
-          url: `/pages/user-profile/index`,
-        });
-      }
-    });
+console.log("TODO @PJ")
+
   };
 
   return (
@@ -194,7 +178,7 @@ const Index = () => {
       <View className='profile-background' />
       <View className='profile-avatar'>
         <Image
-          src={userAvatarUrl}
+          src={userAvatarUrl?userAvatarUrl:DefaultAvatar}
           className='avatar-image'
           onClick={handleUserImageEdit}
         />
@@ -222,10 +206,10 @@ const Index = () => {
             <Text className='info-label'>昵称</Text>
             <Input
               type='text'
-              value={userInfo.nickName}
+              value={userNickname}
               placeholder={`写下你的昵称吧`}
               className='info-value'
-              // onInput={handleUserDescriptionEdit}
+              onInput={handleUserNickNameEdit}
             />
           </View>
           <View className='info-item'>

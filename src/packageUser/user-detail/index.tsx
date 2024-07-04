@@ -10,35 +10,35 @@ import { userInfoSearch } from '@common/database/user/user';
 import UserDetailContent from './user-detail-content';
 import UserAccomContent from './user-accom-content';
 
-const userData: UserDetailInfoItemProps = {
-  _id: 'user-001',
-  _openid: 'openid-001',
-  userOpenid: 'user-openid-001',
-  nickName: '偷心小白菜',
-  userDes: '欢迎和我进行换宿体验～',
-  avatarUrl: 'https://via.placeholder.com/80',
-  userLocation: 'Milan, Italy',
-  guestRating: 4.8,
-  guestRatingNumber: 25,
-  hostRating: 4.7,
-  hostRatingNumber: 18,
-  gender: 'female',
-  tags: ['INTP', '意大利米兰', '米兰理工大学'],
-  verified: {
-    student: true,
-    gov: true,
-  },
-  aboutMe: {
-    interests: 'Swimming, Movies, Skiing',
-    major: 'Computer Science',
-    languages: 'English, Italian, Chinese',
-    skills: 'Coding, Cooking, Photography',
-    funFact: 'I have visited 30 countries and counting!',
-    visitedCountries: 'Italy, France, Germany, USA, China, Japan',
-    serviceProvided:
-      'I can offer a cozy place to stay and a local tour around Milan.',
-  },
-};
+// const userData: UserDetailInfoItemProps = {
+//   _id: 'user-001',
+//   _openid: 'openid-001',
+//   userOpenid: 'user-openid-001',
+//   nickName: '偷心小白菜',
+//   userDes: '欢迎和我进行换宿体验～',
+//   avatarUrl: 'https://via.placeholder.com/80',
+//   userLocation: 'Milan, Italy',
+//   guestRating: 4.8,
+//   guestRatingNumber: 25,
+//   hostRating: 4.7,
+//   hostRatingNumber: 18,
+//   gender: 'female',
+//   tags: ['INTP', '意大利米兰', '米兰理工大学'],
+//   verified: {
+//     student: true,
+//     gov: true,
+//   },
+//   aboutMe: {
+//     interests: 'Swimming, Movies, Skiing',
+//     major: 'Computer Science',
+//     languages: 'English, Italian, Chinese',
+//     skills: 'Coding, Cooking, Photography',
+//     funFact: 'I have visited 30 countries and counting!',
+//     visitedCountries: 'Italy, France, Germany, USA, China, Japan',
+//     serviceProvided:
+//       'I can offer a cozy place to stay and a local tour around Milan.',
+//   },
+// };
 
 const UserDetail: React.FC = () => {
   const router = useRouter();
@@ -62,7 +62,7 @@ const UserDetail: React.FC = () => {
 
   const toEdit = () => {
     Taro.navigateTo({
-      url: '/packageUser/user-edit/index',
+      url: `/packageUser/user-edit/index?id=${currentUser._openid}`,
     });
   };
 
