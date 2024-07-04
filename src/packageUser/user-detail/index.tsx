@@ -49,6 +49,8 @@ const UserDetail: React.FC = () => {
     GlobalStore.userInfo,
   );
 
+  const [userPoints, setUserPoints] = useState<number>(0);
+
   useEffect(() => {
     userInfoSearch(userOpenid).then((ownerInfo: UserDetailInfoItemProps[]) => {
       setUserDetailInfo(ownerInfo[0]);
@@ -65,6 +67,12 @@ const UserDetail: React.FC = () => {
     });
   };
 
+  const handlePointsClick = () => {
+    Taro.navigateTo({
+      url: '/packageUser/my-points/index',
+    });
+  };
+
   return (
     <View>
       <View className='profile-container'>
@@ -76,6 +84,7 @@ const UserDetail: React.FC = () => {
               {userDetailInfo?.nickName}
               {/* // TODO, @PJ */}
               <Text className='badge'>实名认证</Text>
+              <Text className='badge-points' onClick={handlePointsClick}>E分值{userPoints} {'>'}</Text>
             </Text>
             <View className='badges'>
               {userDetailInfo.tags ? (

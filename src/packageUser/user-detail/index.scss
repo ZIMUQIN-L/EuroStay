@@ -77,11 +77,27 @@
   justify-content: center;
 }
 
+.badge-points {
+  position: absolute;
+  top: 5px;
+  right: -190px;
+  padding: 2px 2px;
+  border-radius: 4px 0px 0px 0px;
+  background-color: rgba(255, 209, 17, 0.1);
+  color: rgba(255, 209, 17, 1);
+  font-size: 19px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .badges {
   display: flex;
   flex-wrap: wrap; // Allow tags to wrap to the next line if needed
   margin-top: 5px;
 }
+
+
 
 .badge-item {
   background-color: #f5f3f3;
