@@ -184,3 +184,25 @@ export interface UserDetailInfoItemProps {
   // }
   aboutMe: { [key: string]: any };
 }
+
+
+export interface ActivityInfoItemProps {
+    _id: string; // 该条信息的id
+    _openid: string; // 该条信息用户的openid
+    title: string;//活动标题 str
+    images: string[]; // 活动照片
+    description: string;//活动描述 str
+    tags: string[];//活动tags list
+    location: string;//活动地点 str
+    startTime: string;//开始时间 date
+    endTime: string;//结束时间 date
+    capacity: number;//活动人数上限 number
+    contact: string;// 活动发起人联系方式 str
+    price: number; //用户花销 number
+    point: number;
+    active: boolean; //活动是否还能报名 bool
+    helloMessgae: string;//活动主办发打招呼消息 str
+    banner: boolean; // 活动是否展示在banner上
+    official: boolean; // 是否是官方活动
+    applyPage: string; // 未来的报名页面，对于eurostay活动
+}
