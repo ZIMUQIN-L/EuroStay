@@ -1,0 +1,97 @@
+.review-on-house-page {
+  .des-part {
+    padding: 2% 5%;
+    background-color: white;
+    // width: 580px;
+    border-top: none;
+    margin-top: 0px;
+    border-bottom: 5px solid rgba(214, 214, 214, 0.2);
+  }
+  .des-container {
+    display: flex;
+    flex-direction: column;
+    margin: 5px;
+  }
+  .des-title {
+    color: #979797;
+    font-weight: normal;
+    font-size: 24px;
+  }
+  .des-text-container {
+    background-color: #f2f2f2;
+    border-radius: 20px;
+    margin-top: 15px;
+    font-size: 24px;
+    font-weight: normal;
+    color: #979797;
+    padding: 10px 10px;
+    Input {
+      color: #979797;
+    }
+    textarea {
+      width: 100%;
+      color: #979797;
+    }
+  }
+  .des-text {
+    margin: 20px 20px;
+    color: #979797;
+  }
+  .caution-text {
+    margin: 20px 20px;
+    font-size: 30px;
+    color: #6b63b9;
+  }
+
+  .toggle-container {
+    // margin-top: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 35px;
+    padding: 0; /* Ensure no padding */
+    font-weight: normal;
+    font-size: 18px;
+  }
+
+  .toggle-button {
+    background-color: #fdd835;
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    AtIcon {
+      width: 30px;
+      height: 30px;
+    }
+  }
+
+  .toggle-button.public {
+    background-color: #fdd835; /* Yellow */
+  }
+
+  .toggle-button.private {
+    background-color: #888; /* Grey */
+  }
+
+  .toggle-button-container {
+    display: flex;
+    align-items: center;
+  }
+
+  .toggle-status {
+    margin-left: 5px;
+    color: #4d4d4d;
+    // font-size: 20px;
+  }
+
+  .toggle-explanation {
+    color: #979797;
+    // font-size: 20px;
+  }
+}

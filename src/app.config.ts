@@ -36,6 +36,7 @@ export default {
         'my-activities/index',
         'activity-detail/index',
         'activity-post/index',
+        'activity-application/index',
       ],
     },
   ],
