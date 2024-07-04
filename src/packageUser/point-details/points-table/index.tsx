@@ -5,10 +5,10 @@ const PointsTable = ({ data }) => {
   return (
     <View className='points-table'>
       <View className='table-header'>
-        <Text className='table-cell'>时间</Text>
-        <Text className='table-cell'>类型</Text>
-        <Text className='table-cell'>积分</Text>
-        <Text className='table-cell'>余额</Text>
+        <Text className='header-item'>时间</Text>
+        <Text className='header-item'>类型</Text>
+        <Text className='header-item'>积分</Text>
+        <Text className='header-item'>余额</Text>
       </View>
       {data && data.length > 0 ? (
         data.map((item, index) => (

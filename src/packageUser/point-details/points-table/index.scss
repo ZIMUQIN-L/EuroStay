@@ -1,39 +1,58 @@
 .points-table {
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  padding: 10px;
+  background-color: white;
   margin-top: 4%;
-  padding: 4%;
 
-  .table-header,
+  .table-header{
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid #ccc;
+    align-items: center;
+    height: 60px;
+  }
+
+  .header-item {
+    flex: 1;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    color: rgba(77, 77, 77, 1);
+  }
+
   .table-row {
     display: flex;
     justify-content: space-between;
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid rgba(214, 214, 214, 1);
     padding: 10px 0;
+    height: 80px;
   }
 
-  .table-header {
-    color: black;
-  }
 
   .table-cell {
     flex: 1;
-    text-align: left;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     padding: 0 10px;
+    font-size: 24px;
+    color: rgba(77, 77, 77, 1);
   }
 
   .time {
     display: block;
-    color: #007bff;
-    font-size: 12px;
+    color: rgba(214, 214, 214, 1);
+    font-size: 18px;
   }
 
-  .table-row:nth-of-type(even) {
-    background-color: #f9f9f9;
-  }
-
-  .table-row:last-of-type {
-    border-bottom: 2px solid #007bff;
-  }
 
   .no-data {
     padding: 20px;
