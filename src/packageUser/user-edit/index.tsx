@@ -8,6 +8,7 @@ import GlobalStore from '@store/GlobalStore';
 import { cloudAvatarUpload } from '@common/database/cloudstorage/files';
 import { userInfoUpdate } from '@common/database/user/user';
 import CustomTabBar from '@components/CustomTabBar';
+import TagAdd from '../../packageActivity/activity-post/tag-add';
 
 const Index = () => {
   const [userInfo, setUserInfo] = useState<UserItemProps>(GlobalStore.userInfo);
@@ -33,6 +34,27 @@ const Index = () => {
   const [genderIndex, setGenderIndex] = useState<number>(
     genderOptions.indexOf(''),
   );
+
+  const [activityTags, setActivityTags] = useState<string[]>([]);
+
+  const handleAddTag = newTag => {
+    activityTags.push(newTag);
+  };
+
+  const handleDeleteTag = deletedTag => {
+    const updatedTags = activityTags.filter(tag => tag != deletedTag);
+    setActivityTags(updatedTags);
+  };
+
+  const [isTagEdit, setIsTagEdit] = useState(false);
+
+  const handleOpenTagEdit = () => {
+    setIsTagEdit(true);
+  };
+
+  const handleCloseAllWindows = () => {
+    setIsTagEdit(false);
+  };
 
   useEffect(() => {
     const globalUserInfo: UserItemProps = GlobalStore.userInfo;
@@ -284,6 +306,7 @@ const Index = () => {
           </View>
         </View>
       </View>
+
       <View className='section'>
         <Text className='section-title'>关于我</Text>
         <View className='info-container'>

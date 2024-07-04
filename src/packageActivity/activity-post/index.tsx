@@ -4,7 +4,6 @@ import ImagesUpload from './images-upload';
 import { useState, useEffect } from 'react';
 import { useRouter } from '@tarojs/taro';
 import './index.scss';
-import Taro from '@tarojs/taro';
 import { UserItemProps } from '@utils/interfaces';
 import GlobalStore from '@store/GlobalStore';
 import TagAdd from './tag-add';
@@ -153,6 +152,7 @@ const Index = () => {
           <View className='act-lineDiv' />
         </View>
       </View>
+      {isTagEdit && <TagAdd onClose={handleCloseAllWindows} onTagAdded={handleAddTag} />}
       <InfoSelection
         onActivityInfoEdit={handleActivityInfoEdit}
         activityId={activityId}
