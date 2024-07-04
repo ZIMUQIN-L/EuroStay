@@ -3,25 +3,20 @@ import { View, Text, Image } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import './index.scss';
 import HomeIcon from '@assets/images/home.png';
-import RepostIcon from '@assets/images/repost.png';
 import ActivityIcon from '@assets/images/repost.png';
 import UserIcon from '@assets/images/user.png';
 import HomeSelectedIcon from '@assets/images/home-selected.png';
-import RepostSelectedIcon from '@assets/images/repost-selected.png';
 import ActivitySelectedIcon from '@assets/images/repost-selected.png';
 import UserSelectedIcon from '@assets/images/user-selected.png';
 import { useMemo } from 'react';
 import GlobalStore from '@store/GlobalStore';
 import { observer } from 'mobx-react-lite';
-import PostHouseIcon from '@assets/images/post-house.svg';
-
 interface CustomTabBarProps {
   onHomeSelected?: () => void;
 }
 
 const CustomTabBar: React.FC<CustomTabBarProps> = ({ onHomeSelected }) => {
   const currentTab = GlobalStore.currentTab;
-  const [showPost, setShowPost] = useState(false);
 
   const isIphone = useMemo(() => {
     const systemInfo = Taro.getSystemInfoSync();
