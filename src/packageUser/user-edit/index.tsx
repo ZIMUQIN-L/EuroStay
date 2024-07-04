@@ -21,15 +21,77 @@ const Index = () => {
     GlobalStore.userInfo.userLocation,
   );
 
+  // TODO: 需要补充用户生日信息
+  const [userBirthday, setUserBirthday] = useState<string>('');
+  const [birthInput, setBirthInput] = useState<string>(userBirthday);
+  // TODO: 其他信息从数据库中获取
+
+
   useEffect(() => {
     const globalUserInfo: UserItemProps = GlobalStore.userInfo;
     setUserInfo(globalUserInfo);
     setUserAvatarUrl(globalUserInfo.avatarUrl);
     setUserDescription(globalUserInfo.userDes);
     setUserLocation(globalUserInfo.userLocation);
-
-    console.log('User attributes:', globalUserInfo);
   }, []);
+
+  const handleBirthdayChange = (e) => {
+    setBirthInput(e.target.value);
+  };
+
+  const isValidDate = (dateString) => {
+    const regEx = /^\d{4}-\d{2}-\d{2}$/;
+    if (!dateString.match(regEx)) return false;
+
+    const date = new Date(dateString);
+    const timestamp = date.getTime();
+    if (typeof timestamp !== 'number' || isNaN(timestamp)) return false;
+    
+    return dateString === date.toISOString().split('T')[0];
+  }
+
+  const getAge = (dateString)=> {
+    const today = new Date();
+    const birthDate = new Date(dateString);
+    const age = today.getFullYear() - birthDate.getFullYear();
+    const monthDifference = today.getMonth() - birthDate.getMonth();
+    if (
+      monthDifference < 0 ||
+      (monthDifference === 0 && today.getDate() < birthDate.getDate())
+    ) {
+      return age - 1;
+    }
+    return age;
+  }
+
+  const handleBirthdayBlur = (): void => {
+    // 使用正则表达式验证输入格式是否为 yyyy-mm-dd
+    const regex = /^\d{4}-\d{2}-\d{2}$/;
+    if (!regex.test(birthInput)) {
+      Taro.showToast({
+        title: '生日格式错误',
+        icon: 'error',
+        duration: 1000,
+      });
+    } else if (!isValidDate(birthInput)) {
+      Taro.showToast({
+        title: '生日日期无效',
+        icon: 'error',
+        duration: 1000,
+      });
+    } else {
+      const age = getAge(birthInput);
+      if (age < 16 || age > 80) {
+        Taro.showToast({
+          title: '请输入一个合理的年龄范围(16-80)',
+          icon: 'error',
+          duration: 1000,
+        });
+      } else {
+        setUserBirthday(birthInput);
+      }
+    }
+  }
 
   const handleUserImageEdit = () => {
     Taro.chooseImage({
@@ -173,7 +235,20 @@ const Index = () => {
           </View>
           <View className='info-item'>
             <Text className='info-label'>生日</Text>
-            <Text className='info-value'>2000-08-16</Text>
+            <View className='info-value'>
+              <Input
+                type='text'
+                value={birthInput}
+                placeholder={
+                  birthInput !== '' && birthInput != undefined
+                    ? `${birthInput}`
+                    : `请输入生日yyyy-mm-dd`
+                }
+                onInput={handleBirthdayChange}
+                onBlur={handleBirthdayBlur}
+                className='info-value'
+              />
+            </View>
           </View>
           <View className='info-item'>
             <Text className='info-label'>身份</Text>
