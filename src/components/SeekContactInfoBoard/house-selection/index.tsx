@@ -27,9 +27,13 @@ const HouseSelection = ({ onClose, onHouseSelected, prevHouseId }) => {
     setHouseId(prevHouseId);
   }, []);
 
-  const handleHouseClick = (chosenHouseId, chosenHouseLocation) => {
+  const handleHouseClick = (
+    chosenHouseId,
+    chosenHouseLocation,
+    chosenImages,
+  ) => {
     setHouseId(chosenHouseId);
-    onHouseSelected(chosenHouseId, chosenHouseLocation);
+    onHouseSelected(chosenHouseId, chosenHouseLocation, chosenImages);
   };
 
   return (
@@ -43,7 +47,9 @@ const HouseSelection = ({ onClose, onHouseSelected, prevHouseId }) => {
           <View
             key={house._id}
             className={`seek-house-card ${houseId != '' && houseId == house._id ? 'chosen' : ''}`}
-            onClick={() => handleHouseClick(house._id, house.location)}
+            onClick={() =>
+              handleHouseClick(house._id, house.location, house.images)
+            }
           >
             {/* <Image
             src={house.images.length > 0 ? house.images[0] : DefaultHouse}

@@ -28,6 +28,7 @@ const SeekReplyBoard = ({
 
   const [isHouseSelection, setIsHouseSelection] = useState(false);
   const [houseId, setHouseId] = useState('');
+  const [images, setImages] = useState<string[]>([]);
   const [houseLocation, setHouseLocation] = useState('');
 
   // 联系方式
@@ -45,7 +46,7 @@ const SeekReplyBoard = ({
   };
 
   const handleSubmitContactInfo = () => {
-    onUpdateData(contact, helloMessage);
+    onUpdateData(contact, helloMessage, houseId, houseLocation, images);
     onClose();
   };
 
@@ -63,9 +64,14 @@ const SeekReplyBoard = ({
     setIsHouseSelection(false);
   };
 
-  const handleUserHouseEdit = (chosenHouseId, chosenHouseLocation) => {
+  const handleUserHouseEdit = (
+    chosenHouseId,
+    chosenHouseLocation,
+    chosenImages,
+  ) => {
     setHouseId(chosenHouseId);
     setHouseLocation(chosenHouseLocation);
+    setImages(chosenImages);
   };
 
   return (
@@ -79,9 +85,7 @@ const SeekReplyBoard = ({
         <View className='seek-reply-board-editable-container'>
           <Image src={user.avatarUrl} className='avatar-image' />
           <View className='seek-reply-board-editable-name'>
-            <Text className='seek-reply-text-title'>
-              求宿者：{user.nickName}
-            </Text>
+            <Text className='seek-reply-text-title'>房主：{user.nickName}</Text>
           </View>
 
           <View className='selection-part'>

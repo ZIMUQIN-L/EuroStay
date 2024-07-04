@@ -44,7 +44,6 @@ const UserCommentCard: React.FC<UserRatingInfoItemProps> = userRatingInfo => {
             <View className='rating-stars'>
               {ratingStars.map((star, index) => (
                 <Text
-                  // @PJ TODO
                   key={index}
                   className={`star ${star <= ratingNumber ? 'filled' : ''}`}
                 >
