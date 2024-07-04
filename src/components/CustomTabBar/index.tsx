@@ -57,53 +57,9 @@ const CustomTabBar: React.FC<CustomTabBarProps> = ({ onHomeSelected }) => {
       });
     }
   };
-  const handlePostHouseClick = () => {
-    Taro.navigateTo({
-      url: '../../packageHouse/house-post/index',
-    });
-    setShowPost(false);
-  };
-
-  const handlePostClick = () => {
-    setShowPost(true);
-  };
-
-  const handleClosePopup = () => {
-    setShowPost(false);
-  };
 
   return (
     <>
-      {/* {showPost && (
-        <View className='popup' onClick={handleClosePopup}>
-          <View className='popup-content' onClick={e => e.stopPropagation()}>
-            <Text className='popup-title'>发布类型</Text>
-            <View
-              style={{ height: '1px', width: '100%', backgroundColor: '#ccc' }}
-            ></View>
-            <View className='popup-selection'>
-              <Image
-                src={PostHouseIcon}
-                style={{
-                  height: '20px',
-                  width: '20px',
-                  marginLeft: '20px',
-                  marginRight: '10px',
-                }}
-              />
-
-              <View className='popup-button' onClick={handlePostHouseClick}>
-                <View>
-                  <Text>发布房源信息</Text>
-                </View>
-                <View style={{ marginRight: '20px', fontSize: '20px' }}>
-                  <Text>{'>'}</Text>
-                </View>
-              </View>
-            </View>
-          </View>
-        </View>
-      )} */}
       <View className='custom-tab-bar' style={{ height: tabBarHeight }}>
         <View className='tab-item' onClick={() => handleTabClick('home')}>
           <View className='tab-icon'>
@@ -113,13 +69,6 @@ const CustomTabBar: React.FC<CustomTabBarProps> = ({ onHomeSelected }) => {
             主页
           </Text>
         </View>
-
-        {/* <View className='tab-item' onClick={handlePostClick}>
-          <View className='tab-icon'>
-            <Image src={showPost ? RepostSelectedIcon : RepostIcon} />
-          </View>
-          <Text className={`tab-text ${showPost ? 'active' : ''}`}>发布</Text>
-        </View> */}
 
         <View className='tab-item' onClick={() => handleTabClick('activity')}>
           <View className='tab-icon'>
