@@ -19,7 +19,7 @@ const ReviewDes = ({ onUserDescriptionEdit }) => {
   };
 
   return (
-      <View className='activity-app-detail-card'>
+      <View className='activity-app-comment'>
     <View className='des-part'>
       <View className='des-container'>
         <Text className='des-title'>
