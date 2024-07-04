@@ -1,4 +1,4 @@
-import { View, Image, Input, Text } from '@tarojs/components';
+import { View, Image, Input, Text, Picker } from '@tarojs/components';
 import { observer } from 'mobx-react';
 import { useEffect, useState } from 'react';
 import { UserItemProps } from '@utils/interfaces';
@@ -26,6 +26,13 @@ const Index = () => {
   const [birthInput, setBirthInput] = useState<string>(userBirthday);
   // TODO: 其他信息从数据库中获取
 
+  const genderOptions = ['男', '女', ''];
+  // const [userGender, setUserGender] = useState<string>(GlobalStore.userInfo.gender || '');
+  const [userGender, setUserGender] = useState<string>('');
+  // const [genderIndex, setGenderIndex] = useState<number>(['男', '女', ''].indexOf(GlobalStore.userInfo.gender || ''));
+  const [genderIndex, setGenderIndex] = useState<number>(
+    genderOptions.indexOf(''),
+  );
 
   useEffect(() => {
     const globalUserInfo: UserItemProps = GlobalStore.userInfo;
@@ -33,24 +40,26 @@ const Index = () => {
     setUserAvatarUrl(globalUserInfo.avatarUrl);
     setUserDescription(globalUserInfo.userDes);
     setUserLocation(globalUserInfo.userLocation);
+
+    console.log('User attributes: ', globalUserInfo);
   }, []);
 
-  const handleBirthdayChange = (e) => {
+  const handleBirthdayChange = e => {
     setBirthInput(e.target.value);
   };
 
-  const isValidDate = (dateString) => {
+  const isValidDate = dateString => {
     const regEx = /^\d{4}-\d{2}-\d{2}$/;
     if (!dateString.match(regEx)) return false;
 
     const date = new Date(dateString);
     const timestamp = date.getTime();
     if (typeof timestamp !== 'number' || isNaN(timestamp)) return false;
-    
-    return dateString === date.toISOString().split('T')[0];
-  }
 
-  const getAge = (dateString)=> {
+    return dateString === date.toISOString().split('T')[0];
+  };
+
+  const getAge = dateString => {
     const today = new Date();
     const birthDate = new Date(dateString);
     const age = today.getFullYear() - birthDate.getFullYear();
@@ -62,7 +71,7 @@ const Index = () => {
       return age - 1;
     }
     return age;
-  }
+  };
 
   const handleBirthdayBlur = (): void => {
     // 使用正则表达式验证输入格式是否为 yyyy-mm-dd
@@ -91,7 +100,7 @@ const Index = () => {
         setUserBirthday(birthInput);
       }
     }
-  }
+  };
 
   const handleUserImageEdit = () => {
     Taro.chooseImage({
@@ -119,6 +128,12 @@ const Index = () => {
         });
       },
     });
+  };
+
+  const handleGenderChange = e => {
+    const index = e.detail.value;
+    setGenderIndex(index);
+    setUserGender(genderOptions[index]);
   };
 
   const handleUserDescriptionEdit = e => {
@@ -215,7 +230,14 @@ const Index = () => {
           </View>
           <View className='info-item'>
             <Text className='info-label'>性别</Text>
-            <Text className='info-value'>女</Text>
+            <Picker
+              mode='selector'
+              range={genderOptions}
+              value={genderIndex}
+              onChange={handleGenderChange}
+            >
+              <View className='info-value'>{userGender || '请选择性别'}</View>
+            </Picker>
           </View>
           <View className='info-item'>
             <Text className='info-label'>个人居住地</Text>
