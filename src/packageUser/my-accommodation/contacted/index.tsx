@@ -205,6 +205,18 @@ const ContactedCard: React.FC<UserAccomMessageItemProps> = userAccomMessage => {
         )}
         avatarUrl={userAccomMessage.targetUserAvatarUrl}
         withTarget={userAccomMessage.type != 'withoutTargetHouse'}
+        houseId={
+          userAccomMessage.type != 'withoutTargetHouse' &&
+          userAccomMessage.houseId
+            ? userAccomMessage.houseId
+            : ''
+        }
+        userOpenid={
+          userAccomMessage.type != 'withoutTargetHouse' &&
+          userAccomMessage.targetUserOpenid
+            ? userAccomMessage.targetUserOpenid
+            : ''
+        }
       />
       {contactInfoIsShown && (
         <ContactInfoBoard

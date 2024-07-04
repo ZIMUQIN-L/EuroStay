@@ -228,7 +228,7 @@ const AwaitFeedback: React.FC<UserAccomMessageItemProps> = userAccomMessage => {
             ? DefaultHouse
             : userAccomMessage.images[0]
         }
-        userInfo={userAccomMessage.targetUserNickName}
+        userInfo={userAccomMessage.sourceUserNickName}
         dateInfo={
           userAccomMessage.start_date + ' to ' + userAccomMessage.end_date
         }
@@ -242,7 +242,10 @@ const AwaitFeedback: React.FC<UserAccomMessageItemProps> = userAccomMessage => {
           );
         }}
         clickable={handleButtonClickable(userAccomMessage.status)}
-        avatarUrl={userAccomMessage.targetUserAvatarUrl}
+        avatarUrl={userAccomMessage.sourceUserAvatarUrl}
+        mineType={'offer'}
+        houseId={userAccomMessage.houseId}
+        userOpenid={userAccomMessage.sourceUserOpenid}
       />
       {contactInfoIsShown && (
         <ContactInfoBoard
