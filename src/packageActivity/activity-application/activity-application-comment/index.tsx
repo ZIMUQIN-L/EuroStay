@@ -19,24 +19,22 @@ const ReviewDes = ({ onUserDescriptionEdit }) => {
   };
 
   return (
-      <View className='activity-app-comment'>
-    <View className='des-part'>
-      <View className='des-container'>
-        <Text className='des-title'>
-          有话对主办方说？
-        </Text>
-        <View className='des-text-container' style={{ minHeight: '80px' }}>
-          <View className='des-text'>
-            <Textarea
-              value={des}
-              style={{ color: '#979797' }}
-              onInput={handleUserDescriptionEdit}
-              placeholder='向主办方介绍一下自己吧！'
-            />
+    <View className='activity-app-comment'>
+      <View className='des-part'>
+        <View className='des-container'>
+          <Text className='des-title'>有话对主办方说？</Text>
+          <View className='des-text-container' style={{ minHeight: '80px' }}>
+            <View className='des-text'>
+              <Textarea
+                value={des}
+                style={{ color: '#979797' }}
+                onInput={handleUserDescriptionEdit}
+                placeholder='向主办方介绍一下自己吧！'
+              />
+            </View>
           </View>
         </View>
       </View>
-    </View>
     </View>
   );
 };

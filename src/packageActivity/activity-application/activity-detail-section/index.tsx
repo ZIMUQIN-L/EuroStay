@@ -10,7 +10,6 @@ const ActivityDetailSection = ({
   organizer,
   location,
 }) => {
-
   return (
     <View className='activity-app-detail-card'>
       <Image className='activity-image' src={imageUrls[0]} mode='aspectFill' />
@@ -24,7 +23,9 @@ const ActivityDetailSection = ({
           </View>
           <View className='detail-item'>
             <CalendarOutlined className='icon' />
-            <Text className='text'>{dateInfo}, {timeInfo}</Text>
+            <Text className='text'>
+              {dateInfo}, {timeInfo}
+            </Text>
           </View>
         </View>
       </View>

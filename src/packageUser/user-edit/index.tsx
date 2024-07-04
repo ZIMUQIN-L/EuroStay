@@ -6,31 +6,28 @@ import { DefaultAvatar, DefaultHouse } from '@utils/cloudIcons';
 import { UserItemProps, UserDetailInfoItemProps } from '@utils/interfaces';
 import './index.scss';
 import Taro from '@tarojs/taro';
-import GlobalStore from '@store/GlobalStore';
 import { cloudAvatarUpload } from '@common/database/cloudstorage/files';
 import { userInfoUpdate } from '@common/database/user/user';
-import CustomTabBar from '@components/CustomTabBar';
 import { userInfoSearch } from '@common/database/user/user';
+import TagAdd from '../../packageActivity/activity-post/tag-add';
 
 const Index = () => {
-
-const router = useRouter();
-const userOpenid = router?.params?.id;
+  const router = useRouter();
+  const userOpenid = router?.params?.id;
   const [userInfo, setUserInfo] = useState<UserDetailInfoItemProps>();
 
   useEffect(() => {
     userInfoSearch(userOpenid).then((ownerInfo: UserDetailInfoItemProps[]) => {
       setUserInfo(ownerInfo[0]);
       setUserAvatarUrl(ownerInfo[0].avatarUrl);
-        setUserDescription(ownerInfo[0].userDes);
-        setUserLocation(ownerInfo[0].userLocation);
-        setBirthInput(ownerInfo[0].birthday);
-        setUserBirthday(ownerInfo[0].birthday);
-        setUserGender(ownerInfo[0].gender);
-        setUserNickname(ownerInfo[0].nickName);
-        setAboutMe(ownerInfo[0].aboutMe);
+      setUserDescription(ownerInfo[0].userDes);
+      setUserLocation(ownerInfo[0].userLocation);
+      setBirthInput(ownerInfo[0].birthday);
+      setUserBirthday(ownerInfo[0].birthday);
+      setUserGender(ownerInfo[0].gender);
+      setUserNickname(ownerInfo[0].nickName);
+      setAboutMe(ownerInfo[0].aboutMe);
     });
-
   }, []);
 
   const [userAvatarUrl, setUserAvatarUrl] = useState<string>();
@@ -38,8 +35,7 @@ const userOpenid = router?.params?.id;
   const [userLocation, setUserLocation] = useState<string>();
   const [userBirthday, setUserBirthday] = useState<string>('');
   const [userNickname, setUserNickname] = useState<string>('');
-  const [aboutMe, setAboutMe] = useState<{ [key: string]: any }>(
-    {
+  const [aboutMe, setAboutMe] = useState<{ [key: string]: any }>({
     interests: '',
     major: '',
     languages: '',
@@ -47,11 +43,8 @@ const userOpenid = router?.params?.id;
     funFact: '',
     visitedCountries: '',
     serviceProvided: '',
-  }
-  )
-  
-  
-  
+  });
+
   const [birthInput, setBirthInput] = useState<string>(userBirthday);
   // TODO: 其他信息从数据库中获取
 
@@ -60,6 +53,27 @@ const userOpenid = router?.params?.id;
   const [genderIndex, setGenderIndex] = useState<number>(
     genderOptions.indexOf(''),
   );
+
+  const [userTags, setUserTags] = useState<string[]>([]);
+
+  const handleAddTag = newTag => {
+    userTags.push(newTag);
+  };
+
+  const handleDeleteTag = deletedTag => {
+    const updatedTags = userTags.filter(tag => tag != deletedTag);
+    setUserTags(updatedTags);
+  };
+
+  const [isTagEdit, setIsTagEdit] = useState(false);
+
+  const handleOpenTagEdit = () => {
+    setIsTagEdit(true);
+  };
+
+  const handleCloseAllWindows = () => {
+    setIsTagEdit(false);
+  };
 
   const handleBirthdayChange = e => {
     setBirthInput(e.target.value);
@@ -164,13 +178,12 @@ const userOpenid = router?.params?.id;
   };
 
   const handleUserNickNameEdit = e => {
-      setUserNickname(e.detail.value);
-  }
+    setUserNickname(e.detail.value);
+  };
 
   // 用户信息修改
   const handleUserInfoChange = () => {
-console.log("TODO @PJ")
-
+    console.log('TODO @PJ');
   };
 
   return (
@@ -178,10 +191,24 @@ console.log("TODO @PJ")
       <View className='profile-background' />
       <View className='profile-avatar'>
         <Image
-          src={userAvatarUrl?userAvatarUrl:DefaultAvatar}
+          src={userAvatarUrl ? userAvatarUrl : DefaultAvatar}
           className='avatar-image'
           onClick={handleUserImageEdit}
         />
+      </View>
+      <View className='user-edit-badges'>
+        {userTags.map((tag, index) => (
+          <Text
+            key={index}
+            className='user-edit-badge-item'
+            onClick={() => handleDeleteTag(tag)}
+          >
+            {tag}
+          </Text>
+        ))}
+        <Text className='user-edit-badge-item-add' onClick={handleOpenTagEdit}>
+          点击添加个性标签
+        </Text>
       </View>
       <View className='section'>
         <Text className='section-title'>我的简介</Text>
@@ -268,6 +295,7 @@ console.log("TODO @PJ")
           </View>
         </View>
       </View>
+
       <View className='section'>
         <Text className='section-title'>关于我</Text>
         <View className='info-container'>
@@ -338,7 +366,12 @@ console.log("TODO @PJ")
           <Text>保存修改</Text>
         </View>
       </View>
-      <CustomTabBar />
+      {isTagEdit && (
+        <TagAdd
+          onClose={handleCloseAllWindows}
+          onTagAdded={handleAddTag}
+        ></TagAdd>
+      )}
     </View>
   );
 };

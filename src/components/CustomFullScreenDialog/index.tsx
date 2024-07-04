@@ -28,7 +28,9 @@ const CustomFullScreenDialog = (props: IProps) => {
         </Text>
         {children}
         <View className='dialog-save-button' onClick={onSubmit}>
-          <Text style={{ color: 'white' }}>{buttonName ? buttonName : '确认'}</Text>
+          <Text style={{ color: 'white' }}>
+            {buttonName ? buttonName : '确认'}
+          </Text>
         </View>
       </View>
     </View>

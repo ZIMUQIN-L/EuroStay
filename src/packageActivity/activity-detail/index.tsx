@@ -18,7 +18,6 @@ import {
 import { PreferenceIcon } from '@utils/cloudIcons';
 import Taro from '@tarojs/taro';
 
-
 const DetailPage = () => {
   // Hardcoded demo data
   const activity = {
@@ -113,7 +112,9 @@ const DetailPage = () => {
           <View className='icon-container'>
             <StarOutlined className='icon' />
           </View>
-          <Button className='contact-button' onClick={handleSignUpClick}>报名活动</Button>
+          <Button className='contact-button' onClick={handleSignUpClick}>
+            报名活动
+          </Button>
         </View>
       </View>
     </View>

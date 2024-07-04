@@ -4,7 +4,6 @@ import { View, Image, Text } from '@tarojs/components';
 import './index.scss';
 import GlobalStore from '@store/GlobalStore';
 import Taro from '@tarojs/taro';
-import { Point } from '@utils/cloudIcons';
 import { useRouter } from '@tarojs/taro';
 import { userInfoSearch } from '@common/database/user/user';
 import UserDetailContent from './user-detail-content';

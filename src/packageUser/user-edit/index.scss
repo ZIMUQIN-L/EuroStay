@@ -190,3 +190,29 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   margin-top: 30px;
 }
+
+.user-edit-badges {
+  display: flex;
+  flex-wrap: wrap; // Allow tags to wrap to the next line if needed
+  margin-top: 20px;
+}
+
+.user-edit-badge-item {
+  background-color: #f5f3f3;
+  color: #979797;
+  border-radius: 7px;
+  padding: 2px 8px;
+  margin-right: 10px;
+  margin-bottom: 10px; // Add some space below for wrapping
+  font-size: 25px;
+}
+
+.user-edit-badge-item-add {
+  background-color: #ffd11166;
+  color: #979797;
+  border-radius: 7px;
+  padding: 2px 8px;
+  margin-right: 10px;
+  margin-bottom: 10px; // Add some space below for wrapping
+  font-size: 25px;
+}

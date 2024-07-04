@@ -22,29 +22,26 @@ export const RightBottomArrow = `${cloudPath}/right-arrow.svg`;
 import CopyHostInfoModal from './copy-host-info-modal';
 
 const ActicityApplicationPage = () => {
-
-
-    const demohost = {
-      avatar: 'https://via.placeholder.com/50x50',
-      wechatId: 'wechatId_demo',
-
-    }
-    const activity = {
-        title: '活动标题线下艺术疗愈workshop',
-        location: 'Paris, 2nd ARR',
-        price: '€25/人',
-        date: '2024年6月31日',
-        time: '14:00-15:30',
-        duration: '1h30min',
-        organizer: 'Username',
-        description: '由主持人填写 简要说明线下活动内容或者亮点',
-        participants: 15,
-        images: [
-          'https://via.placeholder.com/300x150',
-          'https://via.placeholder.com/300x150',
-          'https://via.placeholder.com/300x150',
-        ],
-      };
+  const demohost = {
+    avatar: 'https://via.placeholder.com/50x50',
+    wechatId: 'wechatId_demo',
+  };
+  const activity = {
+    title: '活动标题线下艺术疗愈workshop',
+    location: 'Paris, 2nd ARR',
+    price: '€25/人',
+    date: '2024年6月31日',
+    time: '14:00-15:30',
+    duration: '1h30min',
+    organizer: 'Username',
+    description: '由主持人填写 简要说明线下活动内容或者亮点',
+    participants: 15,
+    images: [
+      'https://via.placeholder.com/300x150',
+      'https://via.placeholder.com/300x150',
+      'https://via.placeholder.com/300x150',
+    ],
+  };
   const router = useRouter();
   const [isLocationSelection, setIsLocationSelection] = useState(false);
   const [location, setLocation] = useState('');
@@ -71,10 +68,10 @@ const ActicityApplicationPage = () => {
 
   const handleClose = () => {
     setIsLocationSelection(false);
-  }
+  };
 
   const handleLocationUserEdit = editedLocation => {
-    console.log("new location", editedLocation);
+    console.log('new location', editedLocation);
     setLocation(editedLocation);
   };
 
@@ -87,8 +84,7 @@ const ActicityApplicationPage = () => {
     // Taro.navigateTo({
     //   url: `/packageActivity/activity-application/index?id=anyid`,
     // });
-  }
-
+  };
 
   return (
     <View className='activity-application-page'>
@@ -100,34 +96,30 @@ const ActicityApplicationPage = () => {
         organizer={activity.organizer}
         location={activity.location}
       />
-      
 
       <View className='selection-part'>
-          <View className='selection-container'>
-            <View className='selection-content'>
-              <View className='selection-left'>
-                <View className='icon-container'>
-                  <Image src={LocationSelectionIcon} />
-                </View>
-                <Text>活动地址</Text>
+        <View className='selection-container'>
+          <View className='selection-content'>
+            <View className='selection-left'>
+              <View className='icon-container'>
+                <Image src={LocationSelectionIcon} />
               </View>
-              <View
-                className='selection-right'
-                onClick={handleLocationSelection}
-              >
-                <Text>{location != '' ? `${location}` : `请选择`}</Text>
-                <Image src={RightBottomArrow} />
-              </View>
-              {isLocationSelection && (
-                <LocationSelection
-                  onClose={handleClose}
-                  onLocationSelected={handleLocationUserEdit}
-                  prevLocation={location}
-                />
-              )}
+              <Text>活动地址</Text>
             </View>
+            <View className='selection-right' onClick={handleLocationSelection}>
+              <Text>{location != '' ? `${location}` : `请选择`}</Text>
+              <Image src={RightBottomArrow} />
+            </View>
+            {isLocationSelection && (
+              <LocationSelection
+                onClose={handleClose}
+                onLocationSelected={handleLocationUserEdit}
+                prevLocation={location}
+              />
+            )}
           </View>
         </View>
+      </View>
 
       <View className='contact-container'>
         <View className='price-info'>
@@ -140,13 +132,13 @@ const ActicityApplicationPage = () => {
           <View className='icon-container'>
             <StarOutlined className='icon' />
           </View>
-          <Button className='contact-button' onClick={handleGetHostInfoClick}>发送</Button>
+          <Button className='contact-button' onClick={handleGetHostInfoClick}>
+            发送
+          </Button>
         </View>
       </View>
 
-      <ActivityAppCom
-        onUserDescriptionEdit={handleActivityAppComEdit}
-      />
+      <ActivityAppCom onUserDescriptionEdit={handleActivityAppComEdit} />
 
       {isShowSuccessModal && (
         <CopyHostInfoModal
@@ -160,7 +152,6 @@ const ActicityApplicationPage = () => {
           wechatId={demohost.wechatId}
         ></CopyHostInfoModal>
       )}
-
     </View>
   );
 };

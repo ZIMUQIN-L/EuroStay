@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, Image } from '@tarojs/components';
-import { LocationOutlined, CalendarOutlined, Close} from '@taroify/icons'; // Adjust the import path as necessary
+import { LocationOutlined, CalendarOutlined, Close } from '@taroify/icons'; // Adjust the import path as necessary
 import './index.scss';
 
 interface IProps {
@@ -18,7 +18,18 @@ interface IProps {
 }
 
 const CopyInfoModal = (props: IProps) => {
-  const { title, location, date, time, username, wechatId, avatar, onClose, onSubmit, buttonName } = props;
+  const {
+    title,
+    location,
+    date,
+    time,
+    username,
+    wechatId,
+    avatar,
+    onClose,
+    onSubmit,
+    buttonName,
+  } = props;
 
   const handleOuterClick = () => {
     onClose();
@@ -28,7 +39,7 @@ const CopyInfoModal = (props: IProps) => {
     <View className='modal-overlay' onClick={handleOuterClick}>
       <View
         className={`dialog-container ${props.className ? props.className : ''}`}
-        onClick={(e) => e.stopPropagation()}
+        onClick={e => e.stopPropagation()}
       >
         <View className='modal-header'>
           <Text className='dialog-container-title'>报名成功</Text>
@@ -43,7 +54,9 @@ const CopyInfoModal = (props: IProps) => {
             </View>
             <View className='date-container'>
               <CalendarOutlined className='icon' />
-              <Text className='date'>{date}, {time}</Text>
+              <Text className='date'>
+                {date}, {time}
+              </Text>
             </View>
           </View>
           <View className='organizer-info'>
@@ -55,7 +68,9 @@ const CopyInfoModal = (props: IProps) => {
           </View>
         </View>
         <View className='dialog-save-button' onClick={onSubmit}>
-          <Text style={{ color: 'white' }}>{buttonName ? buttonName : '确认'}</Text>
+          <Text style={{ color: 'white' }}>
+            {buttonName ? buttonName : '确认'}
+          </Text>
         </View>
       </View>
     </View>

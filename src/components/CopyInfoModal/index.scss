@@ -70,7 +70,8 @@
   flex-direction: column;
 }
 
-.location-container, .date-container {
+.location-container,
+.date-container {
   display: flex;
   align-items: center;
   margin-bottom: 5px;
@@ -81,7 +82,8 @@
     margin-right: 6px;
   }
 
-  .location, .date {
+  .location,
+  .date {
     font-size: 26px;
     color: #333;
   }
@@ -104,7 +106,8 @@
     flex-direction: column;
   }
 
-  .organizer-name, .organizer-contact {
+  .organizer-name,
+  .organizer-contact {
     font-size: 16px;
     color: #333;
   }
