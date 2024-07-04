@@ -1,15 +1,21 @@
 import { useState, useEffect } from 'react';
 import SearchCard from '../search-section';
+import { replyMessageAdd } from '@common/database/ownerReply/ownerReply';
 import './index.scss';
 import { View } from '@tarojs/components';
-import { UserAccomMessageItemProps } from '@utils/interfaces';
+import { UserAccomMessageItemProps, UserItemProps } from '@utils/interfaces';
 import Taro, { useReachBottom } from '@tarojs/taro';
 import DefaultAvatar from '@assets/images/default-avatar.png';
+import GlobalStore from '@store/GlobalStore';
 import SeekingCard from '../seeking-item';
 import CustomTabBar from '@components/CustomTabBar';
-import { accomPageMessageSearch } from '@common/database/accomMessage/accomMessage';
+import {
+  accomPageMessageSearch,
+  accomMessageAdd,
+} from '@common/database/accomMessage/accomMessage';
 import SeekReplyBoard from '@components/SeekContactInfoBoard';
 import MsgInfoBoard from '@components/MsgInfoBoard';
+import { houseInfoPost } from '@common/database/house/house';
 
 /**
  * 求宿页面
@@ -23,7 +29,7 @@ const SeekingAccommodation = () => {
   });
   const [infoBoardIsShown, setInfoBoardIsShown] = useState(false);
   const [contactInfoIsShown, setContactInfoIsShown] = useState(false);
-
+  const [user, setUser] = useState<UserItemProps>(GlobalStore.userInfo);
   const [userDestination, setUserDestination] = useState<string>('');
 
   const handleDestinationChange = inputDestination => {
@@ -71,15 +77,57 @@ const SeekingAccommodation = () => {
 
   useEffect(() => {
     fetchInitialData();
+    const demoUser: UserItemProps = GlobalStore.userInfo;
+    setUser(demoUser);
   }, []);
 
   const [seekingData, setSeekingData] = useState<UserAccomMessageItemProps[]>(
     [],
   );
 
-  const handleUserSubmitContactInfo = () => {
-    // TODO: logic change @PJ
-    console.log('do sth PJ');
+  const handleUserSubmitContactInfo = (
+    contactInfo,
+    helloMessageInfo,
+    houseIdInfo,
+    houseLocationInfo,
+    images,
+  ) => {
+    Taro.showLoading({
+      title: '上传中',
+      mask: true,
+    });
+    accomMessageAdd(
+      selectedAccomInfo?.end_date,
+      selectedAccomInfo?.start_date,
+      selectedAccomInfo?.capacity,
+      selectedAccomInfo?.gender,
+      selectedAccomInfo?.location,
+      selectedAccomInfo?.sourceUserOpenid,
+      selectedAccomInfo?.sourceUserNickName,
+      selectedAccomInfo?.sourceUserAvatarUrl,
+      selectedAccomInfo?.description,
+      'withTargetHouse',
+      'contactReceived',
+      selectedAccomInfo?.contact,
+      '',
+      houseIdInfo,
+      images,
+      user.nickName,
+      user._openid,
+      user.avatarUrl,
+    ).then(res => {
+      replyMessageAdd(
+        user._openid,
+        user.nickName,
+        user.avatarUrl,
+        contactInfo,
+        helloMessageInfo,
+        res,
+      );
+      Taro.hideLoading();
+    });
+
+    console.log(contactInfo, helloMessageInfo, houseIdInfo, houseLocationInfo);
   };
 
   const handleUserRejectMsg = () => {

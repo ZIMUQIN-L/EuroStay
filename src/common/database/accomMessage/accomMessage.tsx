@@ -49,7 +49,7 @@ export const accomMessageAdd = async (
         },
       })
       .then(res => {
-        resolve(res.errMsg);
+        resolve(res._id);
       })
       .catch(err => {
         reject(err.errMsg);
