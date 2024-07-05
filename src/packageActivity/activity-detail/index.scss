@@ -117,6 +117,10 @@
 
         .organizer-description {
           color: #888;
+          word-wrap: break-word;
+          //   display: flex;
+          word-break: break-all;
+          white-space: normal;
         }
       }
     }

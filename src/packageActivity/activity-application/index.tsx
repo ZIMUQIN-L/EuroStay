@@ -4,11 +4,10 @@ import './index.scss';
 import ActivityAppCom from './activity-application-comment';
 import { useEffect, useState } from 'react';
 import { useRouter } from '@tarojs/taro';
-import { accomMessageUpdate } from '@common/database/accomMessage/accomMessage';
+import { userInfoSearch } from '@common/database/user/user';
+import { activityDetailSearch } from '@common/database/activityInfo/activityInfo';
 import {
-  HouseDetailItemProps,
-  UserAccomMessageItemProps,
-  UserItemProps,
+  ActivityInfoItemProps,
   UserDetailInfoItemProps,
 } from '@utils/interfaces';
 import GlobalStore from '@store/GlobalStore';
@@ -22,36 +21,34 @@ export const RightBottomArrow = `${cloudPath}/right-arrow.svg`;
 import CopyHostInfoModal from './copy-host-info-modal';
 
 const ActicityApplicationPage = () => {
+  const router = useRouter();
+  const activityId = router?.params?.id;
+
   const demohost = {
     avatar: 'https://via.placeholder.com/50x50',
     wechatId: 'wechatId_demo',
   };
-  const activity = {
-    title: '活动标题线下艺术疗愈workshop',
-    location: 'Paris, 2nd ARR',
-    price: '€25/人',
-    date: '2024年6月31日',
-    time: '14:00-15:30',
-    duration: '1h30min',
-    organizer: 'Username',
-    description: '由主持人填写 简要说明线下活动内容或者亮点',
-    participants: 15,
-    images: [
-      'https://via.placeholder.com/300x150',
-      'https://via.placeholder.com/300x150',
-      'https://via.placeholder.com/300x150',
-    ],
-  };
-  const router = useRouter();
-  const [isLocationSelection, setIsLocationSelection] = useState(false);
-  const [location, setLocation] = useState('');
-  const accomInfoId = router?.params?.id;
-  const [user, setUser] = useState<UserItemProps>(GlobalStore.userInfo);
+  const [activity, setActivity] = useState<ActivityInfoItemProps>();
+  const [currentUser, setCurrentUser] = useState<UserDetailInfoItemProps>();
+  const [activityHost, setActivityHost] = useState<UserDetailInfoItemProps>();
+
   const [isShowSuccessModal, setShowSuccessModal] = useState(false);
 
   useEffect(() => {
-    const demoUser: UserItemProps = GlobalStore.userInfo;
-    setUser(demoUser);
+    const curUser = GlobalStore.userInfo;
+    userInfoSearch(curUser._openid).then(
+      (ownerInfo: UserDetailInfoItemProps[]) => {
+        setCurrentUser(ownerInfo[0]);
+      },
+    );
+    activityDetailSearch(activityId).then((res: ActivityInfoItemProps) => {
+      setActivity(res);
+      userInfoSearch(res._openid).then(
+        (userInfoRes: UserDetailInfoItemProps[]) => {
+          setActivityHost(userInfoRes[0]);
+        },
+      );
+    });
   }, []);
 
   const handleCloseAllWindows = () => {
@@ -62,21 +59,8 @@ const ActicityApplicationPage = () => {
     setShowSuccessModal(true);
   };
 
-  const handleLocationSelection = () => {
-    setIsLocationSelection(true);
-  };
-
-  const handleClose = () => {
-    setIsLocationSelection(false);
-  };
-
-  const handleLocationUserEdit = editedLocation => {
-    console.log('new location', editedLocation);
-    setLocation(editedLocation);
-  };
-
   const handleActivityAppComEdit = (description: string) => {
-    console.log('description', description);
+    console.log(description);
   };
 
   const handleGetHostInfoClick = () => {
@@ -89,12 +73,12 @@ const ActicityApplicationPage = () => {
   return (
     <View className='activity-application-page'>
       <ActivityDetailSection
-        title={activity.title}
-        imageUrls={activity.images}
-        dateInfo={activity.date}
-        timeInfo={activity.time}
-        organizer={activity.organizer}
-        location={activity.location}
+        title={activity?.title}
+        imageUrls={activity?.images}
+        dateInfo={activity?.startTime}
+        timeInfo={activity?.endTime}
+        organizer={activityHost?.nickName}
+        location={activity?.location}
       />
 
       <View className='selection-part'>
@@ -106,27 +90,17 @@ const ActicityApplicationPage = () => {
               </View>
               <Text>活动地址</Text>
             </View>
-            <View className='selection-right' onClick={handleLocationSelection}>
-              <Text>{location != '' ? `${location}` : `请选择`}</Text>
-              <Image src={RightBottomArrow} />
+            <View className='selection-right'>
+              <Text>{activity?.location}</Text>
             </View>
-            {isLocationSelection && (
-              <LocationSelection
-                onClose={handleClose}
-                onLocationSelected={handleLocationUserEdit}
-                prevLocation={location}
-              />
-            )}
           </View>
         </View>
       </View>
 
       <View className='contact-container'>
         <View className='price-info'>
-          <Text className='price'>{activity.price}</Text>
-          <Text className='participants'>
-            预估人数 {activity.participants}人
-          </Text>
+          <Text className='price'>{activity?.price}</Text>
+          <Text className='participants'>预估人数 {activity?.capacity}人</Text>
         </View>
         <View className='right-section'>
           <View className='icon-container'>
@@ -143,13 +117,13 @@ const ActicityApplicationPage = () => {
       {isShowSuccessModal && (
         <CopyHostInfoModal
           onClose={handleCloseAllWindows}
-          title={activity.title}
-          date={activity.date}
-          time={activity.time}
-          location={activity.location}
-          username={activity.organizer}
-          avatar={demohost.avatar}
-          wechatId={demohost.wechatId}
+          title={activity?.title}
+          date={activity?.startTime}
+          time={activity?.endTime}
+          location={activity?.location}
+          username={activityHost?.nickName}
+          avatar={activityHost?.avatarUrl}
+          wechatId={activity?.contact}
         ></CopyHostInfoModal>
       )}
     </View>

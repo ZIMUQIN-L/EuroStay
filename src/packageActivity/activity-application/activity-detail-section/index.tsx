@@ -12,7 +12,11 @@ const ActivityDetailSection = ({
 }) => {
   return (
     <View className='activity-app-detail-card'>
-      <Image className='activity-image' src={imageUrls[0]} mode='aspectFill' />
+      <Image
+        className='activity-image'
+        src={imageUrls && imageUrls.length != 0 ? imageUrls[0] : ''}
+        mode='aspectFill'
+      />
       <View className='application-details'>
         <Text className='application-title'>{title}</Text>
         <Text className='application-owner'>由 {organizer} 主办</Text>
@@ -24,7 +28,7 @@ const ActivityDetailSection = ({
           <View className='detail-item'>
             <CalendarOutlined className='icon' />
             <Text className='text'>
-              {dateInfo}, {timeInfo}
+              {dateInfo} - {timeInfo}
             </Text>
           </View>
         </View>

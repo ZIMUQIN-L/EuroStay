@@ -55,7 +55,7 @@ const CopyInfoModal = (props: IProps) => {
             <View className='date-container'>
               <CalendarOutlined className='icon' />
               <Text className='date'>
-                {date}, {time}
+                {date} - {time}
               </Text>
             </View>
           </View>
