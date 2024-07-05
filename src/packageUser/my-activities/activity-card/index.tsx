@@ -1,11 +1,14 @@
 import {  View, Image, Text } from '@tarojs/components';
 import { ActivityInfoItemProps } from '@utils/interfaces';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { DefaultHouse } from '@utils/cloudIcons';
+import './index.scss';
 
 // type 1: initiated, 2: registered; status 1: processing, 2: finished
 const ActivityCard = (activity, type, status) => {
 
     const [isRegisteredUserVisible, setIsRegisteredUserVisible] = useState(false);
+    
 
     const handleCheckUser = () => {
         setIsRegisteredUserVisible(true);
@@ -15,20 +18,26 @@ const ActivityCard = (activity, type, status) => {
         setIsRegisteredUserVisible(false);
     };
 
+    const image = activity?.images?.[0] || DefaultHouse;
+
+    useEffect(() => {
+      console.log('activity', activity.activity)
+    })
+
   return (
-    <View className={`card ${status} ${type}`}>
+    <View className='card'>
       <View className='card-top'>
-        <View className='card-left'>
-          <Image src={activity.imageUrl[0]} />
+        <View className='card-top-left'>
+        <Image src={image}/>
         </View>
 
         <View className='content'>
-          <Text className='title'>{activity.title}</Text>
+          <Text className='title'>{activity.activity.title}</Text>
 
           <View className='details'>
-            <Text className='date'>{activity.date}</Text>
-            <Text className='location'>{activity.location}</Text>
-            {activity.time && <Text className='time'>{activity.time}</Text>}
+            <Text className='date'>{activity.activity.date}</Text>
+            <Text className='location'>{activity.activitylocation}</Text>
+            {activity.activity.time && <Text className='time'>{activity.activity.time}</Text>}
           </View>
         </View>
       </View>
@@ -40,7 +49,7 @@ const ActivityCard = (activity, type, status) => {
                 <Text className='participants'>允许报名</Text>
                 <View>
                   <Text className='current-participants'>
-                    已报名{activity.participants}/{activity.maxParticipants}
+                    已报名{activity.activity.participants}/{activity.activity.maxParticipants}
                   </Text>
                 </View>
               </View>

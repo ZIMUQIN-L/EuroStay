@@ -8,13 +8,61 @@ import { useState } from 'react';
 import { ActivityInfoItemProps } from '@utils/interfaces';
 import Taro from '@tarojs/taro';
 
+const mockActivities = [
+      {
+        title: '活动标题剧本杀密室逃脱手工workshop之类的',
+        date: '2021-09-01',
+        time: '19:00-21:00',
+        location: 'Rotterdam Blaak',
+        price: '€45',
+        tags: ['#全女局', '#剧本杀', '#KTV'],
+        participants: 9,
+        username: 'username',
+        images: [''], // Add image URLs here
+      },
+      {
+        title: 'activity title 2',
+        date: '2021-09-01',
+        time: '19:00-21:00',
+        location: 'location 2',
+        price: '€45',
+        tags: ['#全女局', '#剧本杀'],
+        participants: 9,
+        username: 'username',
+        images: [''],
+      },
+      {
+        title: 'activity title 2',
+        date: '2021-09-01',
+        time: '19:00-21:00',
+        location: 'location 2',
+        price: '€45',
+        tags: ['#全女局', '#剧本杀'],
+        participants: 9,
+        username: 'username',
+        images: [''],
+      },
+      {
+        title: 'activity title 2',
+        date: '2021-09-01',
+        time: '19:00-21:00',
+        location: 'location 2',
+        price: '€45',
+        tags: ['#全女局', '#剧本杀'],
+        participants: 9,
+        username: 'username',
+        images: [''], 
+      },
+
+    ];
+
 const Index = () => {
   const [currentTab, setCurrentTab] = useState('initiated');
 
   // 获取数据
-  const [favoriteActivities, setFavoriteActivities] = useState<ActivityInfoItemProps[]>([]);
-  const [initiatedActivities, setInitiatedActivities] = useState<ActivityInfoItemProps[]>([]);
-  const [registeredActivities, setRegisteredActivities] = useState<ActivityInfoItemProps[]>([]);
+  // const [favoriteActivities, setFavoriteActivities] = useState();
+  const [initiatedActivities, setInitiatedActivities] = useState(mockActivities);
+  const [registeredActivities, setRegisteredActivities] = useState(mockActivities);
 
   const isActive = tabName => {
     return currentTab === tabName ? 'active' : '';
@@ -33,19 +81,9 @@ const Index = () => {
           <View>
             {initiatedActivities.length > 0 ? initiatedActivities.map((activity, index) => (
               <ActivityCard
-                key={index}
-                title={activity.title}
-                date={activity.date}
-                location={activity.location}
-                time={activity.time}
-                participants={activity.participants}
-                maxParticipants={activity.maxParticipants}
-                status={activity.status}
-                type="initiated"
-                imageUrl={activity.imageUrl}
-                userIcon={activity.userIcon}
-                username={activity.username}
-                onClick={() => handleActivityClick(activity)}
+                activity={activity}
+                type={1}
+                status={1}
               />
             )) : <View>暂无发起的活动</View>}
           </View>
@@ -55,35 +93,25 @@ const Index = () => {
           <View>
             {registeredActivities.length > 0 ? registeredActivities.map((activity, index) => (
               <ActivityCard
-                key={index}
-                title={activity.title}
-                date={activity.date}
-                location={activity.location}
-                time={activity.time}
-                participants={activity.participants}
-                maxParticipants={activity.maxParticipants}
-                status={activity.status}
-                type="registered"
-                imageUrl={activity.imageUrl}
-                userIcon={activity.userIcon}
-                username={activity.username}
-                onClick={() => handleActivityClick(activity)}
+                activity={activity}
+                type={2}
+                status={1}
               />
             )) : <View>暂无报名的活动</View>}
           </View>
         );
       case 'favorited':
-        return (
-          favoriteActivities.length > 0 ? () => {
-            return favoriteActivities.map((activity, index) => (
-              <ActivityCard
-                key={index}
-                activity={activity}
-                onClick={() => handleActivityClick(activity)}
-              />
-            ));
-          } : <View>暂无收藏</View>
-        );
+        // return (
+        //   favoriteActivities.length > 0 ? () => {
+        //     return favoriteActivities.map((activity, index) => (
+        //       <ActivityCard
+        //         key={index}
+        //         activity={activity}
+        //         onClick={() => handleActivityClick(activity)}
+        //       />
+        //     ));
+        //   } : <View>暂无收藏</View>
+        // );
     }
   };
 
