@@ -18,6 +18,7 @@ export default {
         'review-on-house/index',
         'my-points/index',
         'point-details/index',
+        'my-activities/index',
       ],
     },
     {
@@ -33,7 +34,6 @@ export default {
     {
       root: 'packageActivity/',
       pages: [
-        'my-activities/index',
         'activity-detail/index',
         'activity-post/index',
         'activity-application/index',

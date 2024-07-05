@@ -79,7 +79,7 @@ const menuList = [
   {
     text: '我的活动',
     icon: MyFavoriteIcon,
-    path: '../../packageActivity/my-activities/index',
+    path: '../../packageUser/my-activities/index',
   },
   {
     text: '我的积分',
