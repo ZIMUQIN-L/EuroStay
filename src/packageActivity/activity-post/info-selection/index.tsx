@@ -11,6 +11,7 @@ import {
 } from '@utils/cloudIcons';
 import CapacitySelection from './capacity-selection';
 import LocationSelection from './location-selection';
+import { ActivityInfoItemProps } from '@utils/interfaces';
 import StartTimeSelection from './starttime-selection';
 import EndTimeSelection from './endtime-selection';
 import ContactSelection from './contact-selection';
@@ -18,6 +19,7 @@ import PriceSelection from './price-selection';
 import PointSelection from './point-selection';
 import './index.scss';
 import { useState, useEffect } from 'react';
+import { activityDetailSearch } from '@common/database/activityInfo/activityInfo';
 
 const InfoSelection = ({ activityId, onActivityInfoEdit }) => {
   // 控制变量
@@ -39,8 +41,21 @@ const InfoSelection = ({ activityId, onActivityInfoEdit }) => {
   const [point, setPoint] = useState<undefined | number>();
 
   useEffect(() => {
-    // todo @PJ set prev value based on act id
+    if (activityId != 'none') {
+      activityDetailSearch(activityId).then(
+        (activityDetail: ActivityInfoItemProps) => {
+          setCapacity(activityDetail.capacity);
+          setStartTime(activityDetail.startTime);
+          setEndTime(activityDetail.endTime);
+          setContact(activityDetail.contact);
+          setPrice(activityDetail.price);
+          setPoint(activityDetail.point);
+          setLocation(activityDetail.location);
+        },
+      );
+    }
   }, []);
+
   const handleLocationSelection = () => {
     setIsLocationSelection(true);
   };

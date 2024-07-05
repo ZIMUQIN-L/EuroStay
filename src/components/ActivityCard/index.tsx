@@ -58,7 +58,7 @@ const ActivityCard: React.FC<ActivityCardProps> = ({ activity, onClick }) => {
           </View>
           <View className='detail-item'>
             <GoldCoinOutlined className='icon' />
-            <Text>人均约 {activity.price}</Text>
+            <Text>人均约{activity.price}欧</Text>
           </View>
           <View className='tags'>
             {activity.tags.map((tag, index) => (

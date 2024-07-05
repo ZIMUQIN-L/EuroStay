@@ -2,14 +2,17 @@ import { View, Text, Textarea, Input } from '@tarojs/components';
 import { observer } from 'mobx-react';
 import ImagesUpload from './images-upload';
 import { useState, useEffect } from 'react';
-import { useRouter } from '@tarojs/taro';
+import { addCard, useRouter } from '@tarojs/taro';
 import './index.scss';
 import Taro from '@tarojs/taro';
-import { UserItemProps } from '@utils/interfaces';
+import { UserItemProps, ActivityInfoItemProps } from '@utils/interfaces';
 import GlobalStore from '@store/GlobalStore';
 import TagAdd from './tag-add';
 import InfoSelection from './info-selection';
-import { activityInfoPost } from '@common/database/activityInfo/activityInfo';
+import {
+  activityInfoPost,
+  activityDetailSearch,
+} from '@common/database/activityInfo/activityInfo';
 
 const Index = () => {
   const router = useRouter();
@@ -53,6 +56,22 @@ const Index = () => {
     setUserInfo(userInfoList);
     // if id != none then search info @PJ
     if (activityId != 'none') {
+      activityDetailSearch(activityId).then(
+        (activityDetail: ActivityInfoItemProps) => {
+          setActivityTitle(activityDetail.title);
+          setImages(activityDetail.images);
+          setActivityDescription(activityDetail.description);
+          setActivityHello(activityDetail.helloMessage);
+          setActivityTags(activityDetail.tags);
+          setCapacity(activityDetail.capacity);
+          setStartTime(activityDetail.startTime);
+          setEndTime(activityDetail.endTime);
+          setContact(activityDetail.contact);
+          setPrice(activityDetail.price);
+          setPoint(activityDetail.point);
+          setLocation(activityDetail.location);
+        },
+      );
     }
   }, []);
 
