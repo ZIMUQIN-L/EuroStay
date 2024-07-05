@@ -27,10 +27,9 @@ const demoData = [
     points: 5,
     balance: 25,
   },
-]
+];
 
 const Index = () => {
-
   const [pointsData, setPointsData] = useState(demoData);
 
   return (

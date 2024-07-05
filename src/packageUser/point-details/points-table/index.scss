@@ -7,7 +7,7 @@
   background-color: white;
   margin-top: 4%;
 
-  .table-header{
+  .table-header {
     display: flex;
     justify-content: space-between;
     padding: 10px 0;
@@ -34,7 +34,6 @@
     height: 80px;
   }
 
-
   .table-cell {
     flex: 1;
     text-align: center;
@@ -52,7 +51,6 @@
     color: rgba(214, 214, 214, 1);
     font-size: 18px;
   }
-
 
   .no-data {
     padding: 20px;

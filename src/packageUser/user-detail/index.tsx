@@ -84,7 +84,9 @@ const UserDetail: React.FC = () => {
               {userDetailInfo?.nickName}
               {/* // TODO, @PJ */}
               <Text className='badge'>实名认证</Text>
-              <Text className='badge-points' onClick={handlePointsClick}>E分值{userPoints} {'>'}</Text>
+              <Text className='badge-points' onClick={handlePointsClick}>
+                E分值{userPoints} {'>'}
+              </Text>
             </Text>
             <View className='badges'>
               {userDetailInfo.tags ? (

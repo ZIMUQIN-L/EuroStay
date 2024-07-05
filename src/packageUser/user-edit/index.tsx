@@ -7,8 +7,7 @@ import { UserItemProps, UserDetailInfoItemProps } from '@utils/interfaces';
 import './index.scss';
 import Taro from '@tarojs/taro';
 import { cloudAvatarUpload } from '@common/database/cloudstorage/files';
-import { userInfoUpdate } from '@common/database/user/user';
-import { userInfoSearch } from '@common/database/user/user';
+import { userInfoSearch, userDetailUpdate } from '@common/database/user/user';
 import TagAdd from '../../packageActivity/activity-post/tag-add';
 
 const Index = () => {
@@ -21,12 +20,17 @@ const Index = () => {
       setUserInfo(ownerInfo[0]);
       setUserAvatarUrl(ownerInfo[0].avatarUrl);
       setUserDescription(ownerInfo[0].userDes);
-      setUserLocation(ownerInfo[0].userLocation);
-      setBirthInput(ownerInfo[0].birthday);
-      setUserBirthday(ownerInfo[0].birthday);
-      setUserGender(ownerInfo[0].gender);
+      setUserLocation(
+        ownerInfo[0].userLocation ? ownerInfo[0].userLocation : '',
+      );
+      setUserTags(ownerInfo[0].tags ? ownerInfo[0].tags : []);
+      setBirthInput(ownerInfo[0].birthday ? ownerInfo[0].birthday : '');
+      setUserBirthday(ownerInfo[0].birthday ? ownerInfo[0].birthday : '');
+      setUserGender(ownerInfo[0].gender ? ownerInfo[0].gender : '');
       setUserNickname(ownerInfo[0].nickName);
-      setAboutMe(ownerInfo[0].aboutMe);
+      if (ownerInfo[0].aboutMe) {
+        setAboutMe(ownerInfo[0].aboutMe);
+      }
     });
   }, []);
 
@@ -181,9 +185,77 @@ const Index = () => {
     setUserNickname(e.detail.value);
   };
 
+  const handleUserInterestsEdit = e => {
+    setAboutMe(prevAboutMe => ({
+      ...prevAboutMe,
+      interests: e.detail.value,
+    }));
+  };
+
+  const handleUserMajorEdit = e => {
+    setAboutMe(prevAboutMe => ({
+      ...prevAboutMe,
+      major: e.detail.value,
+    }));
+  };
+
+  const handleUserLanguageEdit = e => {
+    setAboutMe(prevAboutMe => ({
+      ...prevAboutMe,
+      languages: e.detail.value,
+    }));
+  };
+
+  const handleUserFunFactEdit = e => {
+    setAboutMe(prevAboutMe => ({
+      ...prevAboutMe,
+      funFact: e.detail.value,
+    }));
+  };
+
+  const handleUserVisitedCountriesEdit = e => {
+    setAboutMe(prevAboutMe => ({
+      ...prevAboutMe,
+      visitedCountries: e.detail.value,
+    }));
+  };
+
+  const handleUserServiceProvidedEdit = e => {
+    setAboutMe(prevAboutMe => ({
+      ...prevAboutMe,
+      serviceProvided: e.detail.value,
+    }));
+  };
+
+  const handleUserSkillsEdit = e => {
+    setAboutMe(prevAboutMe => ({
+      ...prevAboutMe,
+      skills: e.detail.value,
+    }));
+  };
+
   // 用户信息修改
   const handleUserInfoChange = () => {
-    console.log('TODO @PJ');
+    Taro.showLoading({
+      title: '上传中',
+      mask: true,
+    });
+    userDetailUpdate(
+      userInfo?._id,
+      userAvatarUrl,
+      userDescription,
+      userNickname,
+      userLocation,
+      userGender,
+      userBirthday,
+      userTags,
+      aboutMe,
+    ).then(res => {
+      Taro.hideLoading();
+      Taro.redirectTo({
+        url: `/packageUser/user-detail/index?id=${userOpenid}`,
+      });
+    });
   };
 
   return (
@@ -296,71 +368,88 @@ const Index = () => {
               <View className='info-value'>
                 {userTags.map((tag, index) => (
                   <Text key={index} onClick={() => handleDeleteTag(tag)}>
-                    {tag + '  '}
+                    {tag + '   '}
                   </Text>
                 ))}
                 <Text onClick={handleOpenTagEdit}>+</Text>
               </View>
             )}
           </View>
-          <View className='info-item'>
-            <Text className='info-label'>兴趣爱好</Text>
-            <Input
-              type='text'
-              value='游泳，电影，滑雪'
-              placeholder={`介绍你的兴趣爱好~`}
-              className='info-value'
-              // onInput={handleUserDescriptionEdit}
-            />
-          </View>
-          <View className='info-item'>
-            <Text className='info-label'>专业领域</Text>
-            <Input
-              type='text'
-              value='xxxx'
-              placeholder={`介绍你专业领域~`}
-              className='info-value'
-              // onInput={handleUserDescriptionEdit}
-            />
-          </View>
+
           <View className='info-item'>
             <Text className='info-label'>fun facts about me</Text>
             <Input
               type='text'
-              value='xxxx'
+              value={aboutMe['funFact']}
               placeholder={`介绍你fun facts~`}
               className='info-value'
-              // onInput={handleUserDescriptionEdit}
+              onInput={handleUserFunFactEdit}
             />
           </View>
+
           <View className='info-item'>
-            <Text className='info-label'>我游览过的国家</Text>
+            <Text className='info-label'>兴趣爱好</Text>
             <Input
               type='text'
-              value='xxxx'
-              placeholder={`介绍你游览过的国家~`}
+              value={aboutMe['interests']}
+              placeholder={`介绍你的兴趣爱好~`}
               className='info-value'
-              // onInput={handleUserDescriptionEdit}
+              onInput={handleUserInterestsEdit}
             />
           </View>
+
           <View className='info-item'>
-            <Text className='info-label'>我居住过的国家</Text>
+            <Text className='info-label'>语言技能</Text>
             <Input
               type='text'
-              value='xxxx'
-              placeholder={`介绍你居住过的国家~`}
+              value={aboutMe['languages']}
+              placeholder={`介绍你能使用的语言~`}
               className='info-value'
-              // onInput={handleUserDescriptionEdit}
+              onInput={handleUserLanguageEdit}
             />
           </View>
+
+          <View className='info-item'>
+            <Text className='info-label'>专业领域</Text>
+            <Input
+              type='text'
+              value={aboutMe['major']}
+              placeholder={`介绍你专业领域~`}
+              className='info-value'
+              onInput={handleUserMajorEdit}
+            />
+          </View>
+
           <View className='info-item'>
             <Text className='info-label'>我可以向求宿者提供什么</Text>
             <Input
               type='text'
-              value='xxxx'
-              placeholder={`介绍你可以向求宿者提供什么~`}
+              value={aboutMe['serviceProvided']}
+              placeholder={`介绍你可以向求宿者/host提供什么~`}
               className='info-value'
-              // onInput={handleUserDescriptionEdit}
+              onInput={handleUserServiceProvidedEdit}
+            />
+          </View>
+
+          <View className='info-item'>
+            <Text className='info-label'>我的技能</Text>
+            <Input
+              type='text'
+              value={aboutMe['skills']}
+              placeholder={`介绍一下你的有用小技能吧~`}
+              className='info-value'
+              onInput={handleUserSkillsEdit}
+            />
+          </View>
+
+          <View className='info-item'>
+            <Text className='info-label'>我游览过的国家</Text>
+            <Input
+              type='text'
+              value={aboutMe['visitedCountries']}
+              placeholder={`介绍你游览过的国家~`}
+              className='info-value'
+              onInput={handleUserVisitedCountriesEdit}
             />
           </View>
         </View>

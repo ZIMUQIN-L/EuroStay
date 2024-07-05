@@ -169,3 +169,37 @@ export const userGuestRatingInfoUpdate = async (
       });
   });
 };
+
+// 更新用户详情
+export const userDetailUpdate = async (
+  userInfoid,
+  avatarUrl,
+  userDes,
+  nickName,
+  location,
+  gender,
+  birthday,
+  tags,
+  aboutMe,
+) => {
+  const db = wx.cloud.database();
+  return new Promise((resolve, reject) => {
+    db.collection('UserInfo')
+      .doc(userInfoid)
+      .update({
+        data: {
+          avatarUrl: avatarUrl,
+          userDes: userDes,
+          nickName: nickName,
+          userLocation: location,
+          gender: gender,
+          tags: tags,
+          birthday: birthday,
+          aboutMe: aboutMe,
+        },
+        success: function (res) {
+          resolve(res.errMsg);
+        },
+      });
+  });
+};
