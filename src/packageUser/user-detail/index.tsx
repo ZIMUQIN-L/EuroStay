@@ -105,6 +105,9 @@ const UserDetail: React.FC = () => {
             <Text className='description'>
               我的简介：{userDetailInfo.userDes}
             </Text>
+            <Text className='description'>
+              所属地：{userDetailInfo.userLocation}
+            </Text>
             <View className='ratings-container'>
               <View className='ratings'>
                 <View className='rating-item'>

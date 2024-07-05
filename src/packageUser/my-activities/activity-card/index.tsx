@@ -1,4 +1,4 @@
-import {  View, Image, Text } from '@tarojs/components';
+import { View, Image, Text } from '@tarojs/components';
 import { ActivityInfoItemProps } from '@utils/interfaces';
 import { useEffect, useState } from 'react';
 import { DefaultHouse } from '@utils/cloudIcons';
@@ -6,17 +6,16 @@ import './index.scss';
 
 // type 1: initiated, 2: registered; status 1: processing, 2: finished
 const ActivityCard = (activity, type, status) => {
+  const [isRegisteredUserVisible, setIsRegisteredUserVisible] = useState(false);
 
-    const [isRegisteredUserVisible, setIsRegisteredUserVisible] = useState(false);
-    
+  const handleCheckUser = () => {
+    setIsRegisteredUserVisible(true);
+  };
 
-    const handleCheckUser = () => {
-        setIsRegisteredUserVisible(true);
-    };
 
-    const handleCheckUserClose = () => {
-        setIsRegisteredUserVisible(false);
-    };
+  const handleCheckUserClose = () => {
+    setIsRegisteredUserVisible(false);
+  };
 
     const image = activity?.images?.[0] || DefaultHouse;
 
@@ -55,10 +54,10 @@ const ActivityCard = (activity, type, status) => {
               </View>
               <View className='button'>
                 <Text>允许报名的按钮</Text>
-                </View>
-                <View className='view-button' onClick={handleCheckUser}>
-                    查看报名用户 {'>'}
-                </View>
+              </View>
+              <View className='view-button' onClick={handleCheckUser}>
+                查看报名用户 {'>'}
+              </View>
             </View>
           )}
           {type == 2 && <View></View>}

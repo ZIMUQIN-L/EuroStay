@@ -45,7 +45,7 @@ const DetailPage = () => {
 
   const handleSignUpClick = () => {
     Taro.navigateTo({
-      url: `/packageActivity/activity-application/index?id=anyid`,
+      url: `/packageActivity/activity-application/index?id=${activityId}`,
     });
   };
 
