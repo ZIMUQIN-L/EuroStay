@@ -200,7 +200,7 @@ export interface ActivityInfoItemProps {
   price: number; //用户花销 number
   point: number;
   active: boolean; //活动是否还能报名 bool
-  helloMessgae: string; //活动主办发打招呼消息 str
+  helloMessage: string; //活动主办发打招呼消息 str
   banner: boolean; // 活动是否展示在banner上
   official: boolean; // 是否是官方活动
   applyPage: string; // 未来的报名页面，对于eurostay活动

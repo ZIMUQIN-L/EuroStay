@@ -1,23 +1,21 @@
 import React from 'react';
 import { View, Text, Image } from '@tarojs/components';
+import { useState, useEffect } from 'react';
 import {
   UserCircleOutlined,
   LocationOutlined,
   GoldCoinOutlined,
   FriendsOutlined,
 } from '@taroify/icons';
+import {
+  ActivityInfoItemProps,
+  UserDetailInfoItemProps,
+} from '@utils/interfaces';
 import './index.scss';
+import { userHouseInfoSearch } from '@common/database/user/user';
 
 interface ActivityCardProps {
-  activity: {
-    title: string;
-    location: string;
-    price: string;
-    tags: string[];
-    participants: number;
-    username: string;
-    images: string[];
-  };
+  activity: ActivityInfoItemProps;
   onClick: () => void;
 }
 
@@ -25,6 +23,16 @@ const ActivityCard: React.FC<ActivityCardProps> = ({ activity, onClick }) => {
   const [imageSrc, setImageSrc] = React.useState(
     activity.images.length > 0 ? activity.images[0] : '',
   );
+
+  const [sourceUser, constSourceUser] = useState<UserDetailInfoItemProps>();
+
+  useEffect(() => {
+    userHouseInfoSearch(activity._openid).then(
+      (res: UserDetailInfoItemProps[]) => {
+        constSourceUser(res[0]);
+      },
+    );
+  }, []);
 
   const handleImageError = () => {
     setImageSrc('');
@@ -41,7 +49,7 @@ const ActivityCard: React.FC<ActivityCardProps> = ({ activity, onClick }) => {
         <Text className='title'>{activity.title}</Text>
         <View className='organizer'>
           <UserCircleOutlined className='icon' />
-          <Text>由 {activity.username} 发起</Text>
+          <Text>由 {sourceUser?.nickName} 发起</Text>
         </View>
         <View className='details'>
           <View className='detail-item'>
@@ -61,7 +69,7 @@ const ActivityCard: React.FC<ActivityCardProps> = ({ activity, onClick }) => {
           </View>
           <View className='right-detail-item' style='margin-right: 4px;'>
             <FriendsOutlined className='icon' />
-            <Text>参与人数: {activity.participants}</Text>
+            <Text>参与人数: {activity.capacity}</Text>
           </View>
         </View>
       </View>

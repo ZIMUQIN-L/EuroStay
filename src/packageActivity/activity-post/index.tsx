@@ -4,15 +4,18 @@ import ImagesUpload from './images-upload';
 import { useState, useEffect } from 'react';
 import { useRouter } from '@tarojs/taro';
 import './index.scss';
+import Taro from '@tarojs/taro';
 import { UserItemProps } from '@utils/interfaces';
 import GlobalStore from '@store/GlobalStore';
 import TagAdd from './tag-add';
 import InfoSelection from './info-selection';
+import { activityInfoPost } from '@common/database/activityInfo/activityInfo';
 
 const Index = () => {
   const router = useRouter();
   const activityId = router?.params?.id;
   const [userInfo, setUserInfo] = useState<UserItemProps>(GlobalStore.userInfo);
+  const [clickable, setClickable] = useState(false);
 
   // 控制var
   const [isTagEdit, setIsTagEdit] = useState(false);
@@ -49,6 +52,8 @@ const Index = () => {
     const userInfoList: UserItemProps = GlobalStore.userInfo;
     setUserInfo(userInfoList);
     // if id != none then search info @PJ
+    if (activityId != 'none') {
+    }
   }, []);
 
   // 处理照片上传的逻辑
@@ -103,6 +108,138 @@ const Index = () => {
     setPoint(point);
     setPrice(price);
   };
+
+  const handleButtonClickable = () => {
+    if (
+      images.length != 0 &&
+      activityTags.length != 0 &&
+      activityTitle != '' &&
+      activityDescription != '' &&
+      activityHello != '' &&
+      startTime != '' &&
+      endTime != '' &&
+      capacity != 0 &&
+      location != '' &&
+      contact != ''
+    ) {
+      setClickable(true);
+    } else {
+      setClickable(false);
+    }
+  };
+
+  const handleClickPostSubmit = () => {
+    if (images.length == 0) {
+      Taro.showToast({
+        title: '请上传活动图片',
+        icon: 'error',
+        mask: true,
+        duration: 2000,
+      });
+    } else if (activityTitle == '') {
+      Taro.showToast({
+        title: '请填写活动标题',
+        icon: 'error',
+        mask: true,
+        duration: 2000,
+      });
+    } else if (activityDescription == '') {
+      Taro.showToast({
+        title: '请填写活动内容',
+        icon: 'error',
+        mask: true,
+        duration: 2000,
+      });
+    } else if (activityTags.length == 0) {
+      Taro.showToast({
+        title: '请填写活动tag',
+        icon: 'error',
+        mask: true,
+        duration: 2000,
+      });
+    } else if (location == '') {
+      Taro.showToast({
+        title: '请填写活动地址',
+        icon: 'error',
+        mask: true,
+        duration: 2000,
+      });
+    } else if (startTime == '') {
+      Taro.showToast({
+        title: '请填写开始时间',
+        icon: 'error',
+        mask: true,
+        duration: 2000,
+      });
+    } else if (endTime == '') {
+      Taro.showToast({
+        title: '请填写结束时间',
+        icon: 'error',
+        mask: true,
+        duration: 2000,
+      });
+    } else if (capacity == 0) {
+      Taro.showToast({
+        title: '请填写活动人数',
+        icon: 'error',
+        mask: true,
+        duration: 2000,
+      });
+    } else if (contact == '') {
+      Taro.showToast({
+        title: '请填写联系方式',
+        icon: 'error',
+        mask: true,
+        duration: 2000,
+      });
+    } else if (activityHello == '') {
+      Taro.showToast({
+        title: '请填写打招呼信息',
+        icon: 'error',
+        mask: true,
+        duration: 2000,
+      });
+    } else {
+      Taro.showLoading({
+        title: '上传中',
+        mask: true,
+      });
+      activityInfoPost(
+        activityTitle,
+        images,
+        activityDescription,
+        activityTags,
+        location,
+        startTime,
+        endTime,
+        capacity,
+        contact,
+        price,
+        point,
+        activityHello,
+      ).then(res => {
+        Taro.hideLoading();
+        Taro.navigateBack({
+          delta: 1,
+        });
+      });
+    }
+  };
+
+  useEffect(() => {
+    handleButtonClickable();
+  }, [
+    images,
+    location,
+    startTime,
+    endTime,
+    activityTags,
+    activityTitle,
+    activityDescription,
+    activityHello,
+    capacity,
+    contact,
+  ]);
 
   return (
     <View className='activity-post'>
@@ -181,7 +318,8 @@ const Index = () => {
       <View style={{ backgroundColor: 'white' }}>
         <View
           className='act-post-submit-button'
-          // onClick={//todo @PJ}
+          style={{ backgroundColor: clickable ? '#FFD111' : '#d6d6d6' }}
+          onClick={handleClickPostSubmit}
         >
           <Text>发布活动</Text>
         </View>
