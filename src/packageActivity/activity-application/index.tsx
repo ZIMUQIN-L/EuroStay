@@ -13,7 +13,6 @@ import {
 import GlobalStore from '@store/GlobalStore';
 import ActivityDetailSection from './activity-detail-section';
 import { StarOutlined } from '@taroify/icons';
-import LocationSelection from './location-selection';
 const cloudPath =
   'cloud://cloud1-8gb29x2pbe14a4f8.636c-cloud1-8gb29x2pbe14a4f8-1324366677/images';
 export const LocationSelectionIcon = `${cloudPath}/location-selection-icon.svg`;
@@ -65,6 +64,7 @@ const ActicityApplicationPage = () => {
 
   const handleGetHostInfoClick = () => {
     showSuccessModalEdit();
+    // @PJ todo
     // Taro.navigateTo({
     //   url: `/packageActivity/activity-application/index?id=anyid`,
     // });
@@ -99,7 +99,9 @@ const ActicityApplicationPage = () => {
 
       <View className='contact-container'>
         <View className='price-info'>
-          <Text className='price'>{activity?.price}</Text>
+          <Text className='price'>
+            {activity?.price} 欧，{activity?.point} 积分
+          </Text>
           <Text className='participants'>预估人数 {activity?.capacity}人</Text>
         </View>
         <View className='right-section'>

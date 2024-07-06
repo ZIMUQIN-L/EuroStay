@@ -92,7 +92,12 @@ const Index = () => {
           <View>
             {initiatedActivities.length > 0 ? (
               initiatedActivities.map((activity, index) => (
-                <ActivityCard key={index} activity={activity} type={1} status={1} />
+                <ActivityCard
+                  key={index}
+                  activity={activity}
+                  type={1}
+                  status={1}
+                />
               ))
             ) : (
               <View>暂无发起的活动</View>
@@ -104,7 +109,12 @@ const Index = () => {
           <View>
             {registeredActivities.length > 0 ? (
               registeredActivities.map((activity, index) => (
-                <ActivityCard key={index} activity={activity} type={2} status={1} />
+                <ActivityCard
+                  key={index}
+                  activity={activity}
+                  type={2}
+                  status={1}
+                />
               ))
             ) : (
               <View>暂无报名的活动</View>
