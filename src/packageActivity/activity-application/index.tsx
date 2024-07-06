@@ -23,10 +23,6 @@ const ActicityApplicationPage = () => {
   const router = useRouter();
   const activityId = router?.params?.id;
 
-  const demohost = {
-    avatar: 'https://via.placeholder.com/50x50',
-    wechatId: 'wechatId_demo',
-  };
   const [activity, setActivity] = useState<ActivityInfoItemProps>();
   const [currentUser, setCurrentUser] = useState<UserDetailInfoItemProps>();
   const [activityHost, setActivityHost] = useState<UserDetailInfoItemProps>();
@@ -58,8 +54,14 @@ const ActicityApplicationPage = () => {
     setShowSuccessModal(true);
   };
 
+  const [actDes, setActDes] = useState('');
   const handleActivityAppComEdit = (description: string) => {
-    console.log(description);
+    setActDes(description);
+  };
+
+  const [actContact, setActContact] = useState('');
+  const handleActivityAppContactEdit = (contact: string) => {
+    setActContact(contact);
   };
 
   const handleGetHostInfoClick = () => {
@@ -114,7 +116,10 @@ const ActicityApplicationPage = () => {
         </View>
       </View>
 
-      <ActivityAppCom onUserDescriptionEdit={handleActivityAppComEdit} />
+      <ActivityAppCom
+        onUserDescriptionEdit={handleActivityAppComEdit}
+        onUserContactEdit={handleActivityAppContactEdit}
+      />
 
       {isShowSuccessModal && (
         <CopyHostInfoModal
