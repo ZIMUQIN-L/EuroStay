@@ -13,11 +13,9 @@ import {
   AwaitingSeeking,
   AlreadyContact,
   MyHouseIcon,
-  MyOfferingIcon,
   MyFavoriteIcon,
   ValidationIcon,
   AwaitingResponse,
-  FeedbackIcon,
   SettingIcon,
   RightBottomArrow,
   PointIcon,
@@ -86,16 +84,16 @@ const menuList = [
     icon: PointIcon,
     path: '../../packageUser/my-points/index',
   },
-  {
-    text: '实名认证',
-    icon: ValidationIcon,
-    path: '',
-  },
-  {
-    text: '设置',
-    icon: SettingIcon,
-    path: '',
-  },
+  // {
+  //   text: '实名认证',
+  //   icon: ValidationIcon,
+  //   path: '',
+  // },
+  // {
+  //   text: '设置',
+  //   icon: SettingIcon,
+  //   path: '',
+  // },
 ];
 
 const Index = () => {
