@@ -10,18 +10,6 @@ import Taro from '@tarojs/taro';
 
 const mockActivities = [
   {
-    title: '活动标题剧本杀密室逃脱手工workshop之类的',
-    date: '2021-09-01',
-    time: '19:00-21:00',
-    location: 'Rotterdam Blaak',
-    price: '€45',
-    tags: ['#全女局', '#剧本杀', '#KTV'],
-    participants: 9,
-    maxParticipants: 10,
-    username: 'username',
-    images: [''], // Add image URLs here
-  },
-  {
     title: 'activity title 2',
     date: '2021-09-01',
     time: '19:00-21:00',
@@ -31,32 +19,9 @@ const mockActivities = [
     participants: 9,
     maxParticipants: 10,
     username: 'username',
+    wxcontact: 'wx23849769_nvi378',
     images: [''],
-  },
-  {
-    title: 'activity title 2',
-    date: '2021-09-01',
-    time: '19:00-21:00',
-    location: 'location 2',
-    price: '€45',
-    tags: ['#全女局', '#剧本杀'],
-    participants: 9,
-    maxParticipants: 10,
-    username: 'username',
-    images: [''],
-  },
-  {
-    title: 'activity title 2',
-    date: '2021-09-01',
-    time: '19:00-21:00',
-    location: 'location 2',
-    price: '€45',
-    tags: ['#全女局', '#剧本杀'],
-    participants: 9,
-    maxParticipants: 10,
-    username: 'username',
-    images: [''],
-  },
+  }
 ];
 
 const Index = () => {
@@ -64,10 +29,10 @@ const Index = () => {
 
   // 获取数据
   // const [favoriteActivities, setFavoriteActivities] = useState();
-  const [initiatedActivities, setInitiatedActivities] =
-    useState(mockActivities);
-  const [registeredActivities, setRegisteredActivities] =
-    useState(mockActivities);
+  const [initiatedProcessingActivity, setInitiatedProcessingActivity] = useState(mockActivities);
+  const [initiatedFinishedActivity, setInitiatedFinishedActivity] = useState(mockActivities);
+  const [registeredProcessingActivity, setRegisteredProcessingActivity] = useState(mockActivities);
+  const [registeredFinishedActivity, setRegisteredFinishedActivity] = useState(mockActivities);
 
   // const [favoriteActivities, setFavoriteActivities] = useState<
   //   ActivityInfoItemProps[]
@@ -89,41 +54,36 @@ const Index = () => {
     });
   };
 
+  const renderActivityCards = (activities, type, status, title) => (
+    activities.length > 0 && (
+      <View className='cards'>
+        <Text className='part-title'>{title}</Text>
+        {activities.map((activity, index) => (
+          <ActivityCard
+            key={index}
+            activity={activity}
+            type={type}
+            status={status}
+          />
+        ))}
+      </View>
+    ));
+
   const renderTabContent = () => {
     switch (currentTab) {
       case 'initiated':
         return (
-          <View>
-            {initiatedActivities.length > 0 ? (
-              initiatedActivities.map((activity, index) => (
-                <ActivityCard
-                  key={index}
-                  activity={activity}
-                  type={1}
-                  status={1}
-                />
-              ))
-            ) : (
-              <View>暂无发起的活动</View>
-            )}
-          </View>
+          <>
+          {renderActivityCards(initiatedProcessingActivity, 1, 1, '待进行')}
+          {renderActivityCards(initiatedFinishedActivity, 1, 2, '已结束')}
+          </>
         );
       case 'registered':
         return (
-          <View>
-            {registeredActivities.length > 0 ? (
-              registeredActivities.map((activity, index) => (
-                <ActivityCard
-                  key={index}
-                  activity={activity}
-                  type={2}
-                  status={1}
-                />
-              ))
-            ) : (
-              <View>暂无报名的活动</View>
-            )}
-          </View>
+          <>
+          {renderActivityCards(registeredProcessingActivity, 2, 1, '待参加')}
+          {renderActivityCards(registeredFinishedActivity, 2, 2, '已结束')}
+          </>
         );
       case 'favorited':
       // return (

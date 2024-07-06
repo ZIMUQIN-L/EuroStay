@@ -1,7 +1,17 @@
 import { View, Image, Text } from '@tarojs/components';
 import { ActivityInfoItemProps } from '@utils/interfaces';
 import { useEffect, useState } from 'react';
-import { DefaultHouse, TrashBinIcon, TurnOnIcon } from '@utils/cloudIcons';
+import {
+  DefaultHouse,
+  TrashBinIcon,
+  TurnOnIcon,
+  PurpleDownArrow,
+  PurpleUpArrow,
+  GreyDateIcon,
+  GreyTimeIcon,
+  GreyPeopleIcon,
+} from '@utils/cloudIcons';
+import { LocationOutlined } from '@taroify/icons';
 import './index.scss';
 
 // type 1: initiated, 2: registered; status 1: processing, 2: finished, 3: draft
@@ -36,11 +46,18 @@ const ActivityCard = ({ activity, type, status }) => {
           <View className='description'>
             <View className='details'>
               <View className='details-item'>
+                <Image src={GreyDateIcon} className='icon' />
                 <Text>{activity.date}</Text>
               </View>
-              <Text className='details-item'>{activity.location}</Text>
+              <View className='details-item'>
+                <LocationOutlined className='icon' />
+                <Text>{activity.location}</Text>
+              </View>
               {activity.time && (
-                <Text className='details-item'>{activity.time}</Text>
+                <View className='details-item'>
+                  <Image src={GreyTimeIcon} className='icon' />
+                  <Text>{activity.time}</Text>
+                </View>
               )}
             </View>
           </View>
@@ -62,9 +79,13 @@ const ActivityCard = ({ activity, type, status }) => {
             <>
               <View className='card-bottom-left'>
                 <View className='details'>
-                  <Text className='participants'>允许报名</Text>
-                  <View>
-                    <Text className='current-participants'>
+                  <View className='participants'>
+                    <Text>允许报名</Text>
+                  </View>
+
+                  <View className='current-participants'>
+                    <Image src={GreyPeopleIcon} className='icon' />
+                    <Text>
                       已报名{activity.participants}/{activity.maxParticipants}
                     </Text>
                   </View>
@@ -75,11 +96,27 @@ const ActivityCard = ({ activity, type, status }) => {
               </View>
 
               <View className='view-button' onClick={handleCheckUser}>
-                查看报名用户 {'>'}
+                查看报名用户 <Image src={PurpleDownArrow} />
               </View>
             </>
           )}
-          {type == 2 && <View></View>}
+          {type == 2 && (
+            <>
+              <View className='card-bottom-left'>
+                <View className='details'>
+                  <View className='participants'>
+                    <Text>发起人 {activity.username}</Text>
+                  </View>
+                  <View className='current-participants'>
+                    <Text>微信号: {activity.wxcontact}</Text>
+                  </View>
+                </View>
+              </View>
+              <View className='paste-button'>
+                <Text>复制联系方式</Text>
+              </View>
+            </>
+          )}
         </View>
       )}
     </View>

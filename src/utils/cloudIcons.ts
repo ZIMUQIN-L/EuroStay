@@ -92,3 +92,10 @@ export const StarFilled = `${cloudPath}/rating-star-filled.svg`;
 export const StarUnfilled = `${cloudPath}/rating-star-unfilled.svg`;
 export const TrashBinIcon = `${cloudPath}/trashbin.svg`;
 export const TurnOnIcon = `${cloudPath}/turn-on-icon.svg`;
+
+// activity-card
+export const PurpleDownArrow = `${cloudPath}/purple-down-arrow.svg`;
+export const PurpleUpArrow = `${cloudPath}/purple-up-arrow.svg`;
+export const GreyDateIcon = `${cloudPath}/grey-date-icon.svg`;
+export const GreyTimeIcon = `${cloudPath}/grey-time-icon.svg`;
+export const GreyPeopleIcon = `${cloudPath}/grey-people-icon.svg`;
