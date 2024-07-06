@@ -56,7 +56,7 @@ const CustomTabBar: React.FC<CustomTabBarProps> = ({ onHomeSelected }) => {
   return (
     <>
       <View className='custom-tab-bar' style={{ height: tabBarHeight }}>
-        <View className='tab-item' onClick={() => handleTabClick('home')}>
+        <View className='item' onClick={() => handleTabClick('home')}>
           <View className='tab-icon'>
             <Image src={currentTab === 'home' ? HomeSelectedIcon : HomeIcon} />
           </View>
@@ -65,7 +65,7 @@ const CustomTabBar: React.FC<CustomTabBarProps> = ({ onHomeSelected }) => {
           </Text>
         </View>
 
-        <View className='tab-item' onClick={() => handleTabClick('activity')}>
+        <View className='item' onClick={() => handleTabClick('activity')}>
           <View className='tab-icon'>
             <Image
               src={
@@ -80,10 +80,7 @@ const CustomTabBar: React.FC<CustomTabBarProps> = ({ onHomeSelected }) => {
           </Text>
         </View>
 
-        <View
-          className='tab-item'
-          onClick={() => handleTabClick('user-profile')}
-        >
+        <View className='item' onClick={() => handleTabClick('user-profile')}>
           <View className='tab-icon'>
             <Image
               src={currentTab === 'user-profile' ? UserSelectedIcon : UserIcon}
