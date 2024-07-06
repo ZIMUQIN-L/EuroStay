@@ -90,3 +90,5 @@ export const PointIcon = `${cloudPath}/point-icon.svg`;
 //review-on-house-page
 export const StarFilled = `${cloudPath}/rating-star-filled.svg`;
 export const StarUnfilled = `${cloudPath}/rating-star-unfilled.svg`;
+export const TrashBinIcon = `${cloudPath}/trashbin.svg`;
+export const TurnOnIcon = `${cloudPath}/turn-on-icon.svg`;

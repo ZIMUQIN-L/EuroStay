@@ -6,40 +6,124 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   // align-items: center;
   justify-content: flex-start;
   margin-top: 20px;
   padding: 20px;
+  align-items: flex-start;
 
   &-top {
     height: 200px;
     display: flex;
     flex-direction: row;
     align-items: center;
-    
-    &-left {
-        margin-right: 30px;
-        Image {
-          width: 200px;
-          height: 200px;
-        }
-      }
-    
-      .content {
-        display: flex;
-        flex-direction: column;
 
-        .title {
-            font-size: 40px;
-            font-weight: 400;
-            color: #000000;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
+    &-left {
+      margin-right: 30px;
+      Image {
+        width: 200px;
+        height: 200px;
+      }
+    }
+
+    &-right {
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      width: 400px;
+
+      .title {
+        font-size: 36px;
+        font-weight: 400;
+
+        color: #000000;
+        margin-top: auto;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .description {
+        display: flex;
+        flex-direction: row;
+
+        .details {
+          display: flex;
+          flex-direction: column;
+          &-item {
+            display: inline-block;
+            background-color: rgba(151, 151, 151, 0.2);
+            color: rgba(100, 100, 100, 1);
+            font-size: 24px;
+          }
         }
       }
+
+      .delete-button {
+        margin-left: auto;
+        width: 50px;
+        height: 50px;
+        border-radius: 50px;
+        background-color: white;
+        border: rgba(236, 234, 255, 1) 1px solid;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-right: 20px;
+
+        Image {
+          width: 30px;
+          height: 30px;
+        }
+      }
+
+      .edit-button {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(255, 209, 17, 1);
+        border-radius: 50px;
+        height: 50px;
+        width: 150px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: rgba(77, 77, 77, 1);
+      }
+    }
   }
 
+  &-bottom {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
 
+    &-left {
+      display: flex;
+      flex-direction: column;
+      margin-right: 30px;
+      width: 200px;
+
+      .details {
+        display: flex;
+        flex-direction: column;
+        .participants {
+          font-size: 24px;
+        }
+
+        .current-participants {
+          font-size: 20px;
+        }
+      }
+    }
+
+    .button {
+      margin-left: 10px;
+
+      Image {
+        height: 40px;
+        width: 60px;
+      }
+    }
+  }
 }
