@@ -55,6 +55,7 @@ const ActivityCard = ({ activity, type, status }) => {
           </View>
         </View>
       </View>
+      {status === 1 && <View className='div-line'></View>}
       {status == 1 && (
         <View className='card-bottom'>
           {type == 1 && (
@@ -68,10 +69,11 @@ const ActivityCard = ({ activity, type, status }) => {
                     </Text>
                   </View>
                 </View>
+                <View className='button'>
+                  <Image src={TurnOnIcon} />
+                </View>
               </View>
-              <View className='button'>
-                <Image src={TurnOnIcon} />
-              </View>
+
               <View className='view-button' onClick={handleCheckUser}>
                 查看报名用户 {'>'}
               </View>
