@@ -197,6 +197,13 @@ const Index = () => {
         mask: true,
         duration: 2000,
       });
+    } else if (new Date(endTime) < new Date(startTime)) {
+      Taro.showToast({
+        title: '结束时间不能早于开始时间',
+        icon: 'error',
+        mask: true,
+        duration: 2000,
+      });
     } else if (capacity == 0) {
       Taro.showToast({
         title: '请填写活动人数',

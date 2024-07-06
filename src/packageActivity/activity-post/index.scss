@@ -25,12 +25,14 @@
   .act-des-container {
     display: flex;
     flex-direction: column;
-    margin: 40px 40px;
+    margin-top: 40px;
+    margin-left:40px;
+    margin-right:40px;
     .act-lineDiv {
       width: 100%;
       background-color: #ffffff;
       position: relative;
-      height: 30px;
+      height: 1px;
       border-top: 1px solid #d6d6d6;
     }
   }
