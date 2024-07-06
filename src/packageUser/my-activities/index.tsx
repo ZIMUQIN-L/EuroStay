@@ -21,7 +21,7 @@ const mockActivities = [
     username: 'username',
     wxcontact: 'wx23849769_nvi378',
     images: [''],
-  }
+  },
 ];
 
 const Index = () => {
@@ -29,10 +29,14 @@ const Index = () => {
 
   // 获取数据
   // const [favoriteActivities, setFavoriteActivities] = useState();
-  const [initiatedProcessingActivity, setInitiatedProcessingActivity] = useState(mockActivities);
-  const [initiatedFinishedActivity, setInitiatedFinishedActivity] = useState(mockActivities);
-  const [registeredProcessingActivity, setRegisteredProcessingActivity] = useState(mockActivities);
-  const [registeredFinishedActivity, setRegisteredFinishedActivity] = useState(mockActivities);
+  const [initiatedProcessingActivity, setInitiatedProcessingActivity] =
+    useState(mockActivities);
+  const [initiatedFinishedActivity, setInitiatedFinishedActivity] =
+    useState(mockActivities);
+  const [registeredProcessingActivity, setRegisteredProcessingActivity] =
+    useState(mockActivities);
+  const [registeredFinishedActivity, setRegisteredFinishedActivity] =
+    useState(mockActivities);
 
   // const [favoriteActivities, setFavoriteActivities] = useState<
   //   ActivityInfoItemProps[]
@@ -54,7 +58,7 @@ const Index = () => {
     });
   };
 
-  const renderActivityCards = (activities, type, status, title) => (
+  const renderActivityCards = (activities, type, status, title) =>
     activities.length > 0 && (
       <View className='cards'>
         <Text className='part-title'>{title}</Text>
@@ -67,22 +71,22 @@ const Index = () => {
           />
         ))}
       </View>
-    ));
+    );
 
   const renderTabContent = () => {
     switch (currentTab) {
       case 'initiated':
         return (
           <>
-          {renderActivityCards(initiatedProcessingActivity, 1, 1, '待进行')}
-          {renderActivityCards(initiatedFinishedActivity, 1, 2, '已结束')}
+            {renderActivityCards(initiatedProcessingActivity, 1, 1, '待进行')}
+            {renderActivityCards(initiatedFinishedActivity, 1, 2, '已结束')}
           </>
         );
       case 'registered':
         return (
           <>
-          {renderActivityCards(registeredProcessingActivity, 2, 1, '待参加')}
-          {renderActivityCards(registeredFinishedActivity, 2, 2, '已结束')}
+            {renderActivityCards(registeredProcessingActivity, 2, 1, '待参加')}
+            {renderActivityCards(registeredFinishedActivity, 2, 2, '已结束')}
           </>
         );
       case 'favorited':

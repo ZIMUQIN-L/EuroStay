@@ -65,7 +65,6 @@ export const activityDetailSearch = async activityId => {
   });
 };
 
-// 查询活动详细信息
 export const activityInfoSearch = async () => {
   const db = wx.cloud.database();
   return new Promise((resolve, reject) => {
@@ -102,6 +101,22 @@ export const activityApplicationAdd = async (
       })
       .catch(err => {
         reject(err.errMsg);
+      });
+  });
+};
+
+export const activityContainUser = async (activityId, userOpenid) => {
+  const db = wx.cloud.database();
+  return new Promise((resolve, reject) => {
+    db.collection('ActivityApplication')
+      .where({
+        _openid: userOpenid,
+        activityId: activityId,
+      })
+      .get({
+        success: function (res) {
+          resolve(res.data);
+        },
       });
   });
 };

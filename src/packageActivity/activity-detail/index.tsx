@@ -19,10 +19,16 @@ import {
 } from '@taroify/icons';
 import { PreferenceIcon } from '@utils/cloudIcons';
 import Taro from '@tarojs/taro';
-import { activityDetailSearch } from '@common/database/activityInfo/activityInfo';
+import GlobalStore from '@store/GlobalStore';
+import {
+  activityDetailSearch,
+  activityContainUser,
+} from '@common/database/activityInfo/activityInfo';
 import {
   ActivityInfoItemProps,
   UserDetailInfoItemProps,
+  UserItemProps,
+  ActivityApplicationItemProps,
 } from '@utils/interfaces';
 import { userInfoSearch } from '@common/database/user/user';
 
@@ -31,6 +37,7 @@ const DetailPage = () => {
   const activityId = router?.params?.id;
   const [activity, setActivity] = useState<ActivityInfoItemProps>();
   const [hostInfo, setHostInfo] = useState<UserDetailInfoItemProps>();
+  const [applicable, setApplicable] = useState(false);
 
   useEffect(() => {
     activityDetailSearch(activityId).then((res: ActivityInfoItemProps) => {
@@ -40,13 +47,22 @@ const DetailPage = () => {
           setHostInfo(userInfoRes[0]);
         },
       );
+      activityContainUser(activityId, GlobalStore.userInfo._openid).then(
+        (items: ActivityApplicationItemProps[]) => {
+          if (items.length == 0) {
+            setApplicable(true);
+          }
+        },
+      );
     });
   }, []);
 
   const handleSignUpClick = () => {
-    Taro.navigateTo({
-      url: `/packageActivity/activity-application/index?id=${activityId}`,
-    });
+    if (applicable) {
+      Taro.navigateTo({
+        url: `/packageActivity/activity-application/index?id=${activityId}`,
+      });
+    }
   };
 
   return (
@@ -72,7 +88,9 @@ const DetailPage = () => {
             <Text className='location'>{activity?.location}</Text>
           </View>
           <View className='location-container'>
-            <Text className='location'>报名获得详细地址</Text>
+            <Text className='location'>
+              {applicable ? '报名获得详细地址' : activity?.location}
+            </Text>
           </View>
         </View>
         <View className='details'>
@@ -115,8 +133,12 @@ const DetailPage = () => {
           {/* <View className='icon-container'>
             <StarOutlined className='icon' />
           </View> */}
-          <Button className='contact-button' onClick={handleSignUpClick}>
-            报名活动
+          <Button
+            className='contact-button'
+            onClick={handleSignUpClick}
+            style={{ backgroundColor: applicable ? '#FFD111' : '#d6d6d6' }}
+          >
+            {applicable ? '报名活动' : '已报名'}
           </Button>
         </View>
       </View>
