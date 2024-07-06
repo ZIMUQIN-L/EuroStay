@@ -32,21 +32,25 @@
     .organizer {
       font-size: 24px;
       display: flex;
+      flex-direction: row;
       align-items: center;
       margin-bottom: 10px;
       color: #666;
 
       .icon {
-        width: 16px;
-        height: 16px;
-        margin-right: 6px;
+        width: 22px;
+        height: 22px;
+        margin-right: 10px;
       }
     }
 
     .details {
       font-size: 24px;
       display: flex;
+      flex-direction: row;
+      align-items: center;
       flex-wrap: wrap;
+      overflow: hidden;
       width: 100%;
 
       .detail-item {
@@ -61,8 +65,8 @@
         color: #666;
 
         .icon {
-          width: 16px;
-          height: 16px;
+          width: 24px;
+          height: 24px;
           margin-right: 6px;
         }
       }
@@ -70,7 +74,7 @@
       .right-detail-item {
         display: flex;
         flex-direction: row;
-        align-items: right;
+        align-items: center;
         margin-bottom: 6px;
         margin-right: 10px;
         padding: 4px 8px;
@@ -78,23 +82,9 @@
         color: #666;
 
         .icon {
-          width: 16px;
-          height: 16px;
-          margin-top: 10px;
+          width: 24px;
+          height: 24px;
           margin-right: 6px;
-        }
-      }
-
-      .tags {
-        display: flex;
-        flex-wrap: wrap;
-
-        .tag {
-          background-color: #eee;
-          color: #666;
-          padding: 2px 5px;
-          margin: 2px 2px 2px 0;
-          border-radius: 20px;
         }
       }
     }

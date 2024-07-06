@@ -43,6 +43,7 @@ const ActivityCard: React.FC<ActivityCardProps> = ({ activity, onClick }) => {
       <Image
         src={imageSrc}
         className='activity-image'
+        mode='aspectFit'
         onError={handleImageError}
       />
       <View className='activity-content'>
@@ -60,13 +61,13 @@ const ActivityCard: React.FC<ActivityCardProps> = ({ activity, onClick }) => {
             <GoldCoinOutlined className='icon' />
             <Text>人均约{activity.price}欧</Text>
           </View>
-          <View className='tags'>
-            {activity.tags.map((tag, index) => (
-              <Text key={index} className='tag'>
-                {tag}
-              </Text>
-            ))}
-          </View>
+
+          {activity.tags.map((tag, index) => (
+            <View className='detail-item'>
+              <Text key={index}># {tag}</Text>
+            </View>
+          ))}
+
           <View className='right-detail-item' style='margin-right: 4px;'>
             <FriendsOutlined className='icon' />
             <Text>参与人数: {activity.capacity}</Text>
