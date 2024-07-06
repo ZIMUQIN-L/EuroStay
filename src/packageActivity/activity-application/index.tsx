@@ -13,11 +13,9 @@ import {
 import GlobalStore from '@store/GlobalStore';
 import ActivityDetailSection from './activity-detail-section';
 import { StarOutlined } from '@taroify/icons';
-const cloudPath =
-  'cloud://cloud1-8gb29x2pbe14a4f8.636c-cloud1-8gb29x2pbe14a4f8-1324366677/images';
-export const LocationSelectionIcon = `${cloudPath}/location-selection-icon.svg`;
-export const RightBottomArrow = `${cloudPath}/right-arrow.svg`;
+import { LocationSelectionIcon, RightBottomArrow } from '@utils/cloudIcons';
 import CopyHostInfoModal from './copy-host-info-modal';
+import { activityApplicationAdd } from '@common/database/activityInfo/activityInfo';
 
 const ActicityApplicationPage = () => {
   const router = useRouter();
@@ -48,6 +46,16 @@ const ActicityApplicationPage = () => {
 
   const handleCloseAllWindows = () => {
     setShowSuccessModal(false);
+    activityApplicationAdd(
+      activityId,
+      activityHost?._openid,
+      actDes,
+      actContact,
+    ).then(res => {
+      Taro.navigateBack({
+        delta: 1,
+      });
+    });
   };
 
   const showSuccessModalEdit = () => {
@@ -66,10 +74,6 @@ const ActicityApplicationPage = () => {
 
   const handleGetHostInfoClick = () => {
     showSuccessModalEdit();
-    // @PJ todo
-    // Taro.navigateTo({
-    //   url: `/packageActivity/activity-application/index?id=anyid`,
-    // });
   };
 
   return (

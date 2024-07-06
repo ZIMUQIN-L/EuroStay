@@ -78,3 +78,30 @@ export const activityInfoSearch = async () => {
       });
   });
 };
+
+export const activityApplicationAdd = async (
+  activityId,
+  hostOpenid,
+  userDescription,
+  userContact,
+) => {
+  const db = wx.cloud.database();
+  return new Promise((resolve, reject) => {
+    db.collection('ActivityApplication')
+      .add({
+        data: {
+          activityId: activityId,
+          hostOpenid: hostOpenid,
+          userDescription: userDescription,
+          userContact: userContact,
+          approval: true,
+        },
+      })
+      .then(res => {
+        resolve(res.errMsg);
+      })
+      .catch(err => {
+        reject(err.errMsg);
+      });
+  });
+};
