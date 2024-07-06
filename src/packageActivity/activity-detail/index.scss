@@ -54,9 +54,9 @@
         color: #666;
 
         .icon {
-          width: 16px;
-          height: 16px;
-          margin-right: 10px;
+          width: 20px;
+          height: 20px;
+          margin-right: 8px;
         }
       }
 
@@ -72,10 +72,9 @@
         color: #666;
 
         .icon {
-          width: 16px;
-          height: 16px;
+          width: 24px;
+          height: 24px;
           margin-right: 10px;
-          margin-bottom: 2px;
         }
       }
 
@@ -188,8 +187,8 @@
       flex-direction: column;
 
       .price {
-        font-size: 35px;
-        font-weight: bold;
+        font-size: 32px;
+        color: rgba(107, 99, 185, 1);
       }
 
       .participants {
@@ -216,11 +215,11 @@
 
       .contact-button {
         height: 70px;
-        border-radius: 25px;
-        width: 250px;
+        border-radius: 35px;
+        width: 240px;
         background-color: #ffd111;
-        color: rgb(0, 0, 0);
-        // font-size: 18px;
+        color: rgba(77, 77, 77, 1);
+        font-size: 28px;
         display: flex;
         align-items: center;
         justify-content: center;

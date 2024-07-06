@@ -76,7 +76,7 @@ const DetailPage = () => {
       >
         {activity?.images.map((image, index) => (
           <SwiperItem key={index}>
-            <Image src={image} className='slide-image' />
+            <Image src={image} className='slide-image' mode='aspectFit'/>
           </SwiperItem>
         ))}
       </Swiper>
@@ -108,6 +108,7 @@ const DetailPage = () => {
           <Image
             src={hostInfo ? hostInfo?.avatarUrl : ''}
             className='organizer-image'
+            mode="aspectFit"
           />
           <View className='organizer-info'>
             <Text className='organizer-name'>发起人 {hostInfo?.nickName}</Text>
@@ -125,7 +126,7 @@ const DetailPage = () => {
       <View className='contact-container'>
         <View className='price-info'>
           <Text className='price'>
-            {activity?.price}欧, {activity?.point}积分
+            {activity?.price}欧 / {activity?.point}积分
           </Text>
           <Text className='participants'>预估人数 {activity?.capacity}人</Text>
         </View>
@@ -133,13 +134,13 @@ const DetailPage = () => {
           {/* <View className='icon-container'>
             <StarOutlined className='icon' />
           </View> */}
-          <Button
+          <View
             className='contact-button'
             onClick={handleSignUpClick}
             style={{ backgroundColor: applicable ? '#FFD111' : '#d6d6d6' }}
           >
             {applicable ? '报名活动' : '已报名'}
-          </Button>
+          </View>
         </View>
       </View>
     </View>
