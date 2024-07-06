@@ -65,11 +65,33 @@ export const activityDetailSearch = async activityId => {
   });
 };
 
+// 查询本人活动信息
+export const activityMineInitiatedSearch = async (
+  userOpenid,
+  activityStatus = true,
+) => {
+  const db = wx.cloud.database();
+  return new Promise((resolve, reject) => {
+    db.collection('ActivityInfo')
+      .where({
+        _openid: userOpenid,
+        //   active: activityStatus
+      })
+      .get({
+        success: function (res) {
+          resolve(res.data);
+        },
+      });
+  });
+};
+
 export const activityInfoSearch = async () => {
   const db = wx.cloud.database();
   return new Promise((resolve, reject) => {
     db.collection('ActivityInfo')
-      .where({})
+      .where({
+        active: true,
+      })
       .get({
         success: function (res) {
           resolve(res.data);
@@ -111,6 +133,21 @@ export const activityContainUser = async (activityId, userOpenid) => {
     db.collection('ActivityApplication')
       .where({
         _openid: userOpenid,
+        activityId: activityId,
+      })
+      .get({
+        success: function (res) {
+          resolve(res.data);
+        },
+      });
+  });
+};
+
+export const activityUsersSearch = async activityId => {
+  const db = wx.cloud.database();
+  return new Promise((resolve, reject) => {
+    db.collection('ActivityApplication')
+      .where({
         activityId: activityId,
       })
       .get({

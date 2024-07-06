@@ -1,52 +1,45 @@
 import { observer } from 'mobx-react';
 import { View, Text } from '@tarojs/components';
 import ActivityCard from './activity-card';
-
+import GlobalStore from '@store/GlobalStore';
 import './index.scss';
-import { useState } from 'react';
-
-import { ActivityInfoItemProps } from '@utils/interfaces';
+import { useState, useEffect } from 'react';
+import { ActivityInfoItemProps, UserItemProps } from '@utils/interfaces';
 import Taro from '@tarojs/taro';
-
-const mockActivities = [
-  {
-    title: 'activity title 2',
-    date: '2021-09-01',
-    time: '19:00-21:00',
-    location: 'location 2',
-    price: '€45',
-    tags: ['#全女局', '#剧本杀'],
-    participants: 9,
-    maxParticipants: 10,
-    username: 'username',
-    wxcontact: 'wx23849769_nvi378',
-    images: [''],
-  },
-];
+import { activityMineInitiatedSearch } from '@common/database/activityInfo/activityInfo';
 
 const Index = () => {
   const [currentTab, setCurrentTab] = useState('initiated');
+  const [currentUser, setCurrentUser] = useState<UserItemProps>(
+    GlobalStore.userInfo,
+  );
 
   // 获取数据
   // const [favoriteActivities, setFavoriteActivities] = useState();
   const [initiatedProcessingActivity, setInitiatedProcessingActivity] =
-    useState(mockActivities);
-  const [initiatedFinishedActivity, setInitiatedFinishedActivity] =
-    useState(mockActivities);
+    useState<ActivityInfoItemProps[]>([]);
+  const [initiatedFinishedActivity, setInitiatedFinishedActivity] = useState<
+    ActivityInfoItemProps[]
+  >([]);
   const [registeredProcessingActivity, setRegisteredProcessingActivity] =
-    useState(mockActivities);
-  const [registeredFinishedActivity, setRegisteredFinishedActivity] =
-    useState(mockActivities);
+    useState<ActivityInfoItemProps[]>([]);
+  const [registeredFinishedActivity, setRegisteredFinishedActivity] = useState<
+    ActivityInfoItemProps[]
+  >([]);
 
-  // const [favoriteActivities, setFavoriteActivities] = useState<
-  //   ActivityInfoItemProps[]
-  // >([]);
-  // const [initiatedActivities, setInitiatedActivities] = useState<
-  //   ActivityInfoItemProps[]
-  // >([]);
-  // const [registeredActivities, setRegisteredActivities] = useState<
-  //   ActivityInfoItemProps[]
-  // >([]);
+  useEffect(() => {
+    setCurrentUser(GlobalStore.userInfo);
+    activityMineInitiatedSearch(GlobalStore.userInfo._openid).then(
+      (mineIni: ActivityInfoItemProps[]) => {
+        setInitiatedProcessingActivity(
+          mineIni.filter(activity => activity.active),
+        );
+        setInitiatedFinishedActivity(
+          mineIni.filter(activity => !activity.active),
+        );
+      },
+    );
+  });
 
   const isActive = tabName => {
     return currentTab === tabName ? 'active' : '';
