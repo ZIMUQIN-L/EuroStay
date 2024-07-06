@@ -51,6 +51,8 @@ const ActicityApplicationPage = () => {
       activityHost?._openid,
       actDes,
       actContact,
+      currentUser?.avatarUrl,
+      currentUser?.nickName,
     ).then(res => {
       Taro.navigateBack({
         delta: 1,

@@ -13,7 +13,7 @@ import {
 } from '@utils/cloudIcons';
 import { LocationOutlined } from '@taroify/icons';
 import './index.scss';
-import { activityUsersSearch } from '@common/database/activityInfo/activityInfo';
+import { activityUsersSearch, activityAppApproveUpdate } from '@common/database/activityInfo/activityInfo';
 import {
   ActivityInfoItemProps,
   UserItemProps,
@@ -62,6 +62,19 @@ const ActivityCard: React.FC<ActivityCardProps> = ({
       });
     }
   };
+
+  const handleActivityUserDelete = (actAppid) => {
+    Taro.showModal({
+        title: '删除确认',
+        content: '确认删除该名参与者？',
+        success: function (res) {
+          if (res.confirm) {
+            activityAppApproveUpdate(actAppid);
+          } 
+        }
+      })
+
+  }
 
   const image = activity?.images?.[0] || DefaultHouse;
 
@@ -170,29 +183,17 @@ const ActivityCard: React.FC<ActivityCardProps> = ({
             {appUsers.map((user, index) => (
               <View className='user' key={index}>
                 <View className='user-info'>
-                  <Text className='username'>报名用户 </Text>
-                  <Text className='wxcontact'>微信号: wx23849769_nvi378</Text>
+                  <Text className='username'>报名用户: {user.userNickName} </Text>
+                  <Text className='wxcontact'>微信号: {user.userContact}</Text>
                 </View>
                 <View className='buttons'>
                   <View className='delete'>
-                    <Image src={TrashBinIcon} />
+                    <Image src={TrashBinIcon} onClick={()=> handleActivityUserDelete(user._id)}/>
                   </View>
                   <View className='paste'>复制</View>
                 </View>
               </View>
             ))}
-            <View className='user'>
-              <View className='user-info'>
-                <Text className='username'>报名用户 Username</Text>
-                <Text className='wxcontact'>微信号: wx23849769_nvi378</Text>
-              </View>
-              <View className='buttons'>
-                <View className='delete'>
-                  <Image src={TrashBinIcon} />
-                </View>
-                <View className='paste'>复制</View>
-              </View>
-            </View>
           </View>
         </>
       )}

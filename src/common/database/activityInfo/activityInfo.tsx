@@ -105,6 +105,8 @@ export const activityApplicationAdd = async (
   hostOpenid,
   userDescription,
   userContact,
+  userAvatarUrl,
+  userNickName,
 ) => {
   const db = wx.cloud.database();
   return new Promise((resolve, reject) => {
@@ -115,6 +117,8 @@ export const activityApplicationAdd = async (
           hostOpenid: hostOpenid,
           userDescription: userDescription,
           userContact: userContact,
+          userAvatarUrl: userAvatarUrl,
+          userNickName: userNickName,
           approval: true,
         },
       })
@@ -149,6 +153,7 @@ export const activityUsersSearch = async activityId => {
     db.collection('ActivityApplication')
       .where({
         activityId: activityId,
+        approval: true,
       })
       .get({
         success: function (res) {
@@ -157,3 +162,23 @@ export const activityUsersSearch = async activityId => {
       });
   });
 };
+
+
+export const activityAppApproveUpdate = async (_id) => {
+    const db = wx.cloud.database();
+    return new Promise((resolve, reject) => {
+      db.collection('ActivityApplication')
+        .doc(_id)
+        .update({
+          data: {
+            approval: false,
+          },
+        })
+        .then(res => {
+          resolve(res.errMsg);
+        })
+        .catch(err => {
+          reject(err.errMsg);
+        });
+    });
+  };
