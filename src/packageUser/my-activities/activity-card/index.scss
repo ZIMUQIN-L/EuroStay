@@ -58,7 +58,7 @@
             background-color: rgba(151, 151, 151, 0.2);
             color: rgba(100, 100, 100, 1);
             font-size: 24px;
-            
+
             .icon {
               width: 20px;
               height: 20px;
@@ -115,7 +115,7 @@
     flex-direction: row;
     width: 100%;
     height: auto;
-    justify-content:space-between;
+    justify-content: space-between;
     align-items: center;
 
     &-left {
@@ -124,7 +124,6 @@
       margin-right: 30px;
       width: 200px;
       align-items: center;
-      
 
       .details {
         display: flex;
@@ -150,14 +149,13 @@
             width: 20px;
             height: 20px;
             margin-right: 5px;
-            
           }
         }
       }
 
       .button {
         margin-left: 5px;
-  
+
         Image {
           height: 40px;
           width: 60px;
@@ -167,16 +165,16 @@
 
     .paste-button {
       position: absolute;
-        background-color: rgba(255, 209, 17, 1);
-        border-radius: 50px;
-        right: 0;
-        margin-right: 50px;
-        height: 50px;
-        width: 250px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        color: rgba(77, 77, 77, 1);
+      background-color: rgba(255, 209, 17, 1);
+      border-radius: 50px;
+      right: 0;
+      margin-right: 50px;
+      height: 50px;
+      width: 250px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: rgba(77, 77, 77, 1);
     }
 
     .view-button {
@@ -189,6 +187,74 @@
         margin-right: 10px;
       }
     }
-    
+  }
+
+  .registered-users {
+    display: flex;
+    flex-direction: column;
+
+    .user {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+
+      .user-info {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+
+        .username {
+          font-size: 28px;
+          color: rgba(0, 0, 0, 1);
+        }
+
+        .wxcontact {
+          font-size: 24px;
+          color: rgba(151, 151, 151, 1);
+        }
+      }
+
+      .buttons {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        position: absolute;
+        right: 0;
+        margin-right: 20px;
+
+        .delete {
+          margin-left: auto;
+          width: 50px;
+          height: 50px;
+          border-radius: 50px;
+          background-color: white;
+          border: rgba(236, 234, 255, 1) 1px solid;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          margin-right: 20px;
+
+          Image {
+            width: 30px;
+            height: 30px;
+          }
+        }
+
+        .paste {
+          background-color: rgba(255, 209, 17, 1);
+          border-radius: 50px;
+          right: 0;
+          margin-right: 50px;
+          height: 50px;
+          width: 150px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          color: rgba(77, 77, 77, 1);
+        }
+      }
+    }
   }
 }

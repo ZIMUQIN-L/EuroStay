@@ -1,5 +1,4 @@
 import { View, Image, Text } from '@tarojs/components';
-import { ActivityInfoItemProps } from '@utils/interfaces';
 import { useEffect, useState } from 'react';
 import {
   DefaultHouse,
@@ -19,10 +18,12 @@ const ActivityCard = ({ activity, type, status }) => {
   const [isRegisteredUserVisible, setIsRegisteredUserVisible] = useState(false);
 
   const handleCheckUser = () => {
+    console.log('check user');
     setIsRegisteredUserVisible(true);
   };
 
   const handleCheckUserClose = () => {
+    console.log('close user');
     setIsRegisteredUserVisible(false);
   };
 
@@ -95,9 +96,15 @@ const ActivityCard = ({ activity, type, status }) => {
                 </View>
               </View>
 
-              <View className='view-button' onClick={handleCheckUser}>
-                查看报名用户 <Image src={PurpleDownArrow} />
-              </View>
+              {!isRegisteredUserVisible ? (
+                <View className='view-button' onClick={handleCheckUser}>
+                  查看报名用户 <Image src={PurpleDownArrow} />
+                </View>
+              ) : (
+                <View className='view-button' onClick={handleCheckUserClose}>
+                  收起报名用户 <Image src={PurpleUpArrow} />
+                </View>
+              )}
             </>
           )}
           {type == 2 && (
@@ -118,6 +125,30 @@ const ActivityCard = ({ activity, type, status }) => {
             </>
           )}
         </View>
+      )}
+      {isRegisteredUserVisible && (
+        <>
+          <View className='div-line'></View>
+          <View className='registered-users'>
+            {/* {activity.registeredUsers.map((user, index) => (
+              <View key={index} className='user'>
+                <Text>{user}</Text>
+              </View>
+            ))} */}
+            <View className='user'>
+              <View className='user-info'>
+                <Text className='username'>报名用户 Username</Text>
+                <Text className='wxcontact'>微信号: wx23849769_nvi378</Text>
+              </View>
+              <View className='buttons'>
+                <View className='delete'>
+                  <Image src={TrashBinIcon} />
+                </View>
+                <View className='paste'>复制</View>
+              </View>
+            </View>
+          </View>
+        </>
       )}
     </View>
   );

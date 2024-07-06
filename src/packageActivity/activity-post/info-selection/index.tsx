@@ -3,11 +3,7 @@ import {
   LocationSelectionIcon,
   DateSelectionIcon,
   CapacitySelectionIcon,
-  UtilitySelectionIcon,
   RightBottomArrow,
-  GenderIcon,
-  SurroundingIcon,
-  PreferenceIcon,
 } from '@utils/cloudIcons';
 import CapacitySelection from './capacity-selection';
 import LocationSelection from './location-selection';
