@@ -5,8 +5,12 @@ import Taro from '@tarojs/taro';
 import './index.scss';
 import GlobalStore from '@store/GlobalStore';
 import { View } from '@tarojs/components';
-import { UserItemProps } from '@utils/interfaces';
-import { userInfoSearch, userInfoAdd } from '@common/database/user/user';
+import { UserItemProps, UserDetailInfoItemProps } from '@utils/interfaces';
+import {
+  userInfoSearch,
+  userInfoAdd,
+  userPointInitialization,
+} from '@common/database/user/user';
 import Loading from './loading';
 
 import { EuroStay } from '@utils/cloudIcons';
@@ -47,7 +51,10 @@ const Index = () => {
                       setUserOpenidInfo(callbackResult.result);
                     }
                     userInfoSearch(callbackResult.result).then(
-                      (dbUserInfo: UserItemProps[]) => {
+                      (dbUserInfo: UserDetailInfoItemProps[]) => {
+                        if (!dbUserInfo[0].point) {
+                          userPointInitialization(dbUserInfo[0]._id);
+                        }
                         setDbUserData(dbUserInfo);
                         GlobalStore.userInfo = dbUserInfo[0];
                         setIsLoading(false);
@@ -97,7 +104,10 @@ const Index = () => {
         ).then(errMsg => {
           if (errMsg == 'collection.add:ok') {
             userInfoSearch(userOpenidInfo).then(
-              (dbUserInfo: UserItemProps[]) => {
+              (dbUserInfo: UserDetailInfoItemProps[]) => {
+                if (!dbUserInfo[0].point) {
+                  userPointInitialization(dbUserInfo[0]._id);
+                }
                 GlobalStore.userInfo = dbUserInfo[0];
                 if (dbUserInfo.length >= 1) {
                   setIsLoading(false);

@@ -183,6 +183,7 @@ export interface UserDetailInfoItemProps {
   //     serviceProvided: // str, 我可以向求宿者提供什么
   // }
   aboutMe: { [key: string]: any };
+  point: number;
 }
 
 export interface ActivityInfoItemProps {

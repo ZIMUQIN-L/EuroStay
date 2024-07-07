@@ -79,14 +79,17 @@
 
 .badge-points {
   position: absolute;
-  top: 5px;
+  top: 8px;
   right: -190px;
   padding: 2px 2px;
   border-radius: 4px 0px 0px 0px;
   background-color: rgba(255, 209, 17, 0.1);
   color: rgba(255, 209, 17, 1);
-  font-size: 19px;
+  font-size: 20px;
   display: flex;
+  border-width: 3px;
+  box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.2);
+  //   border-radius: 2px;
   align-items: center;
   justify-content: center;
 }

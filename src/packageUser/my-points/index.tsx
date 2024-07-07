@@ -3,8 +3,22 @@ import { observer } from 'mobx-react';
 import './index.scss';
 import Taro from '@tarojs/taro';
 import PointsInfo from './points-info';
+import { UserDetailInfoItemProps, UserItemProps } from '@utils/interfaces';
+import GlobalStore from '@store/GlobalStore';
+import React, { useState, useEffect } from 'react';
+import { userInfoSearch } from '@common/database/user/user';
 
 const Index = () => {
+  const [currentUser, setCurrentUser] = useState<UserDetailInfoItemProps>();
+
+  useEffect(() => {
+    userInfoSearch(GlobalStore.userInfo._openid).then(
+      (ownerInfo: UserDetailInfoItemProps[]) => {
+        setCurrentUser(ownerInfo[0]);
+      },
+    );
+  }, []);
+
   const navigateToPost = () => {
     Taro.navigateTo({
       url: '../../packageHouse/house-post/index',
@@ -19,13 +33,13 @@ const Index = () => {
 
   const navigateToProfile = () => {
     Taro.navigateTo({
-      url: '../../packageUser/user-edit/index',
+      url: `../../packageUser/user-edit/index?id=${currentUser?._openid}`,
     });
   };
 
   return (
     <View className='points'>
-      <PointsInfo Detail={false} />
+      <PointsInfo Detail={false} currentUserDetail={currentUser} />
 
       <View className='get-points'>
         <View className='get-points-header'>

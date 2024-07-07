@@ -42,14 +42,13 @@ import UserAccomContent from './user-accom-content';
 const UserDetail: React.FC = () => {
   const router = useRouter();
   const userOpenid = router?.params?.id;
+
   const [userDetailInfo, setUserDetailInfo] =
     useState<UserDetailInfoItemProps>();
   const [activeTab, setActiveTab] = useState('概况');
   const [currentUser, setCurrentUser] = useState<UserItemProps>(
     GlobalStore.userInfo,
   );
-
-  const [userPoints, setUserPoints] = useState<number>(0);
 
   useEffect(() => {
     userInfoSearch(userOpenid).then((ownerInfo: UserDetailInfoItemProps[]) => {
@@ -68,9 +67,11 @@ const UserDetail: React.FC = () => {
   };
 
   const handlePointsClick = () => {
-    Taro.navigateTo({
-      url: '/packageUser/my-points/index',
-    });
+    if (userDetailInfo._openid == currentUser._openid) {
+      Taro.navigateTo({
+        url: `/packageUser/my-points/index`,
+      });
+    }
   };
 
   return (
@@ -83,9 +84,11 @@ const UserDetail: React.FC = () => {
             <Text className='profile-name'>
               {userDetailInfo?.nickName}
               {/* // TODO, @PJ */}
-              <Text className='badge'>实名认证</Text>
+              {/* {userDetailInfo.verified && ?}
+              <Text className='badge'>实名认证</Text> */}
               <Text className='badge-points' onClick={handlePointsClick}>
-                E分值{userPoints} {'>'}
+                {' '}
+                E分值{userDetailInfo.point?userDetailInfo.point:10} {'>'}
               </Text>
             </Text>
             <View className='badges'>

@@ -31,6 +31,7 @@ export const userInfoAdd = async (
           avatarUrl: userAvatarUrl,
           userDes: '',
           userLocation: userLocation,
+          point: 10,
         },
       })
       .then(res => {
@@ -196,6 +197,24 @@ export const userDetailUpdate = async (
           tags: tags,
           birthday: birthday,
           aboutMe: aboutMe,
+        },
+        success: function (res) {
+          resolve(res.errMsg);
+        },
+      });
+  });
+};
+
+// 初始化用户分数
+export const userPointInitialization = async userInfoid => {
+  const db = wx.cloud.database();
+  const _ = db.command;
+  return new Promise((resolve, reject) => {
+    db.collection('UserInfo')
+      .doc(userInfoid)
+      .update({
+        data: {
+          point: _.set(10),
         },
         success: function (res) {
           resolve(res.errMsg);

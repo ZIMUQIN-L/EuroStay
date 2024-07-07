@@ -67,8 +67,9 @@ const Index = () => {
         match: { _openid: GlobalStore.userInfo._openid },
       },
       success: appResInfo => {
-        const actUserInfo = appResInfo.result
-          .list as ActivityParticipantCombinedItemProps[];
+        const actUserInfo =
+          appResInfo?.result?.list ??
+          ([] as ActivityParticipantCombinedItemProps[]);
         setRegisteredProcessingActivity(
           actUserInfo.filter(activity => activity.actInfo[0].active),
         );

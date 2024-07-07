@@ -111,9 +111,9 @@ const RegisterActivityCard: React.FC<ActivityCardProps> = ({
               <Image src={TrashBinIcon} />
             </View>
           )}
-          <View className='edit-button' onClick={handleActivityEdit}>
+          {/* <View className='edit-button' onClick={handleActivityEdit}>
             <Text>{status === 1 ? '编辑' : '查看评价'}</Text>
-          </View>
+          </View> */}
         </View>
       </View>
       {status === 1 && <View className='div-line'></View>}

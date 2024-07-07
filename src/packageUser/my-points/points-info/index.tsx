@@ -2,12 +2,17 @@ import { View, Text, Image } from '@tarojs/components';
 import { PointIcon } from '@utils/cloudIcons';
 import Taro from '@tarojs/taro';
 import './index.scss';
+import { UserDetailInfoItemProps, UserItemProps } from '@utils/interfaces';
 
 interface PointsInfoProps {
   Detail: boolean;
+  currentUserDetail: UserDetailInfoItemProps | undefined;
 }
 
-const PointsInfo: React.FC<PointsInfoProps> = ({ Detail }) => {
+const PointsInfo: React.FC<PointsInfoProps> = ({
+  Detail,
+  currentUserDetail,
+}) => {
   const navigateToDetails = () => {
     Taro.navigateTo({
       url: '../../packageUser/point-details/index',
@@ -19,7 +24,7 @@ const PointsInfo: React.FC<PointsInfoProps> = ({ Detail }) => {
       <View className='my-points-points'>
         <Text style={{ marginLeft: '5%' }}>我的积分</Text>
         <Image src={PointIcon} />
-        <Text className='my-points-value'>0</Text>{' '}
+        <Text className='my-points-value'>{currentUserDetail?.point}</Text>{' '}
         {/* GlobalStore.userInfo.point */}
       </View>
       {!Detail && (
