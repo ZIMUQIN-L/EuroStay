@@ -40,7 +40,7 @@ const LocationMultiSelector = ({ onAddressChange }: MultiSelectorProps) => {
     setCustomArray(data.customArray);
     setCustomIndex(data.customIndex);
     setOnlyArray(data.onlyArray);
-  });
+  }, []);
 
   //多列选择
   const bindCustomPickerColumnChange = e => {

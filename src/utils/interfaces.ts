@@ -217,3 +217,17 @@ export interface ActivityApplicationItemProps {
   userAvatarUrl: string;
   approval: boolean; // 主办方是否允许该用户参加，默认true
 }
+
+export interface ActivityParticipantCombinedItemProps {
+  _id: string; // 该条信息的id
+  _openid: string; // 该条信息用户的openid
+  activityId: string; // 对应的活动id
+  hostOpenid: string; // 活动host的openid
+  userDescription: string; // 对主办方的话
+  userContact: string; //用户联系方式
+  userNickName: string;
+  userAvatarUrl: string;
+  approval: boolean; // 主办方是否允许该用户参加，默认true
+  actInfo: ActivityInfoItemProps[];
+  userInfo: UserDetailInfoItemProps[];
+}

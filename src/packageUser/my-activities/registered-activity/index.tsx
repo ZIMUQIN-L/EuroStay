@@ -19,19 +19,18 @@ import {
 } from '@common/database/activityInfo/activityInfo';
 import {
   ActivityInfoItemProps,
-  UserItemProps,
-  ActivityApplicationItemProps,
   ActivityParticipantCombinedItemProps,
+  ActivityApplicationItemProps,
 } from '@utils/interfaces';
 
 interface ActivityCardProps {
-  activity: ActivityInfoItemProps;
+  activity: ActivityParticipantCombinedItemProps;
   type: number;
   status: number;
 }
 
 // type 1: initiated, 2: registered; status 1: processing, 2: finished, 3: draft
-const ActivityCard: React.FC<ActivityCardProps> = ({
+const RegisterActivityCard: React.FC<ActivityCardProps> = ({
   activity,
   type,
   status,
@@ -44,15 +43,7 @@ const ActivityCard: React.FC<ActivityCardProps> = ({
     setIsRegisteredUserVisible(true);
   };
 
-  useEffect(() => {
-    if (type == 1) {
-      activityUsersSearch(activity._id).then(
-        (appInfo: ActivityApplicationItemProps[]) => {
-          setAppUsers(appInfo);
-        },
-      );
-    }
-  }, []);
+  useEffect(() => {}, []);
 
   const handleCheckUserClose = () => {
     console.log('close user');
@@ -79,14 +70,17 @@ const ActivityCard: React.FC<ActivityCardProps> = ({
     });
   };
 
-  const image = activity?.images?.[0] || DefaultHouse;
+  const image =
+    (activity.actInfo[0].images && activity.actInfo[0].images[0]) ||
+    DefaultHouse;
 
   useEffect(() => {
-    console.log(type, status);
+    // console.log(type, status);
+    console.log(activity);
   }, [type, status]);
 
   return (
-    <View className='card'>
+    <View className='register-card'>
       <View className='card-top'>
         <View className='card-top-left'>
           <Image src={image} />
@@ -94,19 +88,20 @@ const ActivityCard: React.FC<ActivityCardProps> = ({
 
         <View className='card-top-right'>
           <View className='title'>
-            <Text>{activity.title}</Text>
+            <Text>{activity.actInfo[0].title}</Text>
           </View>
           <View className='description'>
             <View className='details'>
               <View className='details-item'>
                 <Image src={GreyDateIcon} className='icon' />
                 <Text>
-                  {activity.startTime} - {activity.endTime}
+                  {activity.actInfo[0].startTime} -{' '}
+                  {activity.actInfo[0].endTime}
                 </Text>
               </View>
               <View className='details-item'>
                 <LocationOutlined className='icon' />
-                <Text>{activity.location}</Text>
+                <Text>{activity.actInfo[0].location}</Text>
               </View>
             </View>
           </View>
@@ -135,7 +130,8 @@ const ActivityCard: React.FC<ActivityCardProps> = ({
                   <View className='current-participants'>
                     <Image src={GreyPeopleIcon} className='icon' />
                     <Text>
-                      已报名{activity.capacity}/{activity.capacity}
+                      已报名{activity.actInfo[0].capacity}/
+                      {activity.actInfo[0].capacity}
                     </Text>
                   </View>
                 </View>
@@ -160,10 +156,10 @@ const ActivityCard: React.FC<ActivityCardProps> = ({
               <View className='card-bottom-left'>
                 <View className='details'>
                   <View className='participants'>
-                    <Text>发起人 {activity.contact}</Text>
+                    <Text>发起人: {activity.userInfo[0].nickName}</Text>
                   </View>
                   <View className='current-participants'>
-                    <Text>微信号: {activity.contact}</Text>
+                    <Text>微信号: {activity.actInfo[0].contact}</Text>
                   </View>
                 </View>
               </View>
@@ -209,4 +205,4 @@ const ActivityCard: React.FC<ActivityCardProps> = ({
   );
 };
 
-export default ActivityCard;
+export default RegisterActivityCard;

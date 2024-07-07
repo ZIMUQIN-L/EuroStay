@@ -1,10 +1,15 @@
 import { observer } from 'mobx-react';
 import { View, Text } from '@tarojs/components';
 import ActivityCard from './activity-card';
+import RegisterActivityCard from './registered-activity';
 import GlobalStore from '@store/GlobalStore';
 import './index.scss';
 import { useState, useEffect } from 'react';
-import { ActivityInfoItemProps, UserItemProps } from '@utils/interfaces';
+import {
+  ActivityInfoItemProps,
+  UserItemProps,
+  ActivityParticipantCombinedItemProps,
+} from '@utils/interfaces';
 import Taro from '@tarojs/taro';
 import { activityMineInitiatedSearch } from '@common/database/activityInfo/activityInfo';
 
@@ -22,9 +27,9 @@ const Index = () => {
     ActivityInfoItemProps[]
   >([]);
   const [registeredProcessingActivity, setRegisteredProcessingActivity] =
-    useState<ActivityInfoItemProps[]>([]);
+    useState<ActivityParticipantCombinedItemProps[]>([]);
   const [registeredFinishedActivity, setRegisteredFinishedActivity] = useState<
-    ActivityInfoItemProps[]
+    ActivityParticipantCombinedItemProps[]
   >([]);
 
   useEffect(() => {
@@ -39,7 +44,40 @@ const Index = () => {
         );
       },
     );
-  });
+    wx.cloud.callFunction({
+      name: 'getActPartcipants',
+      data: {
+        collection: 'ActivityApplication',
+
+        from: 'ActivityInfo',
+        localField: 'activityId',
+        foreignField: '_id',
+        as: 'actInfo',
+
+        //   from:'ActivityInfo',
+        //   localField:'ActivityInfo._id',
+        //   foreignField:'activityId',
+        //   as:'actInfo',
+
+        from2: 'UserInfo',
+        localField2: 'hostOpenid',
+        foreignField2: '_openid',
+        as2: 'userInfo',
+
+        match: { _openid: GlobalStore.userInfo._openid },
+      },
+      success: appResInfo => {
+        const actUserInfo = appResInfo.result
+          .list as ActivityParticipantCombinedItemProps[];
+        setRegisteredProcessingActivity(
+          actUserInfo.filter(activity => activity.actInfo[0].active),
+        );
+        setRegisteredFinishedActivity(
+          actUserInfo.filter(activity => !activity.actInfo[0].active),
+        );
+      },
+    });
+  }, []);
 
   const isActive = tabName => {
     return currentTab === tabName ? 'active' : '';
@@ -55,14 +93,23 @@ const Index = () => {
     activities.length > 0 && (
       <View className='cards'>
         <Text className='part-title'>{title}</Text>
-        {activities.map((activity, index) => (
-          <ActivityCard
-            key={index}
-            activity={activity}
-            type={type}
-            status={status}
-          />
-        ))}
+        {activities.map((activity, index) =>
+          type === 1 ? (
+            <ActivityCard
+              key={index}
+              activity={activity}
+              type={type}
+              status={status}
+            />
+          ) : (
+            <RegisterActivityCard
+              key={index}
+              activity={activity}
+              type={type}
+              status={status}
+            />
+          ),
+        )}
       </View>
     );
 

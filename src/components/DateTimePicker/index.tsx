@@ -20,7 +20,7 @@ const DateTimePicker = ({ value = '', onChange }) => {
       <Picker
         mode='date'
         value={value.split(' ')[0] || ''}
-        onChange={(e) => handleChange(e, 'date')}
+        onChange={e => handleChange(e, 'date')}
       >
         <View className='picker'>
           <Text>{value.split(' ')[0] || '请选择日期'}</Text>
@@ -29,7 +29,7 @@ const DateTimePicker = ({ value = '', onChange }) => {
       <Picker
         mode='time'
         value={value.split(' ')[1] || ''}
-        onChange={(e) => handleChange(e, 'time')}
+        onChange={e => handleChange(e, 'time')}
       >
         <View className='picker'>
           <Text>{value.split(' ')[1] || '请选择时间'}</Text>

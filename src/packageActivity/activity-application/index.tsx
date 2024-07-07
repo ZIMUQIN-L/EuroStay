@@ -76,23 +76,21 @@ const ActicityApplicationPage = () => {
 
   const handleGetHostInfoClick = () => {
     if (actDes == '') {
-        Taro.showToast({
-            title: '请介绍一下自己',
-            icon: 'error',
-            mask: true,
-            duration: 2000,
-          });
-    }
-    else if (actContact == '') {
-        Taro.showToast({
-            title: '请填写联系方式',
-            icon: 'error',
-            mask: true,
-            duration: 2000,
-          });
-    }
-    else {
-        showSuccessModalEdit();
+      Taro.showToast({
+        title: '请介绍一下自己',
+        icon: 'error',
+        mask: true,
+        duration: 2000,
+      });
+    } else if (actContact == '') {
+      Taro.showToast({
+        title: '请填写联系方式',
+        icon: 'error',
+        mask: true,
+        duration: 2000,
+      });
+    } else {
+      showSuccessModalEdit();
     }
   };
 

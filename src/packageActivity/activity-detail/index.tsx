@@ -76,7 +76,7 @@ const DetailPage = () => {
       >
         {activity?.images.map((image, index) => (
           <SwiperItem key={index}>
-            <Image src={image} className='slide-image' mode='aspectFit'/>
+            <Image src={image} className='slide-image' mode='aspectFit' />
           </SwiperItem>
         ))}
       </Swiper>
@@ -108,7 +108,7 @@ const DetailPage = () => {
           <Image
             src={hostInfo ? hostInfo?.avatarUrl : ''}
             className='organizer-image'
-            mode="aspectFit"
+            mode='aspectFit'
           />
           <View className='organizer-info'>
             <Text className='organizer-name'>发起人 {hostInfo?.nickName}</Text>
