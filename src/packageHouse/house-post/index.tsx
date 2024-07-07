@@ -8,16 +8,22 @@ import InfoSelection from './info-selection';
 import './index.scss';
 import Taro from '@tarojs/taro';
 import { houseInfoPost } from '@common/database/house/house';
-import { UserItemProps } from '@utils/interfaces';
+import { UserItemProps, UserDetailInfoItemProps } from '@utils/interfaces';
 import GlobalStore from '@store/GlobalStore';
+import {pointDetailInfoAdd, pointIncrease} from '@common/database/pointSystem/pointSystem';
+import { userInfoSearch } from '@common/database/user/user';
+import {formatTimestamp} from '@utils/dateUtil';
 
 const Index = () => {
-  const [userInfo, setUserInfo] = useState<UserItemProps>(GlobalStore.userInfo);
+  const [userInfo, setUserInfo] = useState<UserDetailInfoItemProps>();
   const [clickable, setClickable] = useState(false);
 
   useEffect(() => {
-    const userInfoList: UserItemProps = GlobalStore.userInfo;
-    setUserInfo(userInfoList);
+    userInfoSearch(GlobalStore.userInfo._openid).then(
+        (ownerInfo: UserDetailInfoItemProps[]) => {
+            setUserInfo(ownerInfo[0]);
+        },
+      );
   }, []);
 
   const [images, setImages] = useState<string[]>([]);
@@ -221,12 +227,16 @@ const Index = () => {
       houseDescription,
       mergedPreference,
       images,
-      userInfo._openid,
+      userInfo?._openid,
     ).then(res => {
-      Taro.hideLoading();
-      Taro.navigateBack({
-        delta: 1,
-      });
+        pointIncrease(userInfo?._id, 10);
+        const timestamp = formatTimestamp((new Date()).valueOf());
+        pointDetailInfoAdd(userInfo?._openid, timestamp, 0, '发布房源信息', 10, (userInfo?userInfo?.point:0) + 10).then(res1 => {
+            Taro.hideLoading();
+            Taro.navigateBack({
+              delta: 1,
+            });
+        })
     });
   };
   return (

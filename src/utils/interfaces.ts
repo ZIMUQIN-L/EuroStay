@@ -232,3 +232,15 @@ export interface ActivityParticipantCombinedItemProps {
   actInfo: ActivityInfoItemProps[];
   userInfo: UserDetailInfoItemProps[];
 }
+
+export interface PointDetailItemProps {
+    _id: string; // 该条信息的id
+    _openid: string; // 该条信息用户的openid
+    userOpenid: string; // 该条信息用户的openid
+    timestamp: string;
+    // 0: 发布房源, 1:完善个人信息, 2:实名认证，3：评价，4：参加活动
+    eventId: number;
+    eventInfo: string;
+    pointChange: number;
+    pointStatus: number;
+}
