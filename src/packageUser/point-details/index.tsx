@@ -3,7 +3,14 @@ import { observer } from 'mobx-react';
 import PointsInfo from '../my-points/points-info';
 import './index.scss';
 import PointsTable from './points-table';
-import { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { userInfoSearch } from '@common/database/user/user';
+import GlobalStore from '@store/GlobalStore';
+import { pointDetailSearch } from '@common/database/pointSystem/pointSystem';
+import {
+  PointDetailItemProps,
+  UserDetailInfoItemProps,
+} from '@utils/interfaces';
 
 const demoData = [
   {
@@ -30,13 +37,28 @@ const demoData = [
 ];
 
 const Index = () => {
-  const [pointsData, setPointsData] = useState(demoData);
+  const [currentUser, setCurrentUser] = useState<UserDetailInfoItemProps>();
+
+  useEffect(() => {
+    userInfoSearch(GlobalStore.userInfo._openid).then(
+      (ownerInfo: UserDetailInfoItemProps[]) => {
+        setCurrentUser(ownerInfo[0]);
+      },
+    );
+    pointDetailSearch(GlobalStore.userInfo._openid).then(
+      (res: PointDetailItemProps[]) => {
+        setPointsData(res);
+      },
+    );
+  }, []);
+
+  const [pointsData, setPointsData] = useState<PointDetailItemProps[]>();
 
   return (
     <View className='point-details'>
-      <PointsInfo Detail={true} />
+      <PointsInfo Detail={true} currentUserDetail={currentUser} />
 
-      <PointsTable data={demoData} />
+      <PointsTable pointData={pointsData} />
     </View>
   );
 };

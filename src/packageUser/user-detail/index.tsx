@@ -88,7 +88,7 @@ const UserDetail: React.FC = () => {
               <Text className='badge'>实名认证</Text> */}
               <Text className='badge-points' onClick={handlePointsClick}>
                 {' '}
-                E分值{userDetailInfo.point?userDetailInfo.point:10} {'>'}
+                E分值{userDetailInfo.point ? userDetailInfo.point : 10} {'>'}
               </Text>
             </Text>
             <View className='badges'>

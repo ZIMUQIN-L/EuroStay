@@ -9,7 +9,11 @@ import Taro from '@tarojs/taro';
 import { cloudAvatarUpload } from '@common/database/cloudstorage/files';
 import { userInfoSearch, userDetailUpdate } from '@common/database/user/user';
 import TagAdd from '../../packageActivity/activity-post/tag-add';
-
+import {
+  pointDetailInfoAdd,
+  pointIncrease,
+} from '@common/database/pointSystem/pointSystem';
+import { formatTimestamp } from '@utils/dateUtil';
 const Index = () => {
   const router = useRouter();
   const userOpenid = router?.params?.id;
@@ -240,6 +244,30 @@ const Index = () => {
       title: '上传中',
       mask: true,
     });
+    var pointAdd = 0;
+    if (
+      (userInfo?.gender == '' && userGender != '') ||
+      (userInfo?.nickName == '微信用户' && userNickname != '微信用户') ||
+      (userInfo?.userLocation == '' && userLocation != '') ||
+      (userInfo?.birthday == '' && userBirthday != '')
+    ) {
+      pointAdd += 5;
+    }
+    if (userInfo?.tags.length == 0 && userTags.length != 0) {
+      pointAdd += 5;
+    }
+    if (
+      (userInfo?.aboutMe.interests == '' && aboutMe.interests != '') ||
+      (userInfo?.aboutMe.major == '' && aboutMe.major != '') ||
+      (userInfo?.aboutMe.languages == '' && aboutMe.languages != '') ||
+      (userInfo?.aboutMe.skills == '' && aboutMe.skills != '') ||
+      (userInfo?.aboutMe.funFact == '' && aboutMe.funFact != '') ||
+      (userInfo?.aboutMe.visitedCountries == '' &&
+        aboutMe.visitedCountries != '') ||
+      (userInfo?.aboutMe.serviceProvided == '' && aboutMe.serviceProvided != '')
+    ) {
+      pointAdd += 5;
+    }
     userDetailUpdate(
       userInfo?._id,
       userAvatarUrl,
@@ -251,9 +279,20 @@ const Index = () => {
       userTags,
       aboutMe,
     ).then(res => {
-      Taro.hideLoading();
-      Taro.redirectTo({
-        url: `/packageUser/user-detail/index?id=${userOpenid}`,
+      pointIncrease(userInfo?._id, pointAdd);
+      const timestamp = formatTimestamp(new Date().valueOf());
+      pointDetailInfoAdd(
+        userInfo?._openid,
+        timestamp,
+        1,
+        '完善个人信息',
+        pointAdd,
+        (userInfo ? userInfo?.point : 0) + pointAdd,
+      ).then(res1 => {
+        Taro.hideLoading();
+        Taro.redirectTo({
+          url: `/packageUser/user-detail/index?id=${userOpenid}`,
+        });
       });
     });
   };
@@ -342,7 +381,7 @@ const Index = () => {
               />
             </View>
           </View>
-          <View className='info-item'>
+          {/* <View className='info-item'>
             <Text className='info-label'>身份</Text>
             <Input
               type='text'
@@ -351,7 +390,7 @@ const Index = () => {
               className='info-value'
               // onInput={handleUserDescriptionEdit}
             />
-          </View>
+          </View> */}
         </View>
       </View>
 

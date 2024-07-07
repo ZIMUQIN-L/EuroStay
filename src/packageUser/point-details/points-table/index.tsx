@@ -1,7 +1,15 @@
 import { View, Text } from '@tarojs/components';
 import './index.scss';
+import {
+  PointDetailItemProps,
+  UserDetailInfoItemProps,
+} from '@utils/interfaces';
 
-const PointsTable = ({ data }) => {
+interface PointsTableProps {
+  pointData: PointDetailItemProps[] | undefined;
+}
+
+const PointsTable: React.FC<PointsTableProps> = ({ pointData }) => {
   return (
     <View className='points-table'>
       <View className='table-header'>
@@ -10,16 +18,15 @@ const PointsTable = ({ data }) => {
         <Text className='header-item'>积分</Text>
         <Text className='header-item'>余额</Text>
       </View>
-      {data && data.length > 0 ? (
-        data.map((item, index) => (
+      {pointData && pointData.length > 0 ? (
+        pointData.map((item, index) => (
           <View className='table-row' key={index}>
             <View className='table-cell'>
-              {item.date}
-              <Text className='time'>{item.time}</Text>
+              <Text className='time'>{item.timestamp}</Text>
             </View>
-            <Text className='table-cell'>{item.type}</Text>
-            <Text className='table-cell'>{item.points}</Text>
-            <Text className='table-cell'>{item.balance}</Text>
+            <Text className='table-cell'>{item.eventInfo}</Text>
+            <Text className='table-cell'>{item.pointChange}</Text>
+            <Text className='table-cell'>{item.pointStatus}</Text>
           </View>
         ))
       ) : (

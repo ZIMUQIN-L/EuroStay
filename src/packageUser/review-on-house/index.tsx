@@ -26,12 +26,16 @@ import {
 import { accomMessageSearchWithId } from '@common/database/accomMessage/accomMessage';
 import { ratingInfoAdd } from '@common/database/ratingInfo/ratingInfo';
 import StarRating from './review-star';
-import { assert } from 'XrFrame/core/utils';
+import {
+  pointDetailInfoAdd,
+  pointIncrease,
+} from '@common/database/pointSystem/pointSystem';
+import { formatTimestamp } from '@utils/dateUtil';
 
 const ReviewOnHouse = () => {
   const router = useRouter();
   const accomInfoId = router?.params?.id;
-  const [user, setUser] = useState<UserItemProps>(GlobalStore.userInfo);
+  const [user, setUser] = useState<UserDetailInfoItemProps>();
   const [accommodationDetails, setAccommodationDetails] =
     useState<UserAccomMessageItemProps>();
 
@@ -58,7 +62,11 @@ const ReviewOnHouse = () => {
 
   useEffect(() => {
     const demoUser: UserItemProps = GlobalStore.userInfo;
-    setUser(demoUser);
+    userInfoSearch(GlobalStore.userInfo._openid).then(
+      (ownerInfo: UserDetailInfoItemProps[]) => {
+        setUser(ownerInfo[0]);
+      },
+    );
     const accomInfoId = router?.params?.id;
     accomMessageSearchWithId(accomInfoId).then(
       (accomInfo: UserAccomMessageItemProps) => {
@@ -210,10 +218,10 @@ const ReviewOnHouse = () => {
 
     ratingInfoAdd(
       accommodationDetails?._id,
-      user._openid,
-      user.nickName,
-      user.avatarUrl,
-      user.userLocation,
+      user?._openid,
+      user?.nickName,
+      user?.avatarUrl,
+      user?.userLocation,
       reviewTarget?._openid,
       reviewTarget?.nickName,
       reviewTarget?.avatarUrl,
@@ -266,8 +274,19 @@ const ReviewOnHouse = () => {
       ) {
         accomMessageUpdate(accommodationDetails._id, 'bothRated');
       }
-      Taro.navigateBack({
-        delta: 1,
+      pointIncrease(user?._id, 5);
+      const timestamp = formatTimestamp(new Date().valueOf());
+      pointDetailInfoAdd(
+        user?._openid,
+        timestamp,
+        3,
+        '发布评价',
+        5,
+        (user ? user?.point : 0) + 5,
+      ).then(res1 => {
+        Taro.navigateBack({
+          delta: 1,
+        });
       });
     });
 
