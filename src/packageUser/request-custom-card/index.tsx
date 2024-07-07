@@ -23,6 +23,7 @@ const RequestCustomCard = ({
   const [endDate, setEndDate] = useState<Date>();
   const [capacity, setCapacity] = useState(0);
   const [gender, setGender] = useState('');
+  const [userDescription, setUserDescription] = useState('');
 
   const handleMessageRequest = async () => {
     try {
@@ -63,7 +64,15 @@ const RequestCustomCard = ({
         mask: true,
         duration: 2000,
       });
-    } else {
+    } else if (userDescription == '') {
+        Taro.showToast({
+            title: '请填写个人描述~',
+            icon: 'error',
+            mask: true,
+            duration: 2000,
+          });
+    } 
+    else {
       handleMessageRequest().then(res => {
         onSubmitCard();
         onClose();
@@ -73,6 +82,7 @@ const RequestCustomCard = ({
 
   const handleRequestDesEdit = editRequestDes => {
     onRequestDesEdit(editRequestDes);
+    setUserDescription(editRequestDes);
   };
 
   const handleSendToggleEdit = editSendToggle => {
