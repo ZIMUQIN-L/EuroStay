@@ -2,10 +2,27 @@ import { View, Input } from '@tarojs/components';
 import CustomFullScreenDialog from '@components/CustomFullScreenDialog';
 import { useEffect, useState } from 'react';
 import './index.scss';
+import Taro from '@tarojs/taro';
 
 const CapacitySelection = ({ prevCapacity, onClose, onCapacitySelected }) => {
   const [capacity, setCapacity] = useState(prevCapacity);
   const handleSubmitCapacitySelection = () => {
+    if (capacity === undefined || !Number.isInteger(capacity)) {
+      Taro.showToast({
+        title: '请输入整数',
+        icon: 'error',
+        duration: 1000
+      });
+      return;
+    }
+    if (capacity < 0) {
+      Taro.showToast({
+        title: '请输入正整数',
+        icon: 'error',
+        duration: 1000
+      });
+      return;
+    }
     onCapacitySelected(capacity);
     onClose();
   };
@@ -19,7 +36,7 @@ const CapacitySelection = ({ prevCapacity, onClose, onCapacitySelected }) => {
 
   return (
     <CustomFullScreenDialog
-      title='输入活动最大人数'
+      title='输入活动最大人数（正整数）'
       onClose={onClose}
       onSubmit={handleSubmitCapacitySelection}
     >

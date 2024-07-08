@@ -2,11 +2,27 @@ import { View, Input } from '@tarojs/components';
 import CustomFullScreenDialog from '@components/CustomFullScreenDialog';
 import { useEffect, useState } from 'react';
 import './index.scss';
-import { pointDetailSearch } from '@common/database/pointSystem/pointSystem';
+import Taro from '@tarojs/taro';
 
 const PointSelection = ({ prevPoint, onClose, onPointSelected }) => {
   const [point, setPoint] = useState<undefined | number>(prevPoint);
   const handleSubmitPointSelection = () => {
+    if (point === undefined || !Number.isInteger(point) ) {
+      Taro.showToast({
+        title: '请输入整数',
+        icon: 'error',
+        duration: 1000
+      });
+      return;
+    }
+    if (point < 0) {
+      Taro.showToast({
+        title: '请输入正整数',
+        icon: 'error',
+        duration: 1000
+      });
+      return;
+    }
     onPointSelected(point);
     onClose();
   };
@@ -20,7 +36,7 @@ const PointSelection = ({ prevPoint, onClose, onPointSelected }) => {
 
   return (
     <CustomFullScreenDialog
-      title='输入活动消耗积分'
+      title='输入活动消耗积分（正整数）'
       onClose={onClose}
       onSubmit={handleSubmitPointSelection}
     >

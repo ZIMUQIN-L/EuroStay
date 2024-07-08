@@ -329,7 +329,7 @@ const InfoSelection = ({ activityId, onActivityInfoEdit }) => {
                 <Text>预计价格</Text>
               </View>
               <View className='selection-right' onClick={handlePriceSelection}>
-                <Text>{price!=undefined ? `${price}` : `请选择`} </Text>
+                <Text>{price!=undefined ? `${price.toFixed(2)}` : `请选择`} </Text>
                 <Image src={RightBottomArrow} />
               </View>
               {isPriceSelection && (
