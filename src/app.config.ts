@@ -37,6 +37,7 @@ export default {
         'activity-detail/index',
         'activity-post/index',
         'activity-application/index',
+        'activity-apply-eurostay/index'
       ],
     },
   ],

@@ -54,6 +54,7 @@ const DetailPage = () => {
           }
         },
       );
+      // todo also change it for eurostay act @PJ
     });
   }, []);
 
@@ -64,10 +65,15 @@ const DetailPage = () => {
   };
 
   const handleSignUpClick = () => {
-    if (applicable) {
+    if (applicable && activity?.official==false) {
       Taro.navigateTo({
         url: `/packageActivity/activity-application/index?id=${activityId}`,
       });
+    }
+    else if (applicable && activity?.official==true) {
+        Taro.navigateTo({
+            url: `/packageActivity/activity-apply-eurostay/index?id=${activityId}`,
+          });
     }
   };
 
@@ -95,7 +101,7 @@ const DetailPage = () => {
           </View>
           <View className='location-container'>
             <Text className='location'>
-              {applicable ? '报名获得详细地址' : activity?.location}
+              {applicable && activity?.official==false? '报名获得详细地址' : activity?.location}
             </Text>
           </View>
         </View>
