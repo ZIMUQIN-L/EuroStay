@@ -1,6 +1,6 @@
 export default {
   navigationBarTitleText: '用户详情',
-  navigationBarBackgroundColor: '#00000000',
+  navigationBarBackgroundColor: '#ffffff',
   navigationBarTextStyle: 'black',
   enableShareAppMessage: true,
 };

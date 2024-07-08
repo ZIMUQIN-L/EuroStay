@@ -17,6 +17,16 @@ const UserDetailContent: React.FC<UserDetailInfoItemProps> = userDetailInfo => {
     UserRatingInfoItemProps[]
   >([]);
 
+  const infoMap = {
+    interests: '兴趣爱好',
+    major: '专业领域',
+    languages: '语言',
+    skills: '技能',
+    funFact: 'fun facts about me',
+    visitedCountries: '我游览过的国家',
+    serviceProvided: '我可以向求宿者/host提供什么',
+  }
+
   if (!userDetailInfo) {
     return <View>Loading...</View>;
   }
@@ -54,7 +64,7 @@ const UserDetailContent: React.FC<UserDetailInfoItemProps> = userDetailInfo => {
             <View key={key} className='section-content'>
               <View className='key-container'>
                 <Image src={Point} className='point-image' />
-                <Text className='section-key'>{key}:</Text>
+                <Text className='section-key'>{infoMap[key]}:</Text>
               </View>
               <Text className='section-value'>{value}</Text>
             </View>
