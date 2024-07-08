@@ -25,7 +25,7 @@ const UserDetailContent: React.FC<UserDetailInfoItemProps> = userDetailInfo => {
     funFact: 'fun facts about me',
     visitedCountries: '我游览过的国家',
     serviceProvided: '我可以向求宿者/host提供什么',
-  }
+  };
 
   if (!userDetailInfo) {
     return <View>Loading...</View>;

@@ -104,10 +104,16 @@ const MsgInfoBoard = ({ userAccomMessage, onClose, onSubmit, onReject }) => {
 
         <View className='button-container'>
           <View className='msg-reject-button' onClick={onReject}>
-            <Text style={{ color: 'white' }}>{userAccomMessage.type == 'withoutTargetHouse'?'关闭':'拒绝'}</Text>
+            <Text style={{ color: 'white' }}>
+              {userAccomMessage.type == 'withoutTargetHouse' ? '关闭' : '拒绝'}
+            </Text>
           </View>
           <View className='msg-save-button' onClick={onSubmit}>
-            <Text style={{ color: 'white' }}>{userAccomMessage.type == 'withoutTargetHouse'?'我有房源':'联系'}</Text>
+            <Text style={{ color: 'white' }}>
+              {userAccomMessage.type == 'withoutTargetHouse'
+                ? '我有房源'
+                : '联系'}
+            </Text>
           </View>
         </View>
       </View>

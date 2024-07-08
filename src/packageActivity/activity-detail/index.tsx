@@ -57,6 +57,12 @@ const DetailPage = () => {
     });
   }, []);
 
+  const handleClickHostAvatar = () => {
+    Taro.navigateTo({
+      url: `/packageUser/user-detail/index?id=${hostInfo?._openid}`,
+    });
+  };
+
   const handleSignUpClick = () => {
     if (applicable) {
       Taro.navigateTo({
@@ -109,6 +115,7 @@ const DetailPage = () => {
             src={hostInfo ? hostInfo?.avatarUrl : ''}
             className='organizer-image'
             mode='aspectFit'
+            onClick={handleClickHostAvatar}
           />
           <View className='organizer-info'>
             <Text className='organizer-name'>发起人 {hostInfo?.nickName}</Text>

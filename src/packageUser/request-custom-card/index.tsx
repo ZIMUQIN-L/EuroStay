@@ -65,14 +65,13 @@ const RequestCustomCard = ({
         duration: 2000,
       });
     } else if (userDescription == '') {
-        Taro.showToast({
-            title: '请填写个人描述~',
-            icon: 'error',
-            mask: true,
-            duration: 2000,
-          });
-    } 
-    else {
+      Taro.showToast({
+        title: '请填写个人描述~',
+        icon: 'error',
+        mask: true,
+        duration: 2000,
+      });
+    } else {
       handleMessageRequest().then(res => {
         onSubmitCard();
         onClose();

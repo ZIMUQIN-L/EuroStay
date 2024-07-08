@@ -62,6 +62,7 @@ const CustomDateRangePicker: React.FC<CustomDateRangePickerProps> = ({
       handleDateChange(startDate, selectedDate);
       const calculatedDays = calculateDaysBetweenDates(startDate, selectedDate);
       setDays(calculatedDays);
+      setIsCalendarVisible(false);
     } else {
       setStartDate(selectedDate);
       setEndDate(null);

@@ -39,9 +39,9 @@ const HouseSelection = ({ onClose, onHouseSelected, prevHouseId }) => {
 
   const handlePostHouseInfo = () => {
     Taro.navigateTo({
-        url: '../../packageHouse/house-post/index',
-      });
-  }
+      url: '../../packageHouse/house-post/index',
+    });
+  };
 
   return (
     <CustomFullScreenDialog
@@ -68,12 +68,11 @@ const HouseSelection = ({ onClose, onHouseSelected, prevHouseId }) => {
             </View>
           </View>
         ))}
-        {houseList.length === 3 &&  <View
-            className={`seek-house-card`}
-            onClick={handlePostHouseInfo}
-          >
+        {houseList.length === 3 && (
+          <View className={`seek-house-card`} onClick={handlePostHouseInfo}>
             <Text className='seek-house-title'>发布房源</Text>
-          </View>}
+          </View>
+        )}
       </View>
     </CustomFullScreenDialog>
   );
