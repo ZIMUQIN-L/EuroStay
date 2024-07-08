@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import './index.scss';
 
 const PriceSelection = ({ prevPrice, onClose, onPriceSelected }) => {
-  const [price, setPrice] = useState(prevPrice);
+  const [price, setPrice] = useState<undefined | number>(prevPrice);
   const handleSubmitPriceSelection = () => {
     onPriceSelected(price);
     onClose();
@@ -15,6 +15,7 @@ const PriceSelection = ({ prevPrice, onClose, onPriceSelected }) => {
 
   const handlePriceChange = e => {
     setPrice(Number(e.detail.value));
+    console.log(e.detail.value)
   };
 
   return (
@@ -27,7 +28,7 @@ const PriceSelection = ({ prevPrice, onClose, onPriceSelected }) => {
         <View className='price-text'>
           <Input
             type='number'
-            value={price != 0 ? price : ''}
+            value={price!=undefined ? `${price}` : ''}
             placeholder='请输入活动预计价格'
             onInput={handlePriceChange}
           />

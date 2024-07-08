@@ -2,9 +2,10 @@ import { View, Input } from '@tarojs/components';
 import CustomFullScreenDialog from '@components/CustomFullScreenDialog';
 import { useEffect, useState } from 'react';
 import './index.scss';
+import { pointDetailSearch } from '@common/database/pointSystem/pointSystem';
 
 const PointSelection = ({ prevPoint, onClose, onPointSelected }) => {
-  const [point, setPoint] = useState(prevPoint);
+  const [point, setPoint] = useState<undefined | number>(prevPoint);
   const handleSubmitPointSelection = () => {
     onPointSelected(point);
     onClose();
@@ -27,7 +28,7 @@ const PointSelection = ({ prevPoint, onClose, onPointSelected }) => {
         <View className='point-text'>
           <Input
             type='number'
-            value={point != 0 ? point : ''}
+            value={point!=undefined? `${point}` : ''}
             placeholder='请输入消耗积分数量'
             onInput={handlePointChange}
           />

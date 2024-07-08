@@ -31,7 +31,7 @@ const ContactSelection = ({ prevContact, onClose, onContactSelected }) => {
           <Input
             type='text'
             value={contact}
-            placeholder='请输入活动举办人联系方式'
+            placeholder='请输入举办人联系方式'
             onInput={handleContactChange}
           />
         </View>
