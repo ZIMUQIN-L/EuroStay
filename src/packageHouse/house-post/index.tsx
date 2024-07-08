@@ -8,7 +8,7 @@ import InfoSelection from './info-selection';
 import './index.scss';
 import Taro from '@tarojs/taro';
 import { houseInfoPost } from '@common/database/house/house';
-import { UserItemProps, UserDetailInfoItemProps } from '@utils/interfaces';
+import { UserDetailInfoItemProps } from '@utils/interfaces';
 import GlobalStore from '@store/GlobalStore';
 import {
   pointDetailInfoAdd,

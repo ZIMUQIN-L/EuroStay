@@ -2,10 +2,29 @@ import { View, Input } from '@tarojs/components';
 import CustomFullScreenDialog from '@components/CustomFullScreenDialog';
 import { useState } from 'react';
 import './index.scss';
+import Taro from '@tarojs/taro';
 
 const CapacitySelection = ({ onClose, onCapacitySelected }) => {
   const [capacity, setCapacity] = useState(1);
   const handleSubmitCapacitySelection = () => {
+    if (capacity === undefined || !Number.isInteger(capacity)) {
+      Taro.showToast({
+        title: '请输入整数',
+        icon: 'error',
+        duration: 1000
+      });
+      return;
+    }
+
+    if (capacity < 0) {
+      Taro.showToast({
+        title: '请输入正整数',
+        icon: 'error',
+        duration: 1000
+      });
+      return;
+    }
+
     onCapacitySelected(capacity);
     onClose();
   };
