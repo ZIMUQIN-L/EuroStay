@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { HouseItemProps, UserItemProps } from '@utils/interfaces';
 import GlobalStore from '@store/GlobalStore';
 import './index.scss';
+import Taro, { useReachBottom } from '@tarojs/taro';
 import { userHouseInfoSearch } from '@common/database/user/user';
 
 const HouseSelection = ({ onClose, onHouseSelected, prevHouseId }) => {
@@ -36,6 +37,12 @@ const HouseSelection = ({ onClose, onHouseSelected, prevHouseId }) => {
     onHouseSelected(chosenHouseId, chosenHouseLocation, chosenImages);
   };
 
+  const handlePostHouseInfo = () => {
+    Taro.navigateTo({
+        url: '../../packageHouse/house-post/index',
+      });
+  }
+
   return (
     <CustomFullScreenDialog
       title='请关联房源'
@@ -61,6 +68,12 @@ const HouseSelection = ({ onClose, onHouseSelected, prevHouseId }) => {
             </View>
           </View>
         ))}
+        {houseList.length === 3 &&  <View
+            className={`seek-house-card`}
+            onClick={handlePostHouseInfo}
+          >
+            <Text className='seek-house-title'>发布房源</Text>
+          </View>}
       </View>
     </CustomFullScreenDialog>
   );

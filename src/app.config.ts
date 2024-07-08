@@ -42,7 +42,7 @@ export default {
   ],
   window: {
     backgroundTextStyle: 'light',
-    enablePullDownRefresh: true,
+    enablePullDownRefresh: false,
     onReachBottomDistance: 50,
   },
   style: 'v2',
