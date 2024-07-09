@@ -1,9 +1,10 @@
 .activity-card {
   width: 90%;
   margin: 10px 0;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
+  // padding: 10px;
+  // border: 1px solid #ddd;
+  border-radius: 15px;
+  overflow: hidden;
   background-color: #fff;
   display: flex;
   flex-direction: column;
@@ -16,21 +17,26 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
   }
 
   .activity-content {
-    width: 95%;
-    margin-left: 2%;
+    width: 92%;
+    padding-bottom: 15px;
+    margin-left: 4%;
+    margin-right: 4%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
 
     .title {
-      font-size: 28px;
+      font-size: 30px;
       font-weight: bold;
-      margin-bottom: 10px;
+      margin-bottom: 6px;
     }
 
     .organizer {
-      font-size: 24px;
+      font-size: 20px;
       display: flex;
       flex-direction: row;
       align-items: center;
@@ -38,14 +44,14 @@
       color: #666;
 
       .icon {
-        width: 22px;
-        height: 22px;
+        width: 20px;
+        height: 20px;
         margin-right: 10px;
       }
     }
 
     .details {
-      font-size: 24px;
+      font-size: 20px;
       display: flex;
       flex-direction: row;
       align-items: center;
@@ -60,13 +66,13 @@
         margin-bottom: 6px;
         margin-right: 10px;
         background-color: #eee;
-        padding: 4px 8px;
-        border-radius: 20px;
+        padding: 4px 15px 4px 10px;
+        border-radius: 5px;
         color: #666;
 
         .icon {
-          width: 24px;
-          height: 24px;
+          width: 20px;
+          height: 20px;
           margin-right: 6px;
         }
       }
