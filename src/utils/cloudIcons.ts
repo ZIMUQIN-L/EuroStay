@@ -99,3 +99,5 @@ export const PurpleUpArrow = `${cloudPath}/purple-up-arrow.svg`;
 export const GreyDateIcon = `${cloudPath}/grey-date-icon.svg`;
 export const GreyTimeIcon = `${cloudPath}/grey-time-icon.svg`;
 export const GreyPeopleIcon = `${cloudPath}/grey-people-icon.svg`;
+//modal-point（成功报名消费point）
+export const YellowPoint = `${cloudPath}/yellow-point.svg`;

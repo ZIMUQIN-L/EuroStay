@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, Image } from '@tarojs/components';
 import { LocationOutlined, CalendarOutlined, Close } from '@taroify/icons'; // Adjust the import path as necessary
 import './index.scss';
-
+import { YellowPoint } from '@utils/cloudIcons';
 interface IProps {
   title: string;
   location: string;
@@ -59,12 +59,21 @@ const CopyInfoModal = (props: IProps) => {
               </Text>
             </View>
           </View>
+          <View className='point-container-container'>
+            成功报名活动
+            {/* todo 消耗多少积分 */}
+            <Image src={YellowPoint} className='point-container-icon'></Image>
+          </View>
           <View className='organizer-info'>
             <Image src={avatar} className='organizer-image' />
             <View className='organizer-details'>
               <Text className='organizer-name'>发起人 {username}</Text>
               <Text className='organizer-contact'>微信号: {wechatId}</Text>
             </View>
+          </View>
+          <View className='organizer-message'>
+            发起人打招呼内容，由发起人填写
+            {/* todo:内容 */}
           </View>
         </View>
         <View className='dialog-save-button' onClick={onSubmit}>

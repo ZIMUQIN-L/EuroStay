@@ -11,7 +11,7 @@
   z-index: 1000;
   .dialog-container {
     background-color: #fff;
-    border-radius: 8px;
+    border-radius: 28px;
     width: 80%;
     padding: 20px;
     position: relative;
@@ -33,14 +33,15 @@
 
   .dialog-save-button {
     background-color: #ffd111;
-    color: white;
-    width: 100%;
+    color: black;
+    width: 65%;
     text-align: center;
     border: none;
-    border-radius: 20px;
+    border-radius: 48px;
     padding: 10px;
     font-size: 26px;
     margin-top: 20px;
+    margin-bottom: 20px;
   }
 
   .modal-header {
@@ -53,6 +54,18 @@
   .modal-content {
     margin-top: 20px;
     width: 90%;
+    .point-container-container {
+      font-size: 30px;
+      font-weight: bold;
+      color: #ffd111;
+      display: flex;
+      align-items: center;
+      margin-bottom: 30px;
+      .point-container-icon {
+        width: 30px;
+        height: 30px;
+      }
+    }
   }
 
   .activity-title {
@@ -64,29 +77,31 @@
   .location-date-container {
     display: flex;
     align-items: flex-start;
-    margin-bottom: 10px;
-    flex-direction: column;
-    flex-wrap: wrap;
+    flex-direction: row;
+    margin-bottom: 6px;
+    // flex-wrap: wrap;
   }
 
   .location-container,
   .date-container {
     display: flex;
-    margin-bottom: 5px;
-    align-items: flex-start;
+    align-items: center;
 
     margin-bottom: 6px;
     margin-right: 10px;
     background-color: #eee;
-    padding: 4px 8px;
+    padding: 4px 12px 4px 8px;
     border-radius: 20px;
     color: #666;
-
     .icon {
       width: 16px;
       height: 16px;
       margin-right: 16px;
-      margin-top: 6px;
+    }
+    .taroify-icon--inherit {
+      font-size: x-small;
+      position: relative;
+      top: -1px;
     }
 
     .location,
@@ -95,6 +110,14 @@
       color: #333;
     }
   }
+  .organizer-message {
+    background-color: #f2f2f2;
+    font-size: 24px;
+    color: #979797;
+    margin-top: 20px;
+    padding: 8% 8%;
+    border-radius: 20px;
+  }
 
   .organizer-info {
     display: flex;
@@ -102,8 +125,8 @@
     margin-bottom: 10px;
 
     .organizer-image {
-      width: 60px;
-      height: 60px;
+      width: 80px;
+      height: 80px;
       border-radius: 50%;
       margin-right: 10px;
     }
@@ -111,12 +134,18 @@
     .organizer-details {
       display: flex;
       flex-direction: column;
+      justify-content: flex-start;
     }
 
-    .organizer-name,
+    .organizer-name {
+      font-size: 28px;
+      color: #333;
+      font-weight: 600;
+      margin-bottom: 5px;
+    }
     .organizer-contact {
       font-size: 26px;
-      color: #333;
+      color: #979797;
     }
   }
 
