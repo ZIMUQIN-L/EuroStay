@@ -1,6 +1,7 @@
 import { View, Image, Text } from '@tarojs/components';
 import { LocationOutlined, CalendarOutlined } from '@taroify/icons'; // Adjust the import path as necessary
 import './index.scss';
+import Taro from '@tarojs/taro';
 
 const ActivityDetailSection = ({
   title,
@@ -9,13 +10,21 @@ const ActivityDetailSection = ({
   timeInfo,
   organizer,
   location,
+  hostOpenid,
 }) => {
+
+    const handleClickHostAvatar = () => {
+        Taro.navigateTo({
+          url: `/packageUser/user-detail/index?id=${hostOpenid}`,
+        });
+      };
   return (
     <View className='activity-app-detail-card'>
       <Image
         className='activity-image'
         src={imageUrls && imageUrls.length != 0 ? imageUrls[0] : ''}
         mode='aspectFill'
+        onClick={handleClickHostAvatar}
       />
       <View className='application-details'>
         <Text className='application-title'>{title}</Text>

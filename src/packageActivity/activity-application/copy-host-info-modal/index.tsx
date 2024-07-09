@@ -1,33 +1,41 @@
 import { View, Input } from '@tarojs/components';
 import CopyInfoModal from '@components/CopyInfoModal';
 import './index.scss';
+import Taro from '@tarojs/taro';
 import { useEffect, useState } from 'react';
 
 const CopyHostInfoModal = ({
   onClose,
-  title,
-  date,
-  time,
-  location,
-  username,
-  avatar,
-  wechatId,
+  activity,
+  hostInfo
 }) => {
-  const handleSubmitTagAdd = () => {
+  const handleSubmit = () => {
+    Taro.setClipboardData({
+        data: activity.contact,
+        success: function (res) {
+            Taro.showToast({
+                title: '复制成功',
+                icon: 'success',
+                duration: 2000
+              })
+        }
+      })
     onClose();
   };
 
   return (
     <CopyInfoModal
-      title={title}
-      location={location}
-      date={date}
-      time={time}
-      username={username}
-      wechatId={wechatId}
-      avatar={avatar}
+      title={activity.title}
+      location={activity.location}
+      date={activity.startTime}
+      time={activity.endTime}
+      username={hostInfo.nickName}
+      wechatId={activity.contact}
+      avatar={hostInfo.avatarUrl}
+      point={activity.point}
+      helloMessage={activity.helloMessage}
       onClose={onClose}
-      onSubmit={handleSubmitTagAdd}
+      onSubmit={handleSubmit}
       buttonName='复制联系方式到剪贴板'
     ></CopyInfoModal>
   );

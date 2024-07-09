@@ -130,6 +130,7 @@ const ActicityApplicationPage = () => {
         timeInfo={activity?.endTime}
         organizer={activityHost?.nickName}
         location={activity?.location}
+        hostOpenid={activity?._openid}
       />
 
       <View className='activity-app-info-eurostay'>
