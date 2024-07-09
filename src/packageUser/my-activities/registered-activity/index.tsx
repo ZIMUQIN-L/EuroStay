@@ -163,9 +163,11 @@ const RegisterActivityCard: React.FC<ActivityCardProps> = ({
                   </View>
                 </View>
               </View>
-              <View className='paste-button'>
+              {activity.approval?(<View className='paste-button'>
                 <Text>复制联系方式</Text>
-              </View>
+              </View>):(<View className='cancel-button'>
+                <Text>活动发起人已取消</Text>
+              </View>)}
             </>
           )}
         </View>
