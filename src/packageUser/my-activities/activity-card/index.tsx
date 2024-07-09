@@ -63,6 +63,25 @@ const ActivityCard: React.FC<ActivityCardProps> = ({
     setIsRegisteredUserVisible(false);
   };
 
+  const handleClickHostAvatar = (hostOpenid) => {
+    Taro.navigateTo({
+      url: `/packageUser/user-detail/index?id=${hostOpenid}`,
+    });
+  };
+
+  const handleClickClipboard = (contactInfo) => {
+    Taro.setClipboardData({
+        data: contactInfo,
+        success: function (res) {
+            Taro.showToast({
+                title: '复制成功',
+                icon: 'success',
+                duration: 2000
+              })
+        }
+      })
+  }
+
   const handleActivityEdit = () => {
     if (status == 1) {
       Taro.navigateTo({
@@ -153,7 +172,7 @@ const ActivityCard: React.FC<ActivityCardProps> = ({
                     <Image src={GreyPeopleIcon} className='icon' />
 
                     <Text>
-                      已报名{activity.capacity}/{activity.capacity}
+                      已报名{appUsers.length}/{activity.capacity}
                     </Text>
                   </View>
                 </View>
@@ -211,9 +230,17 @@ const ActivityCard: React.FC<ActivityCardProps> = ({
             {appUsers.map((user, index) => (
               <View className='user' key={index}>
                 <View className='user-info'>
+                    <View className='user-name-box'>
+                <Image
+                    src={user.userAvatarUrl}
+                    className='user-image'
+                    mode='aspectFit'
+                    onClick={()=>handleClickHostAvatar(user._openid)}
+                    />
                   <Text className='username'>
                     报名用户: {user.userNickName}{' '}
                   </Text>
+                  </View>
                   <Text className='wxcontact'>微信号: {user.userContact}</Text>
                 </View>
                 <View className='buttons'>
@@ -223,7 +250,7 @@ const ActivityCard: React.FC<ActivityCardProps> = ({
                       onClick={() => handleActivityUserDelete(user._id)}
                     />
                   </View>
-                  <View className='paste'>复制</View>
+                  <View className='paste' onClick={()=>handleClickClipboard(user.userContact)}>复制</View>
                 </View>
               </View>
             ))}

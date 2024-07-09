@@ -58,6 +58,19 @@ const RegisterActivityCard: React.FC<ActivityCardProps> = ({
     }
   };
 
+  const handleClickClipboard = (contactInfo) => {
+    Taro.setClipboardData({
+        data: contactInfo,
+        success: function (res) {
+            Taro.showToast({
+                title: '复制成功',
+                icon: 'success',
+                duration: 2000
+              })
+        }
+      })
+  }
+
   const handleActivityUserDelete = actAppid => {
     Taro.showModal({
       title: '删除确认',
@@ -163,7 +176,7 @@ const RegisterActivityCard: React.FC<ActivityCardProps> = ({
                   </View>
                 </View>
               </View>
-              {activity.approval?(<View className='paste-button'>
+              {activity.approval?(<View className='paste-button' onClick={()=>handleClickClipboard(activity.actInfo[0].contact)}>
                 <Text>复制联系方式</Text>
               </View>):(<View className='cancel-button'>
                 <Text>活动发起人已取消</Text>
