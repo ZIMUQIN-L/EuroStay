@@ -11,7 +11,7 @@ const CapacitySelection = ({ prevCapacity, onClose, onCapacitySelected }) => {
       Taro.showToast({
         title: '请输入整数',
         icon: 'error',
-        duration: 1000
+        duration: 1000,
       });
       return;
     }
@@ -19,7 +19,7 @@ const CapacitySelection = ({ prevCapacity, onClose, onCapacitySelected }) => {
       Taro.showToast({
         title: '请输入正整数',
         icon: 'error',
-        duration: 1000
+        duration: 1000,
       });
       return;
     }

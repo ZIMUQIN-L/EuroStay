@@ -329,7 +329,9 @@ const InfoSelection = ({ activityId, onActivityInfoEdit }) => {
                 <Text>预计价格</Text>
               </View>
               <View className='selection-right' onClick={handlePriceSelection}>
-                <Text>{price!=undefined ? `${price.toFixed(2)}` : `请选择`} </Text>
+                <Text>
+                  {price != undefined ? `${price.toFixed(2)}` : `请选择`}{' '}
+                </Text>
                 <Image src={RightBottomArrow} />
               </View>
               {isPriceSelection && (
@@ -353,7 +355,7 @@ const InfoSelection = ({ activityId, onActivityInfoEdit }) => {
                 <Text>消耗积分</Text>
               </View>
               <View className='selection-right' onClick={handlePointSelection}>
-                <Text>{point!=undefined ? `${point}` : `请选择`} </Text>
+                <Text>{point != undefined ? `${point}` : `请选择`} </Text>
                 <Image src={RightBottomArrow} />
               </View>
               {isPointSelection && (

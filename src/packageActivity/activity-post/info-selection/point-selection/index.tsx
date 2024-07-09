@@ -7,11 +7,11 @@ import Taro from '@tarojs/taro';
 const PointSelection = ({ prevPoint, onClose, onPointSelected }) => {
   const [point, setPoint] = useState<undefined | number>(prevPoint);
   const handleSubmitPointSelection = () => {
-    if (point === undefined || !Number.isInteger(point) ) {
+    if (point === undefined || !Number.isInteger(point)) {
       Taro.showToast({
         title: '请输入整数',
         icon: 'error',
-        duration: 1000
+        duration: 1000,
       });
       return;
     }
@@ -19,7 +19,7 @@ const PointSelection = ({ prevPoint, onClose, onPointSelected }) => {
       Taro.showToast({
         title: '请输入正整数',
         icon: 'error',
-        duration: 1000
+        duration: 1000,
       });
       return;
     }
@@ -44,7 +44,7 @@ const PointSelection = ({ prevPoint, onClose, onPointSelected }) => {
         <View className='point-text'>
           <Input
             type='number'
-            value={point!=undefined? `${point}` : ''}
+            value={point != undefined ? `${point}` : ''}
             placeholder='请输入消耗积分数量'
             onInput={handlePointChange}
           />

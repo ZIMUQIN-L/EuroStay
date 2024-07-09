@@ -65,15 +65,14 @@ const DetailPage = () => {
   };
 
   const handleSignUpClick = () => {
-    if (applicable && activity?.official==false) {
+    if (applicable && activity?.official == false) {
       Taro.navigateTo({
         url: `/packageActivity/activity-application/index?id=${activityId}`,
       });
-    }
-    else if (applicable && activity?.official==true) {
-        Taro.navigateTo({
-            url: `/packageActivity/activity-apply-eurostay/index?id=${activityId}`,
-          });
+    } else if (applicable && activity?.official == true) {
+      Taro.navigateTo({
+        url: `/packageActivity/activity-apply-eurostay/index?id=${activityId}`,
+      });
     }
   };
 
@@ -101,7 +100,9 @@ const DetailPage = () => {
           </View>
           <View className='location-container'>
             <Text className='location'>
-              {applicable && activity?.official==false? '报名获得详细地址' : activity?.location}
+              {applicable && activity?.official == false
+                ? '报名获得详细地址'
+                : activity?.location}
             </Text>
           </View>
         </View>
@@ -139,7 +140,7 @@ const DetailPage = () => {
       <View className='contact-container'>
         <View className='price-info'>
           <Text className='price'>
-            {activity?.price}欧 / {activity?.point}积分
+            {activity?.price} 欧， {activity?.point} 积分
           </Text>
           <Text className='participants'>预估人数 {activity?.capacity}人</Text>
         </View>

@@ -1,7 +1,6 @@
 export default {
-    navigationBarTitleText: 'Eurostay活动报名',
-    navigationBarBackgroundColor: '#ffffff',
-    navigationBarTextStyle: 'black',
-    enableShareAppMessage: true,
-  };
-  
+  navigationBarTitleText: 'Eurostay活动报名',
+  navigationBarBackgroundColor: '#ffffff',
+  navigationBarTextStyle: 'black',
+  enableShareAppMessage: true,
+};

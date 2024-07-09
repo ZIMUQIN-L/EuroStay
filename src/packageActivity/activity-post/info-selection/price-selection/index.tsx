@@ -5,7 +5,9 @@ import Taro from '@tarojs/taro';
 import './index.scss';
 
 const PriceSelection = ({ prevPrice, onClose, onPriceSelected }) => {
-  const [price, setPrice] = useState<string>(prevPrice ? prevPrice.toFixed(2) : '');
+  const [price, setPrice] = useState<string>(
+    prevPrice ? prevPrice.toFixed(2) : '',
+  );
 
   const handleSubmitPriceSelection = () => {
     const numericPrice = parseFloat(price);
@@ -23,7 +25,7 @@ const PriceSelection = ({ prevPrice, onClose, onPriceSelected }) => {
       Taro.showToast({
         title: '请输入最多两位小数',
         icon: 'error',
-        duration: 1000
+        duration: 1000,
       });
       return;
     }
