@@ -24,7 +24,7 @@ const DateSelection = ({ onClose, onDateSelected }) => {
       onSubmit={handleSubmitDateSelection}
       className='request-date-selection-dialog'
     >
-      <View className='date-picker'>
+      <View className='request-custom-card-date-picker'>
         <CustomDateRangePicker onDateChange={handleDateChange} />
       </View>
     </CustomFullScreenDialog>
