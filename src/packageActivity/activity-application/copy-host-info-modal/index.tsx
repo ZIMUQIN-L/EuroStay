@@ -25,7 +25,7 @@ const CopyHostInfoModal = ({
 
   return (
     <CopyInfoModal
-      title={activity.title}
+      title={activity.official? '报名成功，请等待后续联系哦~':activity.title}
       location={activity.location}
       date={activity.startTime}
       time={activity.endTime}

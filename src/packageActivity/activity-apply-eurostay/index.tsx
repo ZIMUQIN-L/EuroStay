@@ -17,11 +17,17 @@ import {
   ActivityInfoItemProps,
   UserDetailInfoItemProps,
 } from '@utils/interfaces';
+import {
+    pointDetailInfoAdd,
+    pointDecrease
+  } from '@common/database/pointSystem/pointSystem';
+import CopyHostInfoModal from '../activity-application/copy-host-info-modal';
 import GlobalStore from '@store/GlobalStore';
 import ActivityDetailSection from '../activity-application/activity-detail-section';
 import { StarOutlined } from '@taroify/icons';
 import { LocationSelectionIcon, RightBottomArrow } from '@utils/cloudIcons';
-import { activityApplicationAdd } from '@common/database/activityInfo/activityInfo';
+import { activityApplicationAdd, eurostayActApply } from '@common/database/activityInfo/activityInfo';
+import { formatTimestamp } from '@utils/dateUtil';
 
 const ActicityApplicationPage = () => {
   const router = useRouter();
@@ -52,7 +58,9 @@ const ActicityApplicationPage = () => {
 
   const handleCloseAllWindows = () => {
     setShowSuccessModal(false);
-    // todo @PJ
+    Taro.navigateBack({
+        delta: 2,
+      });
   };
 
   const showSuccessModalEdit = () => {
@@ -77,7 +85,20 @@ const ActicityApplicationPage = () => {
   const [appQuestion, setAppQuestion] = useState('');
 
   const handleGetHostInfoClick = () => {
-    if (
+    if (currentUser && activity && currentUser?.point <= activity?.point) {
+        Taro.showModal({
+            title: '积分不足',
+            content: '当前积分不足，前往积分页面查看积分获取规则~',
+            success: function (res) {
+              if (res.confirm) {
+                Taro.navigateTo({
+                    url: `/packageUser/my-points/index`,
+                  });
+              } 
+            }
+          })
+      }
+      else if (
       appName == '' ||
       appGender == '' ||
       appAge == 0 ||
@@ -117,7 +138,35 @@ const ActicityApplicationPage = () => {
         发帖: appPub,
         问题: appQuestion,
       };
-      console.log(answer);
+      Taro.showLoading({
+        title: '申请中',
+        mask: true,
+      });
+      activityApplicationAdd(
+        activityId,
+        activityHost?._openid,
+        appWhy,
+        appWechat,
+        currentUser?.avatarUrl,
+        currentUser?.nickName,
+      ).then(res => {
+        pointDecrease(currentUser?._id, activity?.point);
+        const timestamp = formatTimestamp(new Date().valueOf());
+        pointDetailInfoAdd(
+          currentUser?._openid,
+          timestamp,
+          4,
+          '参加活动消耗',
+          -(activity? activity?.point:0),
+          (currentUser ? currentUser?.point : 0) - (activity? activity?.point:0),
+        ).then(res1 => {
+            eurostayActApply(activity?.title, activity?._id, answer).then(res2=> {
+                Taro.hideLoading();
+                showSuccessModalEdit();
+            })
+        });
+      });
+      
     }
   };
 
@@ -465,6 +514,13 @@ const ActicityApplicationPage = () => {
           </Button>
         </View>
       </View>
+      {isShowSuccessModal && (
+        <CopyHostInfoModal
+          onClose={handleCloseAllWindows}
+          activity={activity}
+          hostInfo={activityHost}
+        ></CopyHostInfoModal>
+      )}
     </View>
   );
 };

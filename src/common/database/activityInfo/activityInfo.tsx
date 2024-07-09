@@ -200,3 +200,30 @@ export const activityAppApproveUpdate = async _id => {
       });
   });
 };
+
+
+// eurostay相关活动信息
+export const eurostayActApply = async (
+    title,
+    activityId,
+    applicantInfo,
+  ) => {
+    const db = wx.cloud.database();
+    return new Promise((resolve, reject) => {
+      db.collection('EuroStayActApplication')
+        .add({
+          data: {
+            // 用户必填
+            title: title,
+            activityId: activityId,
+            applicantInfo: applicantInfo,
+          },
+        })
+        .then(res => {
+          resolve(res.errMsg);
+        })
+        .catch(err => {
+          reject(err.errMsg);
+        });
+    });
+  };

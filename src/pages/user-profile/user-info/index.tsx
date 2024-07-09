@@ -25,7 +25,7 @@ const UserInfo: React.FC<UserItemProps> = user => {
 
   // TODO: 优化样式
   return (
-    <View style={{ width: '100%' }}>
+    <View style={{ width: '90%' }} onClick={toUserDetail}>
       <View className='user-card'>
         <View>
           <Image src={userInfo.avatarUrl} className='avatar-img' />

@@ -100,6 +100,10 @@ const ActicityApplicationPage = () => {
           duration: 2000,
         });
       } else {
+        Taro.showLoading({
+            title: '申请中',
+            mask: true,
+          });
         activityApplicationAdd(
             activityId,
             activityHost?._openid,
@@ -118,6 +122,7 @@ const ActicityApplicationPage = () => {
               -(activity? activity?.point:0),
               (currentUser ? currentUser?.point : 0) - (activity? activity?.point:0),
             ).then(res1 => {
+                Taro.hideLoading();
                 showSuccessModalEdit();
             });
           });
