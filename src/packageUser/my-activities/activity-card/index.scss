@@ -130,7 +130,7 @@
         flex-direction: column;
         max-width: 250px;
         .participants {
-          font-size: 24px;
+          font-size: 26px;
           color: rgba(100, 100, 100, 1);
           overflow: hidden;
           text-overflow: ellipsis;
@@ -138,7 +138,7 @@
         }
 
         .current-participants {
-          font-size: 20px;
+          font-size: 24px;
           margin-top: 0px;
           color: rgba(151, 151, 151, 1);
           overflow: hidden;
@@ -153,7 +153,7 @@
         }
       }
 
-      .button {
+      .switch-button {
         margin-left: 5px;
 
         Image {

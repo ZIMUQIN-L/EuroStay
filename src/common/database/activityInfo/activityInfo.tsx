@@ -100,6 +100,25 @@ export const activityInfoSearch = async () => {
   });
 };
 
+export const activityActiveUpdate = async (_id, activeStatus) => {
+  const db = wx.cloud.database();
+  return new Promise((resolve, reject) => {
+    db.collection('ActivityInfo')
+      .doc(_id)
+      .update({
+        data: {
+          active: activeStatus,
+        },
+      })
+      .then(res => {
+        resolve(res.errMsg);
+      })
+      .catch(err => {
+        reject(err.errMsg);
+      });
+  });
+};
+
 export const activityApplicationAdd = async (
   activityId,
   hostOpenid,
