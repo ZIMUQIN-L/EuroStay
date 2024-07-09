@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, Image } from '@tarojs/components';
 import { useState, useEffect } from 'react';
+import Taro from '@tarojs/taro';
 import {
   UserCircleOutlined,
   LocationOutlined,
@@ -12,7 +13,7 @@ import {
   UserDetailInfoItemProps,
 } from '@utils/interfaces';
 import './index.scss';
-import { userHouseInfoSearch } from '@common/database/user/user';
+import { userInfoSearch } from '@common/database/user/user';
 
 interface ActivityCardProps {
   activity: ActivityInfoItemProps;
@@ -27,12 +28,18 @@ const ActivityCard: React.FC<ActivityCardProps> = ({ activity, onClick }) => {
   const [sourceUser, constSourceUser] = useState<UserDetailInfoItemProps>();
 
   useEffect(() => {
-    userHouseInfoSearch(activity._openid).then(
+    userInfoSearch(activity._openid).then(
       (res: UserDetailInfoItemProps[]) => {
         constSourceUser(res[0]);
       },
     );
   }, []);
+
+  const handleClickHostAvatar = () => {
+    Taro.navigateTo({
+      url: `/packageUser/user-detail/index?id=${sourceUser?._openid}`,
+    });
+  };
 
   const handleImageError = () => {
     setImageSrc('');
@@ -49,7 +56,13 @@ const ActivityCard: React.FC<ActivityCardProps> = ({ activity, onClick }) => {
       <View className='activity-content'>
         <Text className='title'>{activity.title}</Text>
         <View className='organizer'>
-          <UserCircleOutlined className='icon' />
+          {/* <UserCircleOutlined className='icon' /> */}
+          <Image
+            src={sourceUser ? sourceUser?.avatarUrl : ''}
+            className='icon'
+            mode='aspectFit'
+            onClick={handleClickHostAvatar}
+          />
           <Text>由 {sourceUser?.nickName} 发起</Text>
         </View>
         <View className='details'>
