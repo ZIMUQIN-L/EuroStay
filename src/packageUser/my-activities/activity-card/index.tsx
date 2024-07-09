@@ -69,6 +69,12 @@ const ActivityCard: React.FC<ActivityCardProps> = ({
     });
   };
 
+  const handleClickActImage = () => {
+    Taro.navigateTo({
+      url: `/packageActivity/activity-detail/index?id=${activity._id}`,
+    });
+  };
+
   const handleClickClipboard = (contactInfo) => {
     Taro.setClipboardData({
         data: contactInfo,
@@ -125,7 +131,7 @@ const ActivityCard: React.FC<ActivityCardProps> = ({
     <View className='card'>
       <View className='card-top'>
         <View className='card-top-left'>
-          <Image src={image} />
+          <Image src={image} onClick={handleClickActImage}/>
         </View>
 
         <View className='card-top-right'>

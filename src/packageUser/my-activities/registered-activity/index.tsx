@@ -43,6 +43,12 @@ const RegisterActivityCard: React.FC<ActivityCardProps> = ({
     setIsRegisteredUserVisible(true);
   };
 
+  const handleClickActImage = () => {
+    Taro.navigateTo({
+      url: `/packageActivity/activity-detail/index?id=${activity.actInfo[0]._id}`,
+    });
+  };
+
   useEffect(() => {}, []);
 
   const handleCheckUserClose = () => {
@@ -96,7 +102,7 @@ const RegisterActivityCard: React.FC<ActivityCardProps> = ({
     <View className='register-card'>
       <View className='card-top'>
         <View className='card-top-left'>
-          <Image src={image} />
+          <Image src={image} onClick={handleClickActImage}/>
         </View>
 
         <View className='card-top-right'>
