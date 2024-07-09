@@ -129,9 +129,9 @@ const ActicityApplicationPage = () => {
           <Text className='participants'>预估人数 {activity?.capacity}人</Text>
         </View>
         <View className='right-section'>
-          <View className='icon-container'>
+          {/* <View className='icon-container'>
             <StarOutlined className='icon' />
-          </View>
+          </View> */}
           <Button className='contact-button' onClick={handleGetHostInfoClick}>
             发送
           </Button>

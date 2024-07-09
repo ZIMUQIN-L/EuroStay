@@ -1,10 +1,11 @@
-import { View, Image, Text } from '@tarojs/components';
+import { View, Image, Text, Switch } from '@tarojs/components';
 import { useEffect, useState } from 'react';
 import Taro from '@tarojs/taro';
 import {
   DefaultHouse,
   TrashBinIcon,
   TurnOnIcon,
+  TurnOffIcon,
   PurpleDownArrow,
   PurpleUpArrow,
   GreyDateIcon,
@@ -16,6 +17,7 @@ import './index.scss';
 import {
   activityUsersSearch,
   activityAppApproveUpdate,
+  activityActiveUpdate,
 } from '@common/database/activityInfo/activityInfo';
 import {
   ActivityInfoItemProps,
@@ -37,6 +39,7 @@ const ActivityCard: React.FC<ActivityCardProps> = ({
   status,
 }) => {
   const [isRegisteredUserVisible, setIsRegisteredUserVisible] = useState(false);
+  const [isActive, setIsActive] = useState(true);
   const [appUsers, setAppUsers] = useState<ActivityApplicationItemProps[]>([]);
 
   const handleCheckUser = () => {
@@ -45,6 +48,7 @@ const ActivityCard: React.FC<ActivityCardProps> = ({
   };
 
   useEffect(() => {
+    setIsActive(activity.active);
     if (type == 1) {
       activityUsersSearch(activity._id).then(
         (appInfo: ActivityApplicationItemProps[]) => {
@@ -65,6 +69,19 @@ const ActivityCard: React.FC<ActivityCardProps> = ({
         url: `/packageActivity/activity-post/index?activityId=${activity._id}`,
       });
     }
+  };
+
+  const handleEnableActivity = () => {
+    Taro.showModal({
+      title: `${isActive ? '停止' : '开始'}报名确认`,
+      content: `您是否确认${isActive ? '停止' : '开始'}该活动的报名？`,
+      success: function (res) {
+        if (res.confirm) {
+          activityActiveUpdate(activity._id, !isActive);
+          setIsActive(!isActive);
+        }
+      },
+    });
   };
 
   const handleActivityUserDelete = actAppid => {
@@ -134,13 +151,21 @@ const ActivityCard: React.FC<ActivityCardProps> = ({
 
                   <View className='current-participants'>
                     <Image src={GreyPeopleIcon} className='icon' />
+
                     <Text>
                       已报名{activity.capacity}/{activity.capacity}
                     </Text>
                   </View>
                 </View>
-                <View className='button'>
-                  <Image src={TurnOnIcon} />
+                <View
+                  className='switch-button'
+                  onClick={() => handleEnableActivity()}
+                >
+                  {isActive ? (
+                    <Image src={TurnOnIcon} />
+                  ) : (
+                    <Image src={TurnOffIcon} />
+                  )}
                 </View>
               </View>
 

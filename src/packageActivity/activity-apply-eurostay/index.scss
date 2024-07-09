@@ -1,0 +1,176 @@
+.eurostay-contact-container {
+  background-color: white;
+  height: 150px;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+  font-size: 25px;
+  z-index: 1000;
+
+  .price-info {
+    display: flex;
+    flex-direction: column;
+
+    .price {
+      font-size: 35px;
+      font-weight: bold;
+    }
+
+    .participants {
+      // font-size: 16px;
+      color: #888;
+    }
+  }
+
+  .right-section {
+    display: flex;
+    align-items: center;
+
+    .icon-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 20px;
+
+      .star-icon {
+        width: 30px;
+        height: 30px;
+      }
+    }
+
+    .contact-button {
+      height: 70px;
+      border-radius: 25px;
+      width: 250px;
+      background-color: #ffd111;
+      color: rgb(0, 0, 0);
+      // font-size: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: none;
+    }
+  }
+}
+
+.activity-app-info-eurostay {
+  padding-bottom: 160px;
+  .des-part {
+    padding: 2% 5%;
+    background-color: white;
+    // width: 580px;
+    border-top: none;
+    margin-top: 0px;
+    border-bottom: 5px solid rgba(214, 214, 214, 0.2);
+  }
+  .des-container {
+    display: flex;
+    flex-direction: column;
+    margin: 5px;
+  }
+  .des-title {
+    color: #000000;
+    font-weight: normal;
+    font-size: 27px;
+  }
+  .des-text-container {
+    background-color: #f2f2f2;
+    border-radius: 20px;
+    margin-top: 15px;
+    font-size: 24px;
+    font-weight: normal;
+    color: #979797;
+    padding: 10px 10px;
+    Input {
+      color: #979797;
+    }
+    textarea {
+      width: 100%;
+      color: #979797;
+    }
+  }
+  .des-text {
+    margin: 20px 20px;
+    color: #979797;
+  }
+  .switch-container {
+    display: flex;
+    flex-direction: row;
+    margin: 5px;
+  }
+  .switch-title {
+    color: #000000;
+    margin-top: 20px;
+    font-weight: normal;
+    font-size: 27px;
+  }
+  .switch-style {
+    margin-left: 15px;
+    margin-top: 20px;
+    align-items: center;
+    justify-content: center;
+  }
+  .caution-text {
+    margin: 20px 20px;
+    font-size: 30px;
+    color: #6b63b9;
+  }
+
+  .toggle-container {
+    // margin-top: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 35px;
+    padding: 0; /* Ensure no padding */
+    font-weight: normal;
+    font-size: 18px;
+  }
+
+  .toggle-button {
+    background-color: #fdd835;
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    AtIcon {
+      width: 30px;
+      height: 30px;
+    }
+  }
+
+  .toggle-button.public {
+    background-color: #fdd835; /* Yellow */
+  }
+
+  .toggle-button.private {
+    background-color: #888; /* Grey */
+  }
+
+  .toggle-button-container {
+    display: flex;
+    align-items: center;
+  }
+
+  .toggle-status {
+    margin-left: 5px;
+    color: #4d4d4d;
+    // font-size: 20px;
+  }
+
+  .toggle-explanation {
+    color: #979797;
+    // font-size: 20px;
+  }
+}

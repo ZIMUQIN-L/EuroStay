@@ -92,6 +92,7 @@ export const StarFilled = `${cloudPath}/rating-star-filled.svg`;
 export const StarUnfilled = `${cloudPath}/rating-star-unfilled.svg`;
 export const TrashBinIcon = `${cloudPath}/trashbin.svg`;
 export const TurnOnIcon = `${cloudPath}/turn-on-icon.svg`;
+export const TurnOffIcon = `${cloudPath}/turn-off-icon.svg`;
 
 // activity-card
 export const PurpleDownArrow = `${cloudPath}/purple-down-arrow.svg`;
