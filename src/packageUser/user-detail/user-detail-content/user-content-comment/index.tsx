@@ -61,9 +61,9 @@ const UserCommentCard: React.FC<UserRatingInfoItemProps> = userRatingInfo => {
           <Text className='comment-text'>{userRatingInfo.comment}</Text>
           {/* <Image src={roomImageUrl} className='room-image' /> */}
         </View>
-        <View className='comment-footer'>
+        {/* <View className='comment-footer'>
           <Text className='show-more'>显示更多</Text>
-        </View>
+        </View> */}
       </View>
     </View>
   );

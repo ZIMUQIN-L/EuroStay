@@ -38,8 +38,15 @@ const DetailPage = () => {
   const [activity, setActivity] = useState<ActivityInfoItemProps>();
   const [hostInfo, setHostInfo] = useState<UserDetailInfoItemProps>();
   const [applicable, setApplicable] = useState(false);
+  const [currentUser, setCurrentUser] = useState<UserDetailInfoItemProps>();
 
   useEffect(() => {
+    const curUser = GlobalStore.userInfo;
+    userInfoSearch(curUser._openid).then(
+      (ownerInfo: UserDetailInfoItemProps[]) => {
+        setCurrentUser(ownerInfo[0]);
+      },
+    );
     activityDetailSearch(activityId).then((res: ActivityInfoItemProps) => {
       setActivity(res);
       userInfoSearch(res._openid).then(
@@ -65,7 +72,20 @@ const DetailPage = () => {
   };
 
   const handleSignUpClick = () => {
-    if (applicable && activity?.official == false) {
+    if (currentUser && activity && currentUser?.point <= activity?.point) {
+        Taro.showModal({
+            title: '积分不足',
+            content: '当前积分不足，前往积分页面查看积分获取规则~',
+            success: function (res) {
+              if (res.confirm) {
+                Taro.navigateTo({
+                    url: `/packageUser/my-points/index`,
+                  });
+              } 
+            }
+          })
+      }
+    else if (applicable && activity?.official == false) {
       Taro.navigateTo({
         url: `/packageActivity/activity-application/index?id=${activityId}`,
       });
