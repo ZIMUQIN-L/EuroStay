@@ -156,7 +156,7 @@ const RegisterActivityCard: React.FC<ActivityCardProps> = ({
               <View className='card-bottom-left'>
                 <View className='details'>
                   <View className='participants'>
-                    <Text>发起人: {activity.userInfo[0].nickName}</Text>
+                    <Text>发起人: {activity.userInfo[0]?.nickName}</Text>
                   </View>
                   <View className='current-participants'>
                     <Text>微信号: {activity.actInfo[0].contact}</Text>
