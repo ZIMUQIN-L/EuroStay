@@ -65,6 +65,13 @@ const ActicityApplicationPage = () => {
     setActDes(description);
   };
 
+  Taro.useShareAppMessage(res => {
+    return {
+      title: 'EuroStay欧洲换宿',
+      path: '/pages/login/index',
+    };
+  });
+
   const [actContact, setActContact] = useState('');
   const handleActivityAppContactEdit = (contact: string) => {
     setActContact(contact);

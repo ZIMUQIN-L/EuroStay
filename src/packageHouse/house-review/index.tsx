@@ -2,6 +2,7 @@ import { View, Text, Image } from '@tarojs/components';
 import { observer } from 'mobx-react';
 import { useState, useEffect } from 'react';
 import { useRouter } from '@tarojs/taro';
+import Taro from '@tarojs/taro';
 import {
   UserItemProps,
   UserRatingInfoItemProps,
@@ -42,6 +43,13 @@ const HouseReview = () => {
       setHouseDetail(houseDetail);
     });
   }, []);
+
+  Taro.useShareAppMessage(res => {
+    return {
+      title: 'EuroStay欧洲换宿',
+      path: '/pages/login/index',
+    };
+  });
 
   //todo:评分的星，review中的照片（以及怎么处理放大看图片），评价者的头像
 

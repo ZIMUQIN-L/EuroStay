@@ -49,7 +49,6 @@ const Index = () => {
 
   const navigateToDetail = activity => {
     // you can get the activity data here.
-    console.log(activity);
     Taro.navigateTo({
       url: `/packageActivity/activity-detail/index?id=${activity._id}`,
     });
@@ -73,7 +72,13 @@ const Index = () => {
         setIsShowPost(true);
       }
   }
-
+  
+  Taro.useShareAppMessage(res => {
+    return {
+      title: 'EuroStay欧洲换宿',
+      path: '/pages/login/index',
+    };
+  });
 
   return (
     <View className='activity-index'>

@@ -31,6 +31,13 @@ const Index = () => {
     UserAccomMessageItemProps[]
   >([]);
 
+  Taro.useShareAppMessage(res => {
+    return {
+      title: 'EuroStay欧洲换宿',
+      path: '/pages/login/index',
+    };
+  });
+
   useEffect(() => {
     const demoUser: UserItemProps = GlobalStore.userInfo;
     setUser(demoUser);

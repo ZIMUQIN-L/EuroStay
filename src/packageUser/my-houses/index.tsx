@@ -22,6 +22,13 @@ const Index = () => {
     );
   }, [GlobalStore.userInfo]);
 
+  Taro.useShareAppMessage(res => {
+    return {
+      title: 'EuroStay欧洲换宿',
+      path: '/pages/login/index',
+    };
+  });
+
   const handleHouseClick = houseId => {
     Taro.navigateTo({
       url: `/packageHouse/house-edit/index?id=${houseId}`,

@@ -60,6 +60,13 @@ const UserDetail: React.FC = () => {
     return <View>Loading...</View>;
   }
 
+  Taro.useShareAppMessage(res => {
+    return {
+      title: 'EuroStay欧洲换宿',
+      path: '/pages/login/index',
+    };
+  });
+
   const toEdit = () => {
     Taro.navigateTo({
       url: `/packageUser/user-edit/index?id=${currentUser._openid}`,

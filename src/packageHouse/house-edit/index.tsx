@@ -104,6 +104,13 @@ const Index = () => {
     setPreference(preference);
   };
 
+  Taro.useShareAppMessage(res => {
+    return {
+      title: 'EuroStay欧洲换宿',
+      path: '/pages/login/index',
+    };
+  });
+
   // post房源信息
   const handleClickEditUpdate = () => {
     if (images.length === 0) {

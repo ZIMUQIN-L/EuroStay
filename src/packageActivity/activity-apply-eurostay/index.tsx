@@ -39,6 +39,13 @@ const ActicityApplicationPage = () => {
 
   const [isShowSuccessModal, setShowSuccessModal] = useState(false);
 
+  Taro.useShareAppMessage(res => {
+    return {
+      title: 'EuroStay欧洲换宿',
+      path: '/pages/login/index',
+    };
+  });
+
   useEffect(() => {
     const curUser = GlobalStore.userInfo;
     userInfoSearch(curUser._openid).then(

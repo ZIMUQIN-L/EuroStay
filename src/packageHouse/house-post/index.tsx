@@ -110,6 +110,13 @@ const Index = () => {
     handleButtonClickable();
   };
 
+  Taro.useShareAppMessage(res => {
+    return {
+      title: 'EuroStay欧洲换宿',
+      path: '/pages/login/index',
+    };
+  });
+
   useEffect(() => {
     handleButtonClickable();
   }, [

@@ -141,6 +141,13 @@ const Index = () => {
     }
   };
 
+  Taro.useShareAppMessage(res => {
+    return {
+      title: 'EuroStay欧洲换宿',
+      path: '/pages/login/index',
+    };
+  });
+
   const handleUserImageEdit = () => {
     Taro.chooseImage({
       count: 1,

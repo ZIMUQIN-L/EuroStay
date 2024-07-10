@@ -1,5 +1,5 @@
 export default {
-  navigationBarTitleText: 'Activity',
+  navigationBarTitleText: 'EuroStay活动',
   navigationBarBackgroundColor: '#ffffff',
   navigationBarTextStyle: 'black',
   enableShareAppMessage: true,

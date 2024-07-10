@@ -244,3 +244,11 @@ export interface PointDetailItemProps {
   pointChange: number;
   pointStatus: number;
 }
+
+export interface BannerInfoItemProps {
+    _id: string; // 该条信息的id
+    _openid: string; // 该条信息用户的openid
+    activityId: string; // 对应的活动id
+    active: string; // 是否可见
+    bannerImg: string; //banner的图像
+}

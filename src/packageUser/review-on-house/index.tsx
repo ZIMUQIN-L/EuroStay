@@ -41,6 +41,13 @@ const ReviewOnHouse = () => {
 
   const [overallRatings, setOverallRatings] = useState<number>(3);
 
+  Taro.useShareAppMessage(res => {
+    return {
+      title: 'EuroStay欧洲换宿',
+      path: '/pages/login/index',
+    };
+  });
+
   const [evaluation, setEvaluation] = useState({
     desMatch: 3, // Default values, change as needed
     locationEval: 3,

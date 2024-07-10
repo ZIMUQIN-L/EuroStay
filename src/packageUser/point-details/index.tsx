@@ -2,6 +2,7 @@ import { View, Text } from '@tarojs/components';
 import { observer } from 'mobx-react';
 import PointsInfo from '../my-points/points-info';
 import './index.scss';
+import Taro from '@tarojs/taro';
 import PointsTable from './points-table';
 import React, { useState, useEffect } from 'react';
 import { userInfoSearch } from '@common/database/user/user';
@@ -51,6 +52,13 @@ const Index = () => {
       },
     );
   }, []);
+
+  Taro.useShareAppMessage(res => {
+    return {
+      title: 'EuroStay欧洲换宿',
+      path: '/pages/login/index',
+    };
+  });
 
   const [pointsData, setPointsData] = useState<PointDetailItemProps[]>();
 

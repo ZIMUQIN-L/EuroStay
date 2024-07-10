@@ -128,6 +128,13 @@ const Index = () => {
     setPrice(price);
   };
 
+  Taro.useShareAppMessage(res => {
+    return {
+      title: 'EuroStay欧洲换宿',
+      path: '/pages/login/index',
+    };
+  });
+
   const handleButtonClickable = () => {
     if (
       images.length != 0 &&

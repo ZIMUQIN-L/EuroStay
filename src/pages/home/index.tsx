@@ -40,6 +40,13 @@ const Index = () => {
     });
   };
 
+  Taro.useShareAppMessage(res => {
+    return {
+      title: 'EuroStay欧洲换宿',
+      path: '/pages/login/index',
+    };
+  });
+  
   const handleClickAddBtn =() => {
     if (GlobalStore.userInfo._id == '') {
         Taro.showModal({
