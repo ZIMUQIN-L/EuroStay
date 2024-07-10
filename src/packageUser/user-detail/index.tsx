@@ -50,6 +50,13 @@ const UserDetail: React.FC = () => {
     GlobalStore.userInfo,
   );
 
+  Taro.useShareAppMessage(res => {
+    return {
+      title: 'EuroStay欧洲换宿',
+      path: '/pages/login/index',
+    };
+  });
+
   useEffect(() => {
     userInfoSearch(userOpenid).then((ownerInfo: UserDetailInfoItemProps[]) => {
       setUserDetailInfo(ownerInfo[0]);
@@ -59,13 +66,6 @@ const UserDetail: React.FC = () => {
   if (!userDetailInfo) {
     return <View>Loading...</View>;
   }
-
-  Taro.useShareAppMessage(res => {
-    return {
-      title: 'EuroStay欧洲换宿',
-      path: '/pages/login/index',
-    };
-  });
 
   const toEdit = () => {
     Taro.navigateTo({

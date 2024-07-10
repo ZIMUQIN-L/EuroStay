@@ -12,7 +12,7 @@ const App = props => {
   useEffect(() => {
     // 检测新版本
     wx.cloud.init({
-      env: 'cloud1-8gb29x2pbe14a4f8',
+      env: 'cloud1-9gjlum193d0ee3c3',
       traceUser: true,
     });
     if (Taro.getUpdateManager) {

@@ -57,6 +57,7 @@ const Houses = () => {
   const fetchInitialData = () => {
     houseInfoSearch('', '', '').then((houseData: HouseItemProps[]) => {
       setDemoData(houseData);
+      console.log(houseData);
     });
   };
 
