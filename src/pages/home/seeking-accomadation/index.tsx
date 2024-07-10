@@ -14,6 +14,7 @@ import {
 } from '@common/database/accomMessage/accomMessage';
 import SeekReplyBoard from '@components/SeekContactInfoBoard';
 import MsgInfoBoard from '@components/MsgInfoBoard';
+import { formatToday } from '@utils/dateUtil';
 
 /**
  * 求宿页面
@@ -53,7 +54,8 @@ const SeekingAccommodation = () => {
   };
 
   const fetchInitialData = () => {
-    accomPageMessageSearch('', '', '').then(
+    const today = formatToday();
+    accomPageMessageSearch('', today, today).then(
       (seekingAccomData: UserAccomMessageItemProps[]) => {
         setSeekingData(seekingAccomData);
       },

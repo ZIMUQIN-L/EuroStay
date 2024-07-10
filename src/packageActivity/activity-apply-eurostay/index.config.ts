@@ -3,4 +3,5 @@ export default {
   navigationBarBackgroundColor: '#ffffff',
   navigationBarTextStyle: 'black',
   enableShareAppMessage: true,
+  enableShareTimeline: true,
 };

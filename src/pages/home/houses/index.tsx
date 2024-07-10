@@ -8,7 +8,6 @@ import HouseItem from '../house-item';
 import { houseInfoSearch } from '@common/database/house/house';
 import { HouseItemProps } from '@utils/interfaces';
 import SearchAndFilter from '../search-and-filter';
-import { formatToday } from '@utils/dateUtil';
 import { NoDataLogo } from '@utils/cloudIcons';
 
 /**
@@ -56,8 +55,7 @@ const Houses = () => {
   const [demoData, setDemoData] = useState<HouseItemProps[]>([]);
 
   const fetchInitialData = () => {
-    const today = formatToday();
-    houseInfoSearch('', today, today).then((houseData: HouseItemProps[]) => {
+    houseInfoSearch('', '', '').then((houseData: HouseItemProps[]) => {
       setDemoData(houseData);
     });
   };

@@ -11,10 +11,10 @@ exports.main = async (event, context) => {
         value: event.content,
       },
       thing4: {
-        value: 'test',
+        value: event.userName,
       },
       thing17: {
-        value: 'test',
+        value: '请回复',
       },
     },
     templateId: 'I5kMb7W6-QbKBqcXLlzqZzK9N97JPkrFWdMHBI7hyA4',

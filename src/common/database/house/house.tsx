@@ -18,10 +18,10 @@ export const houseInfoSearch = async (
   const db = wx.cloud.database();
   const _ = db.command;
   if (startDate == undefined || startDate == '') {
-    startDate = formatToday();
+    startDate = '2999-12-31';
   }
   if (endDate == undefined || endDate == '') {
-    endDate = formatToday();
+    endDate = '1999-01-01';
   }
   return new Promise((resolve, reject) => {
     db.collection('CleanHouseInfo')

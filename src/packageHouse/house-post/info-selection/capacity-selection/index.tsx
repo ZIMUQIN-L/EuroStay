@@ -35,7 +35,7 @@ const CapacitySelection = ({ onClose, onCapacitySelected }) => {
 
   return (
     <CustomFullScreenDialog
-      title='选择可住人数'
+      title='选择最多可住人数'
       onClose={onClose}
       onSubmit={handleSubmitCapacitySelection}
     >

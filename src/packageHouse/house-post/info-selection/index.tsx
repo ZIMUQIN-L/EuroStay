@@ -244,7 +244,7 @@ const InfoSelection = ({ onUserInfoEdit }) => {
               <View className='icon-container'>
                 <Image src={CapacitySelectionIcon} className='capacity-pic' />
               </View>
-              <Text>可住人数</Text>
+              <Text>最多可住人数</Text>
             </View>
             <View className='selection-right' onClick={handleCapacitySelection}>
               <Text>{capacity != 0 ? `${capacity}` : `请选择`} </Text>

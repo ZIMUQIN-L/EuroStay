@@ -93,6 +93,22 @@ const Index = () => {
     handleUserEnter();
   }, []);
 
+  const handleUserWithoutLogin = () => {
+    const NoLoginUserInfo: UserItemProps = {
+      _id: '',
+      _openid: '',
+      avatarUrl: '',
+      nickName: '',
+      userDes: '',
+      userOpenid: '',
+      userLocation: '',
+    };
+    GlobalStore.userInfo = NoLoginUserInfo;
+    Taro.switchTab({
+      url: `/pages/home/index`,
+    });
+  };
+
   // 处理用户登录请求
   const handleUserLogin = () => {
     setIsLoading(true);
@@ -134,28 +150,6 @@ const Index = () => {
     });
   };
 
-  // 用户获取用户手机号，可以在小程序企业认证后使用
-  const getPhoneNumber = e => {
-    if (e.detail.errMsg == 'getPhoneNumber:ok') {
-      const result = Taro.cloud.callFunction({
-        name: 'getUserInfo',
-        data: {
-          type: 'login',
-          id: Taro.cloud.CloudID(e.detail.cloudID),
-        },
-      });
-    } else {
-      Taro.hideLoading({
-        complete: res => {
-          Taro.showToast({
-            title: '用户拒绝，获取失败',
-            icon: 'none',
-          });
-        },
-      });
-    }
-  };
-
   // 错误处理
   const errorDialog = (text, type) => {
     setLoginState(true);
@@ -182,6 +176,13 @@ const Index = () => {
             onClick={handleUserLogin}
           >
             微信登陆
+          </Button>
+          <Button
+            className='enter-button'
+            color='primary'
+            onClick={handleUserWithoutLogin}
+          >
+            直接进入
           </Button>
         </View>
       ) : (

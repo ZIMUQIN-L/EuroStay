@@ -79,7 +79,7 @@ const HouseItem: React.FC<AccomMssageHouseItemProps> = house => {
       name: 'messageNotification',
       data: {
         content: '求宿者向您发送了一条求宿信息',
-        userName: house._openid,
+        userName: ownerUserInfo?.nickName,
         message: userDescription,
         userid: house._openid,
       },
