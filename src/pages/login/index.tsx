@@ -12,9 +12,11 @@ import {
   userPointInitialization,
 } from '@common/database/user/user';
 import Loading from './loading';
-
+import {
+    pointDetailInfoAdd,
+  } from '@common/database/pointSystem/pointSystem';
 import { EuroStay } from '@utils/cloudIcons';
-import { set } from 'mobx';
+import { formatTimestamp } from '@utils/dateUtil';
 
 const Index = () => {
   const [loginState, setLoginState] = useState(false);
@@ -57,6 +59,15 @@ const Index = () => {
                         if (dbUserInfo.length >= 1) {
                             if (!dbUserInfo[0].point) {
                                 userPointInitialization(dbUserInfo[0]._id);
+                                const timestamp = formatTimestamp(new Date().valueOf());
+                                pointDetailInfoAdd(
+                                dbUserInfo[0]._openid,
+                                timestamp,
+                                5,
+                                '系统初始积分',
+                                10,
+                                10,
+                                )
                               }
                              GlobalStore.userInfo = dbUserInfo[0];
                           Taro.switchTab({
@@ -122,12 +133,30 @@ const Index = () => {
           res.userInfo['avatarUrl'],
           res.userInfo['userLocation'],
         ).then(errMsg => {
+            const timestamp = formatTimestamp(new Date().valueOf());
+            pointDetailInfoAdd(
+            userOpenidInfo,
+            timestamp,
+            5,
+            '系统初始积分',
+            10,
+            10,
+            )
           if (errMsg == 'collection.add:ok') {
             userInfoSearch(userOpenidInfo).then(
               (dbUserInfo: UserDetailInfoItemProps[]) => {
                 if (dbUserInfo.length >= 1) {
                     if (!dbUserInfo[0].point) {
                         userPointInitialization(dbUserInfo[0]._id);
+                        const timestamp = formatTimestamp(new Date().valueOf());
+                            pointDetailInfoAdd(
+                            dbUserInfo[0]._openid,
+                            timestamp,
+                            5,
+                            '系统初始积分',
+                            10,
+                            10,
+                            )
                       }
                       GlobalStore.userInfo = dbUserInfo[0];
                   setIsLoading(false);

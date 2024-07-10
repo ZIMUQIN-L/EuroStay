@@ -4,6 +4,7 @@ import Houses from './houses';
 import Taro from '@tarojs/taro';
 import { useState } from 'react';
 import HouseSource from '@assets/images/house-source.svg';
+import GlobalStore from '@store/GlobalStore';
 import HouseSourceSelected from '@assets/images/house-source-selected.svg';
 import AccommodationIcon from '@assets/images/accommodation.svg';
 import AccommodationIconSelected from '@assets/images/accommodation-selected.svg';
@@ -38,6 +39,25 @@ const Index = () => {
       url: '../../packageHouse/house-post/index',
     });
   };
+
+  const handleClickAddBtn =() => {
+    if (GlobalStore.userInfo._id == '') {
+        Taro.showModal({
+          title: '转至登录页面',
+          content: '请登录后发布信息~',
+          success: function (res) {
+            if (res.confirm) {
+              Taro.reLaunch({
+                url: `/pages/login/index`,
+              });
+            }
+          },
+        });
+      }
+      else {
+        setIsShowPost(true);
+      }
+  }
 
   return (
     <>
@@ -75,7 +95,7 @@ const Index = () => {
       <View
         className='add-button'
         onClick={() => {
-          setIsShowPost(true);
+         handleClickAddBtn()
         }}
       >
         <Image src={PostButton}></Image>

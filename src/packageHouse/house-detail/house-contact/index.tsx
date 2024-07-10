@@ -141,7 +141,22 @@ const HouseContact: React.FC<HouseDetailItemProps> = house => {
   };
 
   const onCreateCustomCardFromTenant = () => {
-    setModalOpen(true);
+    if (GlobalStore.userInfo._id == '') {
+        Taro.showModal({
+          title: '转至登录页面',
+          content: '请登录后联系房主~',
+          success: function (res) {
+            if (res.confirm) {
+              Taro.reLaunch({
+                url: `/pages/login/index`,
+              });
+            }
+          },
+        });
+      }
+      else {
+        setModalOpen(true);
+      }
   };
   return (
     <View>

@@ -33,7 +33,7 @@ const HouseReviewCard: React.FC<HouseDetailItemProps> = house => {
               className='container-title-right'
               onClick={() => {
                 if (ratingInfo?.length != 0) {
-                  Taro.redirectTo({
+                  Taro.navigateTo({
                     url: `/packageHouse/house-review/index?id=${house._id}`,
                   });
                 }

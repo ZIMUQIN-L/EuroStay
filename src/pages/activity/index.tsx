@@ -8,6 +8,7 @@ import {
   PostActivity,
   PostHouse,
 } from '@utils/cloudIcons';
+import GlobalStore from '@store/GlobalStore';
 import { ActivityInfoItemProps } from '@utils/interfaces';
 import Taro from '@tarojs/taro';
 import CustomTabBar from '@components/CustomTabBar';
@@ -54,6 +55,26 @@ const Index = () => {
     });
   };
 
+  const handleClickAddBtn =() => {
+    if (GlobalStore.userInfo._id == '') {
+        Taro.showModal({
+          title: '转至登录页面',
+          content: '请登录后发布信息~',
+          success: function (res) {
+            if (res.confirm) {
+              Taro.reLaunch({
+                url: `/pages/login/index`,
+              });
+            }
+          },
+        });
+      }
+      else {
+        setIsShowPost(true);
+      }
+  }
+
+
   return (
     <View className='activity-index'>
       <Banner />
@@ -70,7 +91,7 @@ const Index = () => {
       <View
         className='add-button'
         onClick={() => {
-          setIsShowPost(true);
+            handleClickAddBtn()
         }}
       >
         <Image src={PostButton}></Image>
