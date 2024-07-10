@@ -52,13 +52,13 @@ const Index = () => {
                     }
                     userInfoSearch(callbackResult.result).then(
                       (dbUserInfo: UserDetailInfoItemProps[]) => {
-                        if (!dbUserInfo[0].point) {
-                          userPointInitialization(dbUserInfo[0]._id);
-                        }
                         setDbUserData(dbUserInfo);
-                        GlobalStore.userInfo = dbUserInfo[0];
                         setIsLoading(false);
                         if (dbUserInfo.length >= 1) {
+                            if (!dbUserInfo[0].point) {
+                                userPointInitialization(dbUserInfo[0]._id);
+                              }
+                             GlobalStore.userInfo = dbUserInfo[0];
                           Taro.switchTab({
                             url: `/pages/home/index`,
                           });
@@ -67,10 +67,13 @@ const Index = () => {
                     );
                   })
                   .catch(err => {
+                    setIsLoading(false);
                     Taro.hideLoading();
                     errorDialog('登录失败' + err.errMsg, 'fail');
                   });
               } else {
+                setIsLoading(false);
+                Taro.hideLoading();
                 errorDialog('登录失败' + res.errMsg, 'fail');
               }
             },
@@ -92,6 +95,7 @@ const Index = () => {
 
   // 处理用户登录请求
   const handleUserLogin = () => {
+    setIsLoading(true);
     Taro.getUserProfile({
       desc: '用户登录',
       success: res => {
@@ -105,11 +109,11 @@ const Index = () => {
           if (errMsg == 'collection.add:ok') {
             userInfoSearch(userOpenidInfo).then(
               (dbUserInfo: UserDetailInfoItemProps[]) => {
-                if (!dbUserInfo[0].point) {
-                  userPointInitialization(dbUserInfo[0]._id);
-                }
-                GlobalStore.userInfo = dbUserInfo[0];
                 if (dbUserInfo.length >= 1) {
+                    if (!dbUserInfo[0].point) {
+                        userPointInitialization(dbUserInfo[0]._id);
+                      }
+                      GlobalStore.userInfo = dbUserInfo[0];
                   setIsLoading(false);
                   Taro.switchTab({
                     url: `/pages/home/index`,
