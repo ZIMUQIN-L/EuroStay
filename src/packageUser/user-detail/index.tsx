@@ -43,6 +43,14 @@ const UserDetail: React.FC = () => {
   const router = useRouter();
   const userOpenid = router?.params?.id;
 
+  Taro.useShareAppMessage(res => {
+    return {
+      title: 'EuroStay欧洲换宿',
+      path: '/pages/login/index',
+    };
+  });
+
+
   const [userDetailInfo, setUserDetailInfo] =
     useState<UserDetailInfoItemProps>();
   const [activeTab, setActiveTab] = useState('概况');
@@ -60,12 +68,6 @@ const UserDetail: React.FC = () => {
     return <View>Loading...</View>;
   }
 
-  Taro.useShareAppMessage(res => {
-    return {
-      title: 'EuroStay欧洲换宿',
-      path: '/pages/login/index',
-    };
-  });
 
   const toEdit = () => {
     Taro.navigateTo({
