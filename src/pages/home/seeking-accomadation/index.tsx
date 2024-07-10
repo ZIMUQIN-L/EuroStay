@@ -136,24 +136,23 @@ const SeekingAccommodation = () => {
 
   const handleUserAcceptMsg = () => {
     if (GlobalStore.userInfo._id == '') {
-        Taro.showModal({
-          title: '转至登录页面',
-          content: '请登录后联系求宿者~',
-          success: function (res) {
-            if (res.confirm) {
-              Taro.reLaunch({
-                url: `/pages/login/index`,
-              });
-            }
-          },
-        });
+      Taro.showModal({
+        title: '转至登录页面',
+        content: '请登录后联系求宿者~',
+        success: function (res) {
+          if (res.confirm) {
+            Taro.reLaunch({
+              url: `/pages/login/index`,
+            });
+          }
+        },
+      });
+    } else {
+      if (infoBoardIsShown == true) {
+        setInfoBoardIsShown(false);
+        setContactInfoIsShown(true);
       }
-    else {
-        if (infoBoardIsShown == true) {
-      setInfoBoardIsShown(false);
-      setContactInfoIsShown(true);
     }
-}
   };
 
   // 样式可以直接用房源页面的

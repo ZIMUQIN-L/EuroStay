@@ -80,32 +80,34 @@ const DetailPage = () => {
 
   const handleSignUpClick = () => {
     if (GlobalStore.userInfo._id == '') {
-        Taro.showModal({
-          title: '转至登录页面',
-          content: '请登录后报名活动~',
-          success: function (res) {
-            if (res.confirm) {
-              Taro.reLaunch({
-                url: `/pages/login/index`,
-              });
-            }
-          },
-        });
-      }
-    else if (currentUser && activity && currentUser?.point <= activity?.point) {
-        Taro.showModal({
-            title: '积分不足',
-            content: '当前积分不足，前往积分页面查看积分获取规则~',
-            success: function (res) {
-              if (res.confirm) {
-                Taro.navigateTo({
-                    url: `/packageUser/my-points/index`,
-                  });
-              } 
-            }
-          })
-      }
-    else if (applicable && activity?.official == false) {
+      Taro.showModal({
+        title: '转至登录页面',
+        content: '请登录后报名活动~',
+        success: function (res) {
+          if (res.confirm) {
+            Taro.reLaunch({
+              url: `/pages/login/index`,
+            });
+          }
+        },
+      });
+    } else if (
+      currentUser &&
+      activity &&
+      currentUser?.point <= activity?.point
+    ) {
+      Taro.showModal({
+        title: '积分不足',
+        content: '当前积分不足，前往积分页面查看积分获取规则~',
+        success: function (res) {
+          if (res.confirm) {
+            Taro.navigateTo({
+              url: `/packageUser/my-points/index`,
+            });
+          }
+        },
+      });
+    } else if (applicable && activity?.official == false) {
       Taro.navigateTo({
         url: `/packageActivity/activity-application/index?id=${activityId}`,
       });

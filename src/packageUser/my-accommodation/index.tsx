@@ -36,7 +36,7 @@ const Index = () => {
       path: '/pages/login/index',
     };
   });
-  
+
   useEffect(() => {
     const demoUser: UserItemProps = GlobalStore.userInfo;
     setUser(demoUser);

@@ -28,11 +28,9 @@ const ActivityCard: React.FC<ActivityCardProps> = ({ activity, onClick }) => {
   const [sourceUser, constSourceUser] = useState<UserDetailInfoItemProps>();
 
   useEffect(() => {
-    userInfoSearch(activity._openid).then(
-      (res: UserDetailInfoItemProps[]) => {
-        constSourceUser(res[0]);
-      },
-    );
+    userInfoSearch(activity._openid).then((res: UserDetailInfoItemProps[]) => {
+      constSourceUser(res[0]);
+    });
   }, []);
 
   const handleClickHostAvatar = () => {

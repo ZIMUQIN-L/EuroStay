@@ -63,7 +63,7 @@ const ActivityCard: React.FC<ActivityCardProps> = ({
     setIsRegisteredUserVisible(false);
   };
 
-  const handleClickHostAvatar = (hostOpenid) => {
+  const handleClickHostAvatar = hostOpenid => {
     Taro.navigateTo({
       url: `/packageUser/user-detail/index?id=${hostOpenid}`,
     });
@@ -75,18 +75,18 @@ const ActivityCard: React.FC<ActivityCardProps> = ({
     });
   };
 
-  const handleClickClipboard = (contactInfo) => {
+  const handleClickClipboard = contactInfo => {
     Taro.setClipboardData({
-        data: contactInfo,
-        success: function (res) {
-            Taro.showToast({
-                title: '复制成功',
-                icon: 'success',
-                duration: 2000
-              })
-        }
-      })
-  }
+      data: contactInfo,
+      success: function (res) {
+        Taro.showToast({
+          title: '复制成功',
+          icon: 'success',
+          duration: 2000,
+        });
+      },
+    });
+  };
 
   const handleActivityEdit = () => {
     if (status == 1) {
@@ -131,7 +131,7 @@ const ActivityCard: React.FC<ActivityCardProps> = ({
     <View className='card'>
       <View className='card-top'>
         <View className='card-top-left'>
-          <Image src={image} onClick={handleClickActImage}/>
+          <Image src={image} onClick={handleClickActImage} />
         </View>
 
         <View className='card-top-right'>
@@ -158,9 +158,11 @@ const ActivityCard: React.FC<ActivityCardProps> = ({
               <Image src={TrashBinIcon} />
             </View>
           )}
-          {status === 1 && (<View className='edit-button' onClick={handleActivityEdit}>
-            <Text>{status === 1 ? '编辑' : '查看评价'}</Text>
-          </View>)}
+          {status === 1 && (
+            <View className='edit-button' onClick={handleActivityEdit}>
+              <Text>{status === 1 ? '编辑' : '查看评价'}</Text>
+            </View>
+          )}
         </View>
       </View>
       {status === 1 && <View className='div-line'></View>}
@@ -236,16 +238,16 @@ const ActivityCard: React.FC<ActivityCardProps> = ({
             {appUsers.map((user, index) => (
               <View className='user' key={index}>
                 <View className='user-info'>
-                    <View className='user-name-box'>
-                <Image
-                    src={user.userAvatarUrl}
-                    className='user-image'
-                    mode='aspectFit'
-                    onClick={()=>handleClickHostAvatar(user._openid)}
+                  <View className='user-name-box'>
+                    <Image
+                      src={user.userAvatarUrl}
+                      className='user-image'
+                      mode='aspectFit'
+                      onClick={() => handleClickHostAvatar(user._openid)}
                     />
-                  <Text className='username'>
-                    报名用户: {user.userNickName}{' '}
-                  </Text>
+                    <Text className='username'>
+                      报名用户: {user.userNickName}{' '}
+                    </Text>
                   </View>
                   <Text className='wxcontact'>微信号: {user.userContact}</Text>
                 </View>
@@ -256,7 +258,12 @@ const ActivityCard: React.FC<ActivityCardProps> = ({
                       onClick={() => handleActivityUserDelete(user._id)}
                     />
                   </View>
-                  <View className='paste' onClick={()=>handleClickClipboard(user.userContact)}>复制</View>
+                  <View
+                    className='paste'
+                    onClick={() => handleClickClipboard(user.userContact)}
+                  >
+                    复制
+                  </View>
                 </View>
               </View>
             ))}

@@ -11,8 +11,8 @@ interface IProps {
   username: string;
   wechatId: string;
   avatar: string;
-  point: number,
-  helloMessage: string,
+  point: number;
+  helloMessage: string;
   onClose: () => void;
   onSubmit: () => void;
   className?: string;
@@ -64,7 +64,8 @@ const CopyInfoModal = (props: IProps) => {
             </View>
           </View>
           <View className='point-container-container'>
-            成功报名活动 {' -'}{point}
+            成功报名活动 {' -'}
+            {point}
             <Image src={YellowPoint} className='point-container-icon'></Image>
           </View>
           <View className='organizer-info'>
@@ -74,9 +75,7 @@ const CopyInfoModal = (props: IProps) => {
               <Text className='organizer-contact'>微信号: {wechatId}</Text>
             </View>
           </View>
-          <View className='organizer-message'>
-            {helloMessage}
-          </View>
+          <View className='organizer-message'>{helloMessage}</View>
         </View>
         <View className='dialog-save-button' onClick={onSubmit}>
           <Text style={{ color: 'white' }}>

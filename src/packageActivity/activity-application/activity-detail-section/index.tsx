@@ -12,12 +12,11 @@ const ActivityDetailSection = ({
   location,
   hostOpenid,
 }) => {
-
-    const handleClickHostAvatar = () => {
-        Taro.navigateTo({
-          url: `/packageUser/user-detail/index?id=${hostOpenid}`,
-        });
-      };
+  const handleClickHostAvatar = () => {
+    Taro.navigateTo({
+      url: `/packageUser/user-detail/index?id=${hostOpenid}`,
+    });
+  };
   return (
     <View className='activity-app-detail-card'>
       <Image

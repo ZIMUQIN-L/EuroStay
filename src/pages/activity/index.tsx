@@ -54,25 +54,24 @@ const Index = () => {
     });
   };
 
-  const handleClickAddBtn =() => {
+  const handleClickAddBtn = () => {
     if (GlobalStore.userInfo._id == '') {
-        Taro.showModal({
-          title: '转至登录页面',
-          content: '请登录后发布信息~',
-          success: function (res) {
-            if (res.confirm) {
-              Taro.reLaunch({
-                url: `/pages/login/index`,
-              });
-            }
-          },
-        });
-      }
-      else {
-        setIsShowPost(true);
-      }
-  }
-  
+      Taro.showModal({
+        title: '转至登录页面',
+        content: '请登录后发布信息~',
+        success: function (res) {
+          if (res.confirm) {
+            Taro.reLaunch({
+              url: `/pages/login/index`,
+            });
+          }
+        },
+      });
+    } else {
+      setIsShowPost(true);
+    }
+  };
+
   Taro.useShareAppMessage(res => {
     return {
       title: 'EuroStay欧洲换宿',
@@ -96,7 +95,7 @@ const Index = () => {
       <View
         className='add-button'
         onClick={() => {
-            handleClickAddBtn()
+          handleClickAddBtn();
         }}
       >
         <Image src={PostButton}></Image>

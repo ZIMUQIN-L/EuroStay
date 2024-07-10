@@ -11,9 +11,9 @@ import {
   UserDetailInfoItemProps,
 } from '@utils/interfaces';
 import {
-    pointDetailInfoAdd,
-    pointDecrease
-  } from '@common/database/pointSystem/pointSystem';
+  pointDetailInfoAdd,
+  pointDecrease,
+} from '@common/database/pointSystem/pointSystem';
 import GlobalStore from '@store/GlobalStore';
 import ActivityDetailSection from './activity-detail-section';
 import { StarOutlined } from '@taroify/icons';
@@ -52,8 +52,8 @@ const ActicityApplicationPage = () => {
   const handleCloseAllWindows = () => {
     setShowSuccessModal(false);
     Taro.navigateBack({
-        delta: 2,
-      });
+      delta: 2,
+    });
   };
 
   const showSuccessModalEdit = () => {
@@ -79,60 +79,59 @@ const ActicityApplicationPage = () => {
 
   const handleGetHostInfoClick = () => {
     if (currentUser && activity && currentUser?.point <= activity?.point) {
-        Taro.showModal({
-            title: '积分不足',
-            content: '当前积分不足，前往积分页面查看积分获取规则~',
-            success: function (res) {
-              if (res.confirm) {
-                Taro.navigateTo({
-                    url: `/packageUser/my-points/index`,
-                  });
-              } 
-            }
-          })
-      }
-    else if (actContact == '') {
-        Taro.showToast({
-          title: '请填写联系方式',
-          icon: 'error',
-          mask: true,
-          duration: 2000,
-        });
-      }
-     else  if (actDes == '') {
-        Taro.showToast({
-          title: '请介绍一下自己',
-          icon: 'error',
-          mask: true,
-          duration: 2000,
-        });
-      } else {
-        Taro.showLoading({
-            title: '申请中',
-            mask: true,
-          });
-        activityApplicationAdd(
-            activityId,
-            activityHost?._openid,
-            actDes,
-            actContact,
-            currentUser?.avatarUrl,
-            currentUser?.nickName,
-          ).then(res => {
-            pointDecrease(currentUser?._id, activity?.point);
-            const timestamp = formatTimestamp(new Date().valueOf());
-            pointDetailInfoAdd(
-              currentUser?._openid,
-              timestamp,
-              4,
-              '参加活动消耗',
-              -(activity? activity?.point:0),
-              (currentUser ? currentUser?.point : 0) - (activity? activity?.point:0),
-            ).then(res1 => {
-                Taro.hideLoading();
-                showSuccessModalEdit();
+      Taro.showModal({
+        title: '积分不足',
+        content: '当前积分不足，前往积分页面查看积分获取规则~',
+        success: function (res) {
+          if (res.confirm) {
+            Taro.navigateTo({
+              url: `/packageUser/my-points/index`,
             });
-          });
+          }
+        },
+      });
+    } else if (actContact == '') {
+      Taro.showToast({
+        title: '请填写联系方式',
+        icon: 'error',
+        mask: true,
+        duration: 2000,
+      });
+    } else if (actDes == '') {
+      Taro.showToast({
+        title: '请介绍一下自己',
+        icon: 'error',
+        mask: true,
+        duration: 2000,
+      });
+    } else {
+      Taro.showLoading({
+        title: '申请中',
+        mask: true,
+      });
+      activityApplicationAdd(
+        activityId,
+        activityHost?._openid,
+        actDes,
+        actContact,
+        currentUser?.avatarUrl,
+        currentUser?.nickName,
+      ).then(res => {
+        pointDecrease(currentUser?._id, activity?.point);
+        const timestamp = formatTimestamp(new Date().valueOf());
+        pointDetailInfoAdd(
+          currentUser?._openid,
+          timestamp,
+          4,
+          '参加活动消耗',
+          -(activity ? activity?.point : 0),
+          (currentUser ? currentUser?.point : 0) -
+            (activity ? activity?.point : 0),
+        ).then(res1 => {
+          Taro.hideLoading();
+          showSuccessModalEdit();
+        });
+      });
     }
   };
 

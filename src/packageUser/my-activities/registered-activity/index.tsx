@@ -64,18 +64,18 @@ const RegisterActivityCard: React.FC<ActivityCardProps> = ({
     }
   };
 
-  const handleClickClipboard = (contactInfo) => {
+  const handleClickClipboard = contactInfo => {
     Taro.setClipboardData({
-        data: contactInfo,
-        success: function (res) {
-            Taro.showToast({
-                title: '复制成功',
-                icon: 'success',
-                duration: 2000
-              })
-        }
-      })
-  }
+      data: contactInfo,
+      success: function (res) {
+        Taro.showToast({
+          title: '复制成功',
+          icon: 'success',
+          duration: 2000,
+        });
+      },
+    });
+  };
 
   const handleActivityUserDelete = actAppid => {
     Taro.showModal({
@@ -102,7 +102,7 @@ const RegisterActivityCard: React.FC<ActivityCardProps> = ({
     <View className='register-card'>
       <View className='card-top'>
         <View className='card-top-left'>
-          <Image src={image} onClick={handleClickActImage}/>
+          <Image src={image} onClick={handleClickActImage} />
         </View>
 
         <View className='card-top-right'>
@@ -182,11 +182,20 @@ const RegisterActivityCard: React.FC<ActivityCardProps> = ({
                   </View>
                 </View>
               </View>
-              {activity.approval?(<View className='paste-button' onClick={()=>handleClickClipboard(activity.actInfo[0].contact)}>
-                <Text>复制联系方式</Text>
-              </View>):(<View className='cancel-button'>
-                <Text>活动发起人已取消</Text>
-              </View>)}
+              {activity.approval ? (
+                <View
+                  className='paste-button'
+                  onClick={() =>
+                    handleClickClipboard(activity.actInfo[0].contact)
+                  }
+                >
+                  <Text>复制联系方式</Text>
+                </View>
+              ) : (
+                <View className='cancel-button'>
+                  <Text>活动发起人已取消</Text>
+                </View>
+              )}
             </>
           )}
         </View>

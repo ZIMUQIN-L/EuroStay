@@ -4,28 +4,24 @@ import './index.scss';
 import Taro from '@tarojs/taro';
 import { useEffect, useState } from 'react';
 
-const CopyHostInfoModal = ({
-  onClose,
-  activity,
-  hostInfo
-}) => {
+const CopyHostInfoModal = ({ onClose, activity, hostInfo }) => {
   const handleSubmit = () => {
     Taro.setClipboardData({
-        data: activity.contact,
-        success: function (res) {
-            Taro.showToast({
-                title: '复制成功',
-                icon: 'success',
-                duration: 2000
-              })
-        }
-      })
+      data: activity.contact,
+      success: function (res) {
+        Taro.showToast({
+          title: '复制成功',
+          icon: 'success',
+          duration: 2000,
+        });
+      },
+    });
     onClose();
   };
 
   return (
     <CopyInfoModal
-      title={activity.official? '报名成功，请等待后续联系哦~':activity.title}
+      title={activity.official ? '报名成功，请等待后续联系哦~' : activity.title}
       location={activity.location}
       date={activity.startTime}
       time={activity.endTime}
