@@ -22,7 +22,7 @@ const RequestDes = ({ onRequestDes }) => {
               style={{ height: '80px' }}
               value={des}
               onInput={handleUserDescriptionEdit}
-              placeholder='详情介绍: 更详细的求宿信息或者个人介绍, 帮助房主更好的理解你的求宿诉求～'
+              placeholder='请向房东简单的介绍一下你吧～以及你愿意用技能/房源/💰等等什么来交换住宿呢～'
               placeholderClass='des-text-placeholder'
             />
           </View>

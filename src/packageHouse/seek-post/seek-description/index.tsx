@@ -22,7 +22,7 @@ const SeekDescription = ({ seekPrevDes, onChangeDes }) => {
               style={{ height: '80px' }}
               value={des}
               onInput={handleUserDescriptionEdit}
-              placeholder='更详细的说明你的要求，如房屋类型、地理位置，租金范围等，帮助房东更好的了解你的需求～记得也介绍一下自己哦~'
+              placeholder='请向房东简单的介绍一下你吧～以及你愿意用技能/房源/💰等等什么来交换住宿呢～'
               placeholderClass='des-text-placeholder'
             />
           </View>
