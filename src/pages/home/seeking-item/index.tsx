@@ -1,24 +1,29 @@
-import { View, Image, Text, RichText } from '@tarojs/components';
+/* SeekingCard.tsx */
+import { View, Image, Text } from '@tarojs/components';
 import { DateIcon } from '@utils/cloudIcons';
 import './index.scss';
 import { UserAccomMessageItemProps } from '@utils/interfaces';
 
 interface SeekingCardProps {
   seekingItem: UserAccomMessageItemProps;
-  onClick; // Add onClick prop
+  onCardClick; 
+  onAvatarClick; 
 }
 
-const SeekingCard: React.FC<SeekingCardProps> = ({ seekingItem, onClick }) => {
+const SeekingCard: React.FC<SeekingCardProps> = ({ seekingItem, onCardClick, onAvatarClick }) => {
   if (!seekingItem) {
     return null;
   }
 
   return (
     <View className='seeking'>
-      <View className='seeking-container' onClick={onClick}>
+      <View className='seeking-container' onClick={onCardClick}>
         <View className='seeking-title'>{seekingItem.location}</View>
         <View className='seeking-content'>
-          <View className='seeking-avatar'>
+          <View className='seeking-avatar' onClick={(e) => {
+            e.stopPropagation();
+            onAvatarClick();
+          }}>
             <Image src={seekingItem.sourceUserAvatarUrl} />
           </View>
           <View className='seeking-text'>

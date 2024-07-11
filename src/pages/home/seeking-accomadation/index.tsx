@@ -70,6 +70,12 @@ const SeekingAccommodation = () => {
     setInfoBoardIsShown(true);
   };
 
+  const handleUserClickSeekerAvatar = userOpenid => {
+    Taro.navigateTo({
+        url: `/packageUser/user-detail/index?id=${userOpenid}`,
+      });
+  }
+
   const handleCloseAllBoards = () => {
     setContactInfoIsShown(false);
     setInfoBoardIsShown(false);
@@ -170,9 +176,10 @@ const SeekingAccommodation = () => {
             <SeekingCard
               key={item._id}
               seekingItem={item}
-              onClick={() => {
+              onCardClick={() => {
                 handleUserClickButton(item);
               }}
+              onAvatarClick={()=>handleUserClickSeekerAvatar(item._openid)}
             />
           ))}
       </View>
