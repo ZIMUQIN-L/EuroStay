@@ -101,7 +101,7 @@ const UserDetail: React.FC = () => {
               </Text>
             </Text>
             <View className='badges'>
-              {userDetailInfo.tags ? (
+              {userDetailInfo.tags && userDetailInfo.tags.length!=0? (
                 userDetailInfo.tags.map((tag, index) => (
                   <Text key={index} className='badge-item'>
                     {tag}

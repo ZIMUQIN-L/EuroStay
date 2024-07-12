@@ -260,18 +260,18 @@ const Index = () => {
     ) {
       pointAdd += 5;
     }
-    if (userInfo?.tags.length == 0 && userTags.length != 0) {
+    if ((!userInfo?.tags && userTags.length != 0) || (userInfo?.tags && userInfo?.tags.length == 0 && userTags.length != 0)) {
       pointAdd += 5;
     }
-    if (
-      (userInfo?.aboutMe.interests == '' && aboutMe.interests != '') ||
-      (userInfo?.aboutMe.major == '' && aboutMe.major != '') ||
-      (userInfo?.aboutMe.languages == '' && aboutMe.languages != '') ||
-      (userInfo?.aboutMe.skills == '' && aboutMe.skills != '') ||
-      (userInfo?.aboutMe.funFact == '' && aboutMe.funFact != '') ||
-      (userInfo?.aboutMe.visitedCountries == '' &&
+    if ((!userInfo?.aboutMe && (aboutMe.interests != '' || aboutMe.major != '' || aboutMe.languages != '' || aboutMe.skills != '' || aboutMe.funFact != '' || aboutMe.visitedCountries != '' || aboutMe.serviceProvided != '')) ||
+      (userInfo?.aboutMe && userInfo?.aboutMe.interests == '' && aboutMe.interests != '') ||
+      (userInfo?.aboutMe && userInfo?.aboutMe.major == '' && aboutMe.major != '') ||
+      (userInfo?.aboutMe && userInfo?.aboutMe.languages == '' && aboutMe.languages != '') ||
+      (userInfo?.aboutMe && userInfo?.aboutMe.skills == '' && aboutMe.skills != '') ||
+      (userInfo?.aboutMe && userInfo?.aboutMe.funFact == '' && aboutMe.funFact != '') ||
+      (userInfo?.aboutMe && userInfo?.aboutMe.visitedCountries == '' &&
         aboutMe.visitedCountries != '') ||
-      (userInfo?.aboutMe.serviceProvided == '' && aboutMe.serviceProvided != '')
+      (userInfo?.aboutMe && userInfo?.aboutMe.serviceProvided == '' && aboutMe.serviceProvided != '')
     ) {
       pointAdd += 5;
     }
