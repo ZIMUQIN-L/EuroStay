@@ -108,7 +108,7 @@ const CustomDateRangePicker: React.FC<CustomDateRangePickerProps> = ({
           // validRange={{ start: today }} // 有效日期范围
           minDate={today}
           onDayClick={handleDayClick}
-          style={{ width: '100%' }}
+          style={{ width: '100%'}}
         />
       )}
     </View>

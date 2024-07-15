@@ -102,3 +102,5 @@ export const GreyTimeIcon = `${cloudPath}/grey-time-icon.svg`;
 export const GreyPeopleIcon = `${cloudPath}/grey-people-icon.svg`;
 //modal-point（成功报名消费point）
 export const YellowPoint = `${cloudPath}/yellow-point.svg`;
+export const ActivityHomeIcon = `${cloudPath}/activity-home.svg`;
+export const ActivitySelectedHomeIcon = `${cloudPath}/activity-home-selected.svg`
