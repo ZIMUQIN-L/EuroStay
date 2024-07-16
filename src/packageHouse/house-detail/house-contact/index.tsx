@@ -154,7 +154,10 @@ const HouseContact: React.FC<HouseDetailItemProps> = house => {
         },
       });
     } else {
-      setModalOpen(true);
+    //   setModalOpen(true);
+    Taro.navigateBack({
+        delta: 1,
+      });
     }
   };
   return (
@@ -174,7 +177,7 @@ const HouseContact: React.FC<HouseDetailItemProps> = house => {
               className='contact-button'
               onClick={onCreateCustomCardFromTenant}
             >
-              联系房主
+              回到主页联系房主
             </View>
           </View>
         </View>
