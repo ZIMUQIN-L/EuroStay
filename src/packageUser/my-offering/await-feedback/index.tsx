@@ -220,7 +220,7 @@ const AwaitFeedback: React.FC<UserAccomMessageItemProps> = userAccomMessage => {
 
   // TODO: 后面需要传入数据
   return (
-    <View>
+    <>
       <CustomCard
         title={userAccomMessage.location}
         imageUrl={
@@ -263,7 +263,7 @@ const AwaitFeedback: React.FC<UserAccomMessageItemProps> = userAccomMessage => {
           onReject={handleUserRejectMsg}
         />
       )}
-    </View>
+    </>
   );
 };
 
