@@ -160,6 +160,23 @@ const HouseItem: React.FC<AccomMssageHouseItemProps> = house => {
           '',
         );
       }
+
+      Taro.setClipboardData({
+        data: house.contact,
+        success: function (res) {
+          Taro.showModal({
+            title: '提示',
+            content: '房主的微信账号已复制到剪贴板',
+          });
+        },
+        fail: function (err) {
+          Taro.showToast({
+            title: '联系方式复制失败',
+            icon: 'error',
+            duration: 2000,
+          });
+        },
+      });
     }
   };
 

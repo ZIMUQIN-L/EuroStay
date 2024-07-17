@@ -104,7 +104,7 @@ const RequestCustomCard = ({
   // TODO: 可以传入参数来调整样式，button和上面text的颜色
   return (
     <CustomFullScreenDialog
-      title='消息卡片'
+      title='消息卡片（提交后获得联系方式）'
       onClose={onClose}
       onSubmit={handleSubmitRequestCustomCard}
       className='request-custom-card'
