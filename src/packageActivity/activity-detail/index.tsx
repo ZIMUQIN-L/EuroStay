@@ -7,6 +7,7 @@ import {
   SwiperItem,
   Button,
 } from '@tarojs/components';
+import { observer } from '@store/utils';
 import { useEffect, useState } from 'react';
 import './index.scss';
 import { useRouter } from '@tarojs/taro';
@@ -41,12 +42,46 @@ const DetailPage = () => {
   const [currentUser, setCurrentUser] = useState<UserDetailInfoItemProps>();
 
   useEffect(() => {
-    const curUser = GlobalStore.userInfo;
-    userInfoSearch(curUser._openid).then(
-      (ownerInfo: UserDetailInfoItemProps[]) => {
-        setCurrentUser(ownerInfo[0]);
-      },
-    );
+    // console.log(GlobalStore.userInfo)
+    try {
+        const curUser = GlobalStore.userInfo;
+        userInfoSearch(curUser._openid).then(
+          (ownerInfo: UserDetailInfoItemProps[]) => {
+            setCurrentUser(ownerInfo[0]);
+          },
+        );
+    } catch (error) {
+        const NoLoginUserInfo: UserItemProps = {
+            _id: '',
+            _openid: '',
+            avatarUrl: '',
+            nickName: '',
+            userDes: '',
+            userOpenid: '',
+            userLocation: '',
+          };
+          GlobalStore.userInfo = NoLoginUserInfo;
+    }
+    // if (GlobalStore!=undefined &&  GlobalStore.userInfo != undefined) {
+    //     const curUser = GlobalStore.userInfo;
+    //     userInfoSearch(curUser._openid).then(
+    //       (ownerInfo: UserDetailInfoItemProps[]) => {
+    //         setCurrentUser(ownerInfo[0]);
+    //       },
+    //     );
+    // }
+    // else {
+    //     const NoLoginUserInfo: UserItemProps = {
+    //         _id: '',
+    //         _openid: '',
+    //         avatarUrl: '',
+    //         nickName: '',
+    //         userDes: '',
+    //         userOpenid: '',
+    //         userLocation: '',
+    //       };
+    //       GlobalStore.userInfo = NoLoginUserInfo;
+    // }
     activityDetailSearch(activityId).then((res: ActivityInfoItemProps) => {
       setActivity(res);
       userInfoSearch(res._openid).then(
@@ -79,7 +114,7 @@ const DetailPage = () => {
   });
 
   const handleSignUpClick = () => {
-    if (GlobalStore.userInfo._id == '') {
+    if (GlobalStore.userInfo == undefined || GlobalStore.userInfo._id == '') {
       Taro.showModal({
         title: '转至登录页面',
         content: '请登录后报名活动~',
@@ -203,4 +238,4 @@ const DetailPage = () => {
   );
 };
 
-export default DetailPage;
+export default observer(DetailPage);
