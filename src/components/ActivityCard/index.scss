@@ -9,6 +9,20 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  position: relative;
+
+  .corner-label {
+    position: absolute;
+    top: 25px; /* 距离图片顶部的距离 */
+    left: 0px; /* 距离图片左侧的距离 */
+    background-color: #fdd835; /* 标签背景色 */
+    color: #333; /* 标签文字颜色 */
+    padding: 5px 10px; /* 内边距 */
+    border-radius: 5px; /* 圆角 */
+    font-size: 24px;
+    font-weight: bold;
+    z-index: 1; /* 确保标签在图片之上 */
+  }
 
   .activity-image {
     width: 100%;

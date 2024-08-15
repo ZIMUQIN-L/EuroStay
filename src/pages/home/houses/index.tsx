@@ -1,4 +1,4 @@
-import { View, Image, Text } from '@tarojs/components';
+import { View, Image, Text, Button } from '@tarojs/components';
 import CustomTabBar from '@components/CustomTabBar';
 import SearchCard from '../search-section';
 import './index.scss';
@@ -9,6 +9,10 @@ import { houseInfoSearch } from '@common/database/house/house';
 import { HouseItemProps } from '@utils/interfaces';
 import SearchAndFilter from '../search-and-filter';
 import { NoDataLogo } from '@utils/cloudIcons';
+import hostAdPic from '@assets/images/host-ad-toscana-florence.png';
+import { Close } from '@taroify/icons'; 
+import hostAdPicTest from './home.png'; 
+import hostAdPicTestTest from './host-ad-toscana-florence.png'
 
 /**
  * 主页的房源列表板块
@@ -35,7 +39,7 @@ const Houses = () => {
       setDemoData(prevData => [...prevData, ...houseData]);
     });
   });
-
+  const [showAd, setShowAd] = useState(true);
   const [userDestination, setUserDestination] = useState<string>('');
 
   const handleDestinationChange = inputDestination => {
@@ -62,6 +66,13 @@ const Houses = () => {
 
   useEffect(() => {
     fetchInitialData();
+
+    // 显示广告3秒后隐藏
+    const adTimer = setTimeout(() => {
+      setShowAd(false);
+    }, 300000);
+
+    return () => clearTimeout(adTimer);
   }, []);
   // useEffect(() => {
   //   houseInfoSearch('阿姆', '2024-03-24', '2024-03-24').then(
@@ -93,41 +104,59 @@ const Houses = () => {
     setDemoData(houseData);
   };
 
+  const handleCloseAd = () => {
+    setShowAd(false);
+  };
+
   return (
     <View className='home' id='home'>
-      {isClickedSearch ? (
-        <SearchAndFilter
-          onDestinationChange={handleDestinationChange}
-          onDateChange={handleDateChange}
-          onClickSearch={handleClickSearch}
-          userStartDate={userStartDate}
-          userEndDate={userEndDate}
-          destination={userDestination}
-          onClickFilterData={handleClickFilter}
-        />
-      ) : (
-        <SearchCard
-          onDestinationChange={handleDestinationChange}
-          onDateChange={handleDateChange}
-          onClickSearch={handleClickSearch}
-          searchType='houses'
-        />
-      )}
-      {demoData.length === 0 ? (
-        <View>
-          <Image src={NoDataLogo} />
-          <Text className='home-nodata-container'>暂未查询到数据~</Text>
+      {showAd ? (
+        <View className='ad-modal'>
+          <View className='ad-content'>
+            <Text>测试文字，看看是否显示</Text>
+            <Image className='ad-image' src={hostAdPicTest}   onLoad={() => console.log('Image loaded successfully!')}
+  onError={() => console.log('Failed to load image!')}/>
+            <Image className='ad-image' src={hostAdPicTestTest} />
+            <Close className='close-icon' onClick={handleCloseAd} />
+          </View>
         </View>
       ) : (
-        <View className='house-list'>
-          {demoData.map(house => (
-            <HouseItem key={house._id} {...house} />
-          ))}
-        </View>
+        <>
+          {isClickedSearch ? (
+            <SearchAndFilter
+              onDestinationChange={handleDestinationChange}
+              onDateChange={handleDateChange}
+              onClickSearch={handleClickSearch}
+              userStartDate={userStartDate}
+              userEndDate={userEndDate}
+              destination={userDestination}
+              onClickFilterData={handleClickFilter}
+            />
+          ) : (
+            <SearchCard
+              onDestinationChange={handleDestinationChange}
+              onDateChange={handleDateChange}
+              onClickSearch={handleClickSearch}
+              searchType='houses'
+            />
+          )}
+          {demoData.length === 0 ? (
+            <View>
+              <Image src={NoDataLogo} />
+              <Text className='home-nodata-container'>暂未查询到数据~</Text>
+            </View>
+          ) : (
+            <View className='house-list'>
+              {demoData.map(house => (
+                <HouseItem key={house._id} {...house} />
+              ))}
+            </View>
+          )}
+          <View className='index'>
+            <CustomTabBar onHomeSelected={resetState} />
+          </View>
+        </>
       )}
-      <View className='index'>
-        <CustomTabBar onHomeSelected={resetState} />
-      </View>
     </View>
   );
 };

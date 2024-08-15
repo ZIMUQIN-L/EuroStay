@@ -77,10 +77,13 @@ const ActicityApplicationPage = () => {
     setShowSuccessModal(true);
   };
 
+  // variables for common part
   const [appName, setAppName] = useState('');
   const [appGender, setAppGender] = useState('');
   const [appAge, setAppAge] = useState(0);
   const [appWechat, setAppWechat] = useState('');
+
+  // variables for regular application
   const [appSocialMedia, setAppSocialMedia] = useState('');
   const [appLanguages, setAppLanguages] = useState('');
   const [appFrom, setAppFrom] = useState('');
@@ -94,92 +97,190 @@ const ActicityApplicationPage = () => {
   const [appPub, setAppPub] = useState(true);
   const [appQuestion, setAppQuestion] = useState('');
 
+  // variables for premiumHost application
+  const [appNum, setAppNum] = useState(1);
+  const [appMultiInfo, setAppMultiInfo] = useState('');
+  const [appArriveDate, setAppArriveDate] = useState('');
+  const [appBringtoHost, setAppBringtoHost] = useState('');
+  const [appSelfIntro, setAppSelfIntro] = useState('');
+  const [appReplyToHost, setAppReplyToHost] = useState('');
+
+
+
   const handleGetHostInfoClick = () => {
-    if (currentUser && activity && currentUser?.point <= activity?.point) {
-      Taro.showModal({
-        title: '积分不足',
-        content: '当前积分不足，前往积分页面查看积分获取规则~',
-        success: function (res) {
-          if (res.confirm) {
-            Taro.navigateTo({
-              url: `/packageUser/my-points/index`,
-            });
-          }
-        },
-      });
-    } else if (
-      appName == '' ||
-      appGender == '' ||
-      appAge == 0 ||
-      appWechat == '' ||
-      appSocialMedia == '' ||
-      appLanguages == '' ||
-      appFrom == '' ||
-      appMajor == '' ||
-      appSkills == '' ||
-      appMbti == '' ||
-      appWhy == '' ||
-      appReason == '' ||
-      appExp == ''
+
+    if (activity?.premiumHost) {
+      if (currentUser && activity && currentUser?.point <= activity?.point) {
+        Taro.showModal({
+          title: '积分不足',
+          content: '当前积分不足，前往积分页面查看积分获取规则~',
+          success: function (res) {
+            if (res.confirm) {
+              Taro.navigateTo({
+                url: `/packageUser/my-points/index`,
+              });
+            }
+          },
+        });
+        } else if (          
+        appName == '' ||
+        appGender == '' ||
+        appAge == 0 ||
+        appWechat == '' ||
+        appNum == 0 ||
+        (appNum > 1 && appMultiInfo === '')||
+        appArriveDate == '' ||
+        appBringtoHost == '' ||
+        appSelfIntro == '' ||
+        (appQuestion && appReplyToHost === '') 
     ) {
       Taro.showToast({
-        title: '请完整填写信息',
+        title: '请完整填写信息11',
         icon: 'error',
         mask: true,
         duration: 2000,
-      });
+      });     
     } else {
-      const answer = {
-        姓名: appName,
-        性别: appGender,
-        年龄: appAge,
-        微信号: appWechat,
-        社交媒体账号: appSocialMedia,
-        语言: appLanguages,
-        出发地: appFrom,
-        职业专业: appMajor,
-        特殊技能: appSkills,
-        mbti: appMbti,
-        报名理由: appWhy,
-        选择理由: appReason,
-        有趣经历: appExp,
-        真人: appShow,
-        发帖: appPub,
-        问题: appQuestion,
-      };
-      Taro.showLoading({
-        title: '申请中',
-        mask: true,
-      });
-      activityApplicationAdd(
-        activityId,
-        activityHost?._openid,
-        appWhy,
-        appWechat,
-        currentUser?.avatarUrl,
-        currentUser?.nickName,
-      ).then(res => {
-        pointDecrease(currentUser?._id, activity?.point);
-        const timestamp = formatTimestamp(new Date().valueOf());
-        pointDetailInfoAdd(
-          currentUser?._openid,
-          timestamp,
-          4,
-          '参加活动消耗',
-          -(activity ? activity?.point : 0),
-          (currentUser ? currentUser?.point : 0) -
-            (activity ? activity?.point : 0),
-        ).then(res1 => {
-          eurostayActApply(activity?.title, activity?._id, answer).then(
-            res2 => {
-              Taro.hideLoading();
-              showSuccessModalEdit();
-            },
-          );
+        const answer = {
+          姓名: appName,
+          性别: appGender,
+          年龄: appAge,
+          微信号: appWechat,
+          报名人数: appNum,
+          同伴信息: appMultiInfo,
+          预计拜访时间: appArriveDate,
+          为Host带来什么: appBringtoHost,
+          自我介绍: appSelfIntro,
+          问题回答: appReplyToHost
+        };
+        Taro.showLoading({
+          title: '申请中',
+          mask: true,
         });
-      });
-    }
-  };
+        activityApplicationAdd(
+          activityId,
+          activityHost?._openid,
+          appWhy,
+          appWechat,
+          currentUser?.avatarUrl,
+          currentUser?.nickName,
+        ).then(res => {
+          pointDecrease(currentUser?._id, activity?.point);
+          const timestamp = formatTimestamp(new Date().valueOf());
+          pointDetailInfoAdd(
+            currentUser?._openid,
+            timestamp,
+            4,
+            '参加活动消耗',
+            -(activity ? activity?.point : 0),
+            (currentUser ? currentUser?.point : 0) -
+              (activity ? activity?.point : 0),
+          ).then(res1 => {
+            eurostayActApply(activity?.title, activity?._id, answer).then(
+              res2 => {
+                Taro.hideLoading();
+                showSuccessModalEdit();
+              },
+            );
+          });
+        });
+      }
+
+
+
+
+
+    } else {
+
+
+
+      if (currentUser && activity && currentUser?.point <= activity?.point) {
+        Taro.showModal({
+          title: '积分不足',
+          content: '当前积分不足，前往积分页面查看积分获取规则~',
+          success: function (res) {
+            if (res.confirm) {
+              Taro.navigateTo({
+                url: `/packageUser/my-points/index`,
+              });
+            }
+          },
+        });
+        } else if ( 
+          appName == '' ||
+          appGender == '' ||
+          appAge == 0 ||
+          appWechat == '' ||
+          appSocialMedia == '' ||
+          appLanguages == '' ||
+          appFrom == '' ||
+          appMajor == '' ||
+          appSkills == '' ||
+          appMbti == '' ||
+          appWhy == '' ||
+          appReason == '' ||
+          appExp == ''
+      ) {
+        Taro.showToast({
+          title: '请完整填写信息',
+          icon: 'error',
+          mask: true,
+          duration: 2000,
+        });
+      } else {
+        const answer = {
+          姓名: appName,
+          性别: appGender,
+          年龄: appAge,
+          微信号: appWechat,
+          社交媒体账号: appSocialMedia,
+          语言: appLanguages,
+          出发地: appFrom,
+          职业专业: appMajor,
+          特殊技能: appSkills,
+          mbti: appMbti,
+          报名理由: appWhy,
+          选择理由: appReason,
+          有趣经历: appExp,
+          真人: appShow,
+          发帖: appPub,
+          问题: appQuestion,
+        };
+        Taro.showLoading({
+          title: '申请中',
+          mask: true,
+        });
+        activityApplicationAdd(
+          activityId,
+          activityHost?._openid,
+          appWhy,
+          appWechat,
+          currentUser?.avatarUrl,
+          currentUser?.nickName,
+        ).then(res => {
+          pointDecrease(currentUser?._id, activity?.point);
+          const timestamp = formatTimestamp(new Date().valueOf());
+          pointDetailInfoAdd(
+            currentUser?._openid,
+            timestamp,
+            4,
+            '参加活动消耗',
+            -(activity ? activity?.point : 0),
+            (currentUser ? currentUser?.point : 0) -
+              (activity ? activity?.point : 0),
+          ).then(res1 => {
+            eurostayActApply(activity?.title, activity?._id, answer).then(
+              res2 => {
+                Taro.hideLoading();
+                showSuccessModalEdit();
+              },
+            );
+          });
+        });
+      }
+    };
+  }
+
 
   return (
     <View className='activity-application-page'>
@@ -275,238 +376,380 @@ const ActicityApplicationPage = () => {
             </View>
           </View>
         </View>
+        {activity?.premiumHost ? (
+          <View>
+            <View className='des-part'>
+              <View className='des-container'>
+                <Text className='des-title'>
+                  几人入住 <Text style={{ color: 'red' }}>*</Text>
+                </Text>
+                <View
+                  className='des-text-container'
+                  //   style={{ minHeight: '80px' }}
+                >
+                  <View className='des-text'>
+                    <Input
+                      value={String(appNum)}
+                      style={{ color: '#979797' }}
+                      onInput={e => setAppNum(Number(e.detail.value))}
+                      placeholder='请填写入住人数'
+                    />
+                  </View>
+                </View>
+              </View>
+            </View>
 
-        <View className='des-part'>
-          <View className='des-container'>
-            <Text className='des-title'>
-              您的社交媒体账号 <Text style={{ color: 'red' }}>*</Text>
-            </Text>
-            <View
-              className='des-text-container'
-              //   style={{ minHeight: '80px' }}
-            >
-              <View className='des-text'>
-                <Input
-                  value={appSocialMedia}
-                  style={{ color: '#979797' }}
-                  onInput={e => setAppSocialMedia(e.detail.value)}
-                  placeholder='请填写自己的社交媒体账号'
+            <View className='des-part'>
+              <View className='des-container'>
+                <Text className='des-title'>
+                  如果是多人请补充同伴信息
+                </Text>
+                <View
+                  className='des-text-container'
+                  //   style={{ minHeight: '80px' }}
+                >
+                  <View className='des-text'>
+                    <Input
+                      value={appMultiInfo}
+                      style={{ color: '#979797' }}
+                      onInput={e => setAppMultiInfo(e.detail.value)}
+                      placeholder='性别, 报名理由等等～'
+                    />
+                  </View>
+                </View>
+              </View>
+            </View>
+
+            <View className='des-part'>
+              <View className='des-container'>
+                <Text className='des-title'>
+                  您的预计拜访时间
+                </Text>
+                <View
+                  className='des-text-container'
+                  //   style={{ minHeight: '80px' }}
+                >
+                  <View className='des-text'>
+                    <Input
+                      value={appArriveDate}
+                      style={{ color: '#979797' }}
+                      onInput={e => setAppArriveDate(e.detail.value)}
+                      placeholder=''
+                    />
+                  </View>
+                </View>
+              </View>
+            </View>
+
+            <View className='des-part'>
+              <View className='des-container'>
+                <Text className='des-title'>
+                  您觉得可以为Host带来什么
+                </Text>
+                <View
+                  className='des-text-container'
+                  //   style={{ minHeight: '80px' }}
+                >
+                  <View className='des-text'>
+                    <Input
+                      value={appBringtoHost}
+                      style={{ color: '#979797' }}
+                      onInput={e => setAppBringtoHost(e.detail.value)}
+                      placeholder=''
+                    />
+                  </View>
+                </View>
+              </View>
+            </View>
+
+
+
+            <View className='des-part'>
+              <View className='des-container'>
+                <Text className='des-title'>
+                  请做一个自我介绍吧！
+                </Text>
+                <View
+                  className='des-text-container'
+                  //   style={{ minHeight: '80px' }}
+                >
+                  <View className='des-text'>
+                    <Input
+                      value={appSelfIntro}
+                      style={{ color: '#979797' }}
+                      onInput={e => setAppSelfIntro(e.detail.value)}
+                      placeholder='比如你的兴趣爱好，职业，性格等等'
+                    />
+                  </View>
+                </View>
+              </View>
+            </View>
+
+
+            {appQuestion && (
+            <View className='des-part'>
+              <View className='des-container'>
+                <Text className='des-title'>
+                  回答一下Host的问题吧
+                </Text>
+                <View
+                  className='des-text-container'
+                  //   style={{ minHeight: '80px' }}
+                >
+                  <View className='des-text'>
+                    <Input
+                      value={appReplyToHost}
+                      style={{ color: '#979797' }}
+                      onInput={e => setAppReplyToHost(e.detail.value)}
+                      placeholder={appQuestion || '请回答Host的问题'} 
+                    />
+                  </View>
+                </View>
+              </View>
+            </View>
+            )}
+
+
+
+          </View>
+
+          
+
+        ) : (
+        <View>
+          <View className='des-part'>
+            <View className='des-container'>
+              <Text className='des-title'>
+                您的社交媒体账号 <Text style={{ color: 'red' }}>*</Text>
+              </Text>
+              <View
+                className='des-text-container'
+                //   style={{ minHeight: '80px' }}
+              >
+                <View className='des-text'>
+                  <Input
+                    value={appSocialMedia}
+                    style={{ color: '#979797' }}
+                    onInput={e => setAppSocialMedia(e.detail.value)}
+                    placeholder='请填写自己的社交媒体账号'
+                  />
+                </View>
+              </View>
+            </View>
+          </View>
+
+          <View className='des-part'>
+            <View className='des-container'>
+              <Text className='des-title'>
+                您会的语言有哪些？ <Text style={{ color: 'red' }}>*</Text>
+              </Text>
+              <View
+                className='des-text-container'
+                //   style={{ minHeight: '80px' }}
+              >
+                <View className='des-text'>
+                  <Input
+                    value={appLanguages}
+                    style={{ color: '#979797' }}
+                    onInput={e => setAppLanguages(e.detail.value)}
+                    placeholder='请填写自己会的语言~'
+                  />
+                </View>
+              </View>
+            </View>
+          </View>
+
+          <View className='des-part'>
+            <View className='des-container'>
+              <Text className='des-title'>
+                您将从哪里出发？（国家+地区）{' '}
+                <Text style={{ color: 'red' }}>*</Text>
+              </Text>
+              <View
+                className='des-text-container'
+                //   style={{ minHeight: '80px' }}
+              >
+                <View className='des-text'>
+                  <Input
+                    value={appFrom}
+                    style={{ color: '#979797' }}
+                    onInput={e => setAppFrom(e.detail.value)}
+                    placeholder='请填写自己的出发地'
+                  />
+                </View>
+              </View>
+            </View>
+          </View>
+
+          <View className='des-part'>
+            <View className='des-container'>
+              <Text className='des-title'>
+                您的职业或专业是？ <Text style={{ color: 'red' }}>*</Text>
+              </Text>
+              <View
+                className='des-text-container'
+                //   style={{ minHeight: '80px' }}
+              >
+                <View className='des-text'>
+                  <Input
+                    value={appMajor}
+                    style={{ color: '#979797' }}
+                    onInput={e => setAppMajor(e.detail.value)}
+                    placeholder='请填写自己的职业/专业'
+                  />
+                </View>
+              </View>
+            </View>
+          </View>
+
+          <View className='des-part'>
+            <View className='des-container'>
+              <Text className='des-title'>
+                您有什么特殊技能吗？（摄影？烹饪？调酒品酒？做饭？开车？写代码？画画？越多越好！）{' '}
+                <Text style={{ color: 'red' }}>*</Text>
+              </Text>
+              <View className='des-text-container' style={{ minHeight: '60px' }}>
+                <View className='des-text'>
+                  <Textarea
+                    value={appSkills}
+                    style={{ color: '#979797' }}
+                    onInput={e => setAppSkills(e.detail.value)}
+                    placeholder='请填写自己的技能'
+                  />
+                </View>
+              </View>
+            </View>
+          </View>
+
+          <View className='des-part'>
+            <View className='des-container'>
+              <Text className='des-title'>
+                您的mbti，举一个你觉得自己最符合的例子吧{' '}
+                <Text style={{ color: 'red' }}>*</Text>
+              </Text>
+              <View className='des-text-container' style={{ minHeight: '60px' }}>
+                <View className='des-text'>
+                  <Textarea
+                    value={appMbti}
+                    style={{ color: '#979797' }}
+                    onInput={e => setAppMbti(e.detail.value)}
+                    placeholder='请填写自己的Mbti'
+                  />
+                </View>
+              </View>
+            </View>
+          </View>
+
+          <View className='des-part'>
+            <View className='des-container'>
+              <Text className='des-title'>
+                为什么想来报名这个活动？您期待在活动中收获什么呢？{' '}
+                <Text style={{ color: 'red' }}>*</Text>
+              </Text>
+              <View className='des-text-container' style={{ minHeight: '60px' }}>
+                <View className='des-text'>
+                  <Textarea
+                    value={appWhy}
+                    style={{ color: '#979797' }}
+                    onInput={e => setAppWhy(e.detail.value)}
+                    placeholder='请填写自己的报名理由'
+                  />
+                </View>
+              </View>
+            </View>
+          </View>
+
+          <View className='des-part'>
+            <View className='des-container'>
+              <Text className='des-title'>
+                给我们一个非你不可的理由吧 <Text style={{ color: 'red' }}>*</Text>
+              </Text>
+              <View className='des-text-container' style={{ minHeight: '60px' }}>
+                <View className='des-text'>
+                  <Textarea
+                    value={appReason}
+                    style={{ color: '#979797' }}
+                    onInput={e => setAppReason(e.detail.value)}
+                    placeholder='给我们一个非你不可的理由吧'
+                  />
+                </View>
+              </View>
+            </View>
+          </View>
+
+          <View className='des-part'>
+            <View className='des-container'>
+              <Text className='des-title'>
+                您有没有什么跟沙发客相关的有趣经历呢？{' '}
+                <Text style={{ color: 'red' }}>*</Text>
+              </Text>
+              <View className='des-text-container' style={{ minHeight: '60px' }}>
+                <View className='des-text'>
+                  <Textarea
+                    value={appExp}
+                    style={{ color: '#979797' }}
+                    onInput={e => setAppExp(e.detail.value)}
+                    placeholder='请填写自己的经历吧'
+                  />
+                </View>
+              </View>
+            </View>
+          </View>
+
+          <View className='des-part'>
+            <View className='switch-container'>
+              <Text className='switch-title'>
+                您是否愿意真人出镜呢？（我们会后期美颜的！）{' '}
+                <Text style={{ color: 'red' }}>*</Text>
+              </Text>
+              <View className='switch-style'>
+                <Switch
+                  checked={appShow}
+                  type='checkbox'
+                  color='#FFD111'
+                  onChange={e => {
+                    setAppShow(e.detail.value);
+                  }}
                 />
               </View>
             </View>
           </View>
-        </View>
 
-        <View className='des-part'>
-          <View className='des-container'>
-            <Text className='des-title'>
-              您会的语言有哪些？ <Text style={{ color: 'red' }}>*</Text>
-            </Text>
-            <View
-              className='des-text-container'
-              //   style={{ minHeight: '80px' }}
-            >
-              <View className='des-text'>
-                <Input
-                  value={appLanguages}
-                  style={{ color: '#979797' }}
-                  onInput={e => setAppLanguages(e.detail.value)}
-                  placeholder='请填写自己会的语言~'
+          <View className='des-part'>
+            <View className='switch-container'>
+              <Text className='switch-title'>
+                您是否愿意发帖帮忙宣传呢～ <Text style={{ color: 'red' }}>*</Text>
+              </Text>
+              <View className='switch-style'>
+                <Switch
+                  checked={appPub}
+                  type='checkbox'
+                  color='#FFD111'
+                  onChange={e => {
+                    setAppPub(e.detail.value);
+                  }}
                 />
               </View>
             </View>
           </View>
-        </View>
 
-        <View className='des-part'>
-          <View className='des-container'>
-            <Text className='des-title'>
-              您将从哪里出发？（国家+地区）{' '}
-              <Text style={{ color: 'red' }}>*</Text>
-            </Text>
-            <View
-              className='des-text-container'
-              //   style={{ minHeight: '80px' }}
-            >
-              <View className='des-text'>
-                <Input
-                  value={appFrom}
-                  style={{ color: '#979797' }}
-                  onInput={e => setAppFrom(e.detail.value)}
-                  placeholder='请填写自己的出发地'
-                />
+          <View className='des-part'>
+            <View className='des-container'>
+              <Text className='des-title'>您有什么想问eurostay的？ </Text>
+              <View className='des-text-container' style={{ minHeight: '60px' }}>
+                <View className='des-text'>
+                  <Textarea
+                    value={appQuestion}
+                    style={{ color: '#979797' }}
+                    onInput={e => setAppQuestion(e.detail.value)}
+                    placeholder='请填写自己的问题吧'
+                  />
+                </View>
               </View>
             </View>
           </View>
         </View>
-
-        <View className='des-part'>
-          <View className='des-container'>
-            <Text className='des-title'>
-              您的职业或专业是？ <Text style={{ color: 'red' }}>*</Text>
-            </Text>
-            <View
-              className='des-text-container'
-              //   style={{ minHeight: '80px' }}
-            >
-              <View className='des-text'>
-                <Input
-                  value={appMajor}
-                  style={{ color: '#979797' }}
-                  onInput={e => setAppMajor(e.detail.value)}
-                  placeholder='请填写自己的职业/专业'
-                />
-              </View>
-            </View>
-          </View>
-        </View>
-
-        <View className='des-part'>
-          <View className='des-container'>
-            <Text className='des-title'>
-              您有什么特殊技能吗？（摄影？烹饪？调酒品酒？做饭？开车？写代码？画画？越多越好！）{' '}
-              <Text style={{ color: 'red' }}>*</Text>
-            </Text>
-            <View className='des-text-container' style={{ minHeight: '60px' }}>
-              <View className='des-text'>
-                <Textarea
-                  value={appSkills}
-                  style={{ color: '#979797' }}
-                  onInput={e => setAppSkills(e.detail.value)}
-                  placeholder='请填写自己的技能'
-                />
-              </View>
-            </View>
-          </View>
-        </View>
-
-        <View className='des-part'>
-          <View className='des-container'>
-            <Text className='des-title'>
-              您的mbti，举一个你觉得自己最符合的例子吧{' '}
-              <Text style={{ color: 'red' }}>*</Text>
-            </Text>
-            <View className='des-text-container' style={{ minHeight: '60px' }}>
-              <View className='des-text'>
-                <Textarea
-                  value={appMbti}
-                  style={{ color: '#979797' }}
-                  onInput={e => setAppMbti(e.detail.value)}
-                  placeholder='请填写自己的Mbti'
-                />
-              </View>
-            </View>
-          </View>
-        </View>
-
-        <View className='des-part'>
-          <View className='des-container'>
-            <Text className='des-title'>
-              为什么想来报名这个活动？您期待在活动中收获什么呢？{' '}
-              <Text style={{ color: 'red' }}>*</Text>
-            </Text>
-            <View className='des-text-container' style={{ minHeight: '60px' }}>
-              <View className='des-text'>
-                <Textarea
-                  value={appWhy}
-                  style={{ color: '#979797' }}
-                  onInput={e => setAppWhy(e.detail.value)}
-                  placeholder='请填写自己的报名理由'
-                />
-              </View>
-            </View>
-          </View>
-        </View>
-
-        <View className='des-part'>
-          <View className='des-container'>
-            <Text className='des-title'>
-              给我们一个非你不可的理由吧 <Text style={{ color: 'red' }}>*</Text>
-            </Text>
-            <View className='des-text-container' style={{ minHeight: '60px' }}>
-              <View className='des-text'>
-                <Textarea
-                  value={appReason}
-                  style={{ color: '#979797' }}
-                  onInput={e => setAppReason(e.detail.value)}
-                  placeholder='给我们一个非你不可的理由吧'
-                />
-              </View>
-            </View>
-          </View>
-        </View>
-
-        <View className='des-part'>
-          <View className='des-container'>
-            <Text className='des-title'>
-              您有没有什么跟沙发客相关的有趣经历呢？{' '}
-              <Text style={{ color: 'red' }}>*</Text>
-            </Text>
-            <View className='des-text-container' style={{ minHeight: '60px' }}>
-              <View className='des-text'>
-                <Textarea
-                  value={appExp}
-                  style={{ color: '#979797' }}
-                  onInput={e => setAppExp(e.detail.value)}
-                  placeholder='请填写自己的经历吧'
-                />
-              </View>
-            </View>
-          </View>
-        </View>
-
-        <View className='des-part'>
-          <View className='switch-container'>
-            <Text className='switch-title'>
-              您是否愿意真人出镜呢？（我们会后期美颜的！）{' '}
-              <Text style={{ color: 'red' }}>*</Text>
-            </Text>
-            <View className='switch-style'>
-              <Switch
-                checked={appShow}
-                type='checkbox'
-                color='#FFD111'
-                onChange={e => {
-                  setAppShow(e.detail.value);
-                }}
-              />
-            </View>
-          </View>
-        </View>
-
-        <View className='des-part'>
-          <View className='switch-container'>
-            <Text className='switch-title'>
-              您是否愿意发帖帮忙宣传呢～ <Text style={{ color: 'red' }}>*</Text>
-            </Text>
-            <View className='switch-style'>
-              <Switch
-                checked={appPub}
-                type='checkbox'
-                color='#FFD111'
-                onChange={e => {
-                  setAppPub(e.detail.value);
-                }}
-              />
-            </View>
-          </View>
-        </View>
-
-        <View className='des-part'>
-          <View className='des-container'>
-            <Text className='des-title'>您有什么想问eurostay的？ </Text>
-            <View className='des-text-container' style={{ minHeight: '60px' }}>
-              <View className='des-text'>
-                <Textarea
-                  value={appQuestion}
-                  style={{ color: '#979797' }}
-                  onInput={e => setAppQuestion(e.detail.value)}
-                  placeholder='请填写自己的问题吧'
-                />
-              </View>
-            </View>
-          </View>
-        </View>
+      )}
       </View>
 
       <View className='eurostay-contact-container'>
@@ -525,6 +768,9 @@ const ActicityApplicationPage = () => {
           </Button>
         </View>
       </View>
+
+
+
       {isShowSuccessModal && (
         <CopyHostInfoModal
           onClose={handleCloseAllWindows}

@@ -45,6 +45,9 @@ const ActivityCard: React.FC<ActivityCardProps> = ({ activity, onClick }) => {
 
   return (
     <View className='activity-card' onClick={onClick}>
+      {activity.premiumHost && (
+        <View className='corner-label'>精品Host系列</View>
+      )}
       <Image
         src={imageSrc}
         className='activity-image'
