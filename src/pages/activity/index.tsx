@@ -15,6 +15,7 @@ import CustomTabBar from '@components/CustomTabBar';
 import ActivityCard from '@components/ActivityCard';
 import Banner from '@components/Banner';
 import TagBar from '@components/TagBar';
+import App from './posts'
 import './index.scss';
 import { activityInfoSearch } from '@common/database/activityInfo/activityInfo';
 
@@ -135,6 +136,7 @@ const Index = () => {
 
       {showBanner && <Banner />}
       {showTagBar && <TagBar />}
+      <App />
 
       {showEvents && (
         <View className='cards'>
