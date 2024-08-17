@@ -3,7 +3,7 @@ import { View } from '@tarojs/components';
 import PostGrid from './PostGrid';
 import './index.scss';
 
-const App = () => {
+const Posts = () => {
   const mockPosts = [
     {
       title: '帖子标题帖子标题帖子标题帖子标题帖子标题帖子标题',
@@ -39,4 +39,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default Posts;

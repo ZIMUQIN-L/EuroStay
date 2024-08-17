@@ -15,7 +15,7 @@ import CustomTabBar from '@components/CustomTabBar';
 import ActivityCard from '@components/ActivityCard';
 import Banner from '@components/Banner';
 import TagBar from '@components/TagBar';
-import App from './posts'
+import Posts from './posts'
 import './index.scss';
 import { activityInfoSearch } from '@common/database/activityInfo/activityInfo';
 
@@ -26,6 +26,8 @@ const Index = () => {
   const [showBanner, setShowBanner] = useState(true);
   // for 活动
   const [showEvents, setShowEvents] = useState(false);
+  // for 推荐和帖子
+  const [showPosts, setShowPosts] = useState(true);
 
   const handleTabChange = (tab) => {
     setActiveTab(tab);
@@ -34,14 +36,17 @@ const Index = () => {
       setShowTagBar(true);
       setShowBanner(false);
       setShowEvents(false);
+      setShowPosts(true);
     } else if (tab === 'events') {
       setShowTagBar(true);
       setShowBanner(true);
       setShowEvents(true);
+      setShowPosts(false);
     } else if (tab === 'recommend') {
       setShowTagBar(false);
       setShowBanner(true);
       setShowEvents(false);
+      setShowPosts(true);
     }
   };
 
@@ -136,7 +141,7 @@ const Index = () => {
 
       {showBanner && <Banner />}
       {showTagBar && <TagBar />}
-      <App />
+      {showPosts && <Posts />}
 
       {showEvents && (
         <View className='cards'>
