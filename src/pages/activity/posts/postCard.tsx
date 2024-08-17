@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, Image } from '@tarojs/components';
+import { PlayCircle, Views } from '@utils/cloudIcons';
 import './index.scss';
 
 interface Post {
@@ -17,7 +18,7 @@ const PostCard = ({ post }: { post: Post }) => {
       <View className='post-image-container'>
         {post.type === 'video' && (
           <View className='video-overlay'>
-            <Image src='/assets/images/play-button-icon.png' className='play-button' />
+            <Image src={PlayCircle} className='play-button' />
             <Text className='video-duration'>{post.videoDuration}</Text>
           </View>
         )}
@@ -26,7 +27,11 @@ const PostCard = ({ post }: { post: Post }) => {
       <Text className='post-title'>{post.title}</Text>
       <View className='post-info'>
         <Text className='username'>{post.username}</Text>
-        <Text className='views'>{post.views} views</Text>
+        <View className='views-container'>
+          <Image src={Views} className='views-icon' />
+          <Text className='views-text'>{post.views}</Text>
+        </View>
+
       </View>
     </View>
   );

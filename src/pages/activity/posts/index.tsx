@@ -6,7 +6,7 @@ import './index.scss';
 const App = () => {
   const mockPosts = [
     {
-      title: '帖子标题帖子标题帖子标题',
+      title: '帖子标题帖子标题帖子标题帖子标题帖子标题帖子标题',
       image: 'https://via.placeholder.com/300x200',
       username: 'username1',
       views: 136,
