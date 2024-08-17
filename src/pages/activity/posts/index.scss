@@ -1,10 +1,11 @@
 .activity-index {
   padding: 10px;
+  margin: 20px;
 
   .post-grid {
     display: grid;
     grid-template-columns: 1fr 1fr; /* Explicit two-column layout */
-    grid-gap: 20px; /* Space between grid items */
+    grid-gap: 25px;
   }
 
   .post-card {
@@ -15,9 +16,8 @@
     transition: transform 0.2s;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    // justify-content: space-between;
     position: relative;
-    width: 100%;
     height: auto;
     
     &:hover {
@@ -27,7 +27,7 @@
     .post-image-container {
       position: relative;
       width: 100%;
-      padding-top: 133%; /* Maintain 3:4 Aspect Ratio */
+      padding-top: 93%;
       overflow: hidden;
 
       .post-image {
