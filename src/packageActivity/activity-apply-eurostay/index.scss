@@ -173,4 +173,25 @@
     color: #979797;
     // font-size: 20px;
   }
+
+  .gender-radio-group {
+    display: flex;
+    justify-content: space-around; /* Evenly distributes the options */
+    padding: 10px;
+    background-color: #f5f5f5;
+    border-radius: 10px;
+  }
+  
+  .gender-option {
+    display: flex;
+    align-items: center;
+  }
+  
+  .gender-option Text {
+    margin-left: 8px;
+  }
+  
+  .gender-option Radio {
+    margin-right: 8px;
+  }
 }

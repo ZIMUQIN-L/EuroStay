@@ -178,6 +178,16 @@ const DetailPage = () => {
             <Text className='description-content'>{activity?.description}</Text>
           </View>
         </View>
+        {/* {activity?.detail && (
+          <View className='description'>
+            {Object.entries(activity.detail).map(([key, value], index) => (
+              <View key={index} className='description-info'>
+                <Text className='description-title'>{key}：</Text>
+                <Text className='description-content'>{value}</Text>
+              </View>
+            ))}
+          </View>
+        )} */}
       </View>
       <View className='contact-container'>
         <View className='price-info'>

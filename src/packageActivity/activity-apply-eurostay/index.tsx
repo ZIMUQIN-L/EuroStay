@@ -6,6 +6,9 @@ import {
   Input,
   Textarea,
   Switch,
+  RadioGroup,
+  Radio,
+  Label
 } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import './index.scss';
@@ -31,6 +34,7 @@ import {
   eurostayActApply,
 } from '@common/database/activityInfo/activityInfo';
 import { formatTimestamp } from '@utils/dateUtil';
+import DateTimePicker from '@components/DateTimePicker';
 
 const ActicityApplicationPage = () => {
   const router = useRouter();
@@ -58,6 +62,7 @@ const ActicityApplicationPage = () => {
     );
     activityDetailSearch(activityId).then((res: ActivityInfoItemProps) => {
       setActivity(res);
+      setStartTime(res.startTime);
       userInfoSearch(res._openid).then(
         (userInfoRes: UserDetailInfoItemProps[]) => {
           setActivityHost(userInfoRes[0]);
@@ -71,6 +76,10 @@ const ActicityApplicationPage = () => {
     Taro.navigateBack({
       delta: 2,
     });
+  };
+
+  const handleStartTimeChange = newStartTime => {
+    setStartTime(newStartTime);
   };
 
   const showSuccessModalEdit = () => {
@@ -100,10 +109,10 @@ const ActicityApplicationPage = () => {
   // variables for premiumHost application
   const [appNum, setAppNum] = useState(1);
   const [appMultiInfo, setAppMultiInfo] = useState('');
-  const [appArriveDate, setAppArriveDate] = useState('');
   const [appBringtoHost, setAppBringtoHost] = useState('');
   const [appSelfIntro, setAppSelfIntro] = useState('');
   const [appReplyToHost, setAppReplyToHost] = useState('');
+  const [startTime, setStartTime] = useState('');
 
 
 
@@ -129,7 +138,7 @@ const ActicityApplicationPage = () => {
         appWechat == '' ||
         appNum == 0 ||
         (appNum > 1 && appMultiInfo === '')||
-        appArriveDate == '' ||
+        startTime == '' ||
         appBringtoHost == '' ||
         appSelfIntro == '' ||
         (appQuestion && appReplyToHost === '') 
@@ -148,7 +157,7 @@ const ActicityApplicationPage = () => {
           微信号: appWechat,
           报名人数: appNum,
           同伴信息: appMultiInfo,
-          预计拜访时间: appArriveDate,
+          预计拜访时间: startTime,
           为Host带来什么: appBringtoHost,
           自我介绍: appSelfIntro,
           问题回答: appReplyToHost
@@ -316,23 +325,30 @@ const ActicityApplicationPage = () => {
         <View className='des-part'>
           <View className='des-container'>
             <Text className='des-title'>
-              认知性别 <Text style={{ color: 'red' }}>*</Text>
+              性别 <Text style={{ color: 'red' }}>*</Text>
             </Text>
-            <View
-              className='des-text-container'
-              //   style={{ minHeight: '80px' }}
-            >
-              <View className='des-text'>
-                <Input
-                  value={appGender}
-                  style={{ color: '#979797' }}
-                  onInput={e => setAppGender(e.detail.value)}
-                  placeholder='请填写自己的认知性别'
-                />
-              </View>
+            <View className='des-text-container'>
+              <RadioGroup
+                onChange={e => setAppGender(e.detail.value)}
+                className='gender-radio-group'
+              >
+                <Label className='gender-option'>
+                  <Radio value='男' checked={appGender === '男'} />
+                  <Text>男</Text>
+                </Label>
+                <Label className='gender-option'>
+                  <Radio value='女' checked={appGender === '女'} />
+                  <Text>女</Text>
+                </Label>
+                <Label className='gender-option'>
+                  <Radio value='非二元性别' checked={appGender === '非二元性别'} />
+                  <Text>非二元性别</Text>
+                </Label>
+              </RadioGroup>
             </View>
           </View>
         </View>
+
 
         <View className='des-part'>
           <View className='des-container'>
@@ -429,13 +445,8 @@ const ActicityApplicationPage = () => {
                   className='des-text-container'
                   //   style={{ minHeight: '80px' }}
                 >
-                  <View className='des-text'>
-                    <Input
-                      value={appArriveDate}
-                      style={{ color: '#979797' }}
-                      onInput={e => setAppArriveDate(e.detail.value)}
-                      placeholder=''
-                    />
+                  <View className='act-time-picker-container'>
+                    <DateTimePicker value={startTime} onChange={handleStartTimeChange} />
                   </View>
                 </View>
               </View>
