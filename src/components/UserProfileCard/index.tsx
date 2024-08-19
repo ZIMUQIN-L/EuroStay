@@ -23,16 +23,28 @@ const UserProfileCard = ({ user }) => {
         </View>
         <View className="profile-stats">
             <View className="profile-stats-item">
-            <Text>评价</Text>
-            <Text>{user.reviews} 条</Text>
+            <Text style={{ fontSize: '13px', color: '#888' }}>评价</Text>
+                <Text>
+                    {user && user.receiveReviewNum
+                        ? user.receiveReviewNum
+                        : 0} 条
+                </Text>
             </View>
             <View className="profile-stats-item">
-            <Text>评分</Text>
-            <Text>{user.rating}</Text>
+                <Text style={{ fontSize: '13px', color: '#888' }}>评分</Text>
+                <Text>
+                    {user && user.hostRating
+                        ? user.hostRating
+                        : '暂无评分'}
+                </Text>
             </View>
             <View className="profile-stats-item">
-            <Text>主办经验</Text>
-            <Text>{user.experience}</Text>
+                <Text style={{ fontSize: '13px', color: '#888' }}>主办经验</Text>
+            <Text>
+                {user && user.hostingExperience
+                    ? user.hostingExperience
+                    : '小于1年'}
+            </Text>
             </View>
         </View>
     </View>

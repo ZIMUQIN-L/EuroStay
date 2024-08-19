@@ -27,9 +27,9 @@
     flex: 0 0 40%; /* Right section taking 40% of the width */
     display: flex;
     flex-direction: column; /* Stack content vertically */
-    align-items: center; /* Center horizontally */
+    align-items: flex-start; /* Center horizontally */
     justify-content: center; /* Center vertically */
-    text-align: center; /* Center text content */
+    text-align: left; /* Center text content */
   }
   
   .profile-avatar {
@@ -67,6 +67,7 @@
   
   .profile-stats-item {
     margin-bottom: 15px; /* Add spacing between stats items */
+    text-align: left;
   }
   
   .profile-stats-item Text {
@@ -80,6 +81,18 @@
   .detail-item {
     margin-bottom: 10px;
     display: flex;
+    align-items: center;
+    position: relative;
+  }
+
+  .detail-item::before {
+    content: '';
+    width: 18px;
+    height: 18px;
+    background-color: #ccc;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 20px;
   }
   
   .detail-key {

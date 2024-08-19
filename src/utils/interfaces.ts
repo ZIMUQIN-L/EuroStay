@@ -207,6 +207,8 @@ export interface ActivityInfoItemProps {
   applyPage: string; // 未来的报名页面，对于eurostay活动
   detail?: { [key: string]: string } | null; // 杂七杂八的信息
   premiumHost?: string | null; // 是否是推荐活动，是的话，显示房东card
+  houseInfoDetail?: { [key: string]: string } | null; // 是否是推荐活动，是的话, 并且关联房源的话，显示对应的房源信息
+  houseIconDetail?: { [key: string]: boolean } | null; // 是否是推荐活动，是的话, 并且关联房源的话，显示对应的房源ICON setting
 }
 
 export interface ActivityApplicationItemProps {

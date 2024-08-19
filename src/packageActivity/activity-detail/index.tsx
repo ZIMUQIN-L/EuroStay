@@ -29,9 +29,11 @@ import {
   ActivityInfoItemProps,
   UserDetailInfoItemProps,
   UserItemProps,
+  HouseDetailItemProps,
   ActivityApplicationItemProps,
 } from '@utils/interfaces';
 import { userInfoSearch } from '@common/database/user/user';
+import { houseDetailSearch } from '@common/database/house/house';
 
 const DetailPage = () => {
   const router = useRouter();
@@ -41,10 +43,13 @@ const DetailPage = () => {
   const [applicable, setApplicable] = useState(false);
   const [currentUser, setCurrentUser] = useState<UserDetailInfoItemProps>();
   const [premiumHost, setPremiumHost] = useState<UserDetailInfoItemProps | undefined | null>(undefined);
+  const [houseInfoDetail, setHouseInfoDetail] = useState<{ [key: string]: string } | null>(null);
+  const [houseIconDetail, setHouseIconDetail] = useState<{ [key: string]: boolean } | null>(null);
+
+
 
   useEffect(() => {
     const curUser = GlobalStore.userInfo;
-    console.log('curUser::::', curUser._openid);
     userInfoSearch(curUser._openid).then(
       (ownerInfo: UserDetailInfoItemProps[]) => {
         setCurrentUser(ownerInfo[0]);
@@ -56,9 +61,18 @@ const DetailPage = () => {
       userInfoSearch(res._openid).then(
         (userInfoRes: UserDetailInfoItemProps[]) => {
           setHostInfo(userInfoRes[0]);
-          console.log(userInfoRes[0]);
         },
       );
+
+      if (res.houseInfoDetail) {
+        setHouseInfoDetail(res.houseInfoDetail);
+      }
+
+      if (res.houseIconDetail) {
+        setHouseIconDetail(res.houseIconDetail);
+      }
+
+
       activityContainUser(activityId, GlobalStore.userInfo._openid).then(
         (items: ActivityApplicationItemProps[]) => {
           if (items.length == 0) {
@@ -217,6 +231,7 @@ const DetailPage = () => {
           user = {premiumHost}
         />
       </View>
+      
 
 
       <View className='contact-container'>
