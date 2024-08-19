@@ -10,6 +10,7 @@ import {
 import { useEffect, useState } from 'react';
 import './index.scss';
 import { useRouter } from '@tarojs/taro';
+import UserProfileCard from '@components/UserProfileCard';
 import {
   StarOutlined,
   LocationOutlined,
@@ -36,12 +37,14 @@ const DetailPage = () => {
   const router = useRouter();
   const activityId = router?.params?.id;
   const [activity, setActivity] = useState<ActivityInfoItemProps>();
-  const [hostInfo, setHostInfo] = useState<UserDetailInfoItemProps>();
+  const [hostInfo, setHostInfo] = useState<UserDetailInfoItemProps>();//主办方信息
   const [applicable, setApplicable] = useState(false);
   const [currentUser, setCurrentUser] = useState<UserDetailInfoItemProps>();
+  const [premiumHost, setPremiumHost] = useState<UserDetailInfoItemProps | undefined | null>(undefined);
 
   useEffect(() => {
     const curUser = GlobalStore.userInfo;
+    console.log('curUser::::', curUser._openid);
     userInfoSearch(curUser._openid).then(
       (ownerInfo: UserDetailInfoItemProps[]) => {
         setCurrentUser(ownerInfo[0]);
@@ -49,9 +52,11 @@ const DetailPage = () => {
     );
     activityDetailSearch(activityId).then((res: ActivityInfoItemProps) => {
       setActivity(res);
+      console.log("activity::::", res);
       userInfoSearch(res._openid).then(
         (userInfoRes: UserDetailInfoItemProps[]) => {
           setHostInfo(userInfoRes[0]);
+          console.log(userInfoRes[0]);
         },
       );
       activityContainUser(activityId, GlobalStore.userInfo._openid).then(
@@ -61,8 +66,24 @@ const DetailPage = () => {
           }
         },
       );
-      // todo also change it for eurostay act @PJ
-    });
+
+    // 判断是否有 premiumHost 并获取其信息
+    if (res.premiumHost) {
+      userInfoSearch(res.premiumHost).then(
+        (ownerInfo: UserDetailInfoItemProps[]) => {
+          if (ownerInfo && ownerInfo.length > 0) {
+            setPremiumHost(ownerInfo[0]);
+          } else {
+            setPremiumHost(null); // 如果没有返回有效的数据，设置为空
+          }
+        }
+      );
+    } else {
+      setPremiumHost(null); // 如果没有 premiumHost，设置为空
+    }
+    
+  });
+
   }, []);
 
   const handleClickHostAvatar = () => {
@@ -178,17 +199,26 @@ const DetailPage = () => {
             <Text className='description-content'>{activity?.description}</Text>
           </View>
         </View>
-        {/* {activity?.detail && (
-          <View className='description'>
+        {activity?.detail && (
+          <View>
             {Object.entries(activity.detail).map(([key, value], index) => (
+              <View className='description'>
               <View key={index} className='description-info'>
                 <Text className='description-title'>{key}：</Text>
                 <Text className='description-content'>{value}</Text>
               </View>
+              </View>
             ))}
           </View>
-        )} */}
+        )}
       </View>
+      <View>
+        <UserProfileCard
+          user = {premiumHost}
+        />
+      </View>
+
+
       <View className='contact-container'>
         <View className='price-info'>
           <Text className='price'>

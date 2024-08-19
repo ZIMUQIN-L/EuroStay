@@ -206,7 +206,7 @@ export interface ActivityInfoItemProps {
   official: boolean; // 是否是官方活动
   applyPage: string; // 未来的报名页面，对于eurostay活动
   detail?: { [key: string]: string } | null; // 杂七杂八的信息
-  premiumHost?: boolean | null; // 是否是推荐活动
+  premiumHost?: string | null; // 是否是推荐活动，是的话，显示房东card
 }
 
 export interface ActivityApplicationItemProps {
