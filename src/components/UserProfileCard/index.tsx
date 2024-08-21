@@ -3,7 +3,7 @@ import './index.scss';
 
 const UserProfileCard = ({ user }) => {
   if (!user) {
-    return <View>Loading...</View>; // Display loading state before user data is loaded
+    return <View></View>; // Display loading state before user data is loaded
   }
 
   return (

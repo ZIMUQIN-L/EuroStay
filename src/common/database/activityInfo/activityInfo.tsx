@@ -1,3 +1,7 @@
+import {
+  EurostayApplicationDetailProps
+} from '@utils/interfaces';
+
 export const activityInfoPost = async (
   title,
   images,
@@ -100,6 +104,7 @@ export const activityInfoSearch = async () => {
   });
 };
 
+
 export const activityActiveUpdate = async (_id, activeStatus) => {
   const db = wx.cloud.database();
   return new Promise((resolve, reject) => {
@@ -142,7 +147,7 @@ export const activityApplicationAdd = async (
         },
       })
       .then(res => {
-        resolve(res.errMsg);
+        resolve(res._id);
       })
       .catch(err => {
         reject(err.errMsg);
@@ -182,6 +187,22 @@ export const activityUsersSearch = async activityId => {
   });
 };
 
+
+export const activityApplicationSearchById = async activityApplicationId => {
+  const db = wx.cloud.database();
+  return new Promise((resolve, reject) => {
+    db.collection('ActivityApplication')
+      .where({
+        _id: activityApplicationId
+      })
+      .get({
+        success: function (res) {
+          resolve(res.data);
+        },
+      });
+  });
+};
+
 export const activityAppApproveUpdate = async _id => {
   const db = wx.cloud.database();
   return new Promise((resolve, reject) => {
@@ -202,7 +223,7 @@ export const activityAppApproveUpdate = async _id => {
 };
 
 // eurostay相关活动信息
-export const eurostayActApply = async (title, activityId, applicantInfo) => {
+export const eurostayActApply = async (title, activityId, applicantInfo, activityApplicationId) => {
   const db = wx.cloud.database();
   return new Promise((resolve, reject) => {
     db.collection('EuroStayActApplication')
@@ -212,6 +233,7 @@ export const eurostayActApply = async (title, activityId, applicantInfo) => {
           title: title,
           activityId: activityId,
           applicantInfo: applicantInfo,
+          activityApplicationId: activityApplicationId
         },
       })
       .then(res => {
@@ -222,3 +244,68 @@ export const eurostayActApply = async (title, activityId, applicantInfo) => {
       });
   });
 };
+
+// 查询EuroStay活动所相关的所有申请
+export const getEurostayActApplications = async (activityId) => {
+  const db = wx.cloud.database();
+  return new Promise((resolve, reject) => {
+    db.collection('EuroStayActApplication')
+      .where({
+        activityId: activityId, // Query based on activityId
+      })
+      .get()
+      .then(res => {
+        resolve(res.data); // Return the query results
+      })
+      .catch(err => {
+        reject(err.errMsg); // Handle any errors
+      });
+  });
+};
+
+// 查询EuroStay活动所相关的，一个用户的，所有申请
+// export const getEurostayActApplication = async (activityApplicationId) => {
+//   const db = wx.cloud.database();
+//   return new Promise((resolve, reject) => {
+//     db.collection('EuroStayActApplication')
+//       .where({
+//         activityApplicationId: activityApplicationId, // Add activityApplicationId to ensure unique record
+//       })
+//       .get()
+//       .then(res => {
+//         if (res.data && res.data.length === 1) {
+//           resolve(res.data[0]); // Return the unique query result
+//         } else {
+//           reject('No unique application found or multiple records match the criteria.');
+//         }
+//       })
+//       .catch(err => {
+//         reject(err.errMsg); // Handle any errors
+//       });
+//   });
+// };
+
+export const getEurostayActApplication = async (activityId: string): Promise<EurostayApplicationDetailProps> => {
+  const db = wx.cloud.database();
+  return new Promise((resolve, reject) => {
+    db.collection('EuroStayActApplication')
+      .where({
+        activityApplicationId: activityId,
+      })
+      .get()
+      .then((res) => {
+        console.log('Eurostay application data:', res.data);
+        if (res.data && res.data.length > 0) {
+          resolve(res.data[0] as EurostayApplicationDetailProps); // Explicitly cast the data
+        } else {
+          reject(new Error('No data found'));
+        }
+      })
+      .catch((err) => {
+        reject(err); // Handle errors
+      });
+  });
+};
+
+
+

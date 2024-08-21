@@ -263,9 +263,22 @@
           background-color: rgba(255, 209, 17, 1);
           border-radius: 50px;
           right: 0;
+          margin-right: 20px;
+          height: 50px;
+          width: 100px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          color: rgba(77, 77, 77, 1);
+        }
+
+        .detail {
+          background-color: rgba(255, 209, 17, 1);
+          border-radius: 50px;
+          right: 0;
           margin-right: 50px;
           height: 50px;
-          width: 150px;
+          width: 100px;
           display: flex;
           justify-content: center;
           align-items: center;

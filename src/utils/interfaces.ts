@@ -223,6 +223,34 @@ export interface ActivityApplicationItemProps {
   approval: boolean; // 主办方是否允许该用户参加，默认true
 }
 
+
+export interface ActivityApplicationItemDetailProps {
+  _id: string; // 该条信息的id
+  _openid: string; // 该条信息用户的openid
+  activityId: string; // 对应的活动id
+  hostOpenid: string; // 活动host的openid
+  userDescription: string; // 对主办方的话
+  userContact: string; //用户联系方式
+  userNickName: string;
+  userAvatarUrl: string;
+  approval: boolean; // 主办方是否允许该用户参加，默认true
+
+  applicantInfo: Record<string, any>; // 申请者的回答
+  applicationTitle: string; // 活动的title
+
+}
+
+export interface EurostayApplicationDetailProps {
+  _id: string;
+  _openid: string;
+  activityApplicationId: string;
+  activityId: string;
+  applicantInfo: {
+    [key: string]: string | number; // Index signature for dynamic keys with string or number values
+  };
+  title: string;
+};
+
 export interface ActivityParticipantCombinedItemProps {
   _id: string; // 该条信息的id
   _openid: string; // 该条信息用户的openid

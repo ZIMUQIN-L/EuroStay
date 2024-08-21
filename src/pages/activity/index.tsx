@@ -53,6 +53,8 @@ const Index = () => {
   useEffect(() => {
     activityInfoSearch().then((res: ActivityInfoItemProps[]) => {
       setActivities(res);
+    }).catch(error => {
+      console.error('Failed to fetch activities:', error);
     });
   }, []);
 
@@ -145,7 +147,7 @@ const Index = () => {
 
       {showEvents && (
         <View className='cards'>
-          {activities.map((activity, index) => (
+          {activities.length > 0 && activities.map((activity, index) => (
             <ActivityCard
               key={index}
               activity={activity}

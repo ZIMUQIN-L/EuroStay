@@ -11,7 +11,7 @@ import {
   ActivityParticipantCombinedItemProps,
 } from '@utils/interfaces';
 import Taro from '@tarojs/taro';
-import { activityMineInitiatedSearch } from '@common/database/activityInfo/activityInfo';
+import { activityMineInitiatedSearch, getEurostayActApplications } from '@common/database/activityInfo/activityInfo';
 
 const Index = () => {
   const [currentTab, setCurrentTab] = useState('initiated');
@@ -46,6 +46,7 @@ const Index = () => {
         setInitiatedProcessingActivity(
           mineIni.filter(activity => activity.active),
         );
+        console.log("initiatedProcessingActivity:::", initiatedProcessingActivity);
         setInitiatedFinishedActivity(
           mineIni.filter(activity => !activity.active),
         );

@@ -185,7 +185,7 @@ const ActicityApplicationPage = () => {
             (currentUser ? currentUser?.point : 0) -
               (activity ? activity?.point : 0),
           ).then(res1 => {
-            eurostayActApply(activity?.title, activity?._id, answer).then(
+            eurostayActApply(activity?.title, activity?._id, answer, res).then(
               res2 => {
                 Taro.hideLoading();
                 showSuccessModalEdit();
@@ -278,7 +278,7 @@ const ActicityApplicationPage = () => {
             (currentUser ? currentUser?.point : 0) -
               (activity ? activity?.point : 0),
           ).then(res1 => {
-            eurostayActApply(activity?.title, activity?._id, answer).then(
+            eurostayActApply(activity?.title, activity?._id, answer, res).then(
               res2 => {
                 Taro.hideLoading();
                 showSuccessModalEdit();

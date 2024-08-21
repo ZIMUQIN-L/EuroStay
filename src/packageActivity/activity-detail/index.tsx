@@ -34,6 +34,24 @@ import {
 } from '@utils/interfaces';
 import { userInfoSearch } from '@common/database/user/user';
 import { houseDetailSearch } from '@common/database/house/house';
+import {
+  WIFISelected,
+  WashMachineSelected,
+  SofaSelected,
+  RefrigeratorSeleted,
+  KitchenSeleted,
+  BathSelectd,
+  HeaterSelected,
+  AirConditionSelected,
+  WIFIUnselected,
+  WashMachineUnselected,
+  SofaUnselected,
+  RefrigeratorUnselected,
+  KitchenUnselected,
+  BathUnselected,
+  HeaterUnselected,
+  AirConditionUnselected,
+} from '@utils/cloudIcons';
 
 const DetailPage = () => {
   const router = useRouter();
@@ -46,7 +64,56 @@ const DetailPage = () => {
   const [houseInfoDetail, setHouseInfoDetail] = useState<{ [key: string]: string } | null>(null);
   const [houseIconDetail, setHouseIconDetail] = useState<{ [key: string]: boolean } | null>(null);
 
-
+  const RoomFacilities = [
+    {
+      value: 'WIFI',
+      text: 'WiFi',
+      imgSeleted: WIFISelected,
+      imgUnselectd: WIFIUnselected,
+    },
+    {
+      value: 'Bath',
+      text: '独立卫浴',
+      imgSeleted: BathSelectd,
+      imgUnselectd: BathUnselected,
+    },
+    {
+      value: 'WashMachine',
+      text: '洗衣机',
+      imgSeleted: WashMachineSelected,
+      imgUnselectd: WashMachineUnselected,
+    },
+    {
+      value: 'Kitchen',
+      text: '厨房',
+      imgSeleted: KitchenSeleted,
+      imgUnselectd: KitchenUnselected,
+    },
+    {
+      value: 'Refrigerator',
+      text: '冰箱',
+      imgSeleted: RefrigeratorSeleted,
+      imgUnselectd: RefrigeratorUnselected,
+    },
+    {
+      value: 'AirCondition',
+      text: '空调',
+      imgSeleted: AirConditionSelected,
+      imgUnselectd: AirConditionUnselected,
+    },
+    {
+      value: 'Sofa',
+      text: '沙发',
+      imgSeleted: SofaSelected,
+      imgUnselectd: SofaUnselected,
+    },
+    {
+      value: 'Heater',
+      text: '暖气',
+      imgSeleted: HeaterSelected,
+      imgUnselectd: HeaterUnselected,
+    },
+  ];
 
   useEffect(() => {
     const curUser = GlobalStore.userInfo;
@@ -225,14 +292,48 @@ const DetailPage = () => {
             ))}
           </View>
         )}
-      </View>
-      <View>
         <UserProfileCard
           user = {premiumHost}
         />
-      </View>
-      
+        {houseInfoDetail && (
+          <View>
+            {Object.entries(houseInfoDetail).map(([key, value], index) => (
+              <View className='description'>
+              <View key={index} className='description-info'>
+                <Text className='description-title'>{key}：</Text>
+                <Text className='description-content'>{value}</Text>
+              </View>
+              </View>
+            ))}
+          </View>
+        )}
 
+        {houseIconDetail && (
+          <View>
+            <View className='description'>
+              <View className='description-info'>
+                <Text className='description-title'>房间亮点与设施</Text>
+              </View>
+            </View>
+            <View className="facility-groups">
+              {RoomFacilities.filter(item => houseIconDetail[item.value]).map((item) => (
+                <View
+                  key={item.value}
+                  className='facility'
+                >
+                  <Image
+                    src={item.imgSeleted} // Always show the selected image since it’s true
+                    className='image'
+                  />
+                  <View className='text'>{item.text}</View>
+                </View>
+              ))}
+            </View>
+          </View>
+        )}
+
+
+      </View>
 
       <View className='contact-container'>
         <View className='price-info'>

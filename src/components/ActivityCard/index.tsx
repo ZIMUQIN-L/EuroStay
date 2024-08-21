@@ -21,6 +21,7 @@ interface ActivityCardProps {
 }
 
 const ActivityCard: React.FC<ActivityCardProps> = ({ activity, onClick }) => {
+  if (!activity) return null;
   const [imageSrc, setImageSrc] = React.useState(
     activity.images.length > 0 ? activity.images[0] : '',
   );
