@@ -100,6 +100,7 @@
   align-items: center;
   justify-content: center;
   width: 80%;
+  height: 50%;
   max-width: 500px;
   padding: 20px;
   background: #fff;
@@ -109,13 +110,12 @@
 
 .ad-image {
   width: 100%;
-  height: auto;
-  max-width: 100%;
-  max-height: 90vh;
-  min-height: 100px; /* Ensure the image has a minimum height */
+  height: 100%;
+  // max-width: 100%;
+  // max-height: 90vh;
+  // min-height: 150px; /* Ensure the image has a minimum height */
   object-fit: cover; /* Ensure the image scales properly */
 }
-
 
 
 
@@ -124,4 +124,22 @@
   right: 20px;
   top: 20px;
   cursor: pointer;
+  background-color: white; /* White background */
+  color: red; /* Red color for the "X" */
+  border-radius: 50%; /* Circular background */
+  padding: 5px; /* Add some padding for a better appearance */
+  font-weight: bold; /* Make the "X" bold */
+  font-size: 35px; /* Adjust the font size */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 40px; /* Width of the icon */
+  height: 40px; /* Height of the icon */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Add a subtle shadow */
 }
+// .close-icon {
+//   position: absolute;
+//   right: 20px;
+//   top: 20px;
+//   cursor: pointer;
+// }

@@ -113,9 +113,6 @@ const Houses = () => {
       {showAd ? (
         <View className='ad-modal'>
           <View className='ad-content'>
-            <Text>测试文字，看看是否显示</Text>
-            <Image className='ad-image' src={hostAdPicTest}   onLoad={() => console.log('Image loaded successfully!')}
-  onError={() => console.log('Failed to load image!')}/>
             <Image className='ad-image' src={hostAdPicTestTest} />
             <Close className='close-icon' onClick={handleCloseAd} />
           </View>
