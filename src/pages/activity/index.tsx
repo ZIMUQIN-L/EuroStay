@@ -20,7 +20,7 @@ import './index.scss';
 import { activityInfoSearch } from '@common/database/activityInfo/activityInfo';
 
 const Index = () => {
-  const [activeTab, setActiveTab] = useState('recommend');
+  const [activeTab, setActiveTab] = useState('posts');
   const [isShowPost, setIsShowPost] = useState(false);
   const [showTagBar, setShowTagBar] = useState(false);
   const [showBanner, setShowBanner] = useState(true);
@@ -33,7 +33,7 @@ const Index = () => {
     setActiveTab(tab);
     
     if (tab === 'posts') {
-      setShowTagBar(true);
+      setShowTagBar(false);
       setShowBanner(false);
       setShowEvents(false);
       setShowPosts(true);
@@ -42,12 +42,7 @@ const Index = () => {
       setShowBanner(true);
       setShowEvents(true);
       setShowPosts(false);
-    } else if (tab === 'recommend') {
-      setShowTagBar(false);
-      setShowBanner(true);
-      setShowEvents(false);
-      setShowPosts(true);
-    }
+    } 
   };
 
   useEffect(() => {
@@ -114,13 +109,6 @@ const Index = () => {
     <View className='activity-index'>
 
       <View className='tab-bar'>
-        <View
-          className={`tab-item ${activeTab === 'recommend' ? 'active' : ''}`}
-          onClick={() => handleTabChange('recommend')}
-          style={{ marginRight: '40px' }}
-        >
-          <Text>推荐</Text>
-        </View>
 
         <View
           className={`tab-item ${activeTab === 'posts' ? 'active' : ''}`}
