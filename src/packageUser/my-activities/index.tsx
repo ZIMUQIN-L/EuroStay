@@ -46,7 +46,6 @@ const Index = () => {
         setInitiatedProcessingActivity(
           mineIni.filter(activity => activity.active),
         );
-        console.log("initiatedProcessingActivity:::", initiatedProcessingActivity);
         setInitiatedFinishedActivity(
           mineIni.filter(activity => !activity.active),
         );

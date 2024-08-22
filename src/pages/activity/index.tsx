@@ -137,7 +137,7 @@ const Index = () => {
         <View className='cards'>
           {activities.length > 0 && activities.map((activity, index) => (
             <ActivityCard
-              key={index}
+              // key={index}
               activity={activity}
               onClick={() => navigateToDetail(activity)}
             />
