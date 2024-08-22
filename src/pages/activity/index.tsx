@@ -34,7 +34,7 @@ const Index = () => {
     
     if (tab === 'posts') {
       setShowTagBar(false);
-      setShowBanner(false);
+      setShowBanner(true);
       setShowEvents(false);
       setShowPosts(true);
     } else if (tab === 'events') {
