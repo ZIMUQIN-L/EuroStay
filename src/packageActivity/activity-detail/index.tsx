@@ -11,6 +11,7 @@ import { observer } from '@store/utils';
 import { useEffect, useState } from 'react';
 import './index.scss';
 import { useRouter } from '@tarojs/taro';
+import UserProfileCard from '@components/UserProfileCard';
 import {
   StarOutlined,
   LocationOutlined,
@@ -29,17 +30,91 @@ import {
   ActivityInfoItemProps,
   UserDetailInfoItemProps,
   UserItemProps,
+  HouseDetailItemProps,
   ActivityApplicationItemProps,
 } from '@utils/interfaces';
 import { userInfoSearch } from '@common/database/user/user';
+import { houseDetailSearch } from '@common/database/house/house';
+import {
+  WIFISelected,
+  WashMachineSelected,
+  SofaSelected,
+  RefrigeratorSeleted,
+  KitchenSeleted,
+  BathSelectd,
+  HeaterSelected,
+  AirConditionSelected,
+  WIFIUnselected,
+  WashMachineUnselected,
+  SofaUnselected,
+  RefrigeratorUnselected,
+  KitchenUnselected,
+  BathUnselected,
+  HeaterUnselected,
+  AirConditionUnselected,
+} from '@utils/cloudIcons';
 
 const DetailPage = () => {
   const router = useRouter();
   const activityId = router?.params?.id;
   const [activity, setActivity] = useState<ActivityInfoItemProps>();
-  const [hostInfo, setHostInfo] = useState<UserDetailInfoItemProps>();
+  const [hostInfo, setHostInfo] = useState<UserDetailInfoItemProps>();//主办方信息
   const [applicable, setApplicable] = useState(false);
   const [currentUser, setCurrentUser] = useState<UserDetailInfoItemProps>();
+  const [premiumHost, setPremiumHost] = useState<UserDetailInfoItemProps | undefined | null>(undefined);
+  const [houseInfoDetail, setHouseInfoDetail] = useState<{ [key: string]: string } | null>(null);
+  const [houseIconDetail, setHouseIconDetail] = useState<{ [key: string]: boolean } | null>(null);
+
+  const RoomFacilities = [
+    {
+      value: 'WIFI',
+      text: 'WiFi',
+      imgSeleted: WIFISelected,
+      imgUnselectd: WIFIUnselected,
+    },
+    {
+      value: 'Bath',
+      text: '独立卫浴',
+      imgSeleted: BathSelectd,
+      imgUnselectd: BathUnselected,
+    },
+    {
+      value: 'WashMachine',
+      text: '洗衣机',
+      imgSeleted: WashMachineSelected,
+      imgUnselectd: WashMachineUnselected,
+    },
+    {
+      value: 'Kitchen',
+      text: '厨房',
+      imgSeleted: KitchenSeleted,
+      imgUnselectd: KitchenUnselected,
+    },
+    {
+      value: 'Refrigerator',
+      text: '冰箱',
+      imgSeleted: RefrigeratorSeleted,
+      imgUnselectd: RefrigeratorUnselected,
+    },
+    {
+      value: 'AirCondition',
+      text: '空调',
+      imgSeleted: AirConditionSelected,
+      imgUnselectd: AirConditionUnselected,
+    },
+    {
+      value: 'Sofa',
+      text: '沙发',
+      imgSeleted: SofaSelected,
+      imgUnselectd: SofaUnselected,
+    },
+    {
+      value: 'Heater',
+      text: '暖气',
+      imgSeleted: HeaterSelected,
+      imgUnselectd: HeaterUnselected,
+    },
+  ];
 
   useEffect(() => {
     // console.log(GlobalStore.userInfo)
@@ -84,11 +159,22 @@ const DetailPage = () => {
     // }
     activityDetailSearch(activityId).then((res: ActivityInfoItemProps) => {
       setActivity(res);
+      console.log("activity::::", res);
       userInfoSearch(res._openid).then(
         (userInfoRes: UserDetailInfoItemProps[]) => {
           setHostInfo(userInfoRes[0]);
         },
       );
+
+      if (res.houseInfoDetail) {
+        setHouseInfoDetail(res.houseInfoDetail);
+      }
+
+      if (res.houseIconDetail) {
+        setHouseIconDetail(res.houseIconDetail);
+      }
+
+
       activityContainUser(activityId, GlobalStore.userInfo._openid).then(
         (items: ActivityApplicationItemProps[]) => {
           if (items.length == 0) {
@@ -96,8 +182,24 @@ const DetailPage = () => {
           }
         },
       );
-      // todo also change it for eurostay act @PJ
-    });
+
+    // 判断是否有 premiumHost 并获取其信息
+    if (res.premiumHost) {
+      userInfoSearch(res.premiumHost).then(
+        (ownerInfo: UserDetailInfoItemProps[]) => {
+          if (ownerInfo && ownerInfo.length > 0) {
+            setPremiumHost(ownerInfo[0]);
+          } else {
+            setPremiumHost(null); // 如果没有返回有效的数据，设置为空
+          }
+        }
+      );
+    } else {
+      setPremiumHost(null); // 如果没有 premiumHost，设置为空
+    }
+    
+  });
+
   }, []);
 
   const handleClickHostAvatar = () => {
@@ -213,7 +315,61 @@ const DetailPage = () => {
             <Text className='description-content'>{activity?.description}</Text>
           </View>
         </View>
+        {activity?.detail && (
+          <View>
+            {Object.entries(activity.detail).map(([key, value], index) => (
+              <View className='description'>
+              <View key={index} className='description-info'>
+                <Text className='description-title'>{key}：</Text>
+                <Text className='description-content'>{value}</Text>
+              </View>
+              </View>
+            ))}
+          </View>
+        )}
+        <UserProfileCard
+          user = {premiumHost}
+        />
+        {houseInfoDetail && (
+          <View>
+            {Object.entries(houseInfoDetail).map(([key, value], index) => (
+              <View className='description'>
+              <View key={index} className='description-info'>
+                <Text className='description-title'>{key}：</Text>
+                <Text className='description-content'>{value}</Text>
+              </View>
+              </View>
+            ))}
+          </View>
+        )}
+
+        {houseIconDetail && (
+          <View>
+            <View className='description'>
+              <View className='description-info'>
+                <Text className='description-title'>房间亮点与设施</Text>
+              </View>
+            </View>
+            <View className="facility-groups">
+              {RoomFacilities.filter(item => houseIconDetail[item.value]).map((item) => (
+                <View
+                  key={item.value}
+                  className='facility'
+                >
+                  <Image
+                    src={item.imgSeleted} // Always show the selected image since it’s true
+                    className='image'
+                  />
+                  <View className='text'>{item.text}</View>
+                </View>
+              ))}
+            </View>
+          </View>
+        )}
+
+
       </View>
+
       <View className='contact-container'>
         <View className='price-info'>
           <Text className='price'>

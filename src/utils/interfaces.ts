@@ -205,6 +205,10 @@ export interface ActivityInfoItemProps {
   banner: boolean; // 活动是否展示在banner上
   official: boolean; // 是否是官方活动
   applyPage: string; // 未来的报名页面，对于eurostay活动
+  detail?: { [key: string]: string } | null; // 杂七杂八的信息
+  premiumHost?: string | null; // 是否是推荐活动，是的话，显示房东card
+  houseInfoDetail?: { [key: string]: string } | null; // 是否是推荐活动，是的话, 并且关联房源的话，显示对应的房源信息
+  houseIconDetail?: { [key: string]: boolean } | null; // 是否是推荐活动，是的话, 并且关联房源的话，显示对应的房源ICON setting
 }
 
 export interface ActivityApplicationItemProps {
@@ -218,6 +222,34 @@ export interface ActivityApplicationItemProps {
   userAvatarUrl: string;
   approval: boolean; // 主办方是否允许该用户参加，默认true
 }
+
+
+export interface ActivityApplicationItemDetailProps {
+  _id: string; // 该条信息的id
+  _openid: string; // 该条信息用户的openid
+  activityId: string; // 对应的活动id
+  hostOpenid: string; // 活动host的openid
+  userDescription: string; // 对主办方的话
+  userContact: string; //用户联系方式
+  userNickName: string;
+  userAvatarUrl: string;
+  approval: boolean; // 主办方是否允许该用户参加，默认true
+
+  applicantInfo: Record<string, any>; // 申请者的回答
+  applicationTitle: string; // 活动的title
+
+}
+
+export interface EurostayApplicationDetailProps {
+  _id: string;
+  _openid: string;
+  activityApplicationId: string;
+  activityId: string;
+  applicantInfo: {
+    [key: string]: string | number; // Index signature for dynamic keys with string or number values
+  };
+  title: string;
+};
 
 export interface ActivityParticipantCombinedItemProps {
   _id: string; // 该条信息的id

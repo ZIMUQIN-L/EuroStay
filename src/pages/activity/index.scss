@@ -1,3 +1,46 @@
+.tab {
+  &-bar {
+    border-top: 1px solid #d9d9d9;
+    display: flex;
+    flex-direction: row;
+    background-color: white;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 40px;
+    position: fixed;
+    z-index: 1000;
+    top: 0;
+    width: 100%;
+    height: 80px;
+  }
+
+  &-item {
+    padding: 20px 40px;
+    display: flex;
+    flex-direction: row;
+
+    image {
+      width: 48px;
+      height: 48px;
+      margin-right: 10px;
+    }
+
+    Text {
+      color: #979797;
+      transition: color 0.3s;
+    }
+
+    &.active Text {
+      color: #6b63b9;
+    }
+
+    &.active {
+      border-bottom: #6b63b9 6px solid;
+    }
+  }
+}
+
+
 .activity-index {
   padding-bottom: 150px;
   .header {

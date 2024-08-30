@@ -18,11 +18,14 @@ import {
   activityUsersSearch,
   activityAppApproveUpdate,
   activityActiveUpdate,
+  activityDetailSearch,
+  getEurostayActApplication
 } from '@common/database/activityInfo/activityInfo';
 import {
   ActivityInfoItemProps,
   UserItemProps,
   ActivityApplicationItemProps,
+  ActivityApplicationItemDetailProps,
   ActivityParticipantCombinedItemProps,
 } from '@utils/interfaces';
 
@@ -74,6 +77,13 @@ const ActivityCard: React.FC<ActivityCardProps> = ({
       url: `/packageActivity/activity-detail/index?id=${activity._id}`,
     });
   };
+
+
+  const handleClickSubmissionDetail = eurostayApplyId => {
+    Taro.navigateTo({
+      url: `/packageActivity/activity-submission-detail/index?id=${eurostayApplyId}`,
+    });
+  }
 
   const handleClickClipboard = contactInfo => {
     Taro.setClipboardData({
@@ -263,6 +273,13 @@ const ActivityCard: React.FC<ActivityCardProps> = ({
                     onClick={() => handleClickClipboard(user.userContact)}
                   >
                     复制
+                  </View>
+
+                  <View
+                    className='detail'
+                    onClick={() => handleClickSubmissionDetail(user._id)}
+                  >
+                    详情
                   </View>
                 </View>
               </View>

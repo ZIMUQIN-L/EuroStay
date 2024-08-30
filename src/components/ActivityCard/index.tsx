@@ -21,6 +21,7 @@ interface ActivityCardProps {
 }
 
 const ActivityCard: React.FC<ActivityCardProps> = ({ activity, onClick }) => {
+  if (!activity) return null;
   const [imageSrc, setImageSrc] = React.useState(
     activity.images.length > 0 ? activity.images[0] : '',
   );
@@ -45,6 +46,9 @@ const ActivityCard: React.FC<ActivityCardProps> = ({ activity, onClick }) => {
 
   return (
     <View className='activity-card' onClick={onClick}>
+      {activity.premiumHost && (
+        <View className='corner-label'>精品Host系列</View>
+      )}
       <Image
         src={imageSrc}
         className='activity-image'

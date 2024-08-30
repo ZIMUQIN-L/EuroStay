@@ -104,3 +104,6 @@ export const GreyPeopleIcon = `${cloudPath}/grey-people-icon.svg`;
 export const YellowPoint = `${cloudPath}/yellow-point.svg`;
 export const ActivityHomeIcon = `${cloudPath}/activity-home.svg`;
 export const ActivitySelectedHomeIcon = `${cloudPath}/activity-home-selected.svg`
+
+export const PlayCircle = `${cloudPath}/play_circle.svg`;
+export const Views = `${cloudPath}/views.svg`;

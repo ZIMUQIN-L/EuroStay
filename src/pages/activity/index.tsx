@@ -10,20 +10,46 @@ import {
 } from '@utils/cloudIcons';
 import GlobalStore from '@store/GlobalStore';
 import { ActivityInfoItemProps } from '@utils/interfaces';
-import Taro from '@tarojs/taro';
+import Taro, { showTabBar } from '@tarojs/taro';
 import CustomTabBar from '@components/CustomTabBar';
 import ActivityCard from '@components/ActivityCard';
 import Banner from '@components/Banner';
 import TagBar from '@components/TagBar';
+import Posts from './posts'
 import './index.scss';
 import { activityInfoSearch } from '@common/database/activityInfo/activityInfo';
 
 const Index = () => {
+  const [activeTab, setActiveTab] = useState('posts');
   const [isShowPost, setIsShowPost] = useState(false);
+  const [showTagBar, setShowTagBar] = useState(false);
+  const [showBanner, setShowBanner] = useState(true);
+  // for 活动
+  const [showEvents, setShowEvents] = useState(false);
+  // for 推荐和帖子
+  const [showPosts, setShowPosts] = useState(true);
+
+  const handleTabChange = (tab) => {
+    setActiveTab(tab);
+    
+    if (tab === 'posts') {
+      setShowTagBar(false);
+      setShowBanner(true);
+      setShowEvents(false);
+      setShowPosts(true);
+    } else if (tab === 'events') {
+      setShowTagBar(true);
+      setShowBanner(true);
+      setShowEvents(true);
+      setShowPosts(false);
+    } 
+  };
 
   useEffect(() => {
     activityInfoSearch().then((res: ActivityInfoItemProps[]) => {
       setActivities(res);
+    }).catch(error => {
+      console.error('Failed to fetch activities:', error);
     });
   }, []);
 
@@ -81,17 +107,44 @@ const Index = () => {
 
   return (
     <View className='activity-index'>
-      <Banner />
-      {/* <TagBar /> */}
-      <View className='cards'>
-        {activities.map((activity, index) => (
-          <ActivityCard
-            key={index}
-            activity={activity}
-            onClick={() => navigateToDetail(activity)}
-          />
-        ))}
+
+      <View className='tab-bar'>
+
+        <View
+          className={`tab-item ${activeTab === 'posts' ? 'active' : ''}`}
+          onClick={() => handleTabChange('posts')}
+          style={{ marginRight: '40px' }}
+        >
+          <Text>帖子</Text>
+        </View>
+
+        <View
+          className={`tab-item ${activeTab === 'events' ? 'active' : ''}`}
+          onClick={() => handleTabChange('events')}
+          style={{ marginRight: '40px' }}
+        >
+          <Text>活动</Text>
+        </View>
       </View>
+
+      <View style={{ height: '40px' }} />
+
+      {showBanner && <Banner />}
+      {showTagBar && <TagBar />}
+      {showPosts && <Posts />}
+
+      {showEvents && (
+        <View className='cards'>
+          {activities.length > 0 && activities.map((activity, index) => (
+            <ActivityCard
+              // key={index}
+              activity={activity}
+              onClick={() => navigateToDetail(activity)}
+            />
+          ))}
+        </View>
+      )}
+
       <View
         className='add-button'
         onClick={() => {
