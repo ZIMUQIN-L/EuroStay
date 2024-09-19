@@ -6,8 +6,8 @@ import Taro from '@tarojs/taro';
 const ActivityDetailSection = ({
   title,
   imageUrls,
-  dateInfo,
-  timeInfo,
+  startTime,
+  endTime,
   organizer,
   location,
   hostOpenid,
@@ -36,7 +36,7 @@ const ActivityDetailSection = ({
           <View className='detail-item'>
             <CalendarOutlined className='icon' />
             <Text className='text'>
-              {dateInfo} - {timeInfo}
+              {startTime} - {endTime}
             </Text>
           </View>
         </View>

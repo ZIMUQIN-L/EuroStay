@@ -54,6 +54,7 @@ const Index = () => {
   useEffect(() => {
     const userInfoList: UserItemProps = GlobalStore.userInfo;
     setUserInfo(userInfoList);
+    console.log('Activity ID:', activityId);
     // if id != none then search info @PJ
     if (activityId != 'none') {
       activityDetailSearch(activityId).then(

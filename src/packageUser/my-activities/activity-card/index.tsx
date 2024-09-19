@@ -101,7 +101,7 @@ const ActivityCard: React.FC<ActivityCardProps> = ({
   const handleActivityEdit = () => {
     if (status == 1) {
       Taro.navigateTo({
-        url: `/packageActivity/activity-post/index?activityId=${activity._id}`,
+        url: `/packageActivity/activity-post/index?id=${activity._id}`,
       });
     }
   };

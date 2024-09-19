@@ -200,6 +200,7 @@ export interface ActivityInfoItemProps {
   contact: string; // 活动发起人联系方式 str
   price: number; //用户花销 number
   point: number;
+  question: string; // 活动主办方的问题 str
   active: boolean; //活动是否还能报名 bool
   helloMessage: string; //活动主办发打招呼消息 str
   banner: boolean; // 活动是否展示在banner上

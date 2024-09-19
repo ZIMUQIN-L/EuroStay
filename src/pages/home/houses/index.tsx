@@ -12,7 +12,9 @@ import { NoDataLogo } from '@utils/cloudIcons';
 import hostAdPic from '@assets/images/host-ad-toscana-florence.png';
 import { Close } from '@taroify/icons'; 
 import hostAdPicTest from './home.png'; 
+import { premiumActivitySearch } from '@common/database/activityInfo/activityInfo';
 import hostAdPicTestTest from './host-ad-toscana-florence.png'
+import ActivityCard from '@components/ActivityCard';
 
 /**
  * 主页的房源列表板块
@@ -58,9 +60,28 @@ const Houses = () => {
   // delete the testdata for now
   const [demoData, setDemoData] = useState<HouseItemProps[]>([]);
 
+  // const fetchInitialData = () => {
+  //   houseInfoSearch('', '', '').then((houseData: HouseItemProps[]) => {
+  //     console.log('iniiiii houseData', houseData);
+  //     setDemoData(houseData);
+  //   });
+  // };
+
   const fetchInitialData = () => {
-    houseInfoSearch('', '', '').then((houseData: HouseItemProps[]) => {
-      setDemoData(houseData);
+    Promise.all([
+      houseInfoSearch('', '', ''),
+      premiumActivitySearch()
+    ]).then(([houseData, activityData]) => {
+      // const combined = [...houseData, ...activityData].sort((a, b) => {
+      //   // 这里可以添加排序逻辑,例如按创建时间排序
+      //   return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+      // });
+      const combined = [...activityData, ...houseData];
+      console.log('iniiiii activityData', activityData);
+      console.log('iniiiii houseData', houseData);
+      setDemoData(combined);
+    }).catch(error => {
+      console.error('Error fetching data:', error);
     });
   };
 
@@ -108,6 +129,12 @@ const Houses = () => {
     setShowAd(false);
   };
 
+  const handleActivityClick = (activityId: string) => {
+    Taro.navigateTo({
+      url: `/packageActivity/activity-detail/index?id=${activityId}` // 跳转到活动详情页面
+    });
+  };
+
   return (
     <View className='home' id='home'>
       {showAd ? (
@@ -144,8 +171,17 @@ const Houses = () => {
             </View>
           ) : (
             <View className='house-list'>
-              {demoData.map(house => (
-                <HouseItem key={house._id} {...house} />
+              {demoData.map(item => (
+                item.premiumHost ? ( // 否则为活动
+                  <ActivityCard 
+                    // key={item._id} 
+                    activity={item} 
+                    onClick={() => handleActivityClick(item._id)} 
+                    // isPremiumHost={item.premiumHost !== undefined} // 根据需要传递属性
+                  />
+                ) : ( // 判断是否为房源
+                  <HouseItem key={item._id} {...item} />
+                )
               ))}
             </View>
           )}
