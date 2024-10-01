@@ -60,7 +60,6 @@ const ActicityApplicationPage = () => {
       try {
         // If primary data fetch fails (either no data or error), try the fallback method
         const fallbackData = await activityApplicationSearchById(applicationSubmissionId);
-        console.log('fallbackData 63:', fallbackData);
         if (fallbackData && Object.keys(fallbackData).length > 0) {
           setApplicationData(fallbackData[0] as ActivityApplicationItemProps);
           console.log('fallbackData 66:', applicationData);

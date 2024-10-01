@@ -55,6 +55,7 @@ export const activityInfoPost = async (
 
 // 查询活动详细信息
 export const activityDetailSearch = async activityId => {
+  console.log('activityDetailSearch 58:', activityId);
   const db = wx.cloud.database();
   return new Promise((resolve, reject) => {
     db.collection('ActivityInfo')
@@ -65,6 +66,28 @@ export const activityDetailSearch = async activityId => {
         success: function (res) {
           resolve(res.data[0]);
         },
+      });
+  });
+};
+
+
+// 搜索精品Host活动
+export const premiumActivitySearch = async () => {
+  const db = wx.cloud.database();
+  const _ = db.command;
+  return new Promise((resolve, reject) => {
+    db.collection('ActivityInfo')
+      .where({
+        premiumHost: _.exists(true).and(_.neq('')), // 确保 premiumHost 字段存在且不为空
+        active: true
+      })
+      .get({
+        success: function (res) {
+          resolve(res.data);
+        },
+        fail: function (err) {
+          reject(err);
+        }
       });
   });
 };
@@ -197,6 +220,7 @@ export const activityApplicationSearchById = async activityApplicationId => {
       })
       .get({
         success: function (res) {
+          console.log('activityApplicationSearchById 66:', res.data);
           resolve(res.data);
         },
       });

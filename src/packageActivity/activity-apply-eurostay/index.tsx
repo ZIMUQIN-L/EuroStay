@@ -63,6 +63,8 @@ const ActicityApplicationPage = () => {
     activityDetailSearch(activityId).then((res: ActivityInfoItemProps) => {
       setActivity(res);
       setStartTime(res.startTime);
+      setEndTime(res.endTime);
+      setAppQuestion(res.question);
       userInfoSearch(res._openid).then(
         (userInfoRes: UserDetailInfoItemProps[]) => {
           setActivityHost(userInfoRes[0]);
@@ -80,6 +82,10 @@ const ActicityApplicationPage = () => {
 
   const handleStartTimeChange = newStartTime => {
     setStartTime(newStartTime);
+  };
+
+  const handleEndTimeChange = newEndTime => {
+    setEndTime(newEndTime);
   };
 
   const showSuccessModalEdit = () => {
@@ -113,6 +119,7 @@ const ActicityApplicationPage = () => {
   const [appSelfIntro, setAppSelfIntro] = useState('');
   const [appReplyToHost, setAppReplyToHost] = useState('');
   const [startTime, setStartTime] = useState('');
+  const [endTime, setEndTime] = useState('');
 
 
 
@@ -139,6 +146,7 @@ const ActicityApplicationPage = () => {
         appNum == 0 ||
         (appNum > 1 && appMultiInfo === '')||
         startTime == '' ||
+        endTime == '' ||
         appBringtoHost == '' ||
         appSelfIntro == '' ||
         (appQuestion && appReplyToHost === '') 
@@ -157,7 +165,8 @@ const ActicityApplicationPage = () => {
           微信号: appWechat,
           报名人数: appNum,
           同伴信息: appMultiInfo,
-          预计拜访时间: startTime,
+          预计拜访到达时间: startTime,
+          预计拜访离开时间: endTime,
           为Host带来什么: appBringtoHost,
           自我介绍: appSelfIntro,
           问题回答: appReplyToHost
@@ -296,8 +305,8 @@ const ActicityApplicationPage = () => {
       <ActivityDetailSection
         title={activity?.title}
         imageUrls={activity?.images}
-        dateInfo={activity?.startTime}
-        timeInfo={activity?.endTime}
+        startTime={activity?.startTime}
+        endTime={activity?.endTime}
         organizer={activityHost?.nickName}
         location={activity?.location}
         hostOpenid={activity?._openid}
@@ -439,7 +448,7 @@ const ActicityApplicationPage = () => {
             <View className='des-part'>
               <View className='des-container'>
                 <Text className='des-title'>
-                  您的预计拜访时间
+                  您的预计拜访开始时间
                 </Text>
                 <View
                   className='des-text-container'
@@ -447,6 +456,22 @@ const ActicityApplicationPage = () => {
                 >
                   <View className='act-time-picker-container'>
                     <DateTimePicker value={startTime} onChange={handleStartTimeChange} />
+                  </View>
+                </View>
+              </View>
+            </View>
+
+            <View className='des-part'>
+              <View className='des-container'>
+                <Text className='des-title'>
+                  您的预计拜访离开时间
+                </Text>
+                <View
+                  className='des-text-container'
+                  //   style={{ minHeight: '80px' }}
+                >
+                  <View className='act-time-picker-container'>
+                    <DateTimePicker value={endTime} onChange={handleEndTimeChange} />
                   </View>
                 </View>
               </View>
@@ -498,26 +523,26 @@ const ActicityApplicationPage = () => {
 
 
             {appQuestion && (
-            <View className='des-part'>
-              <View className='des-container'>
-                <Text className='des-title'>
-                  回答一下Host的问题吧
-                </Text>
-                <View
-                  className='des-text-container'
-                  //   style={{ minHeight: '80px' }}
-                >
-                  <View className='des-text'>
-                    <Input
-                      value={appReplyToHost}
-                      style={{ color: '#979797' }}
-                      onInput={e => setAppReplyToHost(e.detail.value)}
-                      placeholder={appQuestion || '请回答Host的问题'} 
-                    />
+              <View className='des-part'>
+                <View className='des-container'>
+                  <Text className='des-title'>
+                    回答一下Host的问题吧
+                  </Text>
+                  <Text className='des-question'> {/* 新增的行 */}
+                    {appQuestion}
+                  </Text>
+                  <View className='des-text-container'>
+                    <View className='des-text'>
+                      <Input
+                        value={appReplyToHost}
+                        style={{ color: '#979797' }}
+                        onInput={e => setAppReplyToHost(e.detail.value)}
+                        placeholder='请回答Host的问题' // 保留占位符
+                      />
+                    </View>
                   </View>
                 </View>
               </View>
-            </View>
             )}
 
 
