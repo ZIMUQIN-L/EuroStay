@@ -10,6 +10,7 @@ import AccommodationIcon from '@assets/images/accommodation.svg';
 import AccommodationIconSelected from '@assets/images/accommodation-selected.svg';
 import './index.scss';
 import SeekingAccommodation from './seeking-accomadation';
+import { userGetNickName } from '@common/database/user/user';
 import {
   PostButton,
   PurpleClose,

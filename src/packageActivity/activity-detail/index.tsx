@@ -28,6 +28,7 @@ import {
 import {
   ActivityInfoItemProps,
   UserDetailInfoItemProps,
+  MockUserDetailInfoItemProps,
   UserItemProps,
   HouseDetailItemProps,
   ActivityApplicationItemProps,
@@ -149,7 +150,9 @@ const DetailPage = () => {
       );
 
     // 判断是否有 premiumHost 并获取其信息
-    if (res.premiumHost) {
+    if (res.hostInfo) {
+      setPremiumHost(res.hostInfo as MockUserDetailInfoItemProps); // 确保类型匹配o
+    } else if (res.premiumHost) {
       userInfoSearch(res.premiumHost).then(
         (ownerInfo: UserDetailInfoItemProps[]) => {
           if (ownerInfo && ownerInfo.length > 0) {
@@ -160,7 +163,7 @@ const DetailPage = () => {
         }
       );
     } else {
-      setPremiumHost(null); // 如果没有 premiumHost，设置为空
+      setPremiumHost(null); // 如果没有 hostInfo 和 premiumHost，设置为空
     }
     
   });

@@ -186,6 +186,13 @@ export interface UserDetailInfoItemProps {
   point: number;
 }
 
+export interface MockUserDetailInfoItemProps {
+  nickName: string; //用户名称 string
+  avatarUrl: string; //用户头像 string
+  aboutMe: { [key: string]: any };
+  
+}
+
 export interface ActivityInfoItemProps {
   _id: string; // 该条信息的id
   _openid: string; // 该条信息用户的openid
@@ -210,6 +217,7 @@ export interface ActivityInfoItemProps {
   premiumHost?: string | null; // 是否是推荐活动，是的话，显示房东card
   houseInfoDetail?: { [key: string]: string } | null; // 是否是推荐活动，是的话, 并且关联房源的话，显示对应的房源信息
   houseIconDetail?: { [key: string]: boolean } | null; // 是否是推荐活动，是的话, 并且关联房源的话，显示对应的房源ICON setting
+  hostInfo?: MockUserDetailInfoItemProps | null; // 活动主办方信息
 }
 
 export interface ActivityApplicationItemProps {
