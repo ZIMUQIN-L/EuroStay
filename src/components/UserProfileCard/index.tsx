@@ -60,7 +60,7 @@ const UserProfileCard = ({ user }) => {
       </View>
       <View className="profile-footer">
         <Text className="footer-text">
-          嗨，我是{user.nickName}！这里可以写下主持方想对活动参与者说的话，并简单介绍自己，让更多的人参与到您的活动中来！（可以在这里放上xhs的账号）
+          {/* 嗨，我是{user.nickName}！这里可以写下主持方想对活动参与者说的话，并简单介绍自己，让更多的人参与到您的活动中来！（可以在这里放上xhs的账号） */}
         </Text>
       </View>
     </View>
