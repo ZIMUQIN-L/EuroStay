@@ -72,11 +72,11 @@ const Houses = () => {
       houseInfoSearch('', '', ''),
       premiumActivitySearch()
     ]).then(([houseData, activityData]) => {
-      const combined = [...houseData, ...activityData].sort((a, b) => {
-        // 这里可以添加排序逻辑,例如按创建时间排序
-        return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
-      });
-      // const combined = [...activityData, ...houseData];
+      // const combined = [...houseData, ...activityData].sort((a, b) => {
+      //   // 这里可以添加排序逻辑,例如按创建时间排序
+      //   return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+      // });
+      const combined = [...activityData, ...houseData];
       setDemoData(combined);
     }).catch(error => {
       console.error('Error fetching data:', error);
