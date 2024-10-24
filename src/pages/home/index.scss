@@ -49,6 +49,63 @@ page {
   padding-top: 80px;
 }
 
+
+.activity-text-button {
+  margin: 10px 0;
+  padding: 10px;
+  background-color: #a6a0e0;
+  color: white;
+  border-radius: 5px;
+  text-align: center;
+
+  position: fixed;
+  bottom: 200px;
+  right: 70px;
+  width: 40px;
+}
+
+.house-text-button {
+  margin: 10px 0;
+  padding: 10px;
+  background-color: #a6a0e0;
+  color: white;
+  border-radius: 5px;
+  text-align: center;
+
+  position: fixed;
+  bottom: 270px;
+  right: 70px;
+  width: 40px;
+}
+.house-request-text-button {
+  margin: 10px 0;
+  padding: 10px;
+  background-color: #a6a0e0;
+  color: white;
+  border-radius: 5px;
+  text-align: center;
+
+  position: fixed;
+  bottom: 340px;
+  right: 70px;
+  width: 40px;
+}
+
+.close-text-button {
+  margin: 10px 0;
+  padding: 10px;
+  background-color: #a6a0e0;
+  color: white;
+  border-radius: 5px;
+  text-align: center;
+
+  position: fixed;
+  bottom: 410px;
+  right: 70px;
+  width: 40px;
+}
+
+
 .add-button {
   position: fixed;
   bottom: 180px;
