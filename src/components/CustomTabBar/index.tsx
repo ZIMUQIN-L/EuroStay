@@ -81,18 +81,18 @@ const CustomTabBar: React.FC<CustomTabBarProps> = ({ onHomeSelected }) => {
           </Text>
         </View>
 
-        <View className='item' onClick={() => handleTabClick('activity')}>
+        <View className='item' onClick={() => handleTabClick('travel')}>
           <View className='tab-icon'>
             <Image
               src={
-                currentTab === 'activity' ? ActivitySelectedIcon : ActivityIcon
+                currentTab === 'travel' ? ActivitySelectedIcon : ActivityIcon
               }
             />
           </View>
           <Text
-            className={`tab-text ${currentTab === 'activity' ? 'active' : ''}`}
+            className={`tab-text ${currentTab === 'travel' ? 'active' : ''}`}
           >
-            活动
+            旅迹
           </Text>
         </View>
 

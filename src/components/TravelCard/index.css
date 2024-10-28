@@ -1,0 +1,42 @@
+.travel-card {
+    display: flex;
+    background-color: #f9f9f9;
+    padding: 16px;
+    border-radius: 8px;
+    margin-bottom: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: transform 0.2s;
+  }
+  
+  .travel-card:hover {
+    transform: scale(1.02);
+  }
+  
+  .travel-image {
+    width: 60px;
+    height: 60px;
+    border-radius: 8px;
+    margin-right: 16px;
+  }
+  
+  .travel-info {
+    flex: 1;
+  }
+  
+  .travel-title {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 4px;
+  }
+  
+  .travel-location,
+  .travel-dates,
+  .travel-status,
+  .travel-description {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 4px;
+  }
+  

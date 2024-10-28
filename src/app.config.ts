@@ -5,6 +5,7 @@ export default {
     'pages/home/index',
     'pages/user-profile/index',
     'pages/activity/index',
+    'pages/travel/index',
   ],
   subPackages: [
     {
@@ -60,8 +61,8 @@ export default {
         text: '用户profile',
       },
       {
-        pagePath: 'pages/activity/index',
-        text: '活动',
+        pagePath: 'pages/travel/index',
+        text: '旅迹',
       },
     ],
   },
