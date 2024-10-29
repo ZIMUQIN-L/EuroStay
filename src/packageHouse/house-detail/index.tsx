@@ -14,7 +14,7 @@ import HouseReviewCard from './house-review-card';
 import HouseOwner from './house-owner';
 import HouseSummary from './house-summary';
 import HostDetail from './host-detail';
-import TextBlock from './TextBlock';
+import TextBlock from '../../components/TextBlock';
 
 const Index = () => {
   const router = useRouter();
