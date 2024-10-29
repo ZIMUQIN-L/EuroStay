@@ -1,0 +1,47 @@
+.house-summary-wrap {
+  background-color: #ffffff;
+  display: flex;
+  justify-content: space-between;
+  padding: 30px 50px;
+  align-items: center;
+  .house-summary-left {
+    .house-summary-title {
+      font-size: 38px;
+      color: #191919;
+      margin-bottom: 5px;
+    }
+    .house-summary-location {
+      font-size: 24px;
+      color: #191919;
+      margin-bottom: 5px;
+    }
+    .house-summary-des {
+      font-size: 24px;
+      color: #191919;
+    }
+  }
+  .house-summary-right {
+    padding: 20px 18px;
+    border-radius: 10px;
+    height: 100px;
+    width: 170px;
+    background-color: #f2f2f2;
+    .house-summary-reviews-top {
+      font-size: 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      .house-summary-reviews-ratings {
+        border-radius: 15px;
+        padding: 5px 25px;
+        background-color: #979797;
+        color: #ffffff;
+      }
+    }
+    .house-summary-reviews-bottom {
+      color: #979797;
+      font-size: 28px;
+      margin-top: 20px;
+    }
+  }
+}

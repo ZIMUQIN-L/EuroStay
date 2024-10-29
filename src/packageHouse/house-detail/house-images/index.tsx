@@ -2,6 +2,7 @@ import { Swiper, SwiperItem, View, Image } from '@tarojs/components';
 import { HouseDetailItemProps } from '@utils/interfaces';
 import { DefaultHouse } from '@utils/cloudIcons';
 import { filterValidImageUrls } from '@utils/validationUtil';
+import './index.scss';
 
 const HouseImagesSwiper: React.FC<HouseDetailItemProps> = house => {
   const fullContainerStyle = {
@@ -11,7 +12,7 @@ const HouseImagesSwiper: React.FC<HouseDetailItemProps> = house => {
   const imageUrls = filterValidImageUrls(house.images);
 
   return (
-    <View className='images'>
+    <View className='detail-page-images'>
       <Swiper
         indicatorColor='#999'
         indicatorActiveColor='#333'

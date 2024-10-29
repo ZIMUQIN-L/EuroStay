@@ -154,34 +154,29 @@ const HouseContact: React.FC<HouseDetailItemProps> = house => {
         },
       });
     } else {
-    //   setModalOpen(true);
-    Taro.navigateBack({
+      //   setModalOpen(true);
+      Taro.navigateBack({
         delta: 1,
       });
     }
   };
   return (
     <View>
-      <View className='lists'>
-        <View className='contact-container'>
+      <View className='contact-container'>
+        <View className='contact-container-left'>
+          <View className='price-container'>旅行币/晚</View>
           <View className='date-container'>
             <Text className='date-text'>{formatDate(house.start_date)}</Text>
             <Text className='date-separator'>至</Text>
             <Text className='date-text'>{formatDate(house.end_date)}</Text>
           </View>
-          <View className='right-section'>
-            {/* <View className="icon-container">
-            <Image src={Star} className="star-icon" />
-          </View> */}
-            <View
-              className='contact-button'
-              onClick={onCreateCustomCardFromTenant}
-            >
-              回到主页联系房主
-            </View>
-          </View>
+        </View>
+
+        <View className='contact-button' onClick={onCreateCustomCardFromTenant}>
+          联系房主
         </View>
       </View>
+
       {isModalOpen && (
         <RequestCustomCard
           onClose={() => setModalOpen(false)}
