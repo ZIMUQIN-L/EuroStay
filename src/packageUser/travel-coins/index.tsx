@@ -22,7 +22,7 @@ const EarnMoreCoins = () => {
       <View className='header'>
         <Text className='title'>获取更多旅行币</Text>
         <Text className='link' onClick={() => Taro.navigateTo({ url: '/pages/coin-rules/index' })}>
-          旅行币规则
+          旅行币规则 &gt;
         </Text>
       </View>
       <View className='task-list'>

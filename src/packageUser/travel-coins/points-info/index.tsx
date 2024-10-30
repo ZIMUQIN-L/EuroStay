@@ -24,7 +24,7 @@ const PointsInfo: React.FC<PointsInfoProps> = ({
       <View className='header'>
         <Text className='title'>我的旅行币</Text>
         <Text className='link' onClick={() => Taro.navigateTo({ url: '/pages/coin-info/index' })}>
-          了解旅行币
+          了解旅行币 &gt;
         </Text>
       </View>
       <View className='balance-box'>
