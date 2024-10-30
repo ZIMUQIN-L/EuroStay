@@ -8,3 +8,23 @@
   flex-direction: column;
   gap: 12px;
 }
+
+.section-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.ongoing-section, .historical-section {
+  margin-bottom: 20px;
+}
+
+.section-container {
+  padding: 10px;
+  background-color: #f5f5f5;  // 使用浅灰色背景以增强可读性
+  border-bottom: 1px solid #e0e0e0;  // 添加底部边框以视觉区分
+  font-size: 30px;  // 适当的字体大小
+  font-weight: bold;  // 加粗字体
+  color: #333;  // 字体颜色
+}
+

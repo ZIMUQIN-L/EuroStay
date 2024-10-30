@@ -1,42 +1,93 @@
-.travel-card {
-    display: flex;
-    background-color: #f9f9f9;
-    padding: 16px;
-    border-radius: 8px;
-    margin-bottom: 12px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    cursor: pointer;
-    transition: transform 0.2s;
-  }
-  
-  .travel-card:hover {
-    transform: scale(1.02);
-  }
-  
-  .travel-image {
-    width: 60px;
-    height: 60px;
-    border-radius: 8px;
-    margin-right: 16px;
-  }
-  
-  .travel-info {
-    flex: 1;
-  }
-  
-  .travel-title {
-    font-size: 18px;
-    font-weight: bold;
-    color: #333;
-    margin-bottom: 4px;
-  }
-  
-  .travel-location,
-  .travel-dates,
-  .travel-status,
-  .travel-description {
-    font-size: 14px;
-    color: #666;
-    margin-bottom: 4px;
-  }
-  
+.card {
+  display: flex;
+  flex-direction: column;
+  background-color: #FFFFFF;
+  border: 1px solid #E0E0E0;
+  border-radius: 8px;
+  padding: 16px;
+  width: 100%;
+}
+
+.main-content {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+}
+
+.image-container {
+  flex: 0 0 100px;
+  height: 100px;
+  margin-right: 12px;
+}
+
+.image-style, .image-fallback {
+  width: 100%;
+  height: 100%;
+  background-color: #C4C4C4;
+  border-radius: 8px;
+}
+
+.separator {
+  height: 1px;
+  background-color: #E0E0E0;
+  margin: 16px 0;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.title {
+  font-size: 18px; /* 增大字体大小 */
+  font-weight: bold;
+  color: #333;
+  flex-grow: 1;
+}
+
+.type {
+  font-size: 14px; /* 增大字体大小 */
+  color: #666;
+  background-color: #EFEFEF;
+  padding: 4px 8px; /* 调整padding以适应字体增大 */
+  border-radius: 8px;
+}
+
+.details, .cost, .status, .description {
+  font-size: 14px; /* 统一文本字体大小 */
+  color: #666;
+  margin: 4px 0;
+}
+
+.reply-button {
+  position: absolute; /* 绝对定位 */
+  right: 10px; /* 右边距 */
+  bottom: 10px; /* 底部距离 */
+  background-color: #F5F5F5;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-size: 14px; /* 增大字体大小 */
+  color: #333;
+  cursor: pointer;
+}
+
+.communication {
+  padding-top: 2px;
+  border-top: 1px solid #E0E0E0;
+  margin-top: 10px;
+}
+
+.communication-info {
+  font-size: 12px; /* 沟通信息字体大小 */
+  color: #999;
+  text-align: left;
+}
