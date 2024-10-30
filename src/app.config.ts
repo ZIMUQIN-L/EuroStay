@@ -20,6 +20,8 @@ export default {
         'my-points/index',
         'point-details/index',
         'my-activities/index',
+        'travel-coins/index',
+        'traveler-system/index',
       ],
     },
     {

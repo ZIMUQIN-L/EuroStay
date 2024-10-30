@@ -84,6 +84,16 @@ const menuList = [
     icon: PointIcon,
     path: '../../packageUser/my-points/index',
   },
+    {
+    text: '旅行币系统',
+    icon: PointIcon,
+    path: '../../packageUser/travel-coins/index',
+  },
+  {
+    text: '探险家系统',
+    icon: PointIcon,
+    path: '../../packageUser/traveler-system/index',
+  },
   // {
   //   text: '实名认证',
   //   icon: ValidationIcon,
