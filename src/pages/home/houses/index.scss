@@ -8,6 +8,40 @@
   display: flex;
   flex-direction: column;
   // margin-top: 1px;
+  .home-search-bar {
+    width: 80%;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 40px;
+    border: 1px solid #d6d6d6;
+    margin: 10px 10% 20px 10%;
+  }
+  .homepage-buttons {
+    width: 80%;
+    margin: 10px 10% 20px 10%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .homepage-likes,
+    .homepage-houses,
+    .homepage-activities,
+    .homepage-user {
+      width: 80px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-size: 28px;
+      Image {
+        width: 80px;
+        height: 80px;
+        border-radius: 10px;
+        background-color: #d6d6d6;
+        margin-bottom: 5px;
+      }
+    }
+  }
   .search-card {
     padding-top: 20px;
     padding-left: 30px;
@@ -116,8 +150,6 @@
   // min-height: 150px; /* Ensure the image has a minimum height */
   object-fit: cover; /* Ensure the image scales properly */
 }
-
-
 
 .close-icon {
   position: absolute;
