@@ -1,5 +1,5 @@
 export default {
-  navigationBarTitleText: '',
+  navigationBarTitleText: '旅迹',
   navigationBarBackgroundColor: '#ffffff',
   navigationBarTextStyle: 'black',
   enableShareAppMessage: true,

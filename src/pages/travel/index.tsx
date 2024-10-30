@@ -3,6 +3,8 @@ import React, { useState, useEffect } from 'react';
 import { View } from '@tarojs/components';
 import TravelCard from '@components/TravelCard';
 import './index.scss';
+import Taro from '@tarojs/taro';
+import CustomTabBar from '@components/CustomTabBar';
 
 interface TravelData {
   image: string;
@@ -16,6 +18,7 @@ interface TravelData {
   type: '求宿' | '供宿' | '参与活动'; // 类型
   cost: number; // 成本
   isActive: boolean; // 是否正在进行
+  reviewed: boolean;
 }
 
 const TravelPage: React.FC = () => {
@@ -37,7 +40,8 @@ const TravelPage: React.FC = () => {
           status: '待评价', // 状态
           cost: 500, // 成本
           description: '享受意大利风情。',
-          isActive: true
+          isActive: true,
+          reviewed: false
         },
         {
           _id: '2',
@@ -50,7 +54,8 @@ const TravelPage: React.FC = () => {
           status: '已完成',
           cost: 300,
           description: '体验古罗马的魅力。',
-          isActive: true
+          isActive: true,
+          reviewed: false
         },
         {
           _id: '3',
@@ -63,7 +68,8 @@ const TravelPage: React.FC = () => {
           status: '进行中',
           cost: 200,
           description: '参与盛大的狂欢节庆典。',
-          isActive: false
+          isActive: false,
+          reviewed: false
         },
         // 其他数据...
       ];
@@ -76,7 +82,12 @@ const TravelPage: React.FC = () => {
   const ongoingTravels = travels.filter(travel => travel.isActive);
   const historicalTravels = travels.filter(travel => !travel.isActive);
 
-
+  const handleReview = (id: string) => {
+    Taro.navigateTo({
+      url: `../../packageUser/review-on-house/index?id=${id}`, // 根据实际路径调整
+    });
+  };
+  
   const navigateToDetail = (id: string) => {
     // 跳转到详情页面
     // 例如使用 Taro 的 navigateTo 或其他路由方式
@@ -110,10 +121,12 @@ const TravelPage: React.FC = () => {
               key={travel._id}
               travel={travel}
               onClick={() => navigateToDetail(travel._id)}
+              onReview={handleReview}
             />
           ))}
         </View>
       </View>
+      <CustomTabBar />
     </View>
 
   );

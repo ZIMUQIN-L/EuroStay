@@ -1,3 +1,7 @@
+body, view {
+  font-size: 36px;
+}
+
 .card {
   display: flex;
   flex-direction: column;
@@ -15,8 +19,8 @@
 }
 
 .image-container {
-  flex: 0 0 100px;
-  height: 100px;
+  flex: 0 0 140px;
+  height: 140px;
   margin-right: 12px;
 }
 
@@ -48,14 +52,14 @@
 }
 
 .title {
-  font-size: 18px; /* 增大字体大小 */
+  font-size: 26px; /* 增大字体大小 */
   font-weight: bold;
   color: #333;
   flex-grow: 1;
 }
 
 .type {
-  font-size: 14px; /* 增大字体大小 */
+  font-size: 20px; /* 增大字体大小 */
   color: #666;
   background-color: #EFEFEF;
   padding: 4px 8px; /* 调整padding以适应字体增大 */
@@ -63,7 +67,7 @@
 }
 
 .details, .cost, .status, .description {
-  font-size: 14px; /* 统一文本字体大小 */
+  font-size: 20px; /* 统一文本字体大小 */
   color: #666;
   margin: 4px 0;
 }
@@ -75,7 +79,7 @@
   background-color: #F5F5F5;
   border-radius: 8px;
   padding: 8px 16px;
-  font-size: 14px; /* 增大字体大小 */
+  font-size: 20px; /* 增大字体大小 */
   color: #333;
   cursor: pointer;
 }
@@ -87,7 +91,7 @@
 }
 
 .communication-info {
-  font-size: 12px; /* 沟通信息字体大小 */
+  font-size: 20px; /* 沟通信息字体大小 */
   color: #999;
   text-align: left;
 }

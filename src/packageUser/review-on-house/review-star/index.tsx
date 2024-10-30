@@ -1,7 +1,9 @@
 import { View, Text, Image } from '@tarojs/components';
 import { useState } from 'react';
 import './index.scss';
-import { StarFilled, StarUnfilled } from '@utils/cloudIcons';
+// import { StarFilled, StarUnfilled } from '@utils/cloudIcons';
+import StarFilled from '@assets/images/star-filled.svg';
+import StarUnfilled from '@assets/images/star-unfilled.svg';
 
 interface StarRatingProps {
   initialRating: number;
