@@ -18,7 +18,7 @@ import {
   PostActivity,
   PostHouse,
 } from '@utils/cloudIcons';
-import {HousePostImg} from '@assets/images/house-post.svg';
+import { HousePostImg } from '@assets/images/house-post.svg';
 
 const Index = () => {
   const [activeTab, setActiveTab] = useState('houses');
@@ -69,7 +69,7 @@ const Index = () => {
 
   return (
     <>
-      <View className='tab-bar'>
+      {/* <View className='tab-bar'>
         <View
           className={`tab-item ${activeTab === 'houses' ? 'active' : ''}`}
           onClick={() => setActiveTab('houses')}
@@ -99,7 +99,7 @@ const Index = () => {
           )}
           <Text>求宿</Text>
         </View>
-      </View>
+      </View> */}
       <View
         className='add-button'
         onClick={() => {
@@ -133,14 +133,11 @@ const Index = () => {
           >
             发布活动
           </Button>
-          
-          <Button
-            className='house-text-button'
-            onClick={onClickPostHouse}
-          >
+
+          <Button className='house-text-button' onClick={onClickPostHouse}>
             发布房源
           </Button>
-          
+
           <Button
             className='house-request-text-button'
             onClick={onClickPostSeek}

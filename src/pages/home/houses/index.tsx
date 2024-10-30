@@ -10,10 +10,10 @@ import { HouseItemProps } from '@utils/interfaces';
 import SearchAndFilter from '../search-and-filter';
 import { NoDataLogo } from '@utils/cloudIcons';
 import hostAdPic from '@assets/images/host-ad-toscana-florence.png';
-import { Close } from '@taroify/icons'; 
-import hostAdPicTest from './home.png'; 
+import { Close } from '@taroify/icons';
+import hostAdPicTest from './home.png';
 import { premiumActivitySearch } from '@common/database/activityInfo/activityInfo';
-import hostAdPicTestTest from './host-ad-toscana-florence.png'
+import hostAdPicTestTest from './host-ad-toscana-florence.png';
 import ActivityCard from '@components/ActivityCard';
 
 /**
@@ -68,19 +68,18 @@ const Houses = () => {
   // };
 
   const fetchInitialData = () => {
-    Promise.all([
-      houseInfoSearch('', '', ''),
-      premiumActivitySearch()
-    ]).then(([houseData, activityData]) => {
-      // const combined = [...houseData, ...activityData].sort((a, b) => {
-      //   // 这里可以添加排序逻辑,例如按创建时间排序
-      //   return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
-      // });
-      const combined = [...activityData, ...houseData];
-      setDemoData(combined);
-    }).catch(error => {
-      console.error('Error fetching data:', error);
-    });
+    Promise.all([houseInfoSearch('', '', ''), premiumActivitySearch()])
+      .then(([houseData, activityData]) => {
+        // const combined = [...houseData, ...activityData].sort((a, b) => {
+        //   // 这里可以添加排序逻辑,例如按创建时间排序
+        //   return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+        // });
+        const combined = [...activityData, ...houseData];
+        setDemoData(combined);
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+      });
   };
 
   useEffect(() => {
@@ -93,7 +92,7 @@ const Houses = () => {
 
     // return () => clearTimeout(adTimer);
   }, []);
-  
+
   // useEffect(() => {
   //   houseInfoSearch('阿姆', '2024-03-24', '2024-03-24').then(
   //     (houseData: HouseItemProps[]) => {
@@ -130,13 +129,32 @@ const Houses = () => {
 
   const handleActivityClick = (activityId: string) => {
     Taro.navigateTo({
-      url: `/packageActivity/activity-detail/index?id=${activityId}` // 跳转到活动详情页面
+      url: `/packageActivity/activity-detail/index?id=${activityId}`, // 跳转到活动详情页面
     });
   };
   return (
     <View className='home' id='home'>
       <>
-        {isClickedSearch ? (
+        <View className='home-search-bar'>搜索</View>
+        <View className='homepage-buttons'>
+          <View className='homepage-likes'>
+            <Image src=''></Image>
+            收藏
+          </View>
+          <View className='homepage-houses'>
+            <Image src=''></Image>
+            房源
+          </View>
+          <View className='homepage-activities'>
+            <Image src=''></Image>
+            活动
+          </View>
+          <View className='homepage-user'>
+            <Image src=''></Image>
+            用户
+          </View>
+        </View>
+        {/* {isClickedSearch ? (
           <SearchAndFilter
             onDestinationChange={handleDestinationChange}
             onDateChange={handleDateChange}
@@ -153,7 +171,7 @@ const Houses = () => {
             onClickSearch={handleClickSearch}
             searchType='houses'
           />
-        )}
+        )} */}
         {demoData.length === 0 ? (
           <View>
             <Image src={NoDataLogo} />
@@ -161,16 +179,17 @@ const Houses = () => {
           </View>
         ) : (
           <View className='house-list'>
-            {demoData.map(item => (
+            {demoData.map(item =>
               item.premiumHost ? ( // 否则为活动
-                <ActivityCard 
-                  activity={item} 
-                  onClick={() => handleActivityClick(item._id)} 
+                <ActivityCard
+                  activity={item}
+                  onClick={() => handleActivityClick(item._id)}
                 />
-              ) : ( // 判断是否为房源
+              ) : (
+                // 判断是否为房源
                 <HouseItem key={item._id} {...item} />
-              )
-            ))}
+              ),
+            )}
           </View>
         )}
         <View className='index'>
@@ -217,10 +236,10 @@ const Houses = () => {
   //           <View className='house-list'>
   //             {demoData.map(item => (
   //               item.premiumHost ? ( // 否则为活动
-  //                 <ActivityCard 
-  //                   // key={item._id} 
-  //                   activity={item} 
-  //                   onClick={() => handleActivityClick(item._id)} 
+  //                 <ActivityCard
+  //                   // key={item._id}
+  //                   activity={item}
+  //                   onClick={() => handleActivityClick(item._id)}
   //                   // isPremiumHost={item.premiumHost !== undefined} // 根据需要传递属性
   //                 />
   //               ) : ( // 判断是否为房源

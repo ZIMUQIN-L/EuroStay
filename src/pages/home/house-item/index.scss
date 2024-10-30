@@ -1,20 +1,171 @@
-.house-item {
-  display: flex;
+.homepage-house-card {
   width: 100%;
-}
-.date-icon {
-  width: 16px;
-  height: 16px;
-}
-.house-date {
+  margin: 10px 0;
+  // padding: 10px;
+  // border: 1px solid #ddd;
+  border-radius: 15px;
+  overflow: hidden;
+  background-color: #fff;
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  align-items: flex-start;
+  position: relative;
+
+  .house-like {
+    width: 60px;
+    height: 60px;
+    border-radius: 60px;
+    font-size: 20px;
+    position: absolute;
+    background-color: #979797;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    right: 20px;
+    top: 30px;
+  }
+  .host-avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 100px;
+    position: absolute;
+    right: 20px;
+    top: 440px;
+  }
+
+  .corner-label {
+    position: absolute;
+    top: 30px; /* 距离图片顶部的距离 */
+    left: 15px; /* 距离图片左侧的距离 */
+    background-color: #fdd835; /* 标签背景色 */
+    color: #333; /* 标签文字颜色 */
+    padding: 5px 10px; /* 内边距 */
+    border-radius: 10px; /* 圆角 */
+    font-size: 24px;
+    font-weight: bold;
+    z-index: 1; /* 确保标签在图片之上 */
+  }
+
+  .house-image {
+    width: 100%;
+    height: 550px;
+    background-color: #f0f0f0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 15px;
+    border-radius: 30px;
+  }
+
+  .house-content {
+    width: 92%;
+    padding-bottom: 15px;
+    margin-left: 5px;
+    // margin-right: 4%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    .house-price {
+      font-size: 30px;
+      position: absolute;
+      right: 0px;
+    }
+
+    .title {
+      font-size: 30px;
+      font-weight: bold;
+      margin-bottom: 6px;
+    }
+    .house-time,
+    .house-des {
+      font-size: 24px;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      margin-bottom: 10px;
+      color: #666;
+    }
+
+    .organizer {
+      font-size: 20px;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      margin-bottom: 10px;
+      color: #666;
+
+      .icon {
+        width: 20px;
+        height: 20px;
+        margin-right: 10px;
+      }
+    }
+
+    .details {
+      font-size: 20px;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      flex-wrap: wrap;
+      overflow: hidden;
+      width: 100%;
+
+      .detail-item {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        margin-bottom: 6px;
+        margin-right: 10px;
+        background-color: #eee;
+        padding: 4px 15px 4px 10px;
+        border-radius: 5px;
+        color: #666;
+
+        .icon {
+          width: 20px;
+          height: 20px;
+          margin-right: 6px;
+        }
+      }
+
+      .right-detail-item {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        margin-bottom: 6px;
+        margin-right: 10px;
+        padding: 4px 8px;
+        border-radius: 20px;
+        color: #666;
+
+        .icon {
+          width: 24px;
+          height: 24px;
+          margin-right: 6px;
+        }
+      }
+    }
+  }
 }
-.house-item .house-info {
-  display: flex;
-  justify-content: space-between;
-}
-.house-owner {
-  color: white;
-  background-color: #ffd111;
-}
+
+// .house-item {
+//   display: flex;
+//   width: 100%;
+// }
+// .date-icon {
+//   width: 16px;
+//   height: 16px;
+// }
+// .house-date {
+//   display: flex;
+//   align-items: center;
+// }
+// .house-item .house-info {
+//   display: flex;
+//   justify-content: space-between;
+// }
+// .house-owner {
+//   color: white;
+//   background-color: #ffd111;
+// }
