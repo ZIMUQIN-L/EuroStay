@@ -12,6 +12,8 @@ import RequestCustomCard from '../../../packageUser/request-custom-card';
 import GlobalStore from '@store/GlobalStore';
 import { accomMessageAdd } from '@common/database/accomMessage/accomMessage';
 import { userInfoSearch } from '@common/database/user/user';
+import { LocationOutlined } from '@taroify/icons';
+import './index.scss';
 
 const HouseItem: React.FC<AccomMssageHouseItemProps> = house => {
   const [imageSrc, setImageSrc] = useState('');
@@ -190,8 +192,48 @@ const HouseItem: React.FC<AccomMssageHouseItemProps> = house => {
   };
 
   return (
-    <View className='house-item'>
+    <View className='homepage-house-card'>
+      <View className='corner-label'>精品Host系列</View>
+      <View className='house-like'>收藏</View>
+      <Image src='' className='host-avatar' />
       <Image
+        src={imageSrc}
+        className='house-image'
+        mode='aspectFit'
+        onError={handleImageError}
+      />
+      <View className='house-content'>
+        <Text className='house-price'>旅行币/人</Text>
+        <Text className='title'>国家城市·房源名称</Text>
+        {/* <View className='organizer'>
+          <UserCircleOutlined className='icon' />
+          <Image
+            src={sourceUser ? sourceUser?.avatarUrl : ''}
+            className='icon'
+            mode='aspectFit'
+            onClick={handleClickHostAvatar}
+          />
+          <Text>由 {sourceUser?.nickName} 发起</Text>
+        </View> */}
+        <View className='house-des'>公寓30m2·1室1床1卫·1人·限女生</View>
+        <View className='house-time'>活动时间</View>
+        <View className='details'>
+          <View className='detail-item'>
+            <LocationOutlined className='icon' />
+            <Text>近鹿特丹</Text>
+          </View>
+          <View className='detail-item'>
+            <Text>洗衣机</Text>
+          </View>
+
+          {/* {activity.tags.map((tag, index) => (
+            <View className='detail-item'>
+              <Text key={index}># {tag}</Text>
+            </View>
+          ))} */}
+        </View>
+      </View>
+      {/* <Image
         src={imageSrc}
         className='house-image'
         onClick={toHouseDetail}
@@ -262,7 +304,7 @@ const HouseItem: React.FC<AccomMssageHouseItemProps> = house => {
           onRequestInfoSelectionEdit={handleRequestInfoSelectionEdit}
           onSubmitCard={handleSubmitRequestCustomCard}
         ></RequestCustomCard>
-      )}
+      )} */}
     </View>
   );
 };

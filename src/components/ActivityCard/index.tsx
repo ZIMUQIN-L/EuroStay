@@ -49,6 +49,8 @@ const ActivityCard: React.FC<ActivityCardProps> = ({ activity, onClick }) => {
       {activity.premiumHost && (
         <View className='corner-label'>精品Host系列</View>
       )}
+      <View className='activity-like'>收藏</View>
+      <Image src='' className='host-avatar' />
       <Image
         src={imageSrc}
         className='activity-image'
@@ -56,9 +58,10 @@ const ActivityCard: React.FC<ActivityCardProps> = ({ activity, onClick }) => {
         onError={handleImageError}
       />
       <View className='activity-content'>
+        <Text className='activity-price'>旅行币/人</Text>
         <Text className='title'>{activity.title}</Text>
-        <View className='organizer'>
-          {/* <UserCircleOutlined className='icon' /> */}
+        {/* <View className='organizer'>
+          <UserCircleOutlined className='icon' />
           <Image
             src={sourceUser ? sourceUser?.avatarUrl : ''}
             className='icon'
@@ -66,16 +69,17 @@ const ActivityCard: React.FC<ActivityCardProps> = ({ activity, onClick }) => {
             onClick={handleClickHostAvatar}
           />
           <Text>由 {sourceUser?.nickName} 发起</Text>
-        </View>
+        </View> */}
+        <View className='activity-time'>活动时间</View>
         <View className='details'>
           <View className='detail-item'>
             <LocationOutlined className='icon' />
             <Text>{activity.location}</Text>
           </View>
-          <View className='detail-item'>
+          {/* <View className='detail-item'>
             <GoldCoinOutlined className='icon' />
             <Text>人均约{activity.price}欧</Text>
-          </View>
+          </View> */}
 
           {activity.tags.map((tag, index) => (
             <View className='detail-item'>
@@ -83,10 +87,10 @@ const ActivityCard: React.FC<ActivityCardProps> = ({ activity, onClick }) => {
             </View>
           ))}
 
-          <View className='right-detail-item' style='margin-right: 4px;'>
+          {/* <View className='right-detail-item' style='margin-right: 4px;'>
             <FriendsOutlined className='icon' />
             <Text>参与人数: {activity.capacity}</Text>
-          </View>
+          </View> */}
         </View>
       </View>
     </View>
