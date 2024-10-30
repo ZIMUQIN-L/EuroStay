@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, Image } from '@tarojs/components';
 import './index.css';
+import Taro from '@tarojs/taro';
 
 interface TravelData {
   _id: string;             // 唯一标识符
@@ -24,7 +25,14 @@ interface TravelCardProps {
 }
 
 const TravelCard: React.FC<TravelCardProps> = ({ travel, onClick, onReview }) => {
-  const [imageLoaded, setImageLoaded] = useState(true);
+const [imageLoaded, setImageLoaded] = useState(true);
+
+const handleReplyClick = (e) => {
+  e.stopPropagation();  // 防止事件冒泡到卡片点击事件
+  Taro.navigateTo({
+    url: '/packageHouse/house-application-submission/index'
+  });
+};
 
   return (
     <View className="card" onClick={onClick}>
@@ -49,13 +57,19 @@ const TravelCard: React.FC<TravelCardProps> = ({ travel, onClick, onReview }) =>
           <Text className="cost">{`成本：${travel.cost}旅行币`}</Text>
           <Text className="status">{`状态：${travel.status}`}</Text>
           {/* 根据旅行的状态显示不同按钮 */}
-          {travel.isActive && (
-            <View className="reply-button" onClick={(e) => {
-              e.stopPropagation();  // 防止事件冒泡到卡片点击事件
-              console.log('Continue Activity');
-            }}>
-              继续活动
-            </View>
+          {travel.type === '供宿' ? (
+            <View className="reply-button" onClick={handleReplyClick}>
+            回复申请
+          </View>
+          ) : (
+            travel.isActive && (
+              <View className="reply-button" onClick={(e) => {
+                e.stopPropagation();
+                console.log('Continue Activity');
+              }}>
+                继续活动
+              </View>
+            )
           )}
           {!travel.isActive && onReview && (
             <View className="reply-button" onClick={(e) => {
@@ -67,9 +81,6 @@ const TravelCard: React.FC<TravelCardProps> = ({ travel, onClick, onReview }) =>
           )}
         </View>
       </View>
-      <View className="communication">
-          <Text className="communication-info">{`最后更新：${travel.status}`}</Text>
-        </View>
     </View>
   );
 };

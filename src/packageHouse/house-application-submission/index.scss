@@ -1,0 +1,23 @@
+.house-application-page {
+  display: flex;
+  flex-direction: column;
+  background-color: #f9f9f9;
+  height: 100vh;
+  .post-submit-button {
+    width: 90%;
+    margin-left: 5%;
+    height: 90px;
+    border-radius: 60px;
+    background-color: #d6d6d6;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    margin-bottom: 40px;
+    margin-top: 20px;
+    background-color: #d6d6d6;
+    color: #ffffff;
+    font-size: 30px;
+  }
+}

@@ -104,7 +104,7 @@ const RequestCustomCard = ({
   // TODO: 可以传入参数来调整样式，button和上面text的颜色
   return (
     <CustomFullScreenDialog
-      title='消息卡片'
+      title='发送求宿信息'
       onClose={onClose}
       onSubmit={handleSubmitRequestCustomCard}
       className='request-custom-card'
@@ -113,7 +113,7 @@ const RequestCustomCard = ({
         <RequestInfoSelection
           onRequestInfoSelection={handleRequestInfoSelectionEdit}
         />
-        <RequestSendToggle onChangeToggle={handleSendToggleEdit} />
+        {/* <RequestSendToggle onChangeToggle={handleSendToggleEdit} /> */}
         <RequestDes onRequestDes={handleRequestDesEdit} />
       </View>
     </CustomFullScreenDialog>

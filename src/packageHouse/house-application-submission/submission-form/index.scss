@@ -1,0 +1,59 @@
+// src/pages/HouseApplicationPage/SubmissionForm.scss
+.submission-form {
+  flex: 1;
+  padding: 16px;
+  background-color: #ffffff;
+
+  .form-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid #e0e0e0;
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    Text {
+      color: #333;
+    }
+  }
+  .submission-form .button-group {
+    display: flex;
+    justify-content: space-around; /* Space evenly around the items */
+    margin-top: 20px; /* Space from the previous form item */
+  }
+  /* General styles for buttons */
+  .submit-button, .extra-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%; /* Full width buttons */
+    margin-top: 16px; /* Space above buttons */
+    background-color: #C0C0C0; /* Gray background similar to your image */
+    color: #FFF; /* White text */
+    padding: 12px 20px; /* Vertical and horizontal padding */
+    font-size: 16px; /* Text size */
+    border: none; /* No border */
+    border-radius: 20px; /* Rounded corners for pill-like shape */
+    cursor: pointer; /* Pointer cursor on hover */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Subtle shadow for 3D effect */
+    transition: background-color 0.3s; /* Smooth transition for hover effect */
+  }
+
+  .submit-button {
+    width: auto; /* Smaller button for "提交" */
+    padding: 12px 24px; /* Slightly more padding on sides */
+  }
+
+  .extra-button {
+    width: auto; /* Longer button for "同意并提供床位" */
+    padding: 12px 48px; /* More padding for a longer button */
+  }
+
+  .submit-button:hover, .extra-button:hover {
+    background-color: #A9A9A9; /* Darker gray on hover */
+  }
+
+}

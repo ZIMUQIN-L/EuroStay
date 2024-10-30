@@ -1,0 +1,26 @@
+// src/pages/HouseApplicationPage/SubmissionHeader.scss
+.submission-header {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border-radius: 4px; // Adjusted for more subtle rounding
+  padding: 10px;
+  background-color: #f5f5f5;  // 使用浅灰色背景以增强可读性
+  border-bottom: 1px solid #e0e0e0;  // 添加底部边框以视觉区分
+  .icon-container {
+    width: 100px; // Smaller width for the icon
+    height: 100px; // Ensure it's a circle
+    border-radius: 50%;
+    background-color: #C4C4C4;
+    margin-left: 30px;
+    margin-right: 10px; // Space between icon and text
+    flex-shrink: 0; // Prevent icon from shrinking
+  }
+
+  .header-text {
+    margin-left: 30px;
+    flex-grow: 1; // Takes the rest of the space
+    font-size: 26px; // Larger text
+    color: #333; // Text color
+  }
+}

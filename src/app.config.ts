@@ -30,6 +30,7 @@ export default {
         'house-edit/index',
         'house-review/index',
         'seek-post/index',
+        'house-application-submission/index',
       ],
     },
     {
