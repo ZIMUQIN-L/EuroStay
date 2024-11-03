@@ -192,7 +192,7 @@ const HouseItem: React.FC<AccomMssageHouseItemProps> = house => {
   };
 
   return (
-    <View className='homepage-house-card'>
+    <View className='homepage-house-card' onClick={toHouseDetail}>
       <View className='corner-label'>精品Host系列</View>
       <View className='house-like'>收藏</View>
       <Image src='' className='host-avatar' />

@@ -43,6 +43,7 @@ const Houses = () => {
   });
   const [showAd, setShowAd] = useState(true);
   const [userDestination, setUserDestination] = useState<string>('');
+  const [curButton, setCurButton] = useState<string>('houses');
 
   const handleDestinationChange = inputDestination => {
     setUserDestination(inputDestination);
@@ -137,19 +138,39 @@ const Houses = () => {
       <>
         <View className='home-search-bar'>搜索</View>
         <View className='homepage-buttons'>
-          <View className='homepage-likes'>
+          <View
+            className='homepage-likes'
+            onClick={() => {
+              setCurButton('likes');
+            }}
+          >
             <Image src=''></Image>
             收藏
           </View>
-          <View className='homepage-houses'>
+          <View
+            className='homepage-houses'
+            onClick={() => {
+              setCurButton('houses');
+            }}
+          >
             <Image src=''></Image>
             房源
           </View>
-          <View className='homepage-activities'>
+          <View
+            className='homepage-activities'
+            onClick={() => {
+              setCurButton('activities');
+            }}
+          >
             <Image src=''></Image>
             活动
           </View>
-          <View className='homepage-user'>
+          <View
+            className='homepage-user'
+            onClick={() => {
+              setCurButton('users');
+            }}
+          >
             <Image src=''></Image>
             用户
           </View>
@@ -177,20 +198,26 @@ const Houses = () => {
             <Image src={NoDataLogo} />
             <Text className='home-nodata-container'>暂未查询到数据~</Text>
           </View>
-        ) : (
+        ) : curButton == 'houses' ? (
           <View className='house-list'>
-            {demoData.map(item =>
-              item.premiumHost ? ( // 否则为活动
-                <ActivityCard
-                  activity={item}
-                  onClick={() => handleActivityClick(item._id)}
-                />
-              ) : (
-                // 判断是否为房源
-                <HouseItem key={item._id} {...item} />
-              ),
-            )}
+            {demoData.map(item => {
+              if (!item.premiumHost)
+                return <HouseItem key={item._id} {...item} />;
+            })}
           </View>
+        ) : (
+          curButton == 'activities' && (
+            <View className='house-list'>
+              {demoData.map(item =>
+                item.premiumHost ? ( // 否则为活动
+                  <ActivityCard
+                    activity={item}
+                    onClick={() => handleActivityClick(item._id)}
+                  />
+                ) : null,
+              )}
+            </View>
+          )
         )}
         <View className='index'>
           <CustomTabBar onHomeSelected={resetState} />
