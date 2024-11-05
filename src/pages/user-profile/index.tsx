@@ -5,6 +5,20 @@ import { PointIcon, RightBottomArrow } from '@utils/cloudIcons';
 import GlobalStore from '@store/GlobalStore';
 import { useState } from 'react';
 
+const systemList = [
+  {
+    text: '旅行币系统',
+    labelClass: 'coins-label',
+    icon: PointIcon,
+    path: '../../packageUser/travel-coins/index',
+  },
+  {
+    text: '探险家系统',
+    labelClass: 'explorer-label',
+    icon: PointIcon,
+    path: '../../packageUser/traveler-system/index',
+  }
+]
 const menuList = [
   { text: '添加房源', icon: PointIcon, path: '/pages/add-house/index' },
   { text: '发起活动', icon: PointIcon, path: '/pages/start-activity/index' },
@@ -20,6 +34,18 @@ const settingsList = [
 const Index = () => {
   const [user] = useState(GlobalStore.userInfo);
 
+  const navigateToPage = (path) => {
+    Taro.navigateTo({
+      url: path,
+    });
+  };
+
+  const toUserDetail = () => {
+    Taro.navigateTo({
+      url: `/packageUser/user-detail/index?id=${user._openid}`,
+    });
+  };
+
   return (
     <View className='user-page'>
       {/* Header */}
@@ -29,7 +55,7 @@ const Index = () => {
       </View>
 
       {/* User Info */}
-      <View className='user-info'>
+      <View className='user-info' onClick={toUserDetail}>
         <Image src={user.avatarUrl} className='avatar' />
         <View className='user-details'>
           <Text className='username'>{user.nickName || '用户名'}</Text>
@@ -38,18 +64,17 @@ const Index = () => {
         <Image src={RightBottomArrow} className='arrow-icon' />
       </View>
 
-      {/* Travel Coins */}
-      <View className='travel-coins'>
-        <Text className='coins-label'>旅行币</Text>
-        <Text className='coins-value'>800</Text>
-        <Image src={RightBottomArrow} className='arrow-icon' />
-      </View>
-
-      {/* Explorer System */}
-      <View className='explorer-system'>
-        <Text className='explorer-label'>探险家系统</Text>
-        <Image src={RightBottomArrow} className='arrow-icon' />
-      </View>
+      {/* Travel Coins and Explorer System */}
+      {systemList.map((item, index) => (
+        <View
+          key={index}
+          className='system-item'
+          onClick={() => navigateToPage(item.path)}
+        >
+          <Text className={item.labelClass}>{item.text}</Text>
+          <Image src={RightBottomArrow} className='arrow-icon' />
+        </View>
+      ))}
 
       {/* Hosting Section */}
       <View className='section'>

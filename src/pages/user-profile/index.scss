@@ -61,27 +61,21 @@
   }
 }
 
-.travel-coins,
-.explorer-system {
+.system-item {
   display: flex;
   align-items: center;
-  padding: 25px;
+  padding: 23px;
   background-color: #ffffff;
   border-radius: 8px;
   margin-bottom: 16px;
   border-bottom: 1px solid #e0e0e0;
+  cursor: pointer;
 
-  .coins-label, .explorer-label {
+  .coins-label,
+  .explorer-label {
     font-size: 32px;
     color: #333;
     margin-right: auto;
-  }
-
-  .coins-value {
-    font-size: 32px;
-    font-weight: bold;
-    color: #333;
-    margin-right: 8px;
   }
 
   .arrow-icon {
