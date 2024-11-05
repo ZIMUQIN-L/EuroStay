@@ -1,6 +1,7 @@
 .user-page {
   padding: 16px;
   background-color: #ffffff;
+  margin-left: 16px;
 }
 
 .header {
@@ -10,14 +11,14 @@
   margin-bottom: 24px;
 
   .header-title {
-    font-size: 24px;
+    font-size: 45px;
     font-weight: bold;
     color: #333;
   }
 
   .header-icon {
-    width: 24px;
-    height: 24px;
+    width: 32px;
+    height: 32px;
   }
 }
 
@@ -30,23 +31,26 @@
   margin-bottom: 16px;
 
   .avatar {
-    width: 50px;
-    height: 50px;
+    width: 120px;
+    height: 120px;
     border-radius: 50%;
-    margin-right: 12px;
+    margin-right: 18px;
   }
 
   .user-details {
     flex-grow: 1;
+    flex-direction: column;
+    display: flex;
 
     .username {
-      font-size: 18px;
+      font-size: 32px;
       font-weight: bold;
       color: #333;
+      margin-bottom: 3px;
     }
 
     .user-desc {
-      font-size: 14px;
+      font-size: 25px;
       color: #888;
     }
   }
@@ -57,22 +61,24 @@
   }
 }
 
-.travel-coins {
+.travel-coins,
+.explorer-system {
   display: flex;
   align-items: center;
-  padding: 16px;
+  padding: 25px;
   background-color: #ffffff;
   border-radius: 8px;
   margin-bottom: 16px;
+  border-bottom: 1px solid #e0e0e0;
 
-  .coins-label {
-    font-size: 16px;
+  .coins-label, .explorer-label {
+    font-size: 32px;
     color: #333;
     margin-right: auto;
   }
 
   .coins-value {
-    font-size: 18px;
+    font-size: 32px;
     font-weight: bold;
     color: #333;
     margin-right: 8px;
@@ -86,9 +92,11 @@
 
 .section {
   margin-bottom: 16px;
+  margin-top: 50px;
+  
 
   .section-title {
-    font-size: 16px;
+    font-size: 37px;
     font-weight: bold;
     color: #333;
     margin-bottom: 8px;
@@ -97,10 +105,13 @@
   .menu-item {
     display: flex;
     align-items: center;
-    padding: 12px;
+    padding: 30px;
     background-color: #ffffff;
     border-radius: 8px;
     margin-bottom: 8px;
+    border-radius: 0; // Make corners square so borders align
+    border-bottom: 1px solid #e0e0e0; // Add bottom border for divider
+    margin-bottom: 0; // Remove extra spacing
 
     .menu-icon {
       width: 20px;
@@ -110,7 +121,7 @@
 
     .menu-text {
       flex-grow: 1;
-      font-size: 16px;
+      font-size: 32px;
       color: #333;
     }
 
@@ -118,9 +129,16 @@
       width: 20px;
       height: 20px;
     }
+
+    .menu-item:last-child {
+      border-bottom: none;
+    }
   }
 }
 
+.user-info {
+  border-bottom: 1px solid #e0e0e0; 
+}
 
 // page {
 //   width: 100%;

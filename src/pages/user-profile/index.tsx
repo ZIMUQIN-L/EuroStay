@@ -45,6 +45,12 @@ const Index = () => {
         <Image src={RightBottomArrow} className='arrow-icon' />
       </View>
 
+      {/* Explorer System */}
+      <View className='explorer-system'>
+        <Text className='explorer-label'>探险家系统</Text>
+        <Image src={RightBottomArrow} className='arrow-icon' />
+      </View>
+
       {/* Hosting Section */}
       <View className='section'>
         <Text className='section-title'>Hosting</Text>
