@@ -4,6 +4,7 @@ import './index.scss';
 import { PointIcon, RightBottomArrow } from '@utils/cloudIcons';
 import GlobalStore from '@store/GlobalStore';
 import { useState } from 'react';
+import Notification from '@assets/images/notification.svg';
 
 const systemList = [
   {
@@ -17,8 +18,8 @@ const systemList = [
     labelClass: 'explorer-label',
     icon: PointIcon,
     path: '../../packageUser/traveler-system/index',
-  }
-]
+  },
+];
 const menuList = [
   { text: '添加房源', icon: PointIcon, path: '/pages/add-house/index' },
   { text: '发起活动', icon: PointIcon, path: '/pages/start-activity/index' },
@@ -34,7 +35,7 @@ const settingsList = [
 const Index = () => {
   const [user] = useState(GlobalStore.userInfo);
 
-  const navigateToPage = (path) => {
+  const navigateToPage = path => {
     Taro.navigateTo({
       url: path,
     });
@@ -52,6 +53,16 @@ const Index = () => {
       <View className='header'>
         <Text className='header-title'>我的</Text>
         {/* <Image src={ProfileIcon} className='header-icon' /> */}
+
+        <Image
+          className='header-notification'
+          src={Notification}
+          onClick={() => {
+            Taro.navigateTo({
+              url: `/pages/notification/index?id=${user._openid}`,
+            });
+          }}
+        />
       </View>
 
       {/* User Info */}
@@ -80,7 +91,11 @@ const Index = () => {
       <View className='section'>
         <Text className='section-title'>Hosting</Text>
         {menuList.map((item, index) => (
-          <View key={index} className='menu-item' onClick={() => Taro.navigateTo({ url: item.path })}>
+          <View
+            key={index}
+            className='menu-item'
+            onClick={() => Taro.navigateTo({ url: item.path })}
+          >
             <Image src={item.icon} className='menu-icon' />
             <Text className='menu-text'>{item.text}</Text>
             <Image src={RightBottomArrow} className='arrow-icon' />
@@ -92,7 +107,11 @@ const Index = () => {
       <View className='section'>
         <Text className='section-title'>常用设置</Text>
         {settingsList.map((item, index) => (
-          <View key={index} className='menu-item' onClick={() => Taro.navigateTo({ url: item.path })}>
+          <View
+            key={index}
+            className='menu-item'
+            onClick={() => Taro.navigateTo({ url: item.path })}
+          >
             <Image src={item.icon} className='menu-icon' />
             <Text className='menu-text'>{item.text}</Text>
             <Image src={RightBottomArrow} className='arrow-icon' />
@@ -104,10 +123,6 @@ const Index = () => {
 };
 
 export default Index;
-
-
-
-
 
 // import { View, Text, Image } from '@tarojs/components';
 // import CustomTabBar from '@components/CustomTabBar';

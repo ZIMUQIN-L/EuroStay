@@ -6,6 +6,7 @@ export default {
     'pages/user-profile/index',
     'pages/activity/index',
     'pages/travel/index',
+    'pages/notification/index',
   ],
   subPackages: [
     {

@@ -16,6 +16,11 @@
     color: #333;
   }
 
+  .header-notification {
+    width: 40px;
+    height: 40px;
+  }
+
   .header-icon {
     width: 32px;
     height: 32px;
@@ -87,7 +92,6 @@
 .section {
   margin-bottom: 16px;
   margin-top: 50px;
-  
 
   .section-title {
     font-size: 37px;
@@ -131,7 +135,7 @@
 }
 
 .user-info {
-  border-bottom: 1px solid #e0e0e0; 
+  border-bottom: 1px solid #e0e0e0;
 }
 
 // page {
