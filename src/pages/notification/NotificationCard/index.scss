@@ -13,7 +13,7 @@
   }
   .card-top {
     border-bottom: 1px solid #0000004d;
-    height: 230px;
+    // height: 230px;
     background-color: aqua;
     display: flex;
     flex-direction: row;
@@ -39,6 +39,26 @@
           margin-left: 20px;
           width: 320px;
           font-size: 26px;
+          &.system {
+            margin-bottom: 30px;
+            width: 450px;
+            margin-top: 10px;
+            font-size: 30px;
+          }
+          &.wechat {
+            margin-bottom: 30px;
+
+            width: 450px;
+            font-size: 30px;
+            .wechat-id {
+              display: inline-block;
+              margin-top: 20px;
+              padding: 0 50px;
+              height: 50px;
+              background-color: #00000026;
+              border-radius: 30px;
+            }
+          }
         }
       }
       .buttons {
