@@ -1,14 +1,10 @@
-// src/pages/HouseApplicationPage/UserProfile.scss
 .user-profile {
-  background-color: #ffffff;
-  padding: 16px; // Reduced padding for a tighter layout
+  padding: 16px;
   margin-bottom: 10px;
   border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  border: 1px solid #e0e0e0; // Added a border for better definition
 
   .profile-title {
-    font-size: 28px; // Reduced size for a subtler header
+    font-size: 34px; 
     font-weight: bold;
     color: #333;
     margin-bottom: 10px;
@@ -17,22 +13,27 @@
   .profile-content {
     display: flex;
     align-items: center;
-    background-color: #f9f9f9; // Lighter background for the profile content area
-    padding: 8px; // Padding inside the content area
-    border-radius: 8px; // Rounded corners inside the main box
+    background-color: #F2F2F2;
+    ; // Use a white background for the card
+    padding: 16px; // Add padding for space inside the card
+    border-radius: 8px; // Rounded corners for the card effect
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); // Card shadow for depth
+    border: 1px solid #e0e0e0; // Subtle border for better definition
+    margin-top: 10px; // Margin above for separation
 
     .avatar {
-      width: 80px; // Adjusted size for better proportion
-      height: 80px;
-      border-radius: 40px; // Perfect circle
-      margin-right: 16px; // Adjusted margin for better alignment
+      width: 60px;
+      height: 60px;
+      border-radius: 50%; 
+      margin-right: 16px; 
       object-fit: cover;
-      border: 2px solid #ccc; // Border around the avatar for better definition
+      border: 2px solid #ccc; 
+      box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); // Shadow on the avatar
     }
 
     .info {
       .name {
-        font-size: 24px; // Adjusted for readability
+        font-size: 24px; 
         font-weight: bold;
         color: #333;
       }
@@ -43,11 +44,11 @@
         margin-top: 4px;
 
         .tag {
-          background-color: #e0e0e0; // Subtle background for tags
-          border-radius: 10px; // More rounded tags
-          padding: 4px 12px; // More padding for a pill effect
-          font-size: 20px; // Smaller font size for tags
-          margin-right: 4px; // Consistent margin
+          background-color: #e0e0e0; 
+          border-radius: 12px; 
+          padding: 4px 10px; 
+          font-size: 24px;
+          margin-right: 6px; 
           color: #666;
         }
       }

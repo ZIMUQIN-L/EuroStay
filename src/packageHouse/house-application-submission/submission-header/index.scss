@@ -1,26 +1,34 @@
-// src/pages/HouseApplicationPage/SubmissionHeader.scss
 .submission-header {
   display: flex;
   align-items: center;
   padding: 10px;
-  border-radius: 4px; // Adjusted for more subtle rounding
-  padding: 10px;
-  background-color: #f5f5f5;  // 使用浅灰色背景以增强可读性
-  border-bottom: 1px solid #e0e0e0;  // 添加底部边框以视觉区分
+  border-radius: 8px; // Rounded corners for a softer look
+  background-color: #ffffff; // Use a soft pink background for a friendly tone
+  border: 1px solid #e0e0e0; // Border for a cleaner outline
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); // Add shadow for depth
+  margin-bottom: 20px;
+  margin-left: 20px;
+  margin-right: 20px;
+
   .icon-container {
-    width: 100px; // Smaller width for the icon
-    height: 100px; // Ensure it's a circle
+    width: 60px; // Smaller width for the icon
+    height: 60px; // Ensure it's a circle
     border-radius: 50%;
-    background-color: #C4C4C4;
-    margin-left: 30px;
-    margin-right: 10px; // Space between icon and text
-    flex-shrink: 0; // Prevent icon from shrinking
+    background-color: #737272; // Use a warm icon color that stands out
+    margin-left: 10px;
+    margin-right: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); // Shadow for icon as well
+    margin-bottom: 20px;
+    margin-top: 20px;
+
   }
 
   .header-text {
-    margin-left: 30px;
-    flex-grow: 1; // Takes the rest of the space
-    font-size: 26px; // Larger text
-    color: #333; // Text color
+    margin-left: 10px;
+    font-size: 23px; // Adjust font size for a balanced layout
+    color: #333; // Text color for readability
   }
 }

@@ -154,10 +154,10 @@ const HouseContact: React.FC<HouseDetailItemProps> = house => {
         },
       });
     } else {
-      //   setModalOpen(true);
-      Taro.navigateBack({
-        delta: 1,
-      });
+      setModalOpen(true);
+      // Taro.navigateBack({
+      //   delta: 1,
+      // });
     }
   };
   return (

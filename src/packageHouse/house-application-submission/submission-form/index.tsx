@@ -15,7 +15,7 @@ const SubmissionForm = () => {
       </View>
       <View className="button-group">  {/* Container for buttons */}
         <Button className="submit-button">拒绝</Button>
-        <Button className="extra-button">同意并提供微信</Button>
+        <Button className="extra-button">同意</Button>
       </View>
     </View>
   );

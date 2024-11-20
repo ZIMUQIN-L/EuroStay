@@ -34,6 +34,12 @@ const handleReplyClick = (e) => {
   });
 };
 
+const calculateProgress = () => {
+  return 40;
+};
+
+const progress = calculateProgress();
+
   return (
     <View className="card" onClick={onClick}>
       <View className="main-content">
@@ -80,6 +86,10 @@ const handleReplyClick = (e) => {
             </View>
           )}
         </View>
+      </View>
+      {/* Progress Bar */}
+      <View className="progress-bar-container">
+        <View className="progress-bar" style={{ width: `${progress}%` }} />
       </View>
     </View>
   );
