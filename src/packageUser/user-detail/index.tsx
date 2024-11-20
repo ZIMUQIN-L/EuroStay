@@ -84,55 +84,58 @@ const UserDetail: React.FC = () => {
   };
 
   return (
-    <View className="user-detail-page">
-    <View className="profile-container">
-        <View className="profile-background" />
-        <View className="profile-header">
-          <Image src={userDetailInfo?.avatarUrl} className="profile-image" />
-          <View className="info">
-            <Text className="profile-name">
-              {userDetailInfo?.nickName}
-            </Text>
-            <Text className="last-online">5min前在线</Text>
-            <View className="badges">
-              <Text className="badge-item">4级探险家</Text>
-              <Text className="badge-item">超级host</Text>
-            </View>
-            <Text className="sub-info">
-              {userDetailInfo.age || 21}岁 · {userDetailInfo.mbti || 'INTP'} · 天蝎座
-            </Text>
-            <Text className="location">
-              IP: {userDetailInfo.country || '西班牙'} {userDetailInfo.city || 'Valencia'}
-            </Text>
-          </View>
-          <View className="edit-button" onClick={toEdit}>
-            <Text>编辑</Text>
-          </View>
+<View className="user-detail-page">
+  <View className="profile-container">
+    <View className="profile-background" />
+    <View className="profile-header">
+      <Image
+        src={userDetailInfo?.avatarUrl || "/default-avatar.png"}
+        className="profile-image"
+      />
+      <View className="info">
+        <Text className="profile-name">
+          {userDetailInfo?.nickName || "未知用户"}
+          <Text className="badge">认证</Text>
+        </Text>
+        <Text className="last-online">5min前在线</Text>
+        <View className="badges">
+          <Text className="badge-item">4级探险家</Text>
+          <Text className="badge-item">超级host</Text>
         </View>
+        <Text className="sub-info">
+          {userDetailInfo.age || 21}岁 · {userDetailInfo.mbti || "INTP"} · 天蝎座
+        </Text>
+        <Text className="location">
+          IP: {userDetailInfo.country || "西班牙"} {userDetailInfo.city || "Valencia"}
+        </Text>
       </View>
-
-
-
-      {/* Tabs */}
-      <View className="tabs">
-        {['简介', '房源', '评价'].map((tab) => (
-          <View
-            key={tab}
-            className={`tab ${activeTab === tab ? 'active' : ''}`}
-            onClick={() => setActiveTab(tab)}
-          >
-            {tab}
-          </View>
-        ))}
-      </View>
-
-      {/* Tab Content */}
-      <View className="tab-content">
-        {activeTab === '简介' && <UserDetailContent {...userDetailInfo} />}
-        {activeTab === '房源' && <UserAccomContent {...userDetailInfo} />}
-        {activeTab === '评价' && <UserDetailContent {...userDetailInfo} />}
+      <View className="edit-button" onClick={toEdit}>
+        <Text>编辑</Text>
       </View>
     </View>
+  </View>
+
+  {/* Tabs */}
+  <View className="tabs">
+    {["简介", "房源", "评价", "认证"].map((tab) => (
+      <View
+        key={tab}
+        className={`tab ${activeTab === tab ? "active" : ""}`}
+        onClick={() => setActiveTab(tab)}
+      >
+        {tab}
+      </View>
+    ))}
+  </View>
+
+  {/* Tab Content */}
+  <View className="tab-content">
+    {activeTab === "简介" && <UserDetailContent {...userDetailInfo} />}
+    {activeTab === "房源" && <UserAccomContent {...userDetailInfo} />}
+    {/* {activeTab === "评价" && <UserReviewsContent {...userDetailInfo} />}
+    {activeTab === "认证" && <UserCertificationContent {...userDetailInfo} />} */}
+  </View>
+</View>
 
 
 
