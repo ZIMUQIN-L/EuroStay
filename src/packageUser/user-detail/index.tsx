@@ -53,7 +53,7 @@ const UserDetail: React.FC = () => {
 
   const [userDetailInfo, setUserDetailInfo] =
     useState<UserDetailInfoItemProps>();
-  const [activeTab, setActiveTab] = useState('概况');
+  const [activeTab, setActiveTab] = useState('简介');
   const [currentUser, setCurrentUser] = useState<UserItemProps>(
     GlobalStore.userInfo,
   );
@@ -84,99 +84,156 @@ const UserDetail: React.FC = () => {
   };
 
   return (
-    <View>
-      <View className='profile-container'>
-        <View className='profile-background' />
-        <View className='profile-header'>
-          <Image src={userDetailInfo?.avatarUrl} className='profile-image' />
-          <View className='info'>
-            <Text className='profile-name'>
-              {userDetailInfo?.nickName}
-              {/* // TODO, @PJ */}
-              {/* {userDetailInfo.verified && ?}
-              <Text className='badge'>实名认证</Text> */}
-              <Text className='badge-points' onClick={handlePointsClick}>
-                {' '}
-                积分值{userDetailInfo.point ? userDetailInfo.point : 10} {'>'}
-              </Text>
-            </Text>
-            <View className='badges'>
-              {userDetailInfo.tags && userDetailInfo.tags.length!=0? (
-                userDetailInfo.tags.map((tag, index) => (
-                  <Text key={index} className='badge-item'>
-                    {tag}
-                  </Text>
-                ))
-              ) : (
-                <Text className='badge-item'>暂无个性标签</Text>
-              )}
-            </View>
-          </View>
-
-          <View className='additional-info'>
-            <Text className='description'>
-              我的简介：{userDetailInfo.userDes}
-            </Text>
-            <Text className='description'>
-              所属地：{userDetailInfo.userLocation}
-            </Text>
-            <View className='ratings-container'>
-              <View className='ratings'>
-                <View className='rating-item'>
-                  <Text className='rating-title'>房东评分</Text>
-                  <Text className='rating-value'>
-                    {userDetailInfo && userDetailInfo.hostRating
-                      ? userDetailInfo.hostRating
-                      : '暂无评分'}
-                  </Text>
-                </View>
-                <View className='rating-item'>
-                  <Text className='rating-title'>房客评分</Text>
-                  <Text className='rating-value'>
-                    {userDetailInfo && userDetailInfo.guestRating
-                      ? userDetailInfo.guestRating
-                      : '暂无评分'}
-                  </Text>
-                </View>
-              </View>
-              {userDetailInfo._openid == currentUser._openid ? (
-                <View className='edit-button' onClick={toEdit}>
-                  <Text>编辑资料</Text>
-                </View>
-              ) : (
-                <View></View>
-              )}
-            </View>
-          </View>
+<View className="user-detail-page">
+  <View className="profile-container">
+    <View className="profile-background" />
+    <View className="profile-header">
+      <Image
+        src={userDetailInfo?.avatarUrl || "/default-avatar.png"}
+        className="profile-image"
+      />
+      <View className="info">
+        <Text className="profile-name">
+          {userDetailInfo?.nickName || "未知用户"}
+          <Text className="badge">认证</Text>
+        </Text>
+        <Text className="last-online">5min前在线</Text>
+        <View className="badges">
+          <Text className="badge-item">4级探险家</Text>
+          <Text className="badge-item">超级host</Text>
         </View>
+        <Text className="sub-info">
+          {userDetailInfo.age || 21}岁 · {userDetailInfo.mbti || "INTP"} · 天蝎座
+        </Text>
+        <Text className="location">
+          IP: {userDetailInfo.country || "西班牙"} {userDetailInfo.city || "Valencia"}
+        </Text>
       </View>
-
-      <View className='tabs'>
-        <View
-          className={`tab ${activeTab === '概况' ? 'active' : ''}`}
-          onClick={() => setActiveTab('概况')}
-        >
-          概况
-        </View>
-        <View
-          className={`tab ${activeTab === '供宿' ? 'active' : ''}`}
-          onClick={() => setActiveTab('供宿')}
-        >
-          供宿
-        </View>
-        <View
-          className={`tab ${activeTab === '发帖' ? 'active' : ''}`}
-          onClick={() => setActiveTab('发帖')}
-        >
-          发帖
-        </View>
+      <View className="edit-button" onClick={toEdit}>
+        <Text>编辑</Text>
       </View>
-      {activeTab === '概况' ? (
-        <UserDetailContent {...userDetailInfo} />
-      ) : activeTab === '供宿' ? (
-        <UserAccomContent {...userDetailInfo} />
-      ) : null}
     </View>
+  </View>
+
+  {/* Tabs */}
+  <View className="tabs">
+    {["简介", "房源", "评价", "认证"].map((tab) => (
+      <View
+        key={tab}
+        className={`tab ${activeTab === tab ? "active" : ""}`}
+        onClick={() => setActiveTab(tab)}
+      >
+        {tab}
+      </View>
+    ))}
+  </View>
+
+  {/* Tab Content */}
+  <View className="tab-content">
+    {activeTab === "简介" && <UserDetailContent {...userDetailInfo} />}
+    {activeTab === "房源" && <UserAccomContent {...userDetailInfo} />}
+    {/* {activeTab === "评价" && <UserReviewsContent {...userDetailInfo} />}
+    {activeTab === "认证" && <UserCertificationContent {...userDetailInfo} />} */}
+  </View>
+</View>
+
+
+
+
+
+    // <View>
+    //   <View className='profile-container'>
+    //     <View className='profile-background' />
+    //     <View className='profile-header'>
+    //       <Image src={userDetailInfo?.avatarUrl} className='profile-image' />
+    //       <View className='info'>
+    //         <Text className='profile-name'>
+    //           {userDetailInfo?.nickName}
+    //           {/* // TODO, @PJ */}
+    //           {/* {userDetailInfo.verified && ?}
+    //           <Text className='badge'>实名认证</Text> */}
+    //           <Text className='badge-points' onClick={handlePointsClick}>
+    //             {' '}
+    //             积分值{userDetailInfo.point ? userDetailInfo.point : 10} {'>'}
+    //           </Text>
+    //         </Text>
+    //         <View className='badges'>
+    //           {userDetailInfo.tags && userDetailInfo.tags.length!=0? (
+    //             userDetailInfo.tags.map((tag, index) => (
+    //               <Text key={index} className='badge-item'>
+    //                 {tag}
+    //               </Text>
+    //             ))
+    //           ) : (
+    //             <Text className='badge-item'>暂无个性标签</Text>
+    //           )}
+    //         </View>
+    //       </View>
+
+    //       <View className='additional-info'>
+    //         <Text className='description'>
+    //           我的简介：{userDetailInfo.userDes}
+    //         </Text>
+    //         <Text className='description'>
+    //           所属地：{userDetailInfo.userLocation}
+    //         </Text>
+    //         <View className='ratings-container'>
+    //           <View className='ratings'>
+    //             <View className='rating-item'>
+    //               <Text className='rating-title'>房东评分</Text>
+    //               <Text className='rating-value'>
+    //                 {userDetailInfo && userDetailInfo.hostRating
+    //                   ? userDetailInfo.hostRating
+    //                   : '暂无评分'}
+    //               </Text>
+    //             </View>
+    //             <View className='rating-item'>
+    //               <Text className='rating-title'>房客评分</Text>
+    //               <Text className='rating-value'>
+    //                 {userDetailInfo && userDetailInfo.guestRating
+    //                   ? userDetailInfo.guestRating
+    //                   : '暂无评分'}
+    //               </Text>
+    //             </View>
+    //           </View>
+    //           {userDetailInfo._openid == currentUser._openid ? (
+    //             <View className='edit-button' onClick={toEdit}>
+    //               <Text>编辑资料</Text>
+    //             </View>
+    //           ) : (
+    //             <View></View>
+    //           )}
+    //         </View>
+    //       </View>
+    //     </View>
+    //   </View>
+
+    //   <View className='tabs'>
+    //     <View
+    //       className={`tab ${activeTab === '概况' ? 'active' : ''}`}
+    //       onClick={() => setActiveTab('概况')}
+    //     >
+    //       概况
+    //     </View>
+    //     <View
+    //       className={`tab ${activeTab === '供宿' ? 'active' : ''}`}
+    //       onClick={() => setActiveTab('供宿')}
+    //     >
+    //       供宿
+    //     </View>
+    //     <View
+    //       className={`tab ${activeTab === '发帖' ? 'active' : ''}`}
+    //       onClick={() => setActiveTab('发帖')}
+    //     >
+    //       发帖
+    //     </View>
+    //   </View>
+    //   {activeTab === '概况' ? (
+    //     <UserDetailContent {...userDetailInfo} />
+    //   ) : activeTab === '供宿' ? (
+    //     <UserAccomContent {...userDetailInfo} />
+    //   ) : null}
+    // </View>
   );
 };
 
