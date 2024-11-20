@@ -78,7 +78,9 @@ const TravelPage: React.FC = () => {
   };
 
   const navigateToDetail = (id: string) => {
-    console.log('Navigating to detail of travel ID:', id);
+    Taro.navigateTo({
+      url: `/packageUser/travel-detail/index?id=${id}`, // 替换为目标页面的路径
+    });
   };
 
   return (

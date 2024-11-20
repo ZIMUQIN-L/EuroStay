@@ -23,6 +23,7 @@ export default {
         'my-activities/index',
         'travel-coins/index',
         'traveler-system/index',
+        'travel-detail/index'
       ],
     },
     {
