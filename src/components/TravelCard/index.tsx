@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { View, Text, Image } from '@tarojs/components';
 import './index.css';
 import Taro from '@tarojs/taro';
+// import axios from 'axios';
+
 
 interface TravelData {
   _id: string;             // 唯一标识符
@@ -71,7 +73,42 @@ const progress = calculateProgress();
             travel.isActive && (
               <View className="reply-button" onClick={(e) => {
                 e.stopPropagation();
-                console.log('Continue Activity');
+                //console.log('Continue Activity');
+              // // 在这里请求后端token
+              //   Taro.request({
+              //     url: 'https://30fd-70-107-92-166.ngrok-free.app/app/esuser/devLogin',
+              //     method: 'POST',
+              //     data: 'uid=2',
+              //     header: {
+              //       'Content-Type': 'application/x-www-form-urlencoded'
+              //     }
+              //   }).then(res => {
+              //     console.log("Token", res.data['token']);
+              //   }).catch(err => {
+              //     console.error('请求失败:', err);
+              //   });
+    
+                // // example 
+                // Taro.request({
+                //   url: 'https://30fd-70-107-92-166.ngrok-free.app/app/discuss/addDis',
+                //   method: 'POST',
+                //   data: {
+                //     introduce: 'as',
+                //     title: 'asd',
+                //     topicId: 1
+                //   },
+                //   header: {
+                //     'Content-Type': 'application/json',
+                //     'token': 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNzMzOTQxOTMxLCJleHAiOjE3MzQ1NDY3MzF9.Iff2ySxKxjQ83Z5ce4jEG9DAjnsfxDzv-wKGIhmMvmfaETDMIID2pmByCr-VcIgbIakpB_8SrRkpUrnEcJW9Tw'
+                //   }
+                // }).then(res => {
+                //   console.log('后端返回数据:', res.data);
+                // }).catch(err => {
+                //   console.error('请求失败:', err);
+                // });
+
+
+                
               }}>
                 继续活动
               </View>
