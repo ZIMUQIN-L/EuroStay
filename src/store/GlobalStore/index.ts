@@ -17,6 +17,7 @@ class GlobalStore {
       userDes: this._userInfo.userDes,
       userOpenid: this._userInfo.userOpenid,
       userLocation: this._userInfo.userLocation,
+      token: this._userInfo.token
     };
     return globalUserInfo;
   }

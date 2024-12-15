@@ -73,24 +73,11 @@ const progress = calculateProgress();
             travel.isActive && (
               <View className="reply-button" onClick={(e) => {
                 e.stopPropagation();
-                //console.log('Continue Activity');
-              // // 在这里请求后端token
-              //   Taro.request({
-              //     url: 'https://30fd-70-107-92-166.ngrok-free.app/app/esuser/devLogin',
-              //     method: 'POST',
-              //     data: 'uid=2',
-              //     header: {
-              //       'Content-Type': 'application/x-www-form-urlencoded'
-              //     }
-              //   }).then(res => {
-              //     console.log("Token", res.data['token']);
-              //   }).catch(err => {
-              //     console.error('请求失败:', err);
-              //   });
+                console.log('Continue Activity');
     
                 // // example 
                 // Taro.request({
-                //   url: 'https://30fd-70-107-92-166.ngrok-free.app/app/discuss/addDis',
+                //   url: 'https://api.eurostay.co/app/discuss/addDis',
                 //   method: 'POST',
                 //   data: {
                 //     introduce: 'as',

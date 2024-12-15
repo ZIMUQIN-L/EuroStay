@@ -76,6 +76,23 @@ const Index = () => {
                         }
                       },
                     );
+
+                    // store the token
+                    Taro.request({
+                      url: 'https://api.eurostay.co/app/esuser/devLogin',
+                      method: 'POST',
+                      data: 'uid=2',
+                      header: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                      }
+                    }).then(res => {
+                      console.log("Token", res.data['token']);
+                      GlobalStore.userInfo.token = res.data['token'];
+
+                    }).catch(err => {
+                      console.error('请求失败:', err);
+                    });
+
                   })
                   .catch(err => {
                     setIsLoading(false);

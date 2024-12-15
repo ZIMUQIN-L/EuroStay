@@ -27,6 +27,7 @@ export interface UserItemProps {
   userDes: string;
   userOpenid: string;
   userLocation: string;
+  token: string;
 }
 
 // 房源详情信息接口
