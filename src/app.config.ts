@@ -6,6 +6,7 @@ export default {
     'pages/user-profile/index',
     'pages/activity/index',
     'pages/travel/index',
+    'pages/messages/index',
     'pages/notification/index',
   ],
   subPackages: [
@@ -23,7 +24,8 @@ export default {
         'my-activities/index',
         'travel-coins/index',
         'traveler-system/index',
-        'travel-detail/index'
+        'travel-detail/index',
+        'message-detail/index'
       ],
     },
     {
@@ -69,6 +71,10 @@ export default {
         pagePath: 'pages/travel/index',
         text: '旅迹',
       },
+      {
+        pagePath: 'pages/messages/index',
+        text: '消息',
+      }
     ],
   },
 };

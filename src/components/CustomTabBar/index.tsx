@@ -6,6 +6,7 @@ import HomeIcon from '@assets/images/home.png';
 import ActivityIcon from '@assets/images/activity-home.svg';
 import UserIcon from '@assets/images/user.png';
 import HomeSelectedIcon from '@assets/images/home-selected.png';
+import MessagesSelectedIcon from '@assets/images/messages-selected.svg';
 import ActivitySelectedIcon from '@assets/images/activity-home-selected.svg';
 import UserSelectedIcon from '@assets/images/user-selected.png';
 import { useMemo } from 'react';
@@ -93,6 +94,21 @@ const CustomTabBar: React.FC<CustomTabBarProps> = ({ onHomeSelected }) => {
             className={`tab-text ${currentTab === 'travel' ? 'active' : ''}`}
           >
             旅迹
+          </Text>
+        </View>
+
+        <View className='item' onClick={() => handleTabClick('messages')}>
+          <View className='tab-icon'>
+            <Image
+              src={
+                currentTab === 'messages' ? MessagesSelectedIcon : MessagesSelectedIcon
+              }
+            />
+          </View>
+          <Text
+            className={`tab-text ${currentTab === 'messages' ? 'active' : ''}`}
+          >
+            消息
           </Text>
         </View>
 

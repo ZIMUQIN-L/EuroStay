@@ -1,0 +1,145 @@
+.message-detail {
+    padding: 16px;
+  
+    /* 顶部房源栏样式 */
+    .listing-bar {
+        display: flex;
+        align-items: center;
+        padding: 12px 16px;
+        background-color: #ffffff;
+        border-bottom: 1px solid #e5e5e5;
+
+        .image-placeholder {
+        width: 60px;
+        height: 60px;
+        background-color: #ccc;
+        border-radius: 4px;
+        margin-right: 12px;
+        }
+
+        .listing-info {
+        display: flex;
+        flex-direction: column;
+
+        .date-range {
+            font-size: 26px;
+            color: #888;
+            margin-bottom: 4px;
+        }
+
+        .price {
+            font-size: 26px;
+            color: #333;
+
+            .bold {
+            font-weight: bold;
+            }
+        }
+
+        .status {
+            font-size: 26px;
+            color: #ff9800;
+            margin-top: 4px;
+        }
+        }
+    }
+    .messages {
+      display: flex;
+      flex-direction: column;
+      flex: 1; // 占据剩余空间
+      overflow-y: auto; // 纵向滚动条
+      -webkit-overflow-scrolling: touch;
+      height: 100vh;
+  
+      .message-item {
+        display: flex;
+        margin: 8px 0;
+  
+        &.left {
+          justify-content: flex-start;
+  
+          .message-content {
+            background-color: #f0f0f0;
+            border-radius: 8px;
+            padding: 8px 12px;
+            max-width: 70%;
+          }
+        }
+  
+        &.right {
+          justify-content: flex-end;
+  
+          .message-content {
+            background-color: #007aff;
+            color: #fff;
+            border-radius: 8px;
+            padding: 8px 12px;
+            max-width: 70%;
+          }
+        }
+  
+        .message-content {
+          display: flex;
+          flex-direction: column;
+  
+          .sender {
+            font-size: 26px;
+            color: #888;
+            margin-bottom: 4px;
+          }
+  
+          .time {
+            font-size: 26px;
+            color: #aaa;
+            margin-bottom: 4px;
+          }
+  
+          .content {
+            font-size: 26px;
+          }
+        }
+      }
+    }
+
+    .message-bar {
+        display: flex;
+        align-items: center;
+        padding: 12px 16px; // 增加上下和左右的内边距
+        background-color: #fff;
+        border-top: 1px solid #e5e5e5;
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        box-sizing: border-box;
+        height: 170px; // 增加整体高度
+      
+        .input {
+          flex: 1;
+          height: 50px; // 提高输入框高度
+          padding: 0 12px; // 增加输入框的左右内边距
+          border: 1px solid #ddd;
+          border-radius: 25px; // 圆角更大一些
+          margin-right: 12px; // 按钮和输入框之间的间距
+          font-size: 26px; // 调整输入框字体大小
+        }
+      
+    .send-button {
+        display: flex; // 使用 Flexbox 布局
+        justify-content: center; // 水平居中
+        align-items: center; // 垂直居中
+        width: 150px; // 按钮宽度
+        height: 50px; // 按钮高度
+        background-color: #b1cce9;
+        color: #fff;
+        text-align: center;
+        border-radius: 25px; // 圆角
+        font-size: 26px; // 字体大小适中
+        font-weight: bold; // 字体加粗，增加清晰度
+        padding: 0; // 移除内边距
+        box-sizing: border-box; // 确保边框与内边距不会影响大小
+        }
+          
+      }
+      
+  }
+  
