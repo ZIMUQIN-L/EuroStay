@@ -1,4 +1,5 @@
 import { View, Text, Image } from '@tarojs/components';
+import CustomTabBar from '@components/CustomTabBar';
 import Taro from '@tarojs/taro';
 import './index.scss';
 import { PointIcon, RightBottomArrow } from '@utils/cloudIcons';
@@ -118,6 +119,7 @@ const Index = () => {
           </View>
         ))}
       </View>
+      <CustomTabBar />
     </View>
   );
 };
