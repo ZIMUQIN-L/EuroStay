@@ -1,3 +1,82 @@
+.user-detail-page .intro-section,
+.user-detail-page .travel-section {
+  padding: 40px;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 16px;
+
+  .sectiontitle {
+    font-size: 25px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 24px;
+    text-align: left;
+    width: 100%;
+  }
+
+  .tag-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 24px;
+
+    .representative-tag {
+      font-size: 23px;
+      font-weight: bold;
+      color: #333;
+      margin-bottom: 12px;
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+
+      .tag {
+        font-size: 21px;
+        color: #333;
+        background-color: #f0f0f0;
+        padding: 6px 12px;
+        border-radius: 16px;
+      }
+    }
+  }
+
+  .details {
+    margin-bottom: 24px;
+
+    .title {
+      font-size: 23px;
+      font-weight: bold;
+      color: #333;
+      margin-bottom: 12px;
+      text-align: left;
+    }
+
+    .content {
+      font-size: 23px;
+      color: #666;
+      line-height: 1.5;
+      text-align: left;
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+
+      .tag {
+        font-size: 21px;
+        color: #333;
+        background-color: #f0f0f0;
+        padding: 6px 12px;
+        border-radius: 10px;
+      }
+    }
+  }
+}
+
+
 // .profile-background {
 //   width: 100%;
 //   height: 150px; // Adjust the height as needed
@@ -145,208 +224,210 @@
 //   font-size: 22px;
 // }
 
-.tabs {
-  display: flex;
-  justify-content: center;
-  background-color: white;
-  padding: 10px 0;
-  position: -webkit-sticky; // For Safari
-  position: sticky;
-  z-index: 1000;
-  top: 0;
-  margin-top: 5px;
-  margin-bottom: 5px;
-}
 
-.tab {
-  margin: 0 50px;
-  text-decoration: none;
-  color: #4d4d4d;
-  font-size: 28px; // Adjust the font size to match the design
-  position: relative;
-  padding: 20px 0;
-}
+// 2nd time
+// .tabs {
+//   display: flex;
+//   justify-content: center;
+//   background-color: white;
+//   padding: 10px 0;
+//   position: -webkit-sticky; // For Safari
+//   position: sticky;
+//   z-index: 1000;
+//   top: 0;
+//   margin-top: 5px;
+//   margin-bottom: 5px;
+// }
 
-.tab.active {
-  color: #6b63b9; // Adjust the color to match the active tab color
-  font-weight: bold;
-}
+// .tab {
+//   margin: 0 50px;
+//   text-decoration: none;
+//   color: #4d4d4d;
+//   font-size: 28px; // Adjust the font size to match the design
+//   position: relative;
+//   padding: 20px 0;
+// }
 
-.tab.active::after {
-  content: '';
-  display: block;
-  width: 100%;
-  height: 2px;
-  background-color: #6b63b9; // Adjust the underline color to match the active tab color
-  position: absolute;
-  bottom: -1px; // Adjust the position of the underline
-  left: 0;
-}
+// .tab.active {
+//   color: #6b63b9; // Adjust the color to match the active tab color
+//   font-weight: bold;
+// }
 
-.content {
-  background-color: white;
-  padding: 20px;
-}
+// .tab.active::after {
+//   content: '';
+//   display: block;
+//   width: 100%;
+//   height: 2px;
+//   background-color: #6b63b9; // Adjust the underline color to match the active tab color
+//   position: absolute;
+//   bottom: -1px; // Adjust the position of the underline
+//   left: 0;
+// }
 
-.section {
-  margin-top: 50px;
-  margin-bottom: 50px;
-  left: 20px;
-}
+// .content {
+//   background-color: white;
+//   padding: 20px;
+// }
 
-.section-title {
-  font-size: 35px;
-  color: #4d4d4d;
-  padding: 200px 20px;
-  text-align: center;
-  margin-bottom: 50px;
-}
+// .section {
+//   margin-top: 50px;
+//   margin-bottom: 50px;
+//   left: 20px;
+// }
 
-.section-content {
-  padding: 18px 20px;
-}
+// .section-title {
+//   font-size: 35px;
+//   color: #4d4d4d;
+//   padding: 200px 20px;
+//   text-align: center;
+//   margin-bottom: 50px;
+// }
 
-.key-container {
-  display: flex;
-  align-items: center;
-}
+// .section-content {
+//   padding: 18px 20px;
+// }
 
-.point-image {
-  width: 30px; // Adjust size as needed
-  height: 30px;
-  margin-right: 10px; // Space between the point and the text
-}
+// .key-container {
+//   display: flex;
+//   align-items: center;
+// }
 
-.section-key {
-  font-size: 25px;
-  color: #999; // Light gray color
-  display: block;
-}
+// .point-image {
+//   width: 30px; // Adjust size as needed
+//   height: 30px;
+//   margin-right: 10px; // Space between the point and the text
+// }
 
-.section-value {
-  font-size: 25px;
-  color: #333; // Darker color for the values
-  display: block;
-  margin-top: 5px;
-}
+// .section-key {
+//   font-size: 25px;
+//   color: #999; // Light gray color
+//   display: block;
+// }
 
-.comment-section {
-  padding: 40px;
-  background-color: white;
-  margin-top: 3px;
-}
+// .section-value {
+//   font-size: 25px;
+//   color: #333; // Darker color for the values
+//   display: block;
+//   margin-top: 5px;
+// }
 
-.section-title-comment {
-  font-size: 35px;
-  color: #4d4d4d;
-  margin-bottom: 50px;
-}
+// .comment-section {
+//   padding: 40px;
+//   background-color: white;
+//   margin-top: 3px;
+// }
 
-.tags {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 20px;
-  margin-top: 20px;
-}
+// .section-title-comment {
+//   font-size: 35px;
+//   color: #4d4d4d;
+//   margin-bottom: 50px;
+// }
 
-.comment-card {
-  background-color: #ffffff;
-  border-radius: 10px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  padding: 50px;
-  margin-bottom: 20px;
-  position: relative;
-}
+// .tags {
+//   display: flex;
+//   gap: 10px;
+//   margin-bottom: 20px;
+//   margin-top: 20px;
+// }
 
-.comment-header {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 20px;
-}
+// .comment-card {
+//   background-color: #ffffff;
+//   border-radius: 10px;
+//   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+//   padding: 50px;
+//   margin-bottom: 20px;
+//   position: relative;
+// }
 
-.comment-profile {
-  display: flex;
-  align-items: center;
-}
+// .comment-header {
+//   display: flex;
+//   justify-content: space-between;
+//   margin-bottom: 20px;
+// }
 
-.profile-image-comment {
-  border-radius: 50%;
-  width: 70px;
-  height: 70px;
-  margin-right: 20px;
-}
+// .comment-profile {
+//   display: flex;
+//   align-items: center;
+// }
 
-.profile-info-comment {
-  display: flex;
-  flex-direction: column;
-}
+// .profile-image-comment {
+//   border-radius: 50%;
+//   width: 70px;
+//   height: 70px;
+//   margin-right: 20px;
+// }
 
-.profile-name-comment {
-  font-size: 20px;
-  font-weight: bold;
-  color: #999;
-  margin-bottom: 10px;
-}
+// .profile-info-comment {
+//   display: flex;
+//   flex-direction: column;
+// }
 
-.profile-location-comment {
-  font-size: 18px;
-  color: #999;
-}
+// .profile-name-comment {
+//   font-size: 20px;
+//   font-weight: bold;
+//   color: #999;
+//   margin-bottom: 10px;
+// }
 
-.comment-rating {
-  display: flex;
-  align-items: center;
-}
+// .profile-location-comment {
+//   font-size: 18px;
+//   color: #999;
+// }
 
-.star {
-  font-size: 20px;
-  color: #e0e0e0;
-}
+// .comment-rating {
+//   display: flex;
+//   align-items: center;
+// }
 
-.star.filled {
-  color: #ffd700;
-}
+// .star {
+//   font-size: 20px;
+//   color: #e0e0e0;
+// }
 
-.rating-dates {
-  font-size: 14px;
-  color: #9b9b9b;
-  margin-left: 10px;
-}
+// .star.filled {
+//   color: #ffd700;
+// }
 
-.comment-body {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 20px;
-}
+// .rating-dates {
+//   font-size: 14px;
+//   color: #9b9b9b;
+//   margin-left: 10px;
+// }
 
-.comment-text {
-  font-size: 22px;
-  color: #4d4d4d;
-  line-height: 1.5;
-  max-width: 70%;
-}
+// .comment-body {
+//   display: flex;
+//   justify-content: space-between;
+//   margin-bottom: 20px;
+// }
 
-.room-image {
-  width: 80px;
-  height: 80px;
-  border-radius: 10px;
-}
+// .comment-text {
+//   font-size: 22px;
+//   color: #4d4d4d;
+//   line-height: 1.5;
+//   max-width: 70%;
+// }
 
-.comment-footer {
-  // display: flex;
-  justify-content: flex-end;
-}
+// .room-image {
+//   width: 80px;
+//   height: 80px;
+//   border-radius: 10px;
+// }
 
-.show-more {
-  font-size: 22px;
-  color: #4d90fe;
-  cursor: pointer;
-}
+// .comment-footer {
+//   // display: flex;
+//   justify-content: flex-end;
+// }
 
-.comment-cards-container {
-  padding: 10px 0px 10px 10px;
-  overflow-x: scroll;
-  overflow-y: visible;
-  display: flex;
-  flex-direction: row;
-}
+// .show-more {
+//   font-size: 22px;
+//   color: #4d90fe;
+//   cursor: pointer;
+// }
+
+// .comment-cards-container {
+//   padding: 10px 0px 10px 10px;
+//   overflow-x: scroll;
+//   overflow-y: visible;
+//   display: flex;
+//   flex-direction: row;
+// }

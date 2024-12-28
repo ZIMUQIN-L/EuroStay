@@ -56,39 +56,86 @@ const UserDetailContent: React.FC<UserDetailInfoItemProps> = userDetailInfo => {
   }, []);
 
   return (
-    <View>
-      <View className='content'>
-        <View className='section'>
-          <Text className='section-title'>关于'{userDetailInfo.nickName}'</Text>
-          {Object.entries(aboutMeEntries).map(([key, value]) => (
-            <View key={key} className='section-content'>
-              <View className='key-container'>
-                <Image src={Point} className='point-image' />
-                <Text className='section-key'>{infoMap[key]}:</Text>
-              </View>
-              <Text className='section-value'>{value}</Text>
-            </View>
-          ))}
+    <View className="intro-section">
+      <View className="sectiontitle">关于TA</View>
+      <View className="tag-group">
+        <Text className="representative-tag">代表Tag</Text>
+        <View className="tags">
+          <Text className="tag">🌍 环球冒险家</Text>
+          <Text className="tag">📷 摄影爱好者</Text>
+          <Text className="tag">👩‍🍳 厨神</Text>
         </View>
       </View>
-
-      <View className='comment-section'>
-        <Text className='section-title-comment'>我的评价</Text>
-        <View className='tags'>
-          {userDetailInfo.tags &&
-            userDetailInfo.tags.map((tag, index) => (
-              <Text key={index} className='badge-item'>
-                {tag}
-              </Text>
-            ))}
+    
+      <View className="details">
+        <Text className="title">为什么选择借换宿</Text>
+        <Text className="content">
+          换宿对我来说是一种人生的体验，可以帮助我了解认识到不同的地域文化...
+        </Text>
+      </View>
+    
+      <View className="details">
+        <Text className="title">Green Flag</Text>
+        <View className="tags">
+          <Text className="tag">爱聊天</Text>
+          <Text className="tag">爱吃饭</Text>
+          <Text className="tag">会摄影</Text>
         </View>
-        <View className='comment-cards-container'>
-          {userReceivedRatings.map(ratingInfo => (
-            <UserCommentCard {...ratingInfo}></UserCommentCard>
-          ))}
+      </View>
+    
+      <View className="details">
+        <Text className="title">Red Flag</Text>
+        <View className="tags">
+          <Text className="tag">遇见鬼</Text>
+          <Text className="tag">不诚实</Text>
+          <Text className="tag">吃得少</Text>
+        </View>
+      </View>
+    
+      <View className="details">
+        <Text className="title">兴趣爱好</Text>
+        <View className="tags">
+          <Text className="tag">🎬 电影</Text>
+          <Text className="tag">📷 摄影</Text>
+          <Text className="tag">🎭 话剧</Text>
+          <Text className="tag">🎤 音乐</Text>
         </View>
       </View>
     </View>
+  
+    // <View>
+    //   <View className='content'>
+    //     <View className='section'>
+    //       <Text className='section-title'>关于'{userDetailInfo.nickName}'</Text>
+    //       {Object.entries(aboutMeEntries).map(([key, value]) => (
+    //         <View key={key} className='section-content'>
+    //           <View className='key-container'>
+    //             <Image src={Point} className='point-image' />
+    //             <Text className='section-key'>{infoMap[key]}:</Text>
+    //           </View>
+    //           <Text className='section-value'>{value}</Text>
+    //         </View>
+    //       ))}
+    //     </View>
+    //   </View>
+
+    //   <View className='comment-section'>
+    //     <Text className='section-title-comment'>我的评价</Text>
+    //     <View className='tags'>
+    //       {userDetailInfo.tags &&
+    //         userDetailInfo.tags.map((tag, index) => (
+    //           <Text key={index} className='badge-item'>
+    //             {tag}
+    //           </Text>
+    //         ))}
+    //     </View>
+    //     <View className='comment-cards-container'>
+    //       {userReceivedRatings.map(ratingInfo => (
+    //         <UserCommentCard {...ratingInfo}></UserCommentCard>
+    //       ))}
+    //     </View>
+    //   </View>
+    // </View>
   );
 };
 

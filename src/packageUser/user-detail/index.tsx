@@ -117,7 +117,7 @@ const UserDetail: React.FC = () => {
 
   {/* Tabs */}
   <View className="tabs">
-    {["简介", "房源", "评价", "认证"].map((tab) => (
+    {["简介", "房源", "评价"].map((tab) => (
       <View
         key={tab}
         className={`tab ${activeTab === tab ? "active" : ""}`}
