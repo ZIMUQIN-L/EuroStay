@@ -1,0 +1,83 @@
+.comment-section {
+  padding: 40px;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 16px;
+
+  .statistics {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 24px;
+
+    .stat-item {
+      flex: 1;
+      background: #f9f9f9;
+      padding: 16px;
+      border-radius: 12px;
+      text-align: center;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+      .stat-title {
+        font-size: 18px;
+        font-weight: bold;
+        color: #333;
+        margin-bottom: 8px;
+      }
+
+      .stat-info {
+        font-size: 16px;
+        color: #666;
+        margin-bottom: 8px;
+      }
+
+      .stat-rate {
+        font-size: 16px;
+        color: #666;
+        font-weight: bold;
+      }
+    }
+
+    .stat-item + .stat-item {
+      margin-left: 16px;
+    }
+  }
+
+  .ratings-section {
+    margin-bottom: 24px;
+
+    .section-title {
+      font-size: 20px;
+      font-weight: bold;
+      color: #333;
+      margin-bottom: 16px;
+    }
+
+    .comment-cards-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+
+      .comment-card {
+        flex: 1;
+        min-width: calc(50% - 8px);
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        padding: 16px;
+      }
+    }
+
+    .show-more {
+      text-align: center;
+      margin-top: 16px;
+
+      Text {
+        font-size: 16px;
+        color: #333;
+        text-decoration: underline;
+        cursor: pointer;
+      }
+    }
+  }
+}

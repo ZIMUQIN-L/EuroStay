@@ -6,7 +6,7 @@ import {
 import { View, Image, Text } from '@tarojs/components';
 import './index.scss';
 import { Point } from '@utils/cloudIcons';
-import UserCommentCard from './user-content-comment';
+import UserCommentCard from '../user-rating-content/user-content-comment';
 import { userReceivedRatingSearch } from '@common/database/ratingInfo/ratingInfo';
 
 const UserDetailContent: React.FC<UserDetailInfoItemProps> = userDetailInfo => {
@@ -88,7 +88,7 @@ const UserDetailContent: React.FC<UserDetailInfoItemProps> = userDetailInfo => {
     <View className="details">
       <Text className="title">Red Flag</Text>
       <View className="tags">
-        <Text className="tag">遇见鬼</Text>
+        <Text className="tag">邋遢鬼</Text>
         <Text className="tag">不诚实</Text>
         <Text className="tag">吃得少</Text>
       </View>

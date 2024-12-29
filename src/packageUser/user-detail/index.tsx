@@ -8,6 +8,7 @@ import { useRouter } from '@tarojs/taro';
 import { userInfoSearch } from '@common/database/user/user';
 import UserDetailContent from './user-detail-content';
 import UserAccomContent from './user-accom-content';
+import UserCommentContent from './user-rating-content';
 
 // const userData: UserDetailInfoItemProps = {
 //   _id: 'user-001',
@@ -91,6 +92,28 @@ const UserDetail: React.FC = () => {
     }
   };
 
+  const userReceivedRatings = [
+    {
+      type: "host",
+      evaluation: {
+        desMatch: 5,
+        locationEval: 4,
+        cleanEval: 5,
+        serviceEval: 4,
+        pricePerformance: 5,
+        rating: 4.8,
+      },
+      toPublic: true,
+      sourceUserAvatarUrl: "/path-to-avatar.jpg",
+      sourceUserNickname: "John Doe",
+      sourceUserLocation: "New York, USA",
+      start_date: "2024-12-20",
+      end_date: "2024-12-27",
+      comment: "Great host, very welcoming!",
+    },
+  ];
+  
+
   const handlePointsClick = () => {
     if (userDetailInfo._openid == currentUser._openid) {
       Taro.navigateTo({
@@ -162,8 +185,13 @@ const UserDetail: React.FC = () => {
   <View className="tab-content">
     {activeTab === "简介" && <UserDetailContent {...userDetailInfo} />}
     {activeTab === "房源" && <UserAccomContent {...userDetailInfo} />}
-    {/* {activeTab === "评价" && <UserReviewsContent {...userDetailInfo} />}
-    {activeTab === "认证" && <UserCertificationContent {...userDetailInfo} />} */}
+    {activeTab === "评价" && (
+      <UserCommentContent
+        userDetailInfo={userDetailInfo}
+        userReceivedRatings={userReceivedRatings}
+      />
+    )}
+
   </View>
 </View>
 

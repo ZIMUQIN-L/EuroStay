@@ -37,7 +37,7 @@ const UserAccomContent: React.FC<UserDetailInfoItemProps> = userDetailInfo => {
   return (
     <View className='content'>
       <View className='section'>
-        <Text className='section-title'>'{userDetailInfo.nickName}'的房源</Text>
+        <Text className='section-title'>'{userDetailInfo.nickName}'的房源test</Text>
         <View className='house-grid'>
           {houseList.map(house => (
             <View
