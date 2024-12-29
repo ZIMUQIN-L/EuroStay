@@ -5,72 +5,90 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   margin-bottom: 16px;
 
+
+
   .statistics {
     display: flex;
-    justify-content: space-between;
-    margin-bottom: 24px;
-
+    align-items: center; /* Align items vertically */
+    background: #f9f9ff; /* Light background */
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 30px;
+  
     .stat-item {
       flex: 1;
-      background: #f9f9f9;
-      padding: 16px;
-      border-radius: 12px;
-      text-align: center;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-
+      text-align: center; /* Align content to the left */
+      padding: 8px 16px;
+  
       .stat-title {
-        font-size: 18px;
+        font-size: 23px;
         font-weight: bold;
         color: #333;
         margin-bottom: 8px;
       }
-
+  
       .stat-info {
-        font-size: 16px;
+        font-size: 21px;
         color: #666;
-        margin-bottom: 8px;
+        // margin-bottom: 8px;
+        display: block;
       }
-
+  
       .stat-rate {
-        font-size: 16px;
+        font-size: 21px;
         color: #666;
-        font-weight: bold;
+        display: block;
       }
     }
-
-    .stat-item + .stat-item {
-      margin-left: 16px;
+  
+    .stat-divider {
+      width: 3px; /* Width of the divider */
+      background: #8343fa; /* Dark purple divider color */
+      height: 100px; /* Adjust height relative to content */
+      margin: 0 16px; /* Add spacing between items */
+      display: block; /* Ensure it displays as a block element */
     }
+    
+    
   }
+  
 
   .ratings-section {
-    margin-bottom: 24px;
+    margin-bottom: 30px;
 
     .section-title {
-      font-size: 20px;
+      font-size: 30px;
       font-weight: bold;
       color: #333;
-      margin-bottom: 16px;
+      margin-bottom: 30px;
     }
 
     .comment-cards-container {
+      margin-top: 20px;
       display: flex;
       gap: 16px;
       overflow-x: auto; /* Enable horizontal scrolling */
       padding-bottom: 10px; /* Avoid content clipping during scrolling */
     }
 
-    .show-more {
+    .more {
       text-align: center;
-      margin-top: 16px;
-
+      margin: 16px auto; /* Center horizontally and add top margin */
+      border-radius: 12px;
+      width: 100%;
+      height: 70px;
+      border: 2px solid #e0e0e0; /* Add border with color */
+      display: flex; /* Use flexbox for centering */
+      justify-content: center; /* Center text horizontally */
+      align-items: center; /* Center text vertically */
+      cursor: pointer; /* Pointer on hover */
+    
       Text {
-        font-size: 16px;
+        font-size: 25px;
         color: #333;
-        text-decoration: underline;
-        cursor: pointer;
       }
     }
+    
   }
 }
 

@@ -91,20 +91,21 @@
   font-size: 22px;
   color: #4d4d4d;
   line-height: 1.5;
-  max-height: 130px; /* Leaves space for the footer */
+  max-height: calc(1.5em * 4);; /* Leaves space for the footer */
   overflow: hidden; /* Hides overflow content */
   text-overflow: ellipsis; /* Adds ellipsis if content is truncated */
   display: -webkit-box; /* Enables multiline truncation */
-  -webkit-line-clamp: 5; /* Limits to 5 lines */
+  -webkit-line-clamp: 4; /* Limits to 4 lines */
   -webkit-box-orient: vertical;
   word-wrap: break-word;
+  width: 100%; 
 }
 
 
 .comment-footer {
   position: absolute; /* Ensures it's fixed within the card */
   bottom: 20px; /* Aligns at the bottom */
-  left: 45px;
+  left: 45px; 
 }
 
 .show-more {

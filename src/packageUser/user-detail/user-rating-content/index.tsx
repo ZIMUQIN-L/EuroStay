@@ -22,7 +22,7 @@ const UserCommentContent = ({ userDetailInfo, userReceivedRatings }) => {
       sourceUserLocation: "New York, USA",
       start_date: "2024-12-20",
       end_date: "2024-12-27",
-      comment: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+      comment: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxGreat host, very welcoming!Great host, very welcoming!Great host, very welcoming!Great host, very welcoming!Great host, very welcoming!",
     },
     {
       type: "guest",
@@ -96,6 +96,7 @@ const UserCommentContent = ({ userDetailInfo, userReceivedRatings }) => {
           <Text className="stat-info">共借宿4次 | 收到打赏x次</Text>
           <Text className="stat-rate">推荐率 89%</Text>
         </View>
+        <View className="stat-divider"></View>
         <View className="stat-item">
           <Text className="stat-title">精选host</Text>
           <Text className="stat-info">共供宿19次 | 收到打赏x次</Text>
@@ -111,7 +112,7 @@ const UserCommentContent = ({ userDetailInfo, userReceivedRatings }) => {
             <UserCommentCard key={index} {...ratingInfo}></UserCommentCard>
           ))}
         </View>
-        <View className="show-more">
+        <View className="more">
           <Text>查看更多</Text>
         </View>
       </View>
@@ -124,7 +125,7 @@ const UserCommentContent = ({ userDetailInfo, userReceivedRatings }) => {
             <UserCommentCard key={index} {...ratingInfo}></UserCommentCard>
           ))}
         </View>
-        <View className="show-more">
+        <View className="more">
           <Text>查看更多</Text>
         </View>
       </View>

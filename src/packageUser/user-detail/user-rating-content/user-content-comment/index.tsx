@@ -42,7 +42,7 @@ const UserCommentCard: React.FC<UserRatingInfoItemProps> = userRatingInfo => {
             </View>
           </View>
           <View className='comment-rating'>
-            <View className='rating-stars'>
+            {/* <View className='rating-stars'>
               {ratingStars.map((star, index) => (
                 <Text
                   key={index}
@@ -52,7 +52,7 @@ const UserCommentCard: React.FC<UserRatingInfoItemProps> = userRatingInfo => {
                 </Text>
               ))}
               <Text className='rating-number'>{ratingNumber}</Text>
-            </View>
+            </View> */}
             <Text className='rating-dates'>
               {userRatingInfo.start_date} - {userRatingInfo.end_date}
             </Text>
