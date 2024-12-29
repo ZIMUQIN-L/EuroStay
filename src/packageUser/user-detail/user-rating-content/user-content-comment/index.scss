@@ -1,3 +1,96 @@
+.host-comment-card {
+  background-color: #ffffff;
+  border-radius: 25px;
+  width: 480px;
+  height: 480px;
+  border-color: #9b9b9b;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  padding: 50px;
+  margin-bottom: 20px;
+  position: relative;
+  border: 1px solid #e0e0e0;
+  margin-right: 20px;
+  overflow: hidden;
+}
+
+.host-details {
+  display: flex;
+  padding: 10px;
+}
+
+.host-room-image {
+  width: 180px;
+  height: 180px;
+  border-radius: 8px;
+  margin-right: 12px;
+}
+
+.host-room-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-left: 5px;
+}
+
+.host-room-title {
+  font-size: 25px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 8px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.host-room-details {
+  display: flex;
+  flex-direction: column; /* Stacks items vertically */
+  gap: 8px; /* Adds spacing between items */
+}
+
+.host-room-details-item {
+  font-size: 18px;
+  padding: 3px 12px; /* Adjust padding for better appearance */
+  border-radius: 12px; /* Rounded corners */
+  display: block; /* Ensures items stack vertically */
+  background: #ececec; /* Light gray background */
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Adds shadow */
+  width: fit-content; /* Adapts width to content */
+  margin-bottom: 4px;
+}
+
+
+
+.divider {
+  width: 100%;
+  height: 1px;
+  background-color: #e0e0e0;
+  margin: 16px 0;
+}
+
+.comment-card {
+  background-color: #ffffff;
+  border-radius: 25px;
+  width: 100%;
+  padding: 20px;
+  position: relative;
+  border: 1px solid #e0e0e0;
+  overflow: hidden;
+}
+
+.host-room-image-placeholder {
+  width: 180px;
+  height: 180px;
+  border-radius: 8px;
+  background-color: #f0f0f0; /* Light gray placeholder color */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Shadow to simulate depth */
+  margin-right: 12px;
+}
+
+
+
+
+
 .comment-card {
   background-color: #ffffff;
   border-radius: 25px;
@@ -51,9 +144,23 @@
 
 .comment-rating {
   display: flex;
-  align-items: center;
+  // align-items: center;
   flex-direction: column;
 }
+
+.recommendation-badge {
+  font-size: 18px; /* Adjust font size for balance */
+  color: #443AFF;
+  background: #ECEAFF; /* Light purple background */
+  width: 40px;
+  padding: 2px 12px; /* Ensure enough spacing */
+  border-radius: 4px; /* Rounded edges for a pill-like appearance */
+  display: inline-block; /* Keeps it compact and fits the text */
+  text-align: center; /* Centers the text */
+  margin-left: 175px;
+  margin-bottom: 8px;
+}
+
 
 .rating-stars {
   flex-direction: row;
@@ -73,6 +180,7 @@
   font-size: 18px;
   color: #9b9b9b;
   margin-left: 10px;
+  align-items: center;
 }
 
 .rating-number {
