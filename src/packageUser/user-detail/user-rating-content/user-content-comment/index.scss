@@ -1,33 +1,18 @@
-.comment-section {
-  padding: 40px;
-  background-color: white;
-  margin-top: 3px;
-}
-
-.section-title-comment {
-  font-size: 35px;
-  color: #4d4d4d;
-  margin-bottom: 50px;
-}
-
-.tags {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 20px;
-  margin-top: 20px;
-}
-
 .comment-card {
   background-color: #ffffff;
   border-radius: 25px;
-  width: 500px;
-  height: 270px;
+  width: 480px;
+  height: 250px;
   border-color: #9b9b9b;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   padding: 50px;
   margin-bottom: 20px;
   position: relative;
+  border: 1px solid #e0e0e0;
+  margin-right: 20px;
+  overflow: hidden;
 }
+
 
 .comment-header {
   display: flex;
@@ -97,31 +82,34 @@
 }
 
 .comment-body {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 20px;
+  height: calc(100% - 40px); /* Ensures space for footer */
+  overflow: hidden;
+  position: relative; /* Ensures positioning for footer */
 }
 
 .comment-text {
   font-size: 22px;
   color: #4d4d4d;
   line-height: 1.5;
-  max-width: 70%;
+  max-height: 130px; /* Leaves space for the footer */
+  overflow: hidden; /* Hides overflow content */
+  text-overflow: ellipsis; /* Adds ellipsis if content is truncated */
+  display: -webkit-box; /* Enables multiline truncation */
+  -webkit-line-clamp: 5; /* Limits to 5 lines */
+  -webkit-box-orient: vertical;
+  word-wrap: break-word;
 }
 
-.room-image {
-  width: 80px;
-  height: 80px;
-  border-radius: 10px;
-}
 
 .comment-footer {
-  // display: flex;
-  justify-content: flex-end;
+  position: absolute; /* Ensures it's fixed within the card */
+  bottom: 20px; /* Aligns at the bottom */
+  left: 45px;
 }
 
 .show-more {
   font-size: 22px;
-  color: #4d90fe;
+  text-decoration: underline;
   cursor: pointer;
 }
+

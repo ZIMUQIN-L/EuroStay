@@ -55,17 +55,9 @@
 
     .comment-cards-container {
       display: flex;
-      flex-wrap: wrap;
       gap: 16px;
-
-      .comment-card {
-        flex: 1;
-        min-width: calc(50% - 8px);
-        background: #fff;
-        border-radius: 12px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        padding: 16px;
-      }
+      overflow-x: auto; /* Enable horizontal scrolling */
+      padding-bottom: 10px; /* Avoid content clipping during scrolling */
     }
 
     .show-more {
@@ -81,3 +73,4 @@
     }
   }
 }
+

@@ -4,9 +4,88 @@ import UserCommentCard from './user-content-comment';
 import './index.scss';
 
 const UserCommentContent = ({ userDetailInfo, userReceivedRatings }) => {
+  const mock = userReceivedRatings
+  const userReceivedRatings2 = [
+    {
+      type: "guest",
+      evaluation: {
+        desMatch: 5,
+        locationEval: 4,
+        cleanEval: 5,
+        serviceEval: 4,
+        pricePerformance: 5,
+        rating: 4.8,
+      },
+      toPublic: true,
+      sourceUserAvatarUrl: "/path-to-avatar.jpg",
+      sourceUserNickname: "John Doe",
+      sourceUserLocation: "New York, USA",
+      start_date: "2024-12-20",
+      end_date: "2024-12-27",
+      comment: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+    },
+    {
+      type: "guest",
+      evaluation: {
+        desMatch: 5,
+        locationEval: 4,
+        cleanEval: 5,
+        serviceEval: 4,
+        pricePerformance: 5,
+        rating: 4.8,
+      },
+      toPublic: true,
+      sourceUserAvatarUrl: "/path-to-avatar.jpg",
+      sourceUserNickname: "John Doe",
+      sourceUserLocation: "New York, USA",
+      start_date: "2024-12-20",
+      end_date: "2024-12-27",
+      comment: "Great host, very welcoming!",
+    },
+    {
+      type: "host",
+      evaluation: {
+        desMatch: 5,
+        locationEval: 4,
+        cleanEval: 5,
+        serviceEval: 4,
+        pricePerformance: 5,
+        rating: 4.8,
+      },
+      toPublic: true,
+      sourceUserAvatarUrl: "/path-to-avatar.jpg",
+      sourceUserNickname: "John Doe",
+      sourceUserLocation: "New York, USA",
+      start_date: "2024-12-20",
+      end_date: "2024-12-27",
+      comment: "非常好的房间，交通便利，很卫生干净！小姐姐回复沟通也特别及时！xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxThis is a test for a super long msg but this is still not long enough ahhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh",
+    },
+    {
+      type: "host",
+      evaluation: {
+        desMatch: 5,
+        locationEval: 4,
+        cleanEval: 5,
+        serviceEval: 4,
+        pricePerformance: 5,
+        rating: 4.8,
+      },
+      toPublic: true,
+      sourceUserAvatarUrl: "/path-to-avatar.jpg",
+      sourceUserNickname: "John Doe",
+      sourceUserLocation: "New York, USA",
+      start_date: "2024-12-20",
+      end_date: "2024-12-27",
+      comment: "Great host, very welcoming!",
+    },
+  ];
   // Filter ratings into "from guest" and "from host" categories
-  const guestRatings = userReceivedRatings?.filter(rating => rating.type === 'guest') || [];
-  const hostRatings = userReceivedRatings?.filter(rating => rating.type === 'host') || [];
+  const guestRatings = userReceivedRatings2?.filter(rating => rating.type === 'guest') || [];
+  const hostRatings = userReceivedRatings2?.filter(rating => rating.type === 'host') || [];
+
+  
+
+
 
   return (
     <View className="comment-section">

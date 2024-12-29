@@ -7,8 +7,9 @@ import { DefaultAvatar } from '@utils/cloudIcons';
 const ratingStars = [1, 2, 3, 4, 5];
 
 const UserCommentCard: React.FC<UserRatingInfoItemProps> = userRatingInfo => {
+  
   const ratingNumber =
-    userRatingInfo.type === 'tohost'
+    userRatingInfo.type === 'host'
       ? (userRatingInfo.evaluation['desMatch'] +
           userRatingInfo.evaluation['locationEval'] +
           userRatingInfo.evaluation['cleanEval'] +
@@ -61,9 +62,9 @@ const UserCommentCard: React.FC<UserRatingInfoItemProps> = userRatingInfo => {
           <Text className='comment-text'>{userRatingInfo.comment}</Text>
           {/* <Image src={roomImageUrl} className='room-image' /> */}
         </View>
-        {/* <View className='comment-footer'>
+        <View className='comment-footer'>
           <Text className='show-more'>显示更多</Text>
-        </View> */}
+        </View>
       </View>
     </View>
   );
