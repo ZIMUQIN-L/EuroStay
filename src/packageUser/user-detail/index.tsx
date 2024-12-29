@@ -75,6 +75,22 @@ const UserDetail: React.FC = () => {
     });
   };
 
+  const onShare = () => {
+    console.log('Share button clicked');
+    if (navigator.share) {
+      navigator
+        .share({
+          title: 'Check out this profile',
+          text: 'Take a look at this amazing profile!',
+          url: window.location.href,
+        })
+        .then(() => console.log('Profile shared successfully'))
+        .catch((error) => console.error('Error sharing:', error));
+    } else {
+      alert('Sharing is not supported in this browser.');
+    }
+  };
+
   const handlePointsClick = () => {
     if (userDetailInfo._openid == currentUser._openid) {
       Taro.navigateTo({
@@ -84,36 +100,50 @@ const UserDetail: React.FC = () => {
   };
 
   return (
-<View className="user-detail-page">
-  <View className="profile-container">
-    <View className="profile-background" />
-    <View className="profile-header">
-      <Image
-        src={userDetailInfo?.avatarUrl || "/default-avatar.png"}
-        className="profile-image"
-      />
-      <View className="info">
-        <Text className="profile-name">
-          {userDetailInfo?.nickName || "未知用户"}
-          <Text className="badge">认证</Text>
-        </Text>
-        <Text className="last-online">5min前在线</Text>
-        <View className="badges">
-          <Text className="badge-item">4级探险家</Text>
-          <Text className="badge-item">超级host</Text>
-        </View>
-        <Text className="sub-info">
-          {userDetailInfo.age || 21}岁 · {userDetailInfo.mbti || "INTP"} · 天蝎座
-        </Text>
-        <Text className="location">
-          IP: {userDetailInfo.country || "西班牙"} {userDetailInfo.city || "Valencia"}
-        </Text>
+  <View className="user-detail-page">
+    <View className="profile-container">
+      <View className="profile-background" />
+      <View className="share-button" onClick={onShare}>
+        <Text>分享</Text>
       </View>
       <View className="edit-button" onClick={toEdit}>
         <Text>编辑</Text>
       </View>
+      <View className="profile-header">
+        <Image
+          src={userDetailInfo?.avatarUrl || "/default-avatar.png"}
+          className="profile-image"
+        />
+      <View className="info">
+        <Text className="profile-name">
+          {userDetailInfo?.nickName || "未知用户"}
+          <Text className="badge">认证</Text>
+          <Text className="last-online">5min前在线</Text>
+        </Text>
+
+        {/* Badges Section */}
+        <View className="badges">
+          <Text className="badge-item">⛺ 超级Host</Text>
+          <Text className="badge-item">🏠 换宿x次</Text>
+          <Text className="badge-item">🏆 活动x次</Text>
+          <Text className="badge-item">💰 打赏x次</Text>
+        </View>
+
+        {/* Tags Section */}
+        <View className="tags">
+          <Text className="tag-item">西班牙Valencia</Text>
+          <Text className="tag-item">INTP</Text>
+          <Text className="tag-item">🙋‍♀️ 天蝎座</Text>
+          <Text className="tag-item">🌍 环球冒险家</Text>
+          <Text className="tag-item">📷 摄影爱好者</Text>
+          <Text className="tag-item">👩‍🍳 厨神</Text>
+        </View>
+      </View>
+      </View>
+      <View className="self-intro">
+        <Text className="intro-quote">“Hello，欢迎来瓦伦西亚找我玩，住我家！如果有更长的自我介绍就继续写。。。。”</Text>
+      </View>
     </View>
-  </View>
 
   {/* Tabs */}
   <View className="tabs">
