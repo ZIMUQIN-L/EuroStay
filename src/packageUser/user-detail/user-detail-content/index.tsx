@@ -56,52 +56,94 @@ const UserDetailContent: React.FC<UserDetailInfoItemProps> = userDetailInfo => {
   }, []);
 
   return (
-    <View className="intro-section">
-      <View className="sectiontitle">关于TA</View>
-      <View className="tag-group">
-        <Text className="representative-tag">代表Tag</Text>
-        <View className="tags">
-          <Text className="tag">🌍 环球冒险家</Text>
-          <Text className="tag">📷 摄影爱好者</Text>
-          <Text className="tag">👩‍🍳 厨神</Text>
-        </View>
-      </View>
-    
-      <View className="details">
-        <Text className="title">为什么选择借换宿</Text>
-        <Text className="content">
-          换宿对我来说是一种人生的体验，可以帮助我了解认识到不同的地域文化...
-        </Text>
-      </View>
-    
-      <View className="details">
-        <Text className="title">Green Flag</Text>
-        <View className="tags">
-          <Text className="tag">爱聊天</Text>
-          <Text className="tag">爱吃饭</Text>
-          <Text className="tag">会摄影</Text>
-        </View>
-      </View>
-    
-      <View className="details">
-        <Text className="title">Red Flag</Text>
-        <View className="tags">
-          <Text className="tag">遇见鬼</Text>
-          <Text className="tag">不诚实</Text>
-          <Text className="tag">吃得少</Text>
-        </View>
-      </View>
-    
-      <View className="details">
-        <Text className="title">兴趣爱好</Text>
-        <View className="tags">
-          <Text className="tag">🎬 电影</Text>
-          <Text className="tag">📷 摄影</Text>
-          <Text className="tag">🎭 话剧</Text>
-          <Text className="tag">🎤 音乐</Text>
-        </View>
+<View className="about-travel-section">
+  {/* Intro Section */}
+  <View className="intro-section">
+    <View className="sectiontitle">关于TA</View>
+    <View className="tag-group">
+      <Text className="representative-tag">代表Tag</Text>
+      <View className="tags">
+        <Text className="tag">🌍 环球冒险家</Text>
+        <Text className="tag">📷 摄影爱好者</Text>
+        <Text className="tag">👩‍🍳 厨神</Text>
       </View>
     </View>
+  
+    <View className="details">
+      <Text className="title">为什么选择借换宿</Text>
+      <Text className="content">
+        换宿对我来说是一种人生的体验，可以帮助我了解认识到不同的地域文化...
+      </Text>
+    </View>
+  
+    <View className="details">
+      <Text className="title">Green Flag</Text>
+      <View className="tags">
+        <Text className="tag">爱聊天</Text>
+        <Text className="tag">爱吃饭</Text>
+        <Text className="tag">会摄影</Text>
+      </View>
+    </View>
+  
+    <View className="details">
+      <Text className="title">Red Flag</Text>
+      <View className="tags">
+        <Text className="tag">遇见鬼</Text>
+        <Text className="tag">不诚实</Text>
+        <Text className="tag">吃得少</Text>
+      </View>
+    </View>
+  
+    <View className="details">
+      <Text className="title">兴趣爱好</Text>
+      <View className="tags">
+        <Text className="tag">🎬 电影</Text>
+        <Text className="tag">📷 摄影</Text>
+        <Text className="tag">🎭 话剧</Text>
+        <Text className="tag">🎤 音乐</Text>
+      </View>
+    </View>
+  </View>
+
+  {/* Travel Section */}
+  <View className="travel-section">
+    <View className="sectiontitle">TA 的旅迹</View>
+
+    {/* Visited Countries Section */}
+    <View className="details">
+      <Text className="title">
+        <Text className="icon">📍</Text> 去过的国家
+        <Text className="link">（电子地图）</Text>
+      </Text>
+      <Text className="content">埃及、意大利、荷兰、爱尔兰、英国</Text>
+    </View>
+
+    {/* Map Section */}
+    <View className="map-container">
+      <Image src="/path-to-map-image.png" className="map-image" />
+    </View>
+
+    {/* Participated Activities Section */}
+    <View className="details">
+      <Text className="title">
+        <Text className="icon">🌐</Text> 参加过的活动
+      </Text>
+      <View className="tags">
+        <Text className="tag">2024中秋做月饼</Text>
+        <Text className="tag">2024万圣节活动</Text>
+      </View>
+    </View>
+
+    {/* Memorable Swap Memories Section */}
+    <View className="details">
+      <Text className="title">
+        <Text className="icon">🌟</Text> 最难忘的换宿回忆
+      </Text>
+      <Text className="content">半夜和房东一起去沙滩上偷螃蟹</Text>
+    </View>
+  </View>
+</View>
+
   
     // <View>
     //   <View className='content'>
