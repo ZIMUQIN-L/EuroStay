@@ -19,7 +19,7 @@ const UserCommentCard: React.FC<UserRatingInfoItemProps> = userRatingInfo => {
       : userRatingInfo.evaluation['rating'];
   return (
     <View>
-      {userRatingInfo.type === 'host' ? (
+      {userRatingInfo.type === 'guest' ? (
         <View className="host-comment-card">
         {/* Host Room Details */}
         <View className="host-details">
@@ -42,14 +42,15 @@ const UserCommentCard: React.FC<UserRatingInfoItemProps> = userRatingInfo => {
         
         <View className="comment-header">
           <View className="comment-profile">
-            <Image
+            {/* <Image
               src={
                 userRatingInfo.toPublic
                   ? userRatingInfo.sourceUserAvatarUrl
                   : DefaultAvatar
               }
               className="profile-image-comment"
-            />
+            /> */}
+            <View className="profile-image-placeholder" />
             <View className="profile-info-comment">
               <Text className="profile-name-comment">
                 {userRatingInfo.toPublic
@@ -80,14 +81,15 @@ const UserCommentCard: React.FC<UserRatingInfoItemProps> = userRatingInfo => {
       <View className='comment-card'>
         <View className='comment-header'>
           <View className='comment-profile'>
-            <Image
+            {/* <Image
               src={
                 userRatingInfo.toPublic
                   ? userRatingInfo.sourceUserAvatarUrl
                   : DefaultAvatar
               }
               className='profile-image-comment'
-            />
+            /> */}
+            <View className="profile-image-placeholder" />
             <View className='profile-info-comment'>
               <Text className='profile-name-comment'>
                 {userRatingInfo.toPublic

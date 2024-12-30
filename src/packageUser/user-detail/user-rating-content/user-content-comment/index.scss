@@ -125,20 +125,30 @@
   margin-right: 20px;
 }
 
+.profile-image-placeholder {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%; /* Makes it circular */
+  background-color: #f0f0f0; /* Gray placeholder color */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Adds shadow effect */
+  margin-right: 20px; /* Aligns with the rest of the layout */
+}
+
+
 .profile-info-comment {
   display: flex;
   flex-direction: column;
 }
 
 .profile-name-comment {
-  font-size: 20px;
+  font-size: 25px;
   font-weight: bold;
   color: #999;
   margin-bottom: 10px;
 }
 
 .profile-location-comment {
-  font-size: 18px;
+  font-size: 19px;
   color: #999;
 }
 
@@ -149,7 +159,7 @@
 }
 
 .recommendation-badge {
-  font-size: 18px; /* Adjust font size for balance */
+  font-size: 21px; /* Adjust font size for balance */
   color: #443AFF;
   background: #ECEAFF; /* Light purple background */
   width: 40px;
@@ -158,26 +168,26 @@
   display: inline-block; /* Keeps it compact and fits the text */
   text-align: center; /* Centers the text */
   margin-left: 175px;
-  margin-bottom: 8px;
+  margin-bottom: 16px;
 }
 
 
-.rating-stars {
-  flex-direction: row;
-}
+// .rating-stars {
+//   flex-direction: row;
+// }
 
-.star {
-  font-size: 40px;
-  color: #e0e0e0;
-}
+// .star {
+//   font-size: 40px;
+//   color: #e0e0e0;
+// }
 
-.star.filled {
-  font-size: 40px;
-  color: #ffd700;
-}
+// .star.filled {
+//   font-size: 40px;
+//   color: #ffd700;
+// }
 
 .rating-dates {
-  font-size: 18px;
+  font-size: 19px;
   color: #9b9b9b;
   margin-left: 10px;
   align-items: center;
@@ -196,7 +206,7 @@
 }
 
 .comment-text {
-  font-size: 22px;
+  font-size: 23px;
   color: #4d4d4d;
   line-height: 1.5;
   max-height: calc(1.5em * 4);; /* Leaves space for the footer */
@@ -212,12 +222,12 @@
 
 .comment-footer {
   position: absolute; /* Ensures it's fixed within the card */
-  bottom: 20px; /* Aligns at the bottom */
+  bottom: 27px; /* Aligns at the bottom */
   left: 45px; 
 }
 
 .show-more {
-  font-size: 22px;
+  font-size: 21px;
   text-decoration: underline;
   cursor: pointer;
 }
