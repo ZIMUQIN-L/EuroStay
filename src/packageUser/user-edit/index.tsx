@@ -47,6 +47,18 @@ const Index = () => {
     });
   };
 
+  const [activeModal, setActiveModal] = useState<string | null>(null); // Track which modal is open
+  const [userName, setUserName] = useState('速食主义');
+  const [userLocation, setUserLocation] = useState('西班牙 Valencia');
+  const [searchInput, setSearchInput] = useState('');
+
+  const closeModal = () => setActiveModal(null);
+
+  // Open specific modals
+  const openNameModal = () => setActiveModal("name");
+  const openLocationModal = () => setActiveModal("location");
+
+
   return (
     <View className="profile-container">
       <View className="header">
@@ -88,11 +100,11 @@ const Index = () => {
         </View>
 
         <View className="user-info-section">
-          <View className="info-item">
+          <View className="info-item" onClick={openNameModal}>
             <Text className="info-label">用户名</Text>
             <Text className="info-value">速食主义</Text>
           </View>
-          <View className="info-item">
+          <View className="info-item" onClick={openLocationModal}>
             <Text className="info-label">地点</Text>
             <Text className="info-value">西班牙, Valencia</Text>
           </View>
@@ -218,6 +230,79 @@ const Index = () => {
 
         </View>
       </View>
+      {activeModal === 'name' && (
+        <View className="modal-overlay">
+          <View className="modal-content">
+            <View className="modal-header">
+              <Text className="modal-title">编辑名字</Text>
+              <Text className="modal-close" onClick={closeModal}>
+                ✕
+              </Text>
+            </View>
+            <View className="modal-body">
+              <Input
+                className="modal-input"
+                value={userName}
+                maxlength={24}
+                placeholder="请输入名字"
+                onInput={(e) => setUserName(e.detail.value)}
+              />
+              <Text className="modal-counter">{userName.length}/24</Text>
+              <Text className="modal-instruction">
+                请设置2–24个字符，不包括 @&lt;&gt;/ 等无效字符，7天内仅可修改1次名字
+              </Text>
+            </View>
+            <View className="modal-footer">
+              <Text className="modal-confirm-button" onClick={closeModal}>
+                确认
+              </Text>
+            </View>
+          </View>
+        </View>
+      )}
+      {activeModal === 'location' && (
+        <View className="modal-overlay">
+          <View className="modal-content">
+            <View className="modal-header">
+              <Text className="modal-title">选择你的地区</Text>
+              <Text className="modal-close" onClick={closeModal}>
+                ✕
+              </Text>
+            </View>
+            <View className="modal-body">
+              <Text className="modal-subtitle">定位到的位置</Text>
+              <Input
+                className="modal-input"
+                value={userLocation}
+                placeholder="请输入位置"
+                onInput={(e) => setUserLocation(e.detail.value)}
+              />
+              <Text className="modal-subtitle">快速输入/查找</Text>
+              <Input
+                className="modal-input"
+                value={searchInput}
+                placeholder="搜索地区"
+                onInput={(e) => setSearchInput(e.detail.value)}
+              />
+              <Text className="modal-subtitle">全部</Text>
+              <View className="location-list">
+                {['西班牙', '安道尔', '奥地利', '澳大利亚'].map((location, index) => (
+                  <View
+                    key={index}
+                    className="location-item"
+                    onClick={() => {
+                      setUserLocation(location);
+                      closeModal();
+                    }}
+                  >
+                    {location}
+                  </View>
+                ))}
+              </View>
+            </View>
+          </View>
+        </View>
+      )}
     </View>
   );
 };
