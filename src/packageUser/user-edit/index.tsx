@@ -50,6 +50,10 @@ const Index = () => {
   const [activeModal, setActiveModal] = useState<string | null>(null); // Track which modal is open
   const [userName, setUserName] = useState('速食主义');
   const [userLocation, setUserLocation] = useState('西班牙 Valencia');
+  const [userSex, setUserSex] = useState('女性');
+  const handleSelect = (gender) => {
+    setUserSex(gender);
+  };
   const [searchInput, setSearchInput] = useState('');
 
   const closeModal = () => setActiveModal(null);
@@ -57,6 +61,7 @@ const Index = () => {
   // Open specific modals
   const openNameModal = () => setActiveModal("name");
   const openLocationModal = () => setActiveModal("location");
+  const openSexModal = () => setActiveModal("sex");
 
   const [error, setError] = useState('');
 
@@ -127,7 +132,7 @@ const Index = () => {
             <Text className="info-label">地点</Text>
             <Text className="info-value">西班牙, Valencia</Text>
           </View>
-          <View className="info-item">
+          <View className="info-item" onClick={openSexModal}>
             <Text className="info-label">性别</Text>
             <Text className="info-value">女性</Text>
           </View>
@@ -271,14 +276,14 @@ const Index = () => {
                 className="modal-input"
                 value={userName}
                 placeholder="请输入名字"
-                maxlength={24}
+                maxlength={8}
                 onInput={handleInputChange}
               />
               {/* <Text className="modal-counter">{userName.length}/24</Text> */}
             </View>
-            {error && <Text className="error-message">{error}</Text>}
+            {/* {error && <Text className="error-message">{error}</Text>} */}
               <Text className="modal-instruction">
-                请设置2–24个字符，不包括 @&lt;&gt;/ 等无效字符，7天内仅可修改1次名字
+                请设置1-8个字符，不包括 @&lt;&gt;/ 等无效字符
               </Text>
             </View>
           </View>
@@ -288,9 +293,12 @@ const Index = () => {
         <View className="modal-overlay">
           <View className="modal-content">
             <View className="modal-header">
-              <Text className="modal-title">选择你的地区</Text>
               <Text className="modal-close" onClick={closeModal}>
                 ✕
+              </Text>
+              <Text className="modal-title">选择你的地区</Text>
+              <Text className="modal-confirm-button" onClick={closeModal}>
+                确认
               </Text>
             </View>
             <View className="modal-body">
@@ -310,7 +318,7 @@ const Index = () => {
               />
               <Text className="modal-subtitle">全部</Text>
               <View className="location-list">
-                {['西班牙', '安道尔', '奥地利', '澳大利亚'].map((location, index) => (
+                {['西班牙', '安道尔', '奥地利', '澳大利亚', '阿尔巴尼亚', '阿尔及利亚', '爱尔兰', '安哥拉', '阿根廷'].map((location, index) => (
                   <View
                     key={index}
                     className="location-item"
@@ -326,6 +334,39 @@ const Index = () => {
             </View>
           </View>
         </View>
+      )}
+      {activeModal === 'sex' && (
+        <View className="modal-overlay">
+        <View className="modal-content">
+          <View className="modal-header">
+            <Text className="modal-close" onClick={closeModal}>
+              ✕
+            </Text>
+            <Text className="modal-title">选择你的生理性别</Text>
+            <Text className="modal-confirm-button" onClick={closeModal}>
+              确认
+            </Text>
+          </View>
+          <View className="modal-body">
+            <View className="gender-selector">
+              <View
+                className={`gender-option ${userSex === '男性' ? 'selected' : ''}`}
+                onClick={() => handleSelect('男性')}
+              >
+                <Text>男</Text>
+                {userSex === '男性' && <Text className="checkmark">✔</Text>}
+              </View>
+              <View
+                className={`gender-option ${userSex === '女性' ? 'selected' : ''}`}
+                onClick={() => handleSelect('女性')}
+              >
+                <Text>女</Text>
+                {userSex === '女性' && <Text className="checkmark">✔</Text>}
+              </View>
+            </View>
+          </View>
+        </View>
+      </View>
       )}
     </View>
   );

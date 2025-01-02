@@ -13,12 +13,12 @@
 
 .modal-content {
   background: #fff;
-  width: 110%; /* Full width */
+  width: 110%;
   min-height: 40%;
-  border-radius: 12px 12px 0 0; /* Rounded top corners */
+  border-radius: 12px 12px 0 0;
   box-shadow: 0px -2px 10px rgba(0, 0, 0, 0.2);
   padding: 30px;
-  overflow-y: auto; /* Allow scrolling for content */
+  overflow-y: auto; 
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -45,23 +45,31 @@
 .modal-body {
   margin-bottom: 16px;
   padding: 20px;
+  width: 650px;
+  overflow: visible;
+  display: block;
+}
+
+.modal-subtitle {
+  margin-bottom: 24px;
 }
 
 .input-container {
   display: flex;
   position: relative;
   align-items: center;
-  width: 100%;
 }
 
 .modal-input {
   flex-grow: 1;
   font-size: 25px;
-  padding: 8px;
+  padding: 15px;
   padding-right: 60px;
   border: 1px solid #ccc;
   border-radius: 6px;
   background-color: #f0f0f0;
+  margin-bottom: 38px;
+  margin-top: 20px;
 }
 
 .modal-counter {
@@ -76,9 +84,6 @@
   font-size: 20px;
   margin-top: 8px;
 }
-
-
-
 
 .modal-instruction {
   font-size: 25px;
@@ -96,16 +101,53 @@
 .location-list {
   display: flex;
   flex-direction: column;
-  margin-top: 8px;
+  margin-top: 18px;
+  position: relative;
 }
 
 .location-item {
-  padding: 10px;
-  background: #f9f9f9;
-  margin-bottom: 8px;
-  border-radius: 8px;
+  flex-grow: 1;
+  font-size: 25px;
+  padding: 20px;
+  padding-right: 60px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background-color: #f0f0f0;
   cursor: pointer;
 }
+
+.gender-selector {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  overflow: hidden;
+
+  .gender-option {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    background-color: #f7f7f7;
+    font-size: 25px;
+    cursor: pointer;
+    padding: 20px;
+
+    &:not(:last-child) {
+      border-bottom: 1px solid #ddd; // Divider between options
+    }
+
+    &.selected {
+      background-color: #e6e6e6; // Highlight selected option
+    }
+
+    .checkmark {
+      font-size: 25px;
+      color: #000; // Checkmark color
+    }
+  }
+}
+
 
 .profile-container {
   padding: 40px;
