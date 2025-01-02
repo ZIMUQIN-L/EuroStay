@@ -58,6 +58,25 @@ const Index = () => {
   const openNameModal = () => setActiveModal("name");
   const openLocationModal = () => setActiveModal("location");
 
+  const [error, setError] = useState('');
+
+  const handleInputChange = (e) => {
+    const value = e.detail.value;
+    setUserName(value);
+    if (value.length >= 2) {
+      setError(''); // Clear error when valid
+    }
+  };
+
+  const handleSubmit = () => {
+    if (userName.length < 2) {
+      setError('名字至少需要2个字符'); // Show error message
+    } else {
+      setError(''); // Clear error
+      console.log('Valid input:', userName); // Proceed with valid input
+    }
+  };
+
 
   return (
     <View className="profile-container">
@@ -234,27 +253,32 @@ const Index = () => {
         <View className="modal-overlay">
           <View className="modal-content">
             <View className="modal-header">
-              <Text className="modal-title">编辑名字</Text>
               <Text className="modal-close" onClick={closeModal}>
                 ✕
               </Text>
+              <Text className="modal-title">编辑名字</Text>
+              <Text className="modal-confirm-button"
+                  onClick={() => {
+                    handleSubmit();
+                    closeModal();
+                  }}>
+                确认
+              </Text>
             </View>
             <View className="modal-body">
+            <View className="input-container">
               <Input
                 className="modal-input"
                 value={userName}
-                maxlength={24}
                 placeholder="请输入名字"
-                onInput={(e) => setUserName(e.detail.value)}
+                maxlength={24}
+                onInput={handleInputChange}
               />
-              <Text className="modal-counter">{userName.length}/24</Text>
+              {/* <Text className="modal-counter">{userName.length}/24</Text> */}
+            </View>
+            {error && <Text className="error-message">{error}</Text>}
               <Text className="modal-instruction">
                 请设置2–24个字符，不包括 @&lt;&gt;/ 等无效字符，7天内仅可修改1次名字
-              </Text>
-            </View>
-            <View className="modal-footer">
-              <Text className="modal-confirm-button" onClick={closeModal}>
-                确认
               </Text>
             </View>
           </View>
