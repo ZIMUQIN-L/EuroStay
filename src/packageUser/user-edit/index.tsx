@@ -15,10 +15,11 @@ import { observer } from 'mobx-react';
 // } from '@common/database/pointSystem/pointSystem';
 // import { formatTimestamp } from '@utils/dateUtil';
 
-import { View, Image, Text, Button, Input } from '@tarojs/components';
+import { View, Image, Text, Button, Input, Picker } from '@tarojs/components';
 import { useState } from 'react';
 import Taro from '@tarojs/taro';
 import './index.scss';
+import dayjs from 'dayjs';
 
 const Index = () => {
   const [photoList, setPhotoList] = useState([
@@ -51,9 +52,13 @@ const Index = () => {
   const [userName, setUserName] = useState('速食主义');
   const [userLocation, setUserLocation] = useState('西班牙 Valencia');
   const [userSex, setUserSex] = useState('女性');
-  const handleSelect = (gender) => {
-    setUserSex(gender);
-  };
+  const [selectedMBTI, setSelectedMBTI] = useState('');
+  const [userEmail, setUserEmail] = useState('')
+  const [userWeChat, setUserWeChat] = useState('')
+  const [userBirthday, setUserBirthday] = useState('');
+
+  const [userLRB, setUserLRB] = useState('');
+  
   const [searchInput, setSearchInput] = useState('');
 
   const closeModal = () => setActiveModal(null);
@@ -62,9 +67,33 @@ const Index = () => {
   const openNameModal = () => setActiveModal("name");
   const openLocationModal = () => setActiveModal("location");
   const openSexModal = () => setActiveModal("sex");
+  const openMBTIModal = () => setActiveModal("mbti")
+  const openEmailModal = () => setActiveModal("email")
+  const openWeChatModal = () => setActiveModal("wechat")
+  const openBirthdayModal = () => setActiveModal("birthday")
+  const openJobModal = () => setActiveModal("job")
+  const openLRBModal = () => setActiveModal("LRB")
+
+  const openYouModal = () => setActiveModal("youTag")
+  const openGreenModal = () => setActiveModal("green")
+  const openRedModal = () => setActiveModal("red")
+  const openInterestModal = () => setActiveModal("interest")
+
+  
+
+  const handleSelect = (gender) => {
+    setUserSex(gender);
+  };
+  const groups = [
+    { label: '绿人组', types: ['ENFJ', 'ENFP', 'INFJ', 'INFP'] },
+    { label: '黄人组', types: ['ESTJ', 'ESTP', 'ISTJ', 'ISTP'] },
+    { label: '紫人组', types: ['ENTJ', 'ENTP', 'INTJ', 'INTP'] },
+    { label: '蓝人组', types: ['ESFJ', 'ESFP', 'ISFJ', 'ISFP'] },
+  ];
 
   const [error, setError] = useState('');
 
+  // For name
   const handleInputChange = (e) => {
     const value = e.detail.value;
     setUserName(value);
@@ -73,14 +102,153 @@ const Index = () => {
     }
   };
 
+  const handleEmailChange = (e) => {
+    const value = e.detail.value;
+    setUserEmail(value);
+  }
+
+  const handleWeChatChange = (e) => {
+    const value = e.detail.value;
+    setUserWeChat(value);
+  }
+
+  const handleBirthdayChange = (e) => {
+    const value = e.detail.value;
+    setUserBirthday(value);
+  };
+
+  const handleLRBChange = (e) => {
+    const value = e.detail.value;
+    setUserLRB(value);
+  }
+
   const handleSubmit = () => {
     if (userName.length < 2) {
-      setError('名字至少需要2个字符'); // Show error message
+      setError('名字至少需要2个字符');
     } else {
-      setError(''); // Clear error
-      console.log('Valid input:', userName); // Proceed with valid input
+      setError('');
+      console.log('Valid input:', userName);
     }
   };
+
+  // job tags
+  const [selectedJob, setSelectedJob] = useState(['来选择吧！']);
+  const [customJobTag, setCustomJobTag] = useState('');
+
+  const handleRemoveJob = (tag) => {
+    setSelectedJob(selectedJob.filter((item) => item !== tag));
+  };
+
+  const handleAddJob = (tag) => {
+    if (selectedJob.length < maxSelection) {
+      setSelectedJob([...selectedJob, tag]);
+    }
+  };
+
+  const handleCustomAddJob = () => {
+    if (customJobTag && selectedJob.length < maxSelection) {
+      setSelectedJob([...selectedJob, customJobTag]);
+      setCustomJobTag('');
+    }
+  };
+
+
+  // you tags
+  const [selectedYou, setSelectedYou] = useState(['来选择吧！']);
+  const [customYouTag, setCustomYouTag] = useState('');
+
+  const handleRemoveYou = (tag) => {
+    setSelectedYou(selectedYou.filter((item) => item !== tag));
+  };
+
+  const handleAddYou = (tag) => {
+    if (selectedYou.length < maxSelection) {
+      setSelectedYou([...selectedYou, tag]);
+    }
+  };
+
+  const handleCustomAddYou = () => {
+    if (customYouTag && selectedYou.length < maxSelection) {
+      setSelectedYou([...selectedYou, customYouTag]);
+      setCustomYouTag('');
+    }
+  };
+
+  // green tags
+  const [selectedGreen, setSelectedGreen] = useState(['来选择吧！']);
+  const [customTag, setCustomTag] = useState('');
+
+  const maxSelection = 3;
+
+  const handleRemoveGreen = (tag) => {
+    setSelectedGreen(selectedGreen.filter((item) => item !== tag));
+  };
+
+  const handleAddGreen = (tag) => {
+    if (selectedGreen.length < maxSelection) {
+      setSelectedGreen([...selectedGreen, tag]);
+    }
+  };
+
+  const handleCustomAddGreen = () => {
+    if (customTag && selectedGreen.length < maxSelection) {
+      setSelectedGreen([...selectedGreen, customTag]);
+      setCustomTag('');
+    }
+  };
+
+  const recommendedCategories = {
+    兴趣爱好型: ['爱聊天', '爱吃饭', '爱看书', '爱旅行'],
+    技能认证型: ['会摄影', '会开车', '会做饭'],
+  };
+
+  // red tags
+  const [selectedRed, setSelectedRed] = useState(['来选择吧！']);
+  const [customRedTag, setCustomRedTag] = useState('');
+
+  const handleRemoveRed = (tag) => {
+    setSelectedRed(selectedRed.filter((item) => item !== tag));
+  };
+
+  const handleAddRed = (tag) => {
+    if (selectedRed.length < maxSelection) {
+      setSelectedRed([...selectedRed, tag]);
+    }
+  };
+
+  const handleCustomAddRed = () => {
+    if (customRedTag && selectedRed.length < maxSelection) {
+      setSelectedRed([...selectedRed, customRedTag]);
+      setCustomRedTag('');
+    }
+  };
+
+  const nonRecommendedCategories = {
+    XXXX: ['邋遢鬼', '不成熟', '吃得少'],
+    XXX: ['邋遢鬼', '不成熟', '吃得少'],
+  };
+
+  // interest tags
+  const [selectedInterest, setSelectedInterest] = useState(['来选择吧！']);
+  const [customInterestTag, setCustomInterestTag] = useState('');
+
+  const handleRemoveInterest = (tag) => {
+    setSelectedInterest(selectedInterest.filter((item) => item !== tag));
+  };
+
+  const handleAddInterest = (tag) => {
+    if (selectedInterest.length < maxSelection) {
+      setSelectedInterest([...selectedInterest, tag]);
+    }
+  };
+
+  const handleCustomAddInterest = () => {
+    if (customInterestTag && selectedInterest.length < maxSelection) {
+      setSelectedInterest([...selectedInterest, customInterestTag]);
+      setCustomInterestTag('');
+    }
+  };
+
 
 
   return (
@@ -136,19 +304,23 @@ const Index = () => {
             <Text className="info-label">性别</Text>
             <Text className="info-value">女性</Text>
           </View>
-          <View className="info-item">
+          <View className="info-item" onClick={openMBTIModal}>
             <Text className="info-label">MBTI</Text>
             <Text className="info-value">INTP</Text>
           </View>
-          <View className="info-item">
+          <View className="info-item" onClick={openEmailModal}>
             <Text className="info-label">邮箱 (仅供收集)</Text>
             <Text className="info-value">添加</Text>
           </View>
-          <View className="info-item">
+          <View className="info-item" onClick={openWeChatModal}>
+            <Text className="info-label">微信 (仅供收集)</Text>
+            <Text className="info-value">添加</Text>
+          </View>
+          <View className="info-item" onClick={openBirthdayModal}>
             <Text className="info-label">出生日期</Text>
             <Text className="info-value">添加</Text>
           </View>
-          <View className="info-item">
+          <View className="info-item" onClick={openJobModal}>
             <Text className="info-label">工作</Text>
             <Text className="info-value">添加</Text>
           </View>
@@ -156,7 +328,7 @@ const Index = () => {
             <Text className="info-label">学校</Text>
             <Text className="info-value">添加</Text>
           </View>
-          <View className="info-item">
+          <View className="info-item" onClick={openLRBModal}>
             <Text className="info-label">小红书账号</Text>
             <Text className="info-value">添加</Text>
           </View>
@@ -179,7 +351,7 @@ const Index = () => {
               />
             </View>
 
-            <View className="info-item tag">
+            <View className="info-item tag" onClick={openYouModal}>
               <Text className="info-label">你的Tag</Text>
               <Text className="section-subtitle">你是什么样的人</Text>
               <View
@@ -190,7 +362,7 @@ const Index = () => {
               </View>
             </View>
 
-            <View className="info-item green-flag">
+            <View className="info-item green-flag" onClick={openGreenModal}>
               <Text className="info-label">Green Flag</Text>
               <Text className="section-subtitle">你喜欢什么样的人</Text>
               <View
@@ -201,7 +373,7 @@ const Index = () => {
               </View>
             </View>
 
-            <View className="info-item red-flag">
+            <View className="info-item red-flag" onClick={openRedModal}>
               <Text className="info-label">Red Flag</Text>
               <Text className="section-subtitle">你讨厌什么样的人</Text>
               <View
@@ -213,7 +385,7 @@ const Index = () => {
             </View>
 
 
-            <View className="info-item interests">
+            <View className="info-item interests" onClick={openInterestModal}>
               <Text className="info-label">兴趣爱好</Text>
               <Text className="section-subtitle">选择你特别钟爱的兴趣爱好</Text>
               <View
@@ -367,6 +539,592 @@ const Index = () => {
           </View>
         </View>
       </View>
+      )}
+      {activeModal === 'mbti' && (
+        <View className="modal-overlay">
+        <View className="modal-content">
+          <View className="modal-header">
+            <Text className="modal-close" onClick={closeModal}>
+              ✕
+            </Text>
+            <Text className="modal-title">编辑你的MBTI</Text>
+            <Text className="modal-confirm-button" onClick={closeModal}>
+              确认
+            </Text>
+          </View>
+          <View className="modal-body">
+            <View className="mbti-container">
+              <Text className="mbti-header">
+                MBTI有助于帮你匹配性格更合适的旅伴哦
+              </Text>
+              {groups.map((group, index) => (
+                <View key={index} className="mbti-group">
+                  <Text className="group-label">{group.label}</Text>
+                  <View className="group-types">
+                    {group.types.map((type) => (
+                      <View
+                        key={type}
+                        className={`mbti-type ${
+                          selectedMBTI === type ? 'selected' : ''
+                        }`}
+                        onClick={() => setSelectedMBTI(type)}
+                      >
+                        {type}
+                      </View>
+                    ))}
+                  </View>
+                </View>
+              ))}
+            </View>
+          </View>
+        </View>
+      </View>
+      )}
+      {activeModal === 'email' && (
+        <View className="modal-overlay">
+          <View className="modal-content">
+            <View className="modal-header">
+              <Text className="modal-close" onClick={closeModal}>
+                ✕
+              </Text>
+              <Text className="modal-title">编辑邮箱</Text>
+              <Text className="modal-confirm-button"
+                  onClick={() => {
+                    closeModal();
+                  }}>
+                确认
+              </Text>
+            </View>
+            <View className="modal-body">
+            <View className="input-container">
+              <Input
+                className="modal-input"
+                value={userEmail}
+                placeholder="请输入微信"
+                onInput={handleEmailChange}
+              />
+            </View>
+              <Text className="modal-instruction">
+                我们将用邮箱向您发送消息提醒和联系邮件，请注意查收~
+              </Text>
+            </View>
+          </View>
+        </View>
+      )}
+      {activeModal === 'wechat' && (
+        <View className="modal-overlay">
+          <View className="modal-content">
+            <View className="modal-header">
+              <Text className="modal-close" onClick={closeModal}>
+                ✕
+              </Text>
+              <Text className="modal-title">编辑微信</Text>
+              <Text className="modal-confirm-button"
+                  onClick={() => {
+                    closeModal();
+                  }}>
+                确认
+              </Text>
+            </View>
+            <View className="modal-body">
+            <View className="input-container">
+              <Input
+                className="modal-input"
+                value={userWeChat}
+                placeholder="请输入邮箱"
+                onInput={handleWeChatChange}
+              />
+            </View>
+              <Text className="modal-instruction">
+                我们将用微信向您发送消息提醒和联系邮件，请注意查收~
+              </Text>
+            </View>
+          </View>
+        </View>
+      )}
+      {activeModal === 'birthday' && (
+        <View className="modal-overlay">
+          <View className="modal-content">
+            <View className="modal-header">
+              <Text className="modal-close" onClick={closeModal}>
+                ✕
+              </Text>
+              <Text className="modal-title">编辑生日</Text>
+              <Text className="modal-confirm-button"
+                  onClick={() => {
+                    closeModal();
+                  }}>
+                确认
+              </Text>
+            </View>
+            <View className="modal-body">
+              <View className="birthday-info">
+                <View className="info-row">
+                  <Text className="info-label">生日信息</Text>
+                  <Picker mode="date" 
+                    onChange={handleBirthdayChange} 
+                    value={userBirthday}
+                    end={dayjs().format('YYYY-MM-DD')}
+                  >
+                    <View className="info-value">
+                      {userBirthday ? userBirthday : '请选择'}
+                      <Text className="arrow">{'>'}</Text>
+                    </View>
+                  </Picker>
+                </View>
+              </View>
+            </View>
+          </View>
+        </View>
+      )}
+      {activeModal === 'job' && (
+        <View className="modal-overlay">
+          <View className="modal-content">
+            <View className="modal-header">
+              <Text className="modal-close" onClick={closeModal}>
+                ✕
+              </Text>
+              <Text className="modal-title">编辑职业</Text>
+              <Text className="modal-confirm-button"
+                  onClick={() => {
+                    closeModal();
+                  }}>
+                确认
+              </Text>
+            </View>
+            <View className="modal-body">
+              <View className="preference-selector">
+                {/* Title */}
+                <Text className="section-title">请选择您的职业</Text>
+
+                {/* Selected Tags */}
+                <View className="selected-tags">
+                  <View className="selection-container">
+                    <Text className="selection-text">已选择</Text>
+                    <Text className="selection-count">{selectedJob.length}/{maxSelection}</Text>
+                  </View>
+                  <View className="tags">
+                    {selectedJob.map((tag, index) => (
+                      <View
+                        key={index}
+                        className="tag selected"
+                        onClick={() => handleRemoveJob(tag)}
+                      >
+                        {tag} <Text className="remove">X</Text>
+                      </View>
+                    ))}
+                  </View>
+                </View>
+
+                {/* Custom Tag Input */}
+                <Text className="subtitle">自定义</Text>
+                <View className="custom-input">
+                  <Input
+                    className="custom-input-field"
+                    value={customJobTag}
+                    placeholder="请输入标签"
+                    onInput={(e) => setCustomJobTag(e.detail.value)}
+                    onConfirm={handleCustomAddJob}
+                  />
+                  <View
+                    className="add-button"
+                    onClick={handleCustomAddJob} // Handles button click
+                  >
+                    添加
+                  </View>
+                </View>
+
+                {/* Recommendations */}
+                <View className="recommendations">
+                  <Text className="subtitle">推荐</Text>
+                  {Object.keys(recommendedCategories).map((category, index) => (
+                    <View key={index} className="category">
+                      <Text className="category-title">{category}</Text>
+                      <View className="tags">
+                        {recommendedCategories[category].map((tag, idx) => (
+                          <View
+                            key={idx}
+                            className={`tag ${selectedJob.includes(tag) ? 'disabled' : ''}`}
+                            onClick={() => !selectedJob.includes(tag) && handleAddJob(tag)}
+                          >
+                            {tag}
+                          </View>
+                        ))}
+                      </View>
+                    </View>
+                  ))}
+                </View>
+              </View>
+            </View>
+          </View>
+        </View>
+      )}
+      {activeModal === 'LRB' && (
+        <View className="modal-overlay">
+          <View className="modal-content">
+            <View className="modal-header">
+              <Text className="modal-close" onClick={closeModal}>
+                ✕
+              </Text>
+              <Text className="modal-title">编辑小红书账号</Text>
+              <Text className="modal-confirm-button"
+                  onClick={() => {
+                    closeModal();
+                  }}>
+                确认
+              </Text>
+            </View>
+            <View className="modal-body">
+            <View className="input-container">
+              <Input
+                className="modal-input"
+                value={userLRB}
+                placeholder="请输入小红书账号"
+                onInput={handleLRBChange}
+              />
+            </View>
+              <Text className="modal-instruction">
+                请添加您的小红书账号~
+              </Text>
+            </View>
+          </View>
+        </View>
+      )}
+      {activeModal === 'youTag' && (
+        <View className="modal-overlay">
+          <View className="modal-content">
+            <View className="modal-header">
+              <Text className="modal-close" onClick={closeModal}>
+                ✕
+              </Text>
+              <Text className="modal-title">编辑你的Tag</Text>
+              <Text className="modal-confirm-button"
+                  onClick={() => {
+                    closeModal();
+                  }}>
+                确认
+              </Text>
+            </View>
+            <View className="modal-body">
+              <View className="preference-selector">
+                {/* Title */}
+                <Text className="section-title">用三个词来定义你吧！（最好五个字以内）</Text>
+
+                {/* Selected Tags */}
+                <View className="selected-tags">
+                  <View className="selection-container">
+                    <Text className="selection-text">已选择</Text>
+                    <Text className="selection-count">{selectedYou.length}/{maxSelection}</Text>
+                  </View>
+                  <View className="tags">
+                    {selectedYou.map((tag, index) => (
+                      <View
+                        key={index}
+                        className="tag selected"
+                        onClick={() => handleRemoveYou(tag)}
+                      >
+                        {tag} <Text className="remove">X</Text>
+                      </View>
+                    ))}
+                  </View>
+                </View>
+
+                {/* Custom Tag Input */}
+                <Text className="subtitle">自定义</Text>
+                <View className="custom-input">
+                  <Input
+                    className="custom-input-field"
+                    value={customYouTag}
+                    placeholder="请输入标签"
+                    onInput={(e) => setCustomYouTag(e.detail.value)}
+                    onConfirm={handleCustomAddYou}
+                  />
+                  <View
+                    className="add-button"
+                    onClick={handleCustomAddYou} // Handles button click
+                  >
+                    添加
+                  </View>
+                </View>
+
+                {/* Recommendations */}
+                <View className="recommendations">
+                  <Text className="subtitle">推荐</Text>
+                  {Object.keys(recommendedCategories).map((category, index) => (
+                    <View key={index} className="category">
+                      <Text className="category-title">{category}</Text>
+                      <View className="tags">
+                        {recommendedCategories[category].map((tag, idx) => (
+                          <View
+                            key={idx}
+                            className={`tag ${selectedYou.includes(tag) ? 'disabled' : ''}`}
+                            onClick={() => !selectedYou.includes(tag) && handleAddYou(tag)}
+                          >
+                            {tag}
+                          </View>
+                        ))}
+                      </View>
+                    </View>
+                  ))}
+                </View>
+              </View>
+            </View>
+          </View>
+        </View>
+      )}
+      {activeModal === 'green' && (
+        <View className="modal-overlay">
+          <View className="modal-content">
+            <View className="modal-header">
+              <Text className="modal-close" onClick={closeModal}>
+                ✕
+              </Text>
+              <Text className="modal-title">编辑Green Tag</Text>
+              <Text className="modal-confirm-button"
+                  onClick={() => {
+                    closeModal();
+                  }}>
+                确认
+              </Text>
+            </View>
+            <View className="modal-body">
+              <View className="preference-selector">
+                {/* Title */}
+                <Text className="section-title">你喜欢什么样的人</Text>
+
+                {/* Selected Tags */}
+                <View className="selected-tags">
+                  <View className="selection-container">
+                    <Text className="selection-text">已选择</Text>
+                    <Text className="selection-count">{selectedGreen.length}/{maxSelection}</Text>
+                  </View>
+                  <View className="tags">
+                    {selectedGreen.map((tag, index) => (
+                      <View
+                        key={index}
+                        className="tag selected"
+                        onClick={() => handleRemoveGreen(tag)}
+                      >
+                        {tag} <Text className="remove">X</Text>
+                      </View>
+                    ))}
+                  </View>
+                </View>
+
+                {/* Custom Tag Input */}
+                <Text className="subtitle">自定义</Text>
+                <View className="custom-input">
+                  <Input
+                    className="custom-input-field"
+                    value={customTag}
+                    placeholder="请输入标签"
+                    onInput={(e) => setCustomTag(e.detail.value)}
+                    onConfirm={handleCustomAddGreen}
+                  />
+                  <View
+                    className="add-button"
+                    onClick={handleCustomAddGreen}
+                  >
+                    添加
+                  </View>
+                </View>
+
+                {/* Recommendations */}
+                <View className="recommendations">
+                  <Text className="subtitle">推荐</Text>
+                  {Object.keys(recommendedCategories).map((category, index) => (
+                    <View key={index} className="category">
+                      <Text className="category-title">{category}</Text>
+                      <View className="tags">
+                        {recommendedCategories[category].map((tag, idx) => (
+                          <View
+                            key={idx}
+                            className={`tag ${selectedGreen.includes(tag) ? 'disabled' : ''}`}
+                            onClick={() => !selectedGreen.includes(tag) && handleAddGreen(tag)}
+                          >
+                            {tag}
+                          </View>
+                        ))}
+                      </View>
+                    </View>
+                  ))}
+                </View>
+              </View>
+            </View>
+          </View>
+        </View>
+      )}
+      {activeModal === 'red' && (
+        <View className="modal-overlay">
+          <View className="modal-content">
+            <View className="modal-header">
+              <Text className="modal-close" onClick={closeModal}>
+                ✕
+              </Text>
+              <Text className="modal-title">编辑Red Tag</Text>
+              <Text className="modal-confirm-button"
+                  onClick={() => {
+                    closeModal();
+                  }}>
+                确认
+              </Text>
+            </View>
+            <View className="modal-body">
+              <View className="preference-selector">
+                {/* Title */}
+                <Text className="section-title">你讨厌什么样的人</Text>
+
+                {/* Selected Tags */}
+                <View className="selected-tags">
+                  <View className="selection-container">
+                    <Text className="selection-text">已选择</Text>
+                    <Text className="selection-count">{selectedRed.length}/{maxSelection}</Text>
+                  </View>
+                  <View className="tags">
+                    {selectedRed.map((tag, index) => (
+                      <View
+                        key={index}
+                        className="tag selected"
+                        onClick={() => handleRemoveRed(tag)}
+                      >
+                        {tag} <Text className="remove">X</Text>
+                      </View>
+                    ))}
+                  </View>
+                </View>
+
+                {/* Custom Tag Input */}
+                <Text className="subtitle">自定义</Text>
+                <View className="custom-input">
+                  <Input
+                    className="custom-input-field"
+                    value={customRedTag}
+                    placeholder="请输入标签"
+                    onInput={(e) => setCustomRedTag(e.detail.value)}
+                    onConfirm={handleCustomAddRed}
+                  />
+                  <View
+                    className="add-button"
+                    onClick={handleCustomAddRed}
+                  >
+                    添加
+                  </View>
+                </View>
+
+                {/* Recommendations */}
+                <View className="recommendations">
+                  <Text className="subtitle">推荐</Text>
+                  {Object.keys(nonRecommendedCategories).map((category, index) => (
+                    <View key={index} className="category">
+                      <Text className="category-title">{category}</Text>
+                      <View className="tags">
+                        {nonRecommendedCategories[category].map((tag, idx) => (
+                          <View
+                            key={idx}
+                            className={`tag ${selectedRed.includes(tag) ? 'disabled' : ''}`}
+                            onClick={() => !selectedRed.includes(tag) && handleAddRed(tag)}
+                          >
+                            {tag}
+                          </View>
+                        ))}
+                      </View>
+                    </View>
+                  ))}
+                </View>
+              </View>
+            </View>
+          </View>
+        </View>
+      )}
+      {activeModal === 'interest' && (
+        <View className="modal-overlay">
+          <View className="modal-content">
+            <View className="modal-header">
+              <Text className="modal-close" onClick={closeModal}>
+                ✕
+              </Text>
+              <Text className="modal-title">编辑兴趣爱好</Text>
+              <Text
+                className="modal-confirm-button"
+                onClick={() => {
+                  closeModal();
+                }}
+              >
+                确认
+              </Text>
+            </View>
+            <View className="modal-body">
+              <View className="preference-selector">
+                {/* Title */}
+                <Text className="section-title">请选择你特别钟爱的兴趣爱好</Text>
+
+                {/* Selected Tags */}
+                <View className="selected-tags">
+                  <View className="selection-container">
+                    <Text className="selection-text">已选择</Text>
+                    <Text className="selection-count">
+                      {selectedInterest.length}/{maxSelection}
+                    </Text>
+                  </View>
+                  <View className="tags">
+                    {selectedInterest.map((tag, index) => (
+                      <View
+                        key={index}
+                        className="tag selected"
+                        onClick={() => handleRemoveInterest(tag)}
+                      >
+                        {tag} <Text className="remove">X</Text>
+                      </View>
+                    ))}
+                  </View>
+                </View>
+
+                {/* Custom Tag Input */}
+                <Text className="subtitle">自定义</Text>
+                <View className="custom-input">
+                  <Input
+                    className="custom-input-field"
+                    value={customInterestTag}
+                    placeholder="请输入你钟爱的兴趣爱好"
+                    onInput={(e) => setCustomInterestTag(e.detail.value)}
+                    onConfirm={handleCustomAddInterest}
+                  />
+                  <View
+                    className="add-button"
+                    onClick={handleCustomAddInterest} // Handles button click
+                  >
+                    添加
+                  </View>
+                </View>
+
+                {/* Recommendations */}
+                <View className="recommendations">
+                  <Text className="subtitle">推荐</Text>
+                  {Object.keys(recommendedCategories).map((category, index) => (
+                    <View key={index} className="category">
+                      <Text className="category-title">{category}</Text>
+                      <View className="tags">
+                        {recommendedCategories[category].map((tag, idx) => (
+                          <View
+                            key={idx}
+                            className={`tag ${
+                              selectedInterest.includes(tag) ? 'disabled' : ''
+                            }`}
+                            onClick={() =>
+                              !selectedInterest.includes(tag) && handleAddInterest(tag)
+                            }
+                          >
+                            {tag}
+                          </View>
+                        ))}
+                      </View>
+                    </View>
+                  ))}
+                </View>
+              </View>
+            </View>
+          </View>
+        </View>
       )}
     </View>
   );
