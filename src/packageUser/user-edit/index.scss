@@ -226,6 +226,55 @@
   }
 }
 
+.school-enrollment {
+  .info-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px;
+    background-color: #f7f7f7;
+    border: 1px solid #dcdcdc;
+    border-top: none;
+
+    &:first-child {
+      border-top: 1px solid #dcdcdc;
+      border-top-left-radius: 8px;
+      border-top-right-radius: 8px;
+    }
+
+    &:last-child {
+      border-bottom-left-radius: 8px;
+      border-bottom-right-radius: 8px;
+    }
+
+    .info-label {
+      font-size: 25px;
+      color: #333;
+    }
+
+    .info-value {
+      display: flex;
+      align-items: center;
+      font-size: 25px;
+      color: #888;
+
+      .input-field {
+        width: 100%;
+        text-align: right;
+        background: transparent;
+        border: none;
+        outline: none;
+      }
+
+      .arrow {
+        margin-left: 8px;
+        font-size: 25px;
+        color: #888;
+      }
+    }
+  }
+}
+
 .preference-selector {
   padding: 20px;
 
@@ -541,14 +590,32 @@
           text-align: left;
         }
     
+        // .about-me-input {
+        //   width: 100%;
+        //   height: 48px;
+        //   border: 1px solid #ddd;
+        //   border-radius: 4px;
+        //   padding: 8px;
+        //   font-size: 23px;
+        //   background-color: #f9f9f9;
+        // }
+
         .about-me-input {
           width: 100%;
-          height: 48px;
+          min-height: 48px; /* Initial height */
           border: 1px solid #ddd;
           border-radius: 4px;
           padding: 8px;
           font-size: 23px;
           background-color: #f9f9f9;
+          line-height: 1.5;
+          resize: none; /* Prevent manual resizing */
+          overflow-y: hidden; /* Hide scrollbars */
+        
+          &:focus {
+            outline: none;
+            border-color: #007aff; /* Highlight border on focus */
+          }
         }
 
         .info-value-box {

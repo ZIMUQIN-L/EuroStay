@@ -56,8 +56,10 @@ const Index = () => {
   const [userEmail, setUserEmail] = useState('')
   const [userWeChat, setUserWeChat] = useState('')
   const [userBirthday, setUserBirthday] = useState('');
-
+  const [schoolName, setSchoolName] = useState('');
+  const [enrollmentYear, setEnrollmentYear] = useState('');
   const [userLRB, setUserLRB] = useState('');
+  const [aboutMe, setAboutMe] = useState('');
   
   const [searchInput, setSearchInput] = useState('');
 
@@ -72,12 +74,14 @@ const Index = () => {
   const openWeChatModal = () => setActiveModal("wechat")
   const openBirthdayModal = () => setActiveModal("birthday")
   const openJobModal = () => setActiveModal("job")
+  const openSchoolModal = () => setActiveModal("school")
   const openLRBModal = () => setActiveModal("LRB")
 
   const openYouModal = () => setActiveModal("youTag")
   const openGreenModal = () => setActiveModal("green")
   const openRedModal = () => setActiveModal("red")
   const openInterestModal = () => setActiveModal("interest")
+  const openVisitedModal = () => setActiveModal("visited")
 
   
 
@@ -115,6 +119,10 @@ const Index = () => {
   const handleBirthdayChange = (e) => {
     const value = e.detail.value;
     setUserBirthday(value);
+  };
+
+  const handleYearChange = (e) => {
+    setEnrollmentYear(e.detail.value);
   };
 
   const handleLRBChange = (e) => {
@@ -249,6 +257,22 @@ const Index = () => {
     }
   };
 
+  // Visited countries
+  const [selectedVisited, setSelectedVisited] = useState(['来选择吧！']);
+  const [customVisitedTag, setCustomVisitedTag] = useState('');
+
+  const handleRemoveVisited = (tag) => {
+    setSelectedVisited(selectedVisited.filter((item) => item !== tag));
+  };
+
+  const handleAddVisited = (tag) => {
+    setSelectedVisited([...selectedVisited, tag]);
+  };
+
+  const handleCustomAddVisited = () => {
+    setSelectedVisited([...selectedVisited, customVisitedTag]);
+    setCustomVisitedTag('');
+  };
 
 
   return (
@@ -324,7 +348,7 @@ const Index = () => {
             <Text className="info-label">工作</Text>
             <Text className="info-value">添加</Text>
           </View>
-          <View className="info-item">
+          <View className="info-item" onClick={openSchoolModal}>
             <Text className="info-label">学校</Text>
             <Text className="info-value">添加</Text>
           </View>
@@ -354,10 +378,7 @@ const Index = () => {
             <View className="info-item tag" onClick={openYouModal}>
               <Text className="info-label">你的Tag</Text>
               <Text className="section-subtitle">你是什么样的人</Text>
-              <View
-                className="info-value-box"
-                onClick={() => console.log('Tag clicked')}
-              >
+              <View className="info-value-box">
                 添加你的Tag
               </View>
             </View>
@@ -365,10 +386,7 @@ const Index = () => {
             <View className="info-item green-flag" onClick={openGreenModal}>
               <Text className="info-label">Green Flag</Text>
               <Text className="section-subtitle">你喜欢什么样的人</Text>
-              <View
-                className="info-value-box"
-                onClick={() => console.log('Green Flag clicked')}
-              >
+              <View className="info-value-box">
                 添加你喜欢的人的类型
               </View>
             </View>
@@ -376,10 +394,7 @@ const Index = () => {
             <View className="info-item red-flag" onClick={openRedModal}>
               <Text className="info-label">Red Flag</Text>
               <Text className="section-subtitle">你讨厌什么样的人</Text>
-              <View
-                className="info-value-box"
-                onClick={() => console.log('Red Flag clicked')}
-              >
+              <View className="info-value-box">
                 添加你讨厌的人的类型
               </View>
             </View>
@@ -388,10 +403,7 @@ const Index = () => {
             <View className="info-item interests" onClick={openInterestModal}>
               <Text className="info-label">兴趣爱好</Text>
               <Text className="section-subtitle">选择你特别钟爱的兴趣爱好</Text>
-              <View
-                  className="info-value-box"
-                  onClick={() => console.log('travel clicked')}
-                >
+              <View className="info-value-box">
                 <View className="interest-options">
                 
                   <Text className="option">🎬 电影</Text>
@@ -402,13 +414,10 @@ const Index = () => {
               </View>
             </View>
 
-            <View className="info-item countries">
+            <View className="info-item countries" onClick={openVisitedModal}>
               <Text className="info-label">去过的国家</Text>
               <Text className="section-subtitle">你去过哪些地方</Text>
-              <View
-                className="info-value-box"
-                onClick={() => console.log('travel clicked')}
-              >
+              <View className="info-value-box">
                 添加你的旅行足迹
               </View>
             </View>
@@ -753,6 +762,57 @@ const Index = () => {
                       </View>
                     </View>
                   ))}
+                </View>
+              </View>
+            </View>
+          </View>
+        </View>
+      )}
+      {activeModal === 'school' && (
+        <View className="modal-overlay">
+          <View className="modal-content">
+            <View className="modal-header">
+              <Text className="modal-close" onClick={closeModal}>
+                ✕
+              </Text>
+              <Text className="modal-title">编辑学校</Text>
+              <Text className="modal-confirm-button"
+                  onClick={() => {
+                    closeModal();
+                  }}>
+                确认
+              </Text>
+            </View>
+            <View className="modal-body">
+              <View className="school-enrollment">
+                {/* School Input */}
+                <View className="info-row">
+                  <Text className="info-label">学校</Text>
+                  <View className="info-value">
+                    <Input
+                      type="text"
+                      placeholder="请输入学校名称"
+                      value={schoolName}
+                      onInput={(e) => setSchoolName(e.detail.value)}
+                      className="input-field"
+                    />
+                  </View>
+                </View>
+
+                {/* Enrollment Year Picker */}
+                <View className="info-row">
+                  <Text className="info-label">入学时间</Text>
+                  <Picker
+                    mode="date"
+                    fields="year"
+                    onChange={handleYearChange}
+                    value={enrollmentYear}
+                  >
+                    <View className="info-value">
+                      {enrollmentYear || '请选择年份'}
+                      <Text className="arrow">{'>'}</Text>
+                    </View>
+                  </Picker>
                 </View>
               </View>
             </View>
@@ -1113,6 +1173,87 @@ const Index = () => {
                             onClick={() =>
                               !selectedInterest.includes(tag) && handleAddInterest(tag)
                             }
+                          >
+                            {tag}
+                          </View>
+                        ))}
+                      </View>
+                    </View>
+                  ))}
+                </View>
+              </View>
+            </View>
+          </View>
+        </View>
+      )}
+      {activeModal === 'visited' && (
+        <View className="modal-overlay">
+          <View className="modal-content">
+            <View className="modal-header">
+              <Text className="modal-close" onClick={closeModal}>
+                ✕
+              </Text>
+              <Text className="modal-title">编辑你去过的地方</Text>
+              <Text className="modal-confirm-button"
+                  onClick={() => {
+                    closeModal();
+                  }}>
+                确认
+              </Text>
+            </View>
+            <View className="modal-body">
+              <View className="preference-selector">
+                {/* Title */}
+                <Text className="section-title">你去过哪些国家/地区</Text>
+
+                {/* Selected Tags */}
+                <View className="selected-tags">
+                  <View className="selection-container">
+                    <Text className="selection-text">已选择</Text>
+                  </View>
+                  <View className="tags">
+                    {selectedVisited.map((tag, index) => (
+                      <View
+                        key={index}
+                        className="tag selected"
+                        onClick={() => handleRemoveVisited(tag)}
+                      >
+                        {tag} <Text className="remove">X</Text>
+                      </View>
+                    ))}
+                  </View>
+                </View>
+
+                {/* Custom Tag Input */}
+                <Text className="subtitle">自定义</Text>
+                <View className="custom-input">
+                  <Input
+                    className="custom-input-field"
+                    value={customVisitedTag}
+                    placeholder="请输入地点"
+                    onInput={(e) => setCustomVisitedTag(e.detail.value)}
+                    onConfirm={handleCustomAddVisited}
+                  />
+                  <View
+                    className="add-button"
+                    onClick={handleCustomAddVisited} // Handles button click
+                  >
+                    添加
+                  </View>
+                </View>
+
+                {/* Recommendations */}
+                <View className="recommendations">
+                  <Text className="subtitle">推荐</Text>
+                  {Object.keys(recommendedCategories).map((category, index) => (
+                    <View key={index} className="category">
+                      <Text className="category-title">{category}</Text>
+                      <View className="tags">
+                        {recommendedCategories[category].map((tag, idx) => (
+                          <View
+                            key={idx}
+                            className={`tag ${selectedVisited.includes(tag) ? 'disabled' : ''}`}
+                            onClick={() => !selectedVisited.includes(tag) && handleAddVisited(tag)}
                           >
                             {tag}
                           </View>
