@@ -52,7 +52,7 @@ const Index = () => {
     <View className='user-page'>
       {/* Header */}
       <View className='header'>
-        <Text className='header-title'>我的</Text>
+        {/* <Text className='header-title'>我的</Text> */}
         {/* <Image src={ProfileIcon} className='header-icon' /> */}
 
         <Image
@@ -119,7 +119,9 @@ const Index = () => {
           </View>
         ))}
       </View>
-      <CustomTabBar />
+      <View className="custom-bar">
+        <CustomTabBar />
+      </View>
     </View>
   );
 };
