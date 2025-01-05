@@ -1,5 +1,4 @@
-const cloudPath =
-  'cloud://636c-cloud1-9gjlum193d0ee3c3-1326922587/images';
+const cloudPath = 'cloud://636c-cloud1-9gjlum193d0ee3c3-1326922587/images';
 
 export const DefaultHouse = `${cloudPath}/default-house.png`;
 export const DateIcon = `${cloudPath}/date-icon.svg`;
@@ -103,7 +102,17 @@ export const GreyPeopleIcon = `${cloudPath}/grey-people-icon.svg`;
 //modal-point（成功报名消费point）
 export const YellowPoint = `${cloudPath}/yellow-point.svg`;
 export const ActivityHomeIcon = `${cloudPath}/activity-home.svg`;
-export const ActivitySelectedHomeIcon = `${cloudPath}/activity-home-selected.svg`
+export const ActivitySelectedHomeIcon = `${cloudPath}/activity-home-selected.svg`;
 
 export const PlayCircle = `${cloudPath}/play_circle.svg`;
 export const Views = `${cloudPath}/views.svg`;
+
+//house-post
+export const GreyAdd = `cloud://cloud1-9gjlum193d0ee3c3.636c-cloud1-9gjlum193d0ee3c3-1326922587/images/add.svg`;
+export const GreySubstract = `cloud://cloud1-9gjlum193d0ee3c3.636c-cloud1-9gjlum193d0ee3c3-1326922587/images/substract.svg`;
+export const GreyCircle = `cloud://cloud1-9gjlum193d0ee3c3.636c-cloud1-9gjlum193d0ee3c3-1326922587/images/grey-circle.svg`;
+export const BlueEnable = `cloud://cloud1-9gjlum193d0ee3c3.636c-cloud1-9gjlum193d0ee3c3-1326922587/images/blue-enable.svg`;
+export const KeyArrowRight =
+  'cloud://cloud1-9gjlum193d0ee3c3.636c-cloud1-9gjlum193d0ee3c3-1326922587/images/Keyboard_arrow_right.svg';
+export const KeyArrowLeft =
+  'cloud://cloud1-9gjlum193d0ee3c3.636c-cloud1-9gjlum193d0ee3c3-1326922587/images/Keyboard_arrow_left.svg';

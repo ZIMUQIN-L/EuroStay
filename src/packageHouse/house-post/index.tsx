@@ -3,7 +3,7 @@ import { observer } from 'mobx-react';
 import ImagesUpload from './images-upload';
 import HouseDes from './house-des';
 import HouseContact from './house-contact';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import InfoSelection from './info-selection';
 import './index.scss';
 import Taro from '@tarojs/taro';
@@ -16,6 +16,15 @@ import {
 } from '@common/database/pointSystem/pointSystem';
 import { userInfoSearch } from '@common/database/user/user';
 import { formatTimestamp } from '@utils/dateUtil';
+import {
+  GreyAdd,
+  GreySubstract,
+  BlueEnable,
+  GreyCircle,
+  KeyArrowLeft,
+  KeyArrowRight,
+} from '@utils/cloudIcons';
+import Popup from './popup';
 
 const Index = () => {
   const [userInfo, setUserInfo] = useState<UserDetailInfoItemProps>();
@@ -68,7 +77,7 @@ const Index = () => {
   const [surrounding, setSurrounding] = useState({});
   const [preference, setPreference] = useState({});
 
-  const [state, setState] = useState(13);
+  const [state, setState] = useState(0);
 
   const handleButtonClickable = () => {
     if (
@@ -260,17 +269,19 @@ const Index = () => {
   };
   return (
     <View className='house-post'>
-      {state == 0 && <StepONE />}
-      {state == 1 && <StepTWO />}
-      {state == 2 && <StepTHREE />}
-      {state == 3 && <StepFOUR />}
-      {state == 4 && <StepFIVE />}
-      {state == 5 && <StepSIX />}
-      {state == 6 && <StepSeven />}
-      {state == 8 && <StepNINE />}
-      {state == 9 && <StepTEN />}
-      {state == 10 && <StepELEVEN />}
-      {state == 13 && <Step14 />}
+      {state == 0 && <Start />}
+      {state == 1 && <HouseType />}
+      {state == 2 && <HouseAddress />}
+      {state == 3 && <HouseInfo />}
+      {state == 4 && <HouseFacility />}
+      {state == 5 && <PostImage />}
+      {/* {state == 6 && <StepSeven />} */}
+      {state == 6 && <Description />}
+      {state == 7 && <Question />}
+      {state == 8 && <Interest />}
+      {state == 9 && <Tips />}
+      {state == 10 && <Agreement />}
+      {state == 11 && <Price />}
 
       <View className='bottom-bar'>
         {state == 0 ? (
@@ -325,29 +336,101 @@ const Index = () => {
 };
 export default observer(Index);
 
-const StepONE = () => {
+const Start = () => {
   return (
-    <View className='step-one'>
+    <View className='start'>
       <View className='title'>开始添加您的第一套房源</View>
+      <View className='steps'>
+        <View className='step'>
+          <View className='step-left'>
+            <View className='step-subtitle'>1 介绍您的房源</View>
+            <View className='des'>
+              介绍房源基本信息，比如房源类型、房源位置、可接待人数、房客性别
+            </View>
+          </View>
+          <View className='step-right'>
+            <Image src=''></Image>
+          </View>
+        </View>
+        <View className='step'>
+          <View className='step-left'>
+            <View className='step-subtitle'>2 添加房源亮点</View>
+            <View className='des'>
+              添加房源的基本设施，房源照片，以及房源描述，帮助房客更好的了解
+            </View>
+          </View>
+          <View className='step-right'>
+            <Image src=''></Image>
+          </View>
+        </View>
+        <View className='step'>
+          <View className='step-left'>
+            <View className='step-subtitle'>3 填写Guest期待</View>
+            <View className='des'>
+              描述您理想中的房客、您的兴趣爱好，帮助您匹配到志同道合的房客
+            </View>
+          </View>
+          <View className='step-right'>
+            <Image src=''></Image>
+          </View>
+        </View>
+        <View className='step'>
+          <View className='step-left'>
+            <View className='step-subtitle'>4 上架发布房源</View>
+            <View className='des'>
+              确认注意事项、入住公约、可用时间以及房源旅行币价格，上架发布
+            </View>
+          </View>
+          <View className='step-right'>
+            <Image src=''></Image>
+          </View>
+        </View>
+      </View>
     </View>
   );
 };
 
-const StepTWO = () => {
+const HouseType = () => {
+  const [houseType, setHouseType] = useState<String>('default');
   const houseTypeMap = [
-    { type: 'Studio', des: '一段简单的解释一段简单的解释一段简单的解释' },
-    { type: '公寓', des: '一段简单的解释一段简单的解释一段简单的解释' },
-    { type: 'House', des: '一段简单的解释一段简单的解释一段简单的解释' },
-    { type: 'ensuite', des: '一段简单的解释一段简单的解释一段简单的解释' },
-    { type: '其他的', des: '一段简单的解释一段简单的解释一段简单的解释' },
+    {
+      type: 'Studio',
+      des: '一段简单的解释一段简单的解释一段简单的解释',
+      value: 'studio',
+    },
+    {
+      type: '公寓',
+      des: '一段简单的解释一段简单的解释一段简单的解释',
+      value: 'flat',
+    },
+    {
+      type: 'House',
+      des: '一段简单的解释一段简单的解释一段简单的解释',
+      value: 'house',
+    },
+    {
+      type: 'ensuite',
+      des: '一段简单的解释一段简单的解释一段简单的解释',
+      value: 'ensuite',
+    },
+    {
+      type: '其他的',
+      des: '一段简单的解释一段简单的解释一段简单的解释',
+      value: 'others',
+    },
   ];
   return (
-    <View className='step-two'>
-      <View className='title'>您的房源是？</View>
-      <View className='house-type'>
+    <View className='house-type-wrap'>
+      <View className='title'>您的房源是什么类型？</View>
+      <View className={`house-type`}>
         {houseTypeMap.map(item => {
           return (
-            <View className='house-item'>
+            <View
+              className={`house-item ${item.value == houseType ? 'active' : ''}`}
+              onClick={() => {
+                setHouseType(item.value);
+              }}
+            >
               <Image src='' className='pic'></Image>
               <View className='house-item-title'>{item.type}</View>
               <View className='des'>{item.des}</View>
@@ -359,9 +442,9 @@ const StepTWO = () => {
   );
 };
 
-const StepTHREE = () => {
+const HouseAddress = () => {
   return (
-    <View className='step-three'>
+    <View className='house-address'>
       <View className='title'>您的房源地址是？</View>
       <View className='des'>
         房源详情只会展示房源的大致区位，您的详细地址不会直接展示给房客。
@@ -369,37 +452,97 @@ const StepTHREE = () => {
     </View>
   );
 };
-const StepFOUR = () => {
-  const facilityMap = [
-    { name: 'wifi' },
-    { name: '洗衣机' },
-    { name: '独立卫浴' },
-    { name: '厨房' },
-    { name: '冰箱' },
-    { name: '空调' },
-    { name: '沙发' },
-    { name: '暖气' },
-  ];
+const HouseFacility = () => {
+  const [hasWifi, setHasWifi] = useState(false);
+  const [hasWashMachine, setHasWashMachine] = useState(false);
+  const [hasBathroom, setHasBathroom] = useState(false);
+  const [hasKitchen, setHasKitchen] = useState(false);
+  const [hasFreezer, setHasFreezer] = useState(false);
+  const [hasAirConditioner, setHasAirConditioner] = useState(false);
+  const [hasSofa, setHasSofa] = useState(false);
+  const [hasHeat, setHasHeat] = useState(false);
   return (
-    <View className='step-four'>
-      <View className='title'>房源基本信息</View>
-      <View className='des'>
-        一些prompt，类似于 请选择您的房间内可供房客使用的设施：
-      </View>
+    <View className='house-facility'>
+      <View className='title'>房源基础设施</View>
+      <View className='des'>请选择您的房间内可供房客使用的设施</View>
       <View className='facilities-wrap'>
-        {facilityMap.map(item => {
-          return (
-            <View className='facility-item'>
-              <Image src='' className='facility-pic'></Image>
-              <View className='facility-name'>{item.name}</View>
-            </View>
-          );
-        })}
+        <View
+          className={`facility-item ${hasWifi ? 'active' : ''}`}
+          onClick={() => {
+            setHasWifi(!hasWifi);
+          }}
+        >
+          <Image src='' className='facility-pic'></Image>
+          <View className='facility-name'>wifi</View>
+        </View>
+        <View
+          className={`facility-item ${hasWashMachine ? 'active' : ''}`}
+          onClick={() => {
+            setHasWashMachine(!hasWashMachine);
+          }}
+        >
+          <Image src='' className='facility-pic'></Image>
+          <View className='facility-name'>洗衣机</View>
+        </View>
+        <View
+          className={`facility-item ${hasBathroom ? 'active' : ''}`}
+          onClick={() => {
+            setHasBathroom(!hasBathroom);
+          }}
+        >
+          <Image src='' className='facility-pic'></Image>
+          <View className='facility-name'>独立卫浴</View>
+        </View>
+        <View
+          className={`facility-item ${hasKitchen ? 'active' : ''}`}
+          onClick={() => {
+            setHasKitchen(!hasKitchen);
+          }}
+        >
+          <Image src='' className='facility-pic'></Image>
+          <View className='facility-name'>厨房</View>
+        </View>
+        <View
+          className={`facility-item ${hasFreezer ? 'active' : ''}`}
+          onClick={() => {
+            setHasFreezer(!hasFreezer);
+          }}
+        >
+          <Image src='' className='facility-pic'></Image>
+          <View className='facility-name'>冰箱</View>
+        </View>
+        <View
+          className={`facility-item ${hasAirConditioner ? 'active' : ''}`}
+          onClick={() => {
+            setHasAirConditioner(!hasAirConditioner);
+          }}
+        >
+          <Image src='' className='facility-pic'></Image>
+          <View className='facility-name'>空调</View>
+        </View>
+        <View
+          className={`facility-item ${hasSofa ? 'active' : ''}`}
+          onClick={() => {
+            setHasSofa(!hasSofa);
+          }}
+        >
+          <Image src='' className='facility-pic'></Image>
+          <View className='facility-name'>沙发</View>
+        </View>
+        <View
+          className={`facility-item ${hasHeat ? 'active' : ''}`}
+          onClick={() => {
+            setHasHeat(!hasHeat);
+          }}
+        >
+          <Image src='' className='facility-pic'></Image>
+          <View className='facility-name'>暖气</View>
+        </View>
       </View>
     </View>
   );
 };
-const StepFIVE = () => {
+const PostImage = () => {
   const housePicMap = [
     { type: '房客住宿区', des: '请拍摄包含房客住宿的床的照片' },
     { type: '公共区', des: '请拍摄包含客厅/娱乐区的照片' },
@@ -408,18 +551,18 @@ const StepFIVE = () => {
     // { type: '其他的', des: '一段简单的解释一段简单的解释一段简单的解释' },
   ];
   return (
-    <View className='step-five'>
+    <View className='post-image'>
       <View className='title'>您的房源是？</View>
-      <View className='step-five-des'>
+      <View className='post-image-des'>
         一些传照片的prompt，类似于 请根据指示拍摄清晰且未经修饰的照片之类的{' '}
       </View>
       <View className='house-type'>
         {housePicMap.map(item => {
           return (
             <View className='house-item'>
-              <Image src='' className='pic'></Image>
               <View className='house-item-title'>{item.type}</View>
               <View className='des'>{item.des}</View>
+              <Image src='' className='pic'></Image>
             </View>
           );
         })}
@@ -428,9 +571,9 @@ const StepFIVE = () => {
   );
 };
 
-const StepSIX = () => {
+const Description = () => {
   return (
-    <View className='step-six'>
+    <View className='description'>
       <View className='title'>描述您的房源</View>
       <View className='question-title'>请给您的房源起一个简洁的标题吧！</View>
       <Textarea
@@ -478,7 +621,7 @@ const StepSeven = () => {
     </View>
   );
 };
-const StepNINE = () => {
+const Interest = () => {
   const interestMap = [
     { name: '玩桌游' },
     { name: '做饭' },
@@ -492,8 +635,8 @@ const StepNINE = () => {
     { name: '其他' },
   ];
   return (
-    <View className='step-nine'>
-      <View className='title'>您对房客的期待</View>
+    <View className='interest'>
+      <View className='title'>想与房客一起做什么？</View>
       <View className='des'>让房客了解您的兴趣，一起互动吧！</View>
       <View className='interest-wrap'>
         {interestMap.map(item => {
@@ -509,9 +652,9 @@ const StepNINE = () => {
   );
 };
 
-const StepTEN = () => {
+const Tips = () => {
   return (
-    <View className='step-ten'>
+    <View className='tips'>
       <View className='title'>房客房屋注意事项</View>
 
       <View className='warning-title'>请填写您的房屋注意事项。</View>
@@ -525,9 +668,9 @@ const StepTEN = () => {
   );
 };
 
-const StepELEVEN = () => {
+const Agreement = () => {
   return (
-    <View className='step-eleven'>
+    <View className='agreement'>
       <View className='title'>房屋入住公约</View>
 
       <View className='warning-title'>请填写您的房屋入住公约。</View>
@@ -541,9 +684,9 @@ const StepELEVEN = () => {
   );
 };
 
-const Step14 = () => {
+const Price = () => {
   return (
-    <View className='step-14'>
+    <View className='price'>
       <View className='title'>确认房源价值</View>
 
       <View className='step-14-recommend-title'>
@@ -570,6 +713,337 @@ const Step14 = () => {
       />
       <View className='step-14-confirm-tips'>
         当价格接近推荐值时，吸引力较高；当价格高于推荐值，可能影响房客的预订率噢。
+      </View>
+    </View>
+  );
+};
+const HouseInfo = () => {
+  const [capacity, setCapacity] = useState<number>(1);
+  const [gender, setGender] = useState<'male' | 'female' | 'nolimited'>(
+    'nolimited',
+  );
+  const [type, setType] = useState<0 | 1 | 2 | 3>(0);
+  return (
+    <View className='house-info'>
+      <View className='house-info-title'>确认房源价值</View>
+      <View className='capacity'>
+        <View className='left'>可以接待房客的人数</View>
+        <View className='right'>
+          <Image
+            src={GreySubstract}
+            className='img-substract'
+            onClick={() => {
+              if (capacity > 1) {
+                setCapacity(capacity - 1);
+              }
+            }}
+          />
+          {capacity}
+          <Image
+            src={GreyAdd}
+            className='img-add'
+            onClick={() => {
+              setCapacity(capacity + 1);
+            }}
+          />
+        </View>
+      </View>
+      <View className='gender'>
+        可以接待房客的性别
+        <View className='options'>
+          <View className={`option`}>
+            男
+            <Image
+              src={gender == 'male' ? BlueEnable : GreyCircle}
+              className='img-select'
+              onClick={() => {
+                setGender('male');
+              }}
+            />
+          </View>
+          <View className={`option ${gender == 'female' ? 'active' : ''}`}>
+            女
+            <Image
+              src={gender == 'female' ? BlueEnable : GreyCircle}
+              className='img-select'
+              onClick={() => {
+                setGender('female');
+              }}
+            />
+          </View>
+          <View className={`option ${gender == 'nolimited' ? 'active' : ''}`}>
+            不限
+            <Image
+              src={gender == 'nolimited' ? BlueEnable : GreyCircle}
+              className='img-select'
+              onClick={() => {
+                setGender('nolimited');
+              }}
+            />
+          </View>
+        </View>
+      </View>
+      <View className='type'>
+        可以提供的住宿类型
+        <View className={`option`}>
+          <View className='option-name'>您与房客共享同一住宿空间</View>
+          <Image
+            src={type == 1 ? BlueEnable : GreyCircle}
+            className='img-select'
+            onClick={() => {
+              setType(1);
+            }}
+          />
+        </View>
+        <View className={`option ${gender == 'female' ? 'active' : ''}`}>
+          <View className='option-name'>房客有独立的住宿空间</View>
+          <Image
+            src={type == 2 ? BlueEnable : GreyCircle}
+            className='img-select'
+            onClick={() => {
+              setType(2);
+            }}
+          />
+        </View>
+        <View className={`option ${gender == 'nolimited' ? 'active' : ''}`}>
+          <View className='option-name'> 房客有整套公寓或者房屋</View>
+          <Image
+            src={type == 3 ? BlueEnable : GreyCircle}
+            className='img-select'
+            onClick={() => {
+              setType(3);
+            }}
+          />
+        </View>
+      </View>
+    </View>
+  );
+};
+
+const Question = () => {
+  const [isShowSelectPopup, setIsShowSelectPopup] = useState(false);
+  const [isShowPersonalizedPopup, setIsShowPersonalizedPopup] = useState(false);
+  const [isQ0, setIsQ0] = useState<Boolean>(false);
+  const [isQ1, setIsQ1] = useState<Boolean>(false);
+  const [isQ2, setIsQ2] = useState<Boolean>(false);
+  const [isQ3, setIsQ3] = useState<Boolean>(false);
+  const [isQ4, setIsQ4] = useState<Boolean>(false);
+  const [isQ5, setIsQ5] = useState<Boolean>(false);
+  const [isQ6, setIsQ6] = useState<Boolean>(false);
+  const [isQ7, setIsQ7] = useState<Boolean>(false);
+  const [isQ8, setIsQ8] = useState<Boolean>(false);
+  const [isQ9, setIsQ9] = useState<Boolean>(false);
+
+  // const [isShow]
+  const questionGroups = [
+    {
+      title: '与旅行相关的问题',
+      list: [
+        { value: '是什么契机让你踏上这次旅行？', index: 0 },
+        { value: '本次旅途中，你最期待体验或感受什么？', index: 1 },
+        { value: '请用一两句话描述你在旅途中的“必做清单”', index: 2 },
+        { value: '简单描述一下你的旅行计划？', index: 3 },
+        { value: '你曾有过类似的旅行借宿体验吗？', index: 4 },
+      ],
+    },
+    {
+      title: '与您和您的房间相关的问题',
+      list: [
+        { value: '如果我们有机会交流，你最感兴趣的话题是？', index: 5 },
+        { value: '你喜欢的交流方式？', index: 6 },
+        { value: '你为什么选择我的小屋作为你的目的地？', index: 7 },
+        { value: '你希望在我的小屋度过怎样的一天？', index: 8 },
+        { value: '你对房间内的哪些设施最感兴趣或最需要？', index: 9 },
+      ],
+    },
+  ];
+  const getIfSelect = useCallback(() => {
+    let count = 0;
+    isQ0 && count++;
+    isQ1 && count++;
+    isQ2 && count++;
+    isQ3 && count++;
+    isQ4 && count++;
+    isQ5 && count++;
+    isQ6 && count++;
+    isQ7 && count++;
+    isQ8 && count++;
+    isQ9 && count++;
+    return count < 3;
+  }, [isQ0, isQ1, isQ2, isQ3, isQ4, isQ5, isQ6, isQ7, isQ8, isQ9]);
+  return (
+    <View className='question'>
+      {isShowSelectPopup && (
+        <Popup
+          onClickClose={() => {
+            setIsShowSelectPopup(false);
+          }}
+          onClickConfirm={() => {
+            setIsShowSelectPopup(false);
+          }}
+          title={'选择您感兴趣的问题'}
+          content={
+            <>
+              <View className='content-title'>
+                您最多可以选择3个问题，至少选择1个
+              </View>
+              <View className='question-groups'>
+                <View className='group-title'>与旅行相关的问题</View>
+                <View
+                  className={`group-item ${isQ0 ? 'active' : ''}`}
+                  onClick={() => {
+                    isQ0 && setIsQ0(false);
+                    !isQ0 && getIfSelect() && setIsQ0(true);
+                  }}
+                >
+                  是什么契机让你踏上这次旅行？
+                </View>
+                <View
+                  className={`group-item ${isQ1 ? 'active' : ''}`}
+                  onClick={() => {
+                    isQ1 && setIsQ1(false);
+                    !isQ1 && getIfSelect() && setIsQ1(true);
+                  }}
+                >
+                  本次旅途中，你最期待体验或感受什么？
+                </View>
+                <View
+                  className={`group-item ${isQ2 ? 'active' : ''}`}
+                  onClick={() => {
+                    isQ2 && setIsQ2(false);
+                    !isQ2 && getIfSelect() && setIsQ2(true);
+                  }}
+                >
+                  请用一两句话描述你在旅途中的“必做清单”
+                </View>
+                <View
+                  className={`group-item ${isQ3 ? 'active' : ''}`}
+                  onClick={() => {
+                    isQ3 && setIsQ3(false);
+                    !isQ3 && getIfSelect() && setIsQ3(true);
+                  }}
+                >
+                  简单描述一下你的旅行计划？
+                </View>
+                <View
+                  className={`group-item ${isQ4 ? 'active' : ''}`}
+                  onClick={() => {
+                    isQ4 && setIsQ4(false);
+                    !isQ4 && getIfSelect() && setIsQ4(true);
+                  }}
+                >
+                  你曾有过类似的旅行借宿体验吗？
+                </View>
+                <View className='group-title'>与您和您的房间相关的问题</View>
+                <View
+                  className={`group-item ${isQ5 ? 'active' : ''}`}
+                  onClick={() => {
+                    isQ5 && setIsQ5(false);
+                    !isQ5 && getIfSelect() && setIsQ5(true);
+                  }}
+                >
+                  如果我们有机会交流，你最感兴趣的话题是？
+                </View>
+                <View
+                  className={`group-item ${isQ6 ? 'active' : ''}`}
+                  onClick={() => {
+                    isQ6 && setIsQ6(false);
+                    !isQ6 && getIfSelect() && setIsQ6(true);
+                  }}
+                >
+                  你喜欢的交流方式？
+                </View>
+                <View
+                  className={`group-item ${isQ7 ? 'active' : ''}`}
+                  onClick={() => {
+                    isQ7 && setIsQ7(false);
+                    !isQ7 && getIfSelect() && setIsQ7(true);
+                  }}
+                >
+                  你为什么选择我的小屋作为你的目的地？
+                </View>
+                <View
+                  className={`group-item ${isQ8 ? 'active' : ''}`}
+                  onClick={() => {
+                    isQ8 && setIsQ8(false);
+                    !isQ8 && getIfSelect() && setIsQ8(true);
+                  }}
+                >
+                  你希望在我的小屋度过怎样的一天？
+                </View>
+                <View
+                  className={`group-item ${isQ9 ? 'active' : ''}`}
+                  onClick={() => {
+                    isQ9 && setIsQ9(false);
+                    !isQ9 && getIfSelect() && setIsQ9(true);
+                  }}
+                >
+                  你对房间内的哪些设施最感兴趣或最需要？
+                </View>
+              </View>
+            </>
+          }
+        />
+      )}
+      {isShowPersonalizedPopup && (
+        <Popup
+          onClickClose={() => {
+            setIsShowPersonalizedPopup(false);
+          }}
+          onClickConfirm={() => {
+            setIsShowPersonalizedPopup(false);
+          }}
+          title={'添加定制化问题'}
+          content={
+            <>
+              <View className='content-title'>您最多可以添加3个问题</View>
+              <View className='personalized-question-groups'>
+                <View className='group-item'>0/50</View>
+                <View className='group-item'>0/50</View>
+                <View className='group-item'>0/50</View>
+                {/* <Textarea
+                className='question-1'
+                value={''}
+                onInput={() => {}}
+                placeholder=''
+              />
+              <Textarea
+                className='question-2'
+                value={''}
+                onInput={() => {}}
+                placeholder=''
+              />
+              <Textarea
+                className='question-3'
+                value={''}
+                onInput={() => {}}
+                placeholder=''
+              /> */}
+              </View>
+            </>
+          }
+        />
+      )}
+
+      <View className='question-title'>您对房客的期待</View>
+      <View className='question-des'>您想对预定房间的房客问什么问题？</View>
+      <View
+        className='question-select'
+        onClick={() => {
+          setIsShowSelectPopup(true);
+        }}
+      >
+        选择你感兴趣的问题吧
+        <Image src={KeyArrowLeft} className='arrow-left' />
+      </View>
+      <View
+        className='question-personalized'
+        onClick={() => {
+          setIsShowPersonalizedPopup(true);
+        }}
+      >
+        添加你的定制化问题吧
+        <Image src={KeyArrowLeft} className='arrow-left' />
       </View>
     </View>
   );
