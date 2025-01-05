@@ -1,0 +1,100 @@
+.popup-card {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #ffffff;
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+    box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    
+    .popup-content {
+        width: 90%; // 内部内容占据 80% 宽度
+        display: flex;
+        flex-direction: column;
+        padding-left: 20px;
+        // align-items: center; // 子元素水平居中
+      }
+    .popup-header {
+      text-align: center;
+      margin-bottom: 20px;
+  
+      .popup-title {
+        font-size: 30px; // Changed from 26px to 30px for large font
+        font-weight: bold;
+        color: #333;
+      }
+    }
+  
+    .popup-question {
+      margin-bottom: 20px;
+  
+      .popup-question-text {
+        font-size: 24px; // Changed from 20px to 24px for small font
+        color: #666;
+        line-height: 1.5;
+      }
+    }
+  
+    .popup-body {
+      flex-grow: 1;
+      margin-bottom: 20px;
+  
+      .popup-input {
+        width: 100%;
+        padding: 12px;
+        font-size: 24px; // Changed from 18px to 24px for small font
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        background-color: #f9f9f9;
+        color: #333;
+        line-height: 1.5;
+        min-height: 100px;
+      }
+    }
+  
+    .popup-footer {
+      display: flex;
+      justify-content: space-between; // Changed to space-between for better button placement
+      padding-top: 20px;
+      padding-bottom: 20px;
+      .popup-cancel-button,
+      .popup-send-button {
+        width: 48%; // Adjusted width for both buttons to fit side by side
+        padding: 14px; // Increased padding for larger buttons
+        font-size: 26px; // Changed from 20px to 26px for medium font
+        font-weight: bold;
+        text-align: center;
+        border-radius: 8px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      }
+  
+      .popup-cancel-button {
+        background-color: #e0e0e0; // Optional: Different background for cancel button
+        color: #333;
+  
+        &:hover {
+          background-color: #c0c0c0; // Optional: Hover effect for cancel button
+        }
+      }
+  
+      .popup-send-button {
+        background-color: #6363ff;
+        color: #fff;
+  
+        &:hover {
+          background-color: #4a4ad9;
+        }
+      }
+    }
+      /* 调整分割线的间距 */
+  .popup-divider {
+        margin-bottom: 15px;
+    }
+  }
+  

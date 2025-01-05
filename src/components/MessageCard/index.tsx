@@ -1,4 +1,4 @@
-import { View, Text } from '@tarojs/components';
+import { View, Text, Image } from '@tarojs/components';
 import './index.scss';
 
 interface MessageCardProps {
@@ -8,6 +8,7 @@ interface MessageCardProps {
   description: string;
   dateAndLocation?: string;
   onClick?: () => void; // 点击回调
+  imageSrc?: string; // 右侧图片路径
 }
 
 const MessageCard: React.FC<MessageCardProps> = ({
@@ -17,6 +18,7 @@ const MessageCard: React.FC<MessageCardProps> = ({
   description,
   dateAndLocation,
   onClick,
+  imageSrc,
 }) => {
   return (
     <View className="message-card" onClick={onClick}>
@@ -24,7 +26,7 @@ const MessageCard: React.FC<MessageCardProps> = ({
       <View className="content">
         <View className="header">
           <Text className="title">{title}</Text>
-          <Text className="status">{status}</Text>
+          {/* <Text className="status">{status}</Text> */}
         </View>
         <View  className="des">
           <Text className="description">{description}</Text>
@@ -32,6 +34,7 @@ const MessageCard: React.FC<MessageCardProps> = ({
         </View>
       </View>
       <Text className="timestamp">{timestamp}</Text>
+      {imageSrc && <Image className="image-right" src={imageSrc} />}
     </View>
   );
 };

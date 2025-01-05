@@ -39,7 +39,7 @@ const MessagesPage: React.FC = () => {
       ];
       setMessages(data);
     };
-
+    setSelectedTag('全部消息');
     fetchMessages();
   }, []);
 
@@ -78,6 +78,7 @@ const MessagesPage: React.FC = () => {
             description={message.description}
             dateAndLocation={message.dateAndLocation}
             onClick={() => handleCardClick(message.id)}
+            imageSrc="test"
           />
         ))}
       </View>
