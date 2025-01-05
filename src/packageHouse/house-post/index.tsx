@@ -77,7 +77,9 @@ const Index = () => {
   const [surrounding, setSurrounding] = useState({});
   const [preference, setPreference] = useState({});
 
-  const [state, setState] = useState(0);
+  const [state, setState] = useState(11);
+  const systemInfo = Taro.getSystemInfoSync();
+  console.log(systemInfo.windowWidth, 'width');
 
   const handleButtonClickable = () => {
     if (
@@ -685,6 +687,9 @@ const Agreement = () => {
 };
 
 const Price = () => {
+  const systemInfo = Taro.getSystemInfoSync();
+  const [pricePercentage, setPricePercentage] = useState<number>(0);
+  const [position, setPosition] = useState(systemInfo.windowWidth * 0.1);
   return (
     <View className='price'>
       <View className='title'>确认房源价值</View>
@@ -702,15 +707,52 @@ const Price = () => {
       <View className='step-14-confirm-des'>
         请在区间内修改并确认房源的旅行币价值。
       </View>
-      <View className='step-14-confirm-price'>当前价格：</View>
+      <View className='step-14-confirm-price'>
+        当前价格：{pricePercentage * (80 - 20) + 20}
+      </View>
       <View
         className='step-14-confirm-price-range'
-        onClick={e => {
+        onTouchMove={e => {
+          const start = systemInfo.windowWidth * 0.1;
           console.log(e);
-          console.log((e.changedTouches[0].screenX - 50) / 600.0);
-          console.log(e.changedTouches[0].screenX, e.changedTouches[0].screenY);
+          const end = e.changedTouches[0].clientX;
+          const percentage = (end - start) / (systemInfo.windowWidth * 0.8);
+          console.log(start, end, systemInfo.windowWidth * 0.8);
+          setPricePercentage(percentage);
+          setPosition(end);
         }}
-      />
+        onClick={e => {
+          const start = systemInfo.windowWidth * 0.1;
+          const end = e.detail.x;
+          const percentage = (end - start) / (systemInfo.windowWidth * 0.8);
+          setPricePercentage(percentage);
+          setPosition(end);
+        }}
+      >
+        <View
+          className='left-part'
+          style={{
+            width: `${position - systemInfo.windowWidth * 0.1}px`,
+            backgroundColor: '#7A73FF',
+          }}
+        ></View>
+        <View
+          className='circle'
+          style={{
+            width: '20px',
+            height: '20px',
+            borderRadius: '20px',
+            backgroundColor: '#7A73FF',
+            left: `${position - 10 - systemInfo.windowWidth * 0.1}px`,
+            top: '-5px',
+            position: 'absolute',
+          }}
+        ></View>
+      </View>
+      <View className='price-range-number'>
+        <View className='min'>20旅行币/晚</View>
+        <View className='max'>80旅行币/晚</View>
+      </View>
       <View className='step-14-confirm-tips'>
         当价格接近推荐值时，吸引力较高；当价格高于推荐值，可能影响房客的预订率噢。
       </View>
