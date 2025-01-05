@@ -26,8 +26,10 @@ const MessageCard: React.FC<MessageCardProps> = ({
           <Text className="title">{title}</Text>
           <Text className="status">{status}</Text>
         </View>
-        <Text className="description">{description}</Text>
-        {dateAndLocation && <Text className="meta">{dateAndLocation}</Text>}
+        <View  className="des">
+          <Text className="description">{description}</Text>
+          {dateAndLocation && <Text className="meta">{dateAndLocation}</Text>}
+        </View>
       </View>
       <Text className="timestamp">{timestamp}</Text>
     </View>

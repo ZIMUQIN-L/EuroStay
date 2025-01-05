@@ -1,111 +1,125 @@
-body, view {
-  font-size: 36px;
-}
-
 .card {
   display: flex;
-  flex-direction: column;
-  background-color: #FFFFFF;
-  border: 1px solid #E0E0E0;
+  flex-direction: row; /* 图片和主内容横向排列 */
+  background-color: #fff;
+  border: 1px solid #e0e0e0;
   border-radius: 8px;
-  padding: 16px;
-  width: 100%;
+  margin-bottom: 16px;
+  padding: 12px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.image-section {
+  flex: 1; /* 图片部分占据左侧固定比例 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 12px; /* 与主内容部分的间距 */
+}
+
+.image-style {
+  width: 150px; /* 设置图片大小 */
+  height: 150px;
+  object-fit: cover;
+  border-radius: 10%; /* 设置圆角图片 */
+}
+
+.image-fallback {
+  width: 150px;
+  height: 150px;
+  background-color: #f0f0f0;
+  border-radius: 10%; /* 设置圆角占位符 */
 }
 
 .main-content {
+  flex: 4; /* 主内容部分占据剩余空间 */
   display: flex;
   flex-direction: row;
-  align-items: flex-start;
+  justify-content: space-between;
 }
 
-.image-container {
-  flex: 0 0 140px;
-  height: 140px;
-  margin-right: 12px;
+.left-section {
+  flex: 4; /* 左侧内容部分 */
+  display: flex;
+  flex-direction: column;
 }
 
-.image-style, .image-fallback {
-  width: 100%;
-  height: 100%;
-  background-color: #C4C4C4;
-  border-radius: 8px;
-}
-
-.separator {
-  height: 1px;
-  background-color: #E0E0E0;
-  margin: 16px 0;
+.right-section {
+  flex: 1; /* 右侧内容部分 */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-end;
 }
 
 .header {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-}
-
-.content {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  position: relative;
+  flex-direction: column; /* 将内容排列为纵向 */
+  margin-bottom: 8px; /* 为下方内容添加间距 */
 }
 
 .title {
-  font-size: 26px; /* 增大字体大小 */
+  font-size: 26px; /* 大标题字体 */
   font-weight: bold;
-  color: #333;
-  flex-grow: 1;
 }
 
-.type {
-  font-size: 20px; /* 增大字体大小 */
-  color: #666;
-  background-color: #EFEFEF;
-  padding: 4px 8px; /* 调整padding以适应字体增大 */
-  border-radius: 8px;
+.column{
+  display: flex;
+  flex-direction: column; /* 将内容排列为纵向 */
+  margin-bottom: 8px; /* 为下方内容添加间距 */
 }
 
-.details, .cost, .status, .description {
-  font-size: 20px; /* 统一文本字体大小 */
+.hostname {
+  font-size: 26px; /* 默认字体大小 */
+}
+
+.details,
+.cost,
+.status {
+  font-size: 20px; /* 灰色字体设置为 20px */
   color: #666;
-  margin: 4px 0;
+  margin-bottom: 4px;
+}
+
+.type-pill {
+  display: inline-block; /* 使其成为内联块状元素 */
+  font-size: 26px; /* 字体大小 */
+  font-weight: bold; /* 加粗 */
+  color: #7A73FF; /* 文本颜色为白色 */
+  background-color: #7a73ff2d; /* 背景颜色 */
+  padding: 6px 12px; /* 内边距，控制高度和宽度 */
+  border-radius: 999px; /* 圆角，形成胶囊形 */
+  text-align: center; /* 居中对齐 */
+  margin-bottom: 8px; /* 与下方内容保持间距 */
 }
 
 .reply-button {
-  position: absolute; /* 绝对定位 */
-  right: 10px; /* 右边距 */
-  bottom: 10px; /* 底部距离 */
-  background-color: #F5F5F5;
-  border-radius: 8px;
-  padding: 8px 16px;
-  font-size: 20px; /* 增大字体大小 */
-  color: #333;
-  cursor: pointer;
+  display: flex; /* 使用 Flex 布局 */
+  align-items: center; /* 垂直居中 */
+  justify-content: flex-start; /* 左对齐 */
+  font-size: 26px; /* 字体大小 */
+  color: #7b69ee; /* 按钮文字的颜色，紫色 */
+  cursor: pointer; /* 鼠标变为点击手型 */
+  margin-top: 8px; /* 与其他内容保持间距 */
 }
 
-.communication {
-  padding-top: 2px;
-  border-top: 1px solid #E0E0E0;
-  margin-top: 10px;
+.reply-text {
+  font-size: 26px; /* 字体大小 */
+  color: #7b69ee; /* 按钮文字的颜色 */
 }
 
-.communication-info {
-  font-size: 20px; /* 沟通信息字体大小 */
-  color: #999;
-  text-align: left;
+.bell-container {
+  width: 50px; /* 圆形容器的宽度 */
+  height: 50px; /* 圆形容器的高度 */
+  background: #F300000D; /* 背景颜色 */
+  border-radius: 50%; /* 圆形背景 */
+  display: flex; /* 使用 Flex 布局 */
+  align-items: center; /* 图标垂直居中 */
+  justify-content: center; /* 图标水平居中 */
 }
 
-.progress-bar-container {
-  height: 8px;
-  background-color: #e0e0e0;
-  border-radius: 4px;
-  overflow: hidden;
-  margin-top: 8px;
-}
-
-.progress-bar {
-  height: 100%;
-  background-color: #000; /* Green progress bar */
-  transition: width 0.3s ease;
+.arrow-icon {
+  font-size: 30px; /* 箭头大小稍大 */
+  color: #7b69ee; /* 箭头颜色 */
+  margin-left: 4px; /* 与文字保持间距 */
 }

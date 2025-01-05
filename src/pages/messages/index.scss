@@ -3,6 +3,34 @@
   background-color: #f5f5f5;
 }
 
+.tag-list {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  margin-bottom: 16px;
+
+  .tag {
+    padding: 10px 16px;
+    margin-right: 16px;
+    background-color: #e0e0e0;
+    border-radius: 16px;
+    font-size: 26px;
+    color: #666;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background-color 0.3s, color 0.3s;
+
+    &.active {
+      background-color: #5c5c5c;
+      color: #fff;
+    }
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+}
+
 .tabs {
   display: flex;
   justify-content: space-around;

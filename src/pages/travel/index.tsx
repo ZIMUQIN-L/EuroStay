@@ -7,7 +7,6 @@ import CustomTabBar from '@components/CustomTabBar';
 
 const TravelPage: React.FC = () => {
   const [travels, setTravels] = useState<TravelData[]>([]);
-  const [activeTab, setActiveTab] = useState<'待处理' | '已结束'>('待处理'); // Active tab state
 
   useEffect(() => {
     // Simulate data fetching
@@ -25,7 +24,9 @@ const TravelPage: React.FC = () => {
           cost: 500,
           description: '享受意大利风情。',
           isActive: true,
-          reviewed: false
+          reviewed: false,
+          hostname: '意大利风情小屋', // 新增字段：主办方
+          duration: '2天',
         },
         {
           _id: '2',
@@ -39,11 +40,13 @@ const TravelPage: React.FC = () => {
           cost: 300,
           description: '体验古罗马的魅力。',
           isActive: false,
-          reviewed: false
+          reviewed: false,
+          hostname: '罗马遗迹之家', // 新增字段：主办方
+          duration: '2天',
         },
         {
           _id: '3',
-          type: '参与活动',
+          type: '活动',
           image: 'path/to/image3.jpg',
           title: '威尼斯狂欢节',
           location: '威尼斯',
@@ -52,8 +55,26 @@ const TravelPage: React.FC = () => {
           status: '进行中',
           cost: 200,
           description: '参与盛大的狂欢节庆典。',
+          isActive: false,
+          reviewed: true,
+          hostname: '威尼斯狂欢活动组', // 新增字段：主办方
+          duration: '2天'
+        },
+        {
+          _id: '4',
+          type: '活动',
+          image: 'path/to/image3.jpg',
+          title: '威d尼斯狂欢节',
+          location: '威d尼斯',
+          startDate: '2024-02-10',
+          endDate: '2024-02-12',
+          status: '进行中',
+          cost: 200,
+          description: '参与盛节庆典。',
           isActive: true,
-          reviewed: false
+          reviewed: true,
+          hostname: '威尼', // 新增字段：主办方
+          duration: '2天'
         },
       ];
       setTravels(data);
@@ -61,54 +82,72 @@ const TravelPage: React.FC = () => {
 
     fetchTravels();
   }, []);
-
-  const filteredTravels =
-    activeTab === '待处理'
-      ? travels.filter(travel => travel.isActive)
-      : travels.filter(travel => !travel.isActive);
-
-  const handleTabSwitch = (tab: '待处理' | '已结束') => {
-    setActiveTab(tab);
-  };
-
+  console.log('Travels:', travels);
   const handleReview = (id: string) => {
     Taro.navigateTo({
       url: `../../packageUser/review-on-house/index?id=${id}`,
     });
   };
 
-  const navigateToDetail = (id: string) => {
-    Taro.navigateTo({
-      url: `/packageUser/travel-detail/index?id=${id}`, // 替换为目标页面的路径
-    });
+  const navigateToDetail = (id: string, reviewed: string, isActive: boolean) => {
+    if (reviewed) {
+      Taro.navigateTo({
+        url: `/packageUser/travel-detail/index?id=${id}&reviewed=${reviewed}&isActive=${isActive}`, // 替换为目标页面的路径
+      });
+    } else {
+      Taro.navigateTo({
+        url: `/packageUser/travel-detail/index?id=${id}&isActive=${isActive}`, // 替换为目标页面的路径
+      });
+    }
   };
 
   return (
     <View className="travel-page">
-      <View className="tabs">
-        <View
-          className={`tab ${activeTab === '待处理' ? 'active' : ''}`}
-          onClick={() => handleTabSwitch('待处理')}
-        >
-          待处理
-        </View>
-        <View
-          className={`tab ${activeTab === '已结束' ? 'active' : ''}`}
-          onClick={() => handleTabSwitch('已结束')}
-        >
-          已结束
+      {/* 待处理部分 */}
+      <View className="travel-section">
+        <View className="section-title">我将要去</View>
+        <View className="travel-cards">
+          {travels
+            .filter(travel => travel.isActive)
+            .map(travel => (
+              <TravelCard
+                key={travel._id}
+                travel={travel}
+                onClick={() => navigateToDetail(travel._id, travel.reviewed, travel.isActive)}
+              />
+            ))}
         </View>
       </View>
-      <View className="travel-cards">
-        {filteredTravels.map(travel => (
-          <TravelCard
-            key={travel._id}
-            travel={travel}
-            onClick={() => navigateToDetail(travel._id)}
-            onReview={travel.isActive ? undefined : handleReview}
-          />
-        ))}
+
+      {/* 已结束部分 */}
+      <View className="travel-section">
+        <View className="section-title">我已经去过</View>
+        <View className="travel-cards">
+          {/*  还没有 reviewed 的部分 */}
+          {travels
+            .filter(travel => !travel.isActive && !travel.reviewed)
+            .map(travel => (
+              <TravelCard
+                key={travel._id}
+                travel={travel}
+                onClick={() => navigateToDetail(travel._id, travel.reviewed, travel.isActive)}
+                onReview={() => handleReview(travel._id)}
+              />
+            ))}
+
+          {/* 被 reviewed 的部分 */}
+          {travels
+            .filter(travel => !travel.isActive && travel.reviewed)
+            .map(travel => (
+              <TravelCard
+                key={travel._id}
+                travel={travel}
+                onClick={() => navigateToDetail(travel._id, travel.reviewed, travel.isActive)}
+              />
+            ))}
+        </View>
       </View>
+
       <CustomTabBar />
     </View>
   );

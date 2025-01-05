@@ -7,7 +7,8 @@ import CustomTabBar from '@components/CustomTabBar';
 
 const MessagesPage: React.FC = () => {
   const [messages, setMessages] = useState<any[]>([]);
-
+  const [selectedTag, setSelectedTag] = useState<string>('全部');
+  const tags = ['全部消息', '私信', '系统'];
   useEffect(() => {
     const fetchMessages = async () => {
       const data = [
@@ -42,6 +43,10 @@ const MessagesPage: React.FC = () => {
     fetchMessages();
   }, []);
 
+  const handleTagClick = (tag: string) => {
+    setSelectedTag(tag);
+    // 可在此处添加过滤逻辑，根据选中的标签过滤消息
+  };
 
   const handleCardClick = (id: string) => {
     Taro.navigateTo({
@@ -51,6 +56,18 @@ const MessagesPage: React.FC = () => {
 
   return (
     <View className="travel-page">
+      {/* 标签列表 */}
+      <View className="tag-list">
+        {tags.map(tag => (
+          <View
+            key={tag}
+            className={`tag ${selectedTag === tag ? 'active' : ''}`}
+            onClick={() => handleTagClick(tag)}
+          >
+            {tag}
+          </View>
+        ))}
+      </View>
       <View className="message-list">
         {messages.map(message => (
           <MessageCard
