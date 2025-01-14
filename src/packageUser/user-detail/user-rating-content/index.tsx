@@ -1,3 +1,4 @@
+import Taro from '@tarojs/taro';
 import React from 'react';
 import { View, Text } from '@tarojs/components';
 import UserCommentCard from './user-content-comment';
@@ -83,7 +84,15 @@ const UserCommentContent = ({ userDetailInfo, userReceivedRatings }) => {
   const guestRatings = userReceivedRatings2?.filter(rating => rating.type === 'guest') || [];
   const hostRatings = userReceivedRatings2?.filter(rating => rating.type === 'host') || [];
 
-  
+  const handleGuestViewMore = () => {
+    console.log("Navigating to guest-view-more...");
+    console.log("✅ 查看更多 button clicked!");
+    Taro.navigateTo({
+      url: '/packageUser/guest-view-more/index', // Adjust this path based on your folder structure
+    }).catch(err => {
+      console.error("Navigation error:", err);
+    });
+  };
 
 
 
@@ -112,7 +121,7 @@ const UserCommentContent = ({ userDetailInfo, userReceivedRatings }) => {
             <UserCommentCard key={index} {...ratingInfo}></UserCommentCard>
           ))}
         </View>
-        <View className="more">
+        <View className="more" onClick={handleGuestViewMore}>
           <Text>查看更多</Text>
         </View>
       </View>
