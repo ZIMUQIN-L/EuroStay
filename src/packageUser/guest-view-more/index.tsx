@@ -7,7 +7,7 @@ const PropertyReviews = () => {
   const mockProperties = [
     {
       propertyId: 1,
-      propertyName: "国家城市·房源名称 1",
+      propertyName: "房源1",
       propertyImage: "https://example.com/property1.jpg",
       recommendCount: 89,
       reviews: [
@@ -47,7 +47,7 @@ const PropertyReviews = () => {
     },
     {
       propertyId: 2,
-      propertyName: "国家城市·房源名称 2",
+      propertyName: "房源2",
       propertyImage: "https://example.com/property2.jpg",
       recommendCount: 92,
       reviews: [
@@ -87,7 +87,7 @@ const PropertyReviews = () => {
     },
     {
       propertyId: 3,
-      propertyName: "国家城市·房源名称 3",
+      propertyName: "房源3",
       propertyImage: "https://example.com/property3.jpg",
       recommendCount: 85,
       reviews: [

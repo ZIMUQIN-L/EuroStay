@@ -1,6 +1,6 @@
 .house-image-container {
   display: flex;
-  gap: 12px;
+  gap: 24px;
   overflow-x: auto;
   padding: 10px;
 }
@@ -23,11 +23,11 @@
 .house-label {
   position: absolute;
   bottom: 8px;
-  left: 50%;
+  left: 30%;
   transform: translateX(-50%);
   background: rgba(255, 255, 255, 0.9);
-  padding: 4px 8px;
-  font-size: 14px;
+  padding: 5px 10px;
+  font-size: 15px;
   border-radius: 6px;
   font-weight: bold;
 }
