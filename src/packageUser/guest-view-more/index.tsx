@@ -148,19 +148,22 @@ const PropertyReviews = () => {
         <View key={index} className="review-card">
           {/* User Info */}
           <View className="review-header">
-            <Image src={review.user.avatar} className="review-avatar" />
-            <View className="review-info">
-              <Text className="review-name">{review.user.username}</Text>
-              <Text className="review-location">{review.user.tags}</Text>
+            <View className="review-profile">
+              <Image src={review.user.avatar} className="review-avatar" />
+              <View className="review-info">
+                <Text className="review-name">{review.user.username}</Text>
+                <Text className="review-location">{review.user.tags}</Text>
+              </View>
             </View>
-            <Text className="review-date">{review.createTime}</Text>
+            <View className="recommandation-date">
+              {review.recommend && <Text className="review-badge">推荐</Text>}
+              <Text className="review-date">{review.createTime}</Text>
+            </View>
           </View>
 
           {/* Review Content */}
           <Text className="review-text">{review.content}</Text>
-
-          {/* Recommendation Tag */}
-          {review.recommend && <Text className="review-badge">推荐</Text>}
+          
         </View>
       ))}
     </View>

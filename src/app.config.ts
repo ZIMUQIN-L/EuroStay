@@ -26,7 +26,7 @@ export default {
         'traveler-system/index',
         'travel-detail/index',
         'message-detail/index',
-        // 'host-view-more/index',
+        'host-view-more/index',
         'guest-view-more/index',
       ],
     },
