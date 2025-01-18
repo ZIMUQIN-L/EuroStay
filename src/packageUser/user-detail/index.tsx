@@ -10,35 +10,28 @@ import UserDetailContent from './user-detail-content';
 import UserAccomContent from './user-accom-content';
 import UserCommentContent from './user-rating-content';
 
-// const userData: UserDetailInfoItemProps = {
-//   _id: 'user-001',
-//   _openid: 'openid-001',
-//   userOpenid: 'user-openid-001',
-//   nickName: '偷心小白菜',
-//   userDes: '欢迎和我进行换宿体验～',
-//   avatarUrl: 'https://via.placeholder.com/80',
-//   userLocation: 'Milan, Italy',
-//   guestRating: 4.8,
-//   guestRatingNumber: 25,
-//   hostRating: 4.7,
-//   hostRatingNumber: 18,
-//   gender: 'female',
-//   tags: ['INTP', '意大利米兰', '米兰理工大学'],
-//   verified: {
-//     student: true,
-//     gov: true,
-//   },
-//   aboutMe: {
-//     interests: 'Swimming, Movies, Skiing',
-//     major: 'Computer Science',
-//     languages: 'English, Italian, Chinese',
-//     skills: 'Coding, Cooking, Photography',
-//     funFact: 'I have visited 30 countries and counting!',
-//     visitedCountries: 'Italy, France, Germany, USA, China, Japan',
-//     serviceProvided:
-//       'I can offer a cozy place to stay and a local tour around Milan.',
-//   },
-// };
+interface UserResult {
+  aboutMe: string;
+  avatar: string;
+  backgroundPic: string[];  // Array of strings (e.g., URLs for images)
+  birthday: string;
+  countryVisited: string[]; // Array of strings (e.g., countries visited)
+  gender: number;           // Assuming 0 = unspecified, 1 = male, 2 = female, etc.
+  greenTag: string[];       // Array of tags for green (positive) categories
+  hobby: string[];          // Array of hobbies
+  location: string;
+  memorableStory: string;
+  occupation: string;
+  redTag: string[];         // Array of tags for red (negative) categories
+  school: string;
+  tagStr: string[];         // Array of tags as strings
+  uid: number;              // User ID
+  username: string;
+  viewOwn: boolean;         // Whether the user is viewing their own profile
+  whySwap: string;
+  xhsContact: string;       // Contact information (e.g., a social handle)
+}
+
 
 const UserDetail: React.FC = () => {
   const router = useRouter();
@@ -50,6 +43,29 @@ const UserDetail: React.FC = () => {
       path: '/pages/login/index',
     };
   });
+
+  const [userData, setUserData] = useState(null);
+
+  Taro.request({
+    url: 'https://api.eurostay.co/app/esuser/showProfile',
+    method: 'POST',
+    data: {
+      uid: 1 // change later
+    },
+    header: {
+      'Content-Type': 'application/json', 
+      'token': 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNzM3MTUzMDI1LCJleHAiOjE3Mzc3NTc4MjV9.Dpv8FWC6I8npZr91OLJDmc6fd9diyUe-ffYdaVlWW2EeJdHeAgmLWBgQLIG7k9bOsllsqispQGutUaBpQlt7Yg' 
+      // change later
+    }
+  })
+    .then((res) => {
+      // console.log('Response:', res.data);
+      setUserData(res.data.result);
+    })
+    .catch((err) => {
+      console.error('Request failed:', err);
+    });
+  
 
 
   const [userDetailInfo, setUserDetailInfo] =
@@ -112,20 +128,21 @@ const UserDetail: React.FC = () => {
       comment: "Great host, very welcoming!",
     },
   ];
-  
-
-  const handlePointsClick = () => {
-    if (userDetailInfo._openid == currentUser._openid) {
-      Taro.navigateTo({
-        url: `/packageUser/my-points/index`,
-      });
-    }
-  };
 
   return (
   <View className="user-detail-page">
     <View className="profile-container">
-      <View className="profile-background" />
+      <View className="profile-background" 
+        style={{
+          backgroundImage: `url(${userData?.backgroundPic?.[0] || '/default-avatar.png'})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+          height: '300px',
+          width: '100%', 
+          overflow: 'hidden' 
+        }}
+      />
       <View className="share-button" onClick={onShare}>
         <Text>分享</Text>
       </View>
@@ -134,38 +151,44 @@ const UserDetail: React.FC = () => {
       </View>
       <View className="profile-header">
         <Image
-          src={userDetailInfo?.avatarUrl || "/default-avatar.png"}
+          src={userData?.avatar || "/default-avatar.png"}
           className="profile-image"
         />
       <View className="info">
         <Text className="profile-name">
-          {userDetailInfo?.nickName || "未知用户"}
-          <Text className="badge">认证</Text>
-          <Text className="last-online">5min前在线</Text>
+          {userData?.username || "未知用户"}
+          {/* <Text className="badge">认证</Text>
+          <Text className="last-online">5min前在线</Text> */}
         </Text>
 
         {/* Badges Section */}
         <View className="badges">
-          <Text className="badge-item">⛺ 超级Host</Text>
-          <Text className="badge-item">🏠 换宿x次</Text>
-          <Text className="badge-item">🏆 活动x次</Text>
-          <Text className="badge-item">💰 打赏x次</Text>
+          <View className="gender-icon">
+            {userData?.gender === 1 ? (
+              <Text className="badge-item">♂️</Text> // Icon for male
+            ) : userData?.gender === 2 ? (
+              <Text className="badge-item">♀️</Text> // Icon for female
+            ) : (
+              <Text className="badge-item">⚧️</Text> // Icon for non-binary or other
+            )}
+          </View>
+          <Text className="badge-item">{userData?.location}</Text>
+          <Text className="badge-item">{userData?.school}</Text>
+          <Text className="badge-item">{userData?.occupation}</Text>
         </View>
+
 
         {/* Tags Section */}
         <View className="tags">
-          <Text className="tag-item">西班牙Valencia</Text>
-          <Text className="tag-item">INTP</Text>
-          <Text className="tag-item">🙋‍♀️ 天蝎座</Text>
-          <Text className="tag-item">🌍 环球冒险家</Text>
-          <Text className="tag-item">📷 摄影爱好者</Text>
-          <Text className="tag-item">👩‍🍳 厨神</Text>
+          {/* <Text className="tag-item">{userData?.location}</Text>
+          <Text className="tag-item">{userData?.school}</Text> */}
         </View>
+       <View className="self-intro">
+        <Text className="intro-quote">“{userData?.aboutMe}”</Text>
       </View>
       </View>
-      <View className="self-intro">
-        <Text className="intro-quote">“Hello，欢迎来瓦伦西亚找我玩，住我家！如果有更长的自我介绍就继续写。。。。”</Text>
       </View>
+
     </View>
 
   {/* Tabs */}
@@ -183,7 +206,7 @@ const UserDetail: React.FC = () => {
 
   {/* Tab Content */}
   <View className="tab-content">
-    {activeTab === "简介" && <UserDetailContent {...userDetailInfo} />}
+    {activeTab === "简介" && <UserDetailContent {...userData} />}
     {activeTab === "房源" && <UserAccomContent {...userDetailInfo} />}
     {activeTab === "评价" && (
       <UserCommentContent
@@ -195,103 +218,6 @@ const UserDetail: React.FC = () => {
   </View>
 </View>
 
-
-
-
-
-    // <View>
-    //   <View className='profile-container'>
-    //     <View className='profile-background' />
-    //     <View className='profile-header'>
-    //       <Image src={userDetailInfo?.avatarUrl} className='profile-image' />
-    //       <View className='info'>
-    //         <Text className='profile-name'>
-    //           {userDetailInfo?.nickName}
-    //           {/* // TODO, @PJ */}
-    //           {/* {userDetailInfo.verified && ?}
-    //           <Text className='badge'>实名认证</Text> */}
-    //           <Text className='badge-points' onClick={handlePointsClick}>
-    //             {' '}
-    //             积分值{userDetailInfo.point ? userDetailInfo.point : 10} {'>'}
-    //           </Text>
-    //         </Text>
-    //         <View className='badges'>
-    //           {userDetailInfo.tags && userDetailInfo.tags.length!=0? (
-    //             userDetailInfo.tags.map((tag, index) => (
-    //               <Text key={index} className='badge-item'>
-    //                 {tag}
-    //               </Text>
-    //             ))
-    //           ) : (
-    //             <Text className='badge-item'>暂无个性标签</Text>
-    //           )}
-    //         </View>
-    //       </View>
-
-    //       <View className='additional-info'>
-    //         <Text className='description'>
-    //           我的简介：{userDetailInfo.userDes}
-    //         </Text>
-    //         <Text className='description'>
-    //           所属地：{userDetailInfo.userLocation}
-    //         </Text>
-    //         <View className='ratings-container'>
-    //           <View className='ratings'>
-    //             <View className='rating-item'>
-    //               <Text className='rating-title'>房东评分</Text>
-    //               <Text className='rating-value'>
-    //                 {userDetailInfo && userDetailInfo.hostRating
-    //                   ? userDetailInfo.hostRating
-    //                   : '暂无评分'}
-    //               </Text>
-    //             </View>
-    //             <View className='rating-item'>
-    //               <Text className='rating-title'>房客评分</Text>
-    //               <Text className='rating-value'>
-    //                 {userDetailInfo && userDetailInfo.guestRating
-    //                   ? userDetailInfo.guestRating
-    //                   : '暂无评分'}
-    //               </Text>
-    //             </View>
-    //           </View>
-    //           {userDetailInfo._openid == currentUser._openid ? (
-    //             <View className='edit-button' onClick={toEdit}>
-    //               <Text>编辑资料</Text>
-    //             </View>
-    //           ) : (
-    //             <View></View>
-    //           )}
-    //         </View>
-    //       </View>
-    //     </View>
-    //   </View>
-
-    //   <View className='tabs'>
-    //     <View
-    //       className={`tab ${activeTab === '概况' ? 'active' : ''}`}
-    //       onClick={() => setActiveTab('概况')}
-    //     >
-    //       概况
-    //     </View>
-    //     <View
-    //       className={`tab ${activeTab === '供宿' ? 'active' : ''}`}
-    //       onClick={() => setActiveTab('供宿')}
-    //     >
-    //       供宿
-    //     </View>
-    //     <View
-    //       className={`tab ${activeTab === '发帖' ? 'active' : ''}`}
-    //       onClick={() => setActiveTab('发帖')}
-    //     >
-    //       发帖
-    //     </View>
-    //   </View>
-    //   {activeTab === '概况' ? (
-    //     <UserDetailContent {...userDetailInfo} />
-    //   ) : activeTab === '供宿' ? (
-    //     <UserAccomContent {...userDetailInfo} />
-    //   ) : null}
-    // </View>
   );
 };
 
