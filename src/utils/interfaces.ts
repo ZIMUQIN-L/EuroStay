@@ -152,6 +152,28 @@ export interface UserRatingInfoItemProps {
   toPublic: boolean; //是否公开展示
 }
 
+export interface UserResult {
+  aboutMe: string;
+  avatar: string;
+  backgroundPic: string[];  // Array of strings (e.g., URLs for images)
+  birthday: string;
+  countryVisited: string[]; // Array of strings (e.g., countries visited)
+  gender: number;           // Assuming 0 = unspecified, 1 = male, 2 = female, etc.
+  greenTag: string[];       // Array of tags for green (positive) categories
+  hobby: string[];          // Array of hobbies
+  location: string;
+  memorableStory: string;
+  occupation: string;
+  redTag: string[];         // Array of tags for red (negative) categories
+  school: string;
+  tagStr: string[];         // Array of tags as strings
+  uid: number;              // User ID
+  username: string;
+  viewOwn: boolean;         // Whether the user is viewing their own profile
+  whySwap: string;
+  xhsContact: string;       // Contact information (e.g., a social handle)
+}
+
 export interface UserDetailInfoItemProps {
   _id: string; // 该条信息的id
   _openid: string; // 该条信息用户的openid
