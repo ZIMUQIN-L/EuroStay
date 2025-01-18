@@ -281,7 +281,6 @@
   .section-title {
     font-size: 25px;
     color: #666;
-    // margin-bottom: 24px;
     text-align: center;
   }
 
@@ -449,9 +448,9 @@
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         overflow: hidden;
     
-        .photo {
-          display: none; /* Temporarily hide the actual images */
-        }
+        // .photo {
+        //   display: none; /* Temporarily hide the actual images */
+        // }
     
         .delete-btn {
           position: absolute;
