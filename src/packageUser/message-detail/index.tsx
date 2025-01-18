@@ -4,6 +4,8 @@ import { useState } from 'react';
 import { Message, MessageType } from './MessageTypes';
 import Avatar from '@assets/images/default-avatar.png';
 import PopUpCardReplyQuestion from '../pop-up-card-reply-question';
+import Taro from '@tarojs/taro';
+import GlobalStore from '@store/GlobalStore';
 
 const MessageDetail: React.FC = () => {
     const listingInfo = {
@@ -12,6 +14,12 @@ const MessageDetail: React.FC = () => {
         price: '300旅行币',
         status: '等待host通过',
     };
+
+    const listOffer = {
+      dateRange: '12.23-12.25',
+      location: '巴黎市中心公寓近地铁',
+      price: '300旅行币',
+    }
 
     const [isPopupVisible, setPopupVisible] = useState(false);
     const [replyingToMessageId, setReplyingToMessageId] = useState<string | null>(null);
@@ -23,6 +31,33 @@ const MessageDetail: React.FC = () => {
   
     const handleClosePopup = () => {
       setPopupVisible(false); // 关闭弹窗
+    };
+
+    const handleAcceptOffer = (messageId: string) => {
+      console.log(`Offer with ID ${messageId} accepted.`);
+      // 在这里添加确认预定的逻辑
+    };
+    
+    const handleDeclineOffer = (messageId: string) => {
+      console.log(`Offer with ID ${messageId} declined.${GlobalStore.userInfo.token}`);
+      Taro.request({
+        url: 'https://api.eurostay.co/app/discuss/addDis',
+        method: 'POST',
+        data: {
+          introduce: 'as',
+          title: 'asd',
+          topicId: 1
+        },
+        header: {
+          'Content-Type': 'application/json',
+          'token': GlobalStore.userInfo.token
+        }
+      }).then(res => {
+        console.log('后端返回数据:', res.data);
+      }).catch(err => {
+        console.error('请求失败:', err);
+      });
+      // 在这里添加拒绝预定的逻辑
     };
 
     const handleReplyQuestionSend = (replyContent: string, messageId: string) => {
@@ -79,7 +114,7 @@ const MessageDetail: React.FC = () => {
             },
           ],
         },
-      },    
+      },
       {
         id: '2',
         type: 'question',
@@ -101,8 +136,8 @@ const MessageDetail: React.FC = () => {
         content: '已通过您的入住申请，请确认预定。',
         data: {
           toUid: 68,
-          answerTo: '1',
-          content: 'answer to message 1',
+          answerTo: '2',
+          content: 'answer to message 2',
         },
       },
       {
@@ -115,7 +150,7 @@ const MessageDetail: React.FC = () => {
         data: {
           toUid: 68,
           answerTo: '1',
-          content: 'answer to message 1',
+          content: 'answer to message content',
         },
       },
       {
@@ -132,7 +167,7 @@ const MessageDetail: React.FC = () => {
         },
       },
       {
-        id: '5',
+        id: '6',
         type: 'chat',
         sender: 'host',
         time: '2024-10-11 09:45',
@@ -258,7 +293,6 @@ const MessageDetail: React.FC = () => {
             </View>
           </View>
         );
-      
 
       case 'question':
         return (
@@ -298,12 +332,73 @@ const MessageDetail: React.FC = () => {
         );
         
       case 'reply':
+          // 找到被回复的消息
+          let originalMessage = messages.find(msg => msg.id === message.data.answerTo);
+          let originalContent = originalMessage?.content;
+          return (
+            <View className="reply-message">
+                {/* 原始问题内容 */}
+                <View className="original-question-section">
+                  <View className="questions-section">
+                    <Text className="question">{originalContent}</Text>
+                  </View>
+                </View>
+
+                {/* 分割线 */}
+                <View className="divider"></View>
+
+                {/* 回复内容 */}
+                <View className="reply-content-section">
+                    <Text className="reply-content">{message.data.content}</Text>
+                </View>
+            </View>
+        );
+      
+
+      case 'offer':
         return (
-          <View className="reply-message">
-            <Text className="reply-content">{message.data.content}</Text>
-            <Text className="reply-to">Answer to message ID: {message.data.answerTo}</Text>
+          <View className="offer-message">
+            <View className="message-box">
+              {/* 标题部分 */}
+              <View className="title-section">
+                <Text className="offer-title">邀请入住，为您提供6折优惠.</Text>
+              </View>
+
+              <View className="divider"></View>
+              
+              <View className="content-wrapper">
+                {/* 头像部分 */}
+                <View className="avatar">
+                  <Image src={message.avatar || 'path/to/default-avatar.png'} className="avatar-image" />
+                </View>
+
+                {/* 描述部分 */}
+                <View className="description-section">
+                  <Text className="line date">{listOffer.dateRange} · 2女</Text>
+                  <Text className="line location">{listOffer.location}</Text>
+                  <Text className="line price">
+                    <Text className="highlight">{listOffer.price}</Text>
+                  </Text>
+                </View>
+              </View>
+
+
+              <View className="divider"></View>
+      
+              {/* 按钮部分 */}
+              <View className="offer-buttons">
+                <View className="decline-button" onClick={() => handleDeclineOffer(message.id)}>
+                  <Text>拒绝邀请</Text>
+                </View>
+                <View className="accept-button" onClick={() => handleAcceptOffer(message.id)}>
+                  <Text>确认预定</Text>
+                </View>
+              </View>
+            </View>
           </View>
         );
+      
+      
       case 'user':
       case 'host':
       default:

@@ -87,8 +87,7 @@ const Index = () => {
                       }
                     }).then(res => {
                       console.log("Token", res.data['token']);
-                      GlobalStore.userInfo.token = res.data['token'];
-
+                      GlobalStore.setToken(res.data['token']);
                     }).catch(err => {
                       console.error('请求失败:', err);
                     });

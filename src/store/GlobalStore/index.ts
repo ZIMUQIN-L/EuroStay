@@ -26,6 +26,10 @@ class GlobalStore {
     this._userInfo = updateUserInfo;
   }
 
+  setToken(newToken: string) {
+    this._userInfo.token = newToken;
+  }
+
   get currentTab() {
     return this._currentTab;
   }
