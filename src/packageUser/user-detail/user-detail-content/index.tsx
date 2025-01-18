@@ -105,10 +105,15 @@ const UserDetailContent: React.FC<UserResult> = userDetailInfo => {
       <View className="details">
         <Text className="title">兴趣爱好</Text>
         <View className="tags">
-          <Text className="tag">🎬 电影</Text>
-          <Text className="tag">📷 摄影</Text>
-          <Text className="tag">🎭 话剧</Text>
-          <Text className="tag">🎤 音乐</Text>
+          {userDetailInfo?.hobby && userDetailInfo.hobby.length > 0 ? (
+            userDetailInfo.hobby.map((tag, index) => (
+              <Text key={index} className="tag">
+                {tag}
+              </Text>
+            ))
+          ) : (
+            <Text className="tag">尚未完善</Text>
+          )}
         </View>
       </View>
     </View>
@@ -123,7 +128,11 @@ const UserDetailContent: React.FC<UserResult> = userDetailInfo => {
           <Text className="icon">📍</Text> 去过的国家
           <Text className="link">（电子地图）</Text>
         </Text>
-        <Text className="content">埃及、意大利、荷兰、爱尔兰、英国</Text>
+        <Text className="content">          
+          {userDetailInfo?.countryVisited && userDetailInfo.countryVisited.length > 0
+            ? userDetailInfo.countryVisited.join('、')
+            : '尚未完善'}
+        </Text>
       </View>
 
       {/* Map Section */}
@@ -147,7 +156,7 @@ const UserDetailContent: React.FC<UserResult> = userDetailInfo => {
         <Text className="title">
           <Text className="icon">🌟</Text> 最难忘的换宿回忆
         </Text>
-        <Text className="content">半夜和房东一起去沙滩上偷螃蟹</Text>
+        <Text className="content">{userDetailInfo?.memorableStory || '尚未完善'}</Text>
       </View>
     </View>
   </View>

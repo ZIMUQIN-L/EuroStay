@@ -163,24 +163,25 @@ const UserDetail: React.FC = () => {
 
         {/* Badges Section */}
         <View className="badges">
-          <Text className="badge-item">⛺ 超级Host</Text>
-          <Text className="badge-item">🏠 换宿x次</Text>
-          <Text className="badge-item">🏆 活动x次</Text>
-          <Text className="badge-item">💰 打赏x次</Text>
+          <View className="gender-icon">
+            {userData?.gender === 1 ? (
+              <Text className="badge-item">♂️</Text> // Icon for male
+            ) : userData?.gender === 2 ? (
+              <Text className="badge-item">♀️</Text> // Icon for female
+            ) : (
+              <Text className="badge-item">⚧️</Text> // Icon for non-binary or other
+            )}
+          </View>
+          <Text className="badge-item">{userData?.location}</Text>
+          <Text className="badge-item">{userData?.school}</Text>
+          <Text className="badge-item">{userData?.occupation}</Text>
         </View>
 
 
         {/* Tags Section */}
         <View className="tags">
-          {userData?.tagStr && userData.tagStr.length > 0 ? (
-            userData.tagStr.map((tag, index) => (
-              <Text key={index} className="tag-item">
-                {tag}
-              </Text>
-            ))
-          ) : (
-            <Text className="tag-item">尚未完善</Text>
-          )}
+          {/* <Text className="tag-item">{userData?.location}</Text>
+          <Text className="tag-item">{userData?.school}</Text> */}
         </View>
        <View className="self-intro">
         <Text className="intro-quote">“{userData?.aboutMe}”</Text>
