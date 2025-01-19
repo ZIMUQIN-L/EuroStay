@@ -35,7 +35,7 @@
             color: #333;
 
             .bold {
-            font-weight: bold;
+              font-weight: bold;
             }
         }
 
@@ -246,7 +246,7 @@
                 margin-bottom: 8px;
                 display: block;
               }
-      
+
               .answer {
                 display: block;
                 font-size: 22px;
@@ -342,9 +342,207 @@
           }
         }
       }
+
+      .reply-message {
+        background-color: #ffffff;
+        padding: 10px 15px;
+        border-radius: 8px;
+        margin-bottom: 10px;
+
+        .original-question-section {
+            .questions-section {
+                margin-top: 16px;
+                display: flex;
+                flex-direction: column;
+
+
+                  .question {
+                      font-size: 22px;
+                      color: #555;
+                      display: block;
+                  }
+
+                  .answer {
+                      display: block;
+                      font-size: 22px;
+                      color: #555;
+                      line-height: 1.6;
+                  }
+
+            }
+        }
+
+        .divider {
+            width: 100%;
+            height: 1px;
+            background-color: #e0e0e0;
+            margin: 10px 0;
+        }
+
+        .reply-content-section {
+            .reply-content {
+                font-size: 26px;
+                color: #000000;
+                line-height: 1.6;
+            }
+        }
+      }
+
+
+      .offer-message {
+        background-color: #9f95fc; /* 与示例中接近的背景色 */
+        border-radius: 16px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        color: #4e4e4e;
+      }
+      
+      .offer-message .title-section {
+        text-align: left;
+        font-size: 26px;
+        font-weight: bold;
+        color: #ffffff;
+        // padding: 10px 20px;
+        border-radius: 8px;
+        margin-bottom: 16px;
+      }
+
+
+      .offer-message .divider {
+        width: 100%;
+        height: 1px;
+        background-color: #e0e0e0;
+        margin: 10px 0;
+      }
+      
+      .offer-message .room-info-section {
+        display: flex;
+        margin-bottom: 16px;
+        align-items: center;
+      }
+      
+      .offer-message .room-image {
+        width: 80px;
+        height: 80px;
+        background-color: #333;
+        border-radius: 8px;
+        margin-right: 12px;
+      }
+      
+      .offer-message .room-details {
+        display: flex;
+        flex-direction: column;
+      }
+      
+      .offer-message .room-date,
+      .offer-message .room-location {
+        font-size: 14px;
+        color: #4e4e4e;
+        margin-bottom: 4px;
+      }
+      
+      .offer-message .room-price {
+        font-size: 16px;
+        font-weight: bold;
+        color: #6d4bff;
+      }
+      
+      .offer-message .room-price .original-price {
+        font-size: 14px;
+        color: #888888;
+        text-decoration: line-through;
+      }
+      
+      .offer-message .offer-buttons {
+        display: flex;
+        justify-content: space-between;
+      }
+      
+      .offer-message .accept-button,
+      .offer-message .decline-button {
+        flex: 1;
+        margin: 0 5px;
+        padding: 10px 0;
+        font-size: 14px;
+        text-align: center;
+        border-radius: 8px;
+        cursor: pointer;
+      }
+      
+      .offer-message .offer-buttons {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+      }
+      
+      .offer-message .accept-button,
+      .offer-message .decline-button {
+        flex: 1;
+        padding: 10px 0;
+        font-size: 16px;
+        text-align: center;
+        border-radius: 20px;
+        cursor: pointer;
+      }
+      
+      .offer-message .accept-button {
+        background-color: #ffffff;
+        color: #6d4bff;
+        font-size: 22px;
+      }
+      
+      .offer-message .decline-button {
+        background-color: #ffffff;
+        color: #ff4d4f;
+        font-size: 22px;
+      }
+
+      .offer-message .content-wrapper {
+        font-size: 20px;
+        color: #ffffff;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      
+      .offer-message .avatar {
+        flex-shrink: 0;
+      }
+      
+      .offer-message .avatar-image {
+        width: 48px; /* 头像宽度 */
+        height: 48px; /* 头像高度 */
+        border-radius: 50%; /* 圆形头像 */
+        object-fit: cover; /* 确保图片不拉伸 */
+      }
+      
+      .offer-message .description-section {
+        color: #ffffff;
+        display: flex;
+        flex-direction: column; /* 垂直布局 */
+        gap: 4px; /* 上下行的间距 */
+        flex: 1; /* 占据剩余空间 */
+      }
+      
+      .offer-message .description-section .line {
+        color: #ffffff;
+        margin: 0; /* 去除默认外边距 */
+        line-height: 1.4; /* 提高可读性 */
+      }
+      
+      .offer-message .description-section .title {
+        color: #ffffff;
+        font-size: 16px;
+        font-weight: 600; /* 半粗字体 */
+      }
+      
+      .offer-message .description-section .content {
+        font-size: 14px;
+        font-weight: 400; /* 普通字体 */
+      }
       
       
-      
-      
+
   }
   
