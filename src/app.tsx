@@ -3,6 +3,7 @@ import { Provider } from 'mobx-react';
 import Taro from '@tarojs/taro';
 import { storesContext } from './store';
 import './app.scss';
+import GlobalStore from './store/GlobalStore'; 
 
 const store = {
   storesContext,
@@ -10,6 +11,12 @@ const store = {
 
 const App = props => {
   useEffect(() => {
+
+    const storedUserInfo = Taro.getStorageSync('userInfo');
+    if (storedUserInfo) {
+      GlobalStore.userInfo = storedUserInfo; // 初始化状态
+    }
+
     // 检测新版本
     wx.cloud.init({
       env: 'cloud1-9gjlum193d0ee3c3',

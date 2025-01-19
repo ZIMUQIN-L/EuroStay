@@ -1,5 +1,7 @@
 import { makeAutoObservable } from 'mobx';
 import { UserItemProps } from '@utils/interfaces';
+import Taro from '@tarojs/taro';
+
 class GlobalStore {
   _currentTab: string = 'home';
   _userInfo: UserItemProps;
@@ -23,11 +25,13 @@ class GlobalStore {
   }
 
   set userInfo(updateUserInfo: UserItemProps) {
-    this._userInfo = updateUserInfo;
+    this._userInfo = { ...this._userInfo, ...updateUserInfo };
+    Taro.setStorageSync('userInfo', this._userInfo); // 持久化
   }
 
   setToken(newToken: string) {
     this._userInfo.token = newToken;
+    Taro.setStorageSync('userInfo', this._userInfo); // 持久化
   }
 
   get currentTab() {
