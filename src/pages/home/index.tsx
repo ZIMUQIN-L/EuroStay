@@ -22,25 +22,6 @@ import { HousePostImg } from '@assets/images/house-post.svg';
 
 const Index = () => {
   const [activeTab, setActiveTab] = useState('houses');
-  const [isShowPost, setIsShowPost] = useState(false);
-
-  const onClickPostSeek = () => {
-    Taro.navigateTo({
-      url: `../../packageHouse/seek-post/index?id=none`,
-    });
-  };
-
-  const onClickPostActivity = () => {
-    Taro.navigateTo({
-      url: `../../packageActivity/activity-post/index?id=none`,
-    });
-  };
-
-  const onClickPostHouse = () => {
-    Taro.navigateTo({
-      url: '../../packageHouse/house-post/index',
-    });
-  };
 
   Taro.useShareAppMessage(res => {
     return {
@@ -112,40 +93,6 @@ const Index = () => {
         {activeTab === 'houses' ? <Houses /> : <SeekingAccommodation />}
       </View>
       {/* 蒙层 */}
-      {isShowPost && (
-        <View
-          className='page-post-modal'
-          onClick={() => {
-            setIsShowPost(false);
-          }}
-        >
-          <Button
-            className='close-text-button'
-            onClick={() => {
-              setIsShowPost(false);
-            }}
-          >
-            关闭
-          </Button>
-          <Button
-            className='activity-text-button'
-            onClick={onClickPostActivity}
-          >
-            发布活动
-          </Button>
-
-          <Button className='house-text-button' onClick={onClickPostHouse}>
-            发布房源
-          </Button>
-
-          <Button
-            className='house-request-text-button'
-            onClick={onClickPostSeek}
-          >
-            发布求宿
-          </Button>
-        </View>
-      )}
     </>
   );
 };

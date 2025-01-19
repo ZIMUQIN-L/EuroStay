@@ -15,8 +15,12 @@ import hostAdPicTest from './home.png';
 import { premiumActivitySearch } from '@common/database/activityInfo/activityInfo';
 import hostAdPicTestTest from './host-ad-toscana-florence.png';
 import ActivityCard from '@components/ActivityCard';
-
+import { PurpleCalendar, PurpleMap } from '@utils/cloudIcons';
+import Popup from '../../../packageHouse/house-post/popup';
+import { AtCalendar } from 'taro-ui';
+import { formatToday, calculateDaysBetweenDates } from '@utils/dateUtil';
 /**
+ *
  * 主页的房源列表板块
  */
 const Houses = () => {
@@ -53,10 +57,10 @@ const Houses = () => {
   const [userEndDate, setUserEndDate] = useState<Date>();
   const [isClickedSearch, setIsClickedSearch] = useState<Boolean>(false);
 
-  const handleDateChange = (startDate: Date, endDate: Date) => {
-    setUserStartDate(startDate);
-    setUserEndDate(endDate);
-  };
+  // const handleDateChange = (startDate: Date, endDate: Date) => {
+  //   setUserStartDate(startDate);
+  //   setUserEndDate(endDate);
+  // };
 
   // delete the testdata for now
   const [demoData, setDemoData] = useState<HouseItemProps[]>([]);
@@ -127,16 +131,153 @@ const Houses = () => {
   const handleCloseAd = () => {
     setShowAd(false);
   };
+  const [isShowSeachPage, setIsShowSearchPage] = useState(false);
 
   const handleActivityClick = (activityId: string) => {
     Taro.navigateTo({
       url: `/packageActivity/activity-detail/index?id=${activityId}`, // 跳转到活动详情页面
     });
   };
+  const [isShowPost, setIsShowPost] = useState(false);
+
+  const onClickPostSeek = () => {
+    Taro.navigateTo({
+      url: `../../packageHouse/seek-post/index?id=none`,
+    });
+  };
+
+  const onClickPostActivity = () => {
+    Taro.navigateTo({
+      url: `../../packageActivity/activity-post/index?id=none`,
+    });
+  };
+
+  const onClickPostHouse = () => {
+    Taro.navigateTo({
+      url: '../../packageHouse/house-post/index',
+    });
+  };
+  const today = formatToday();
+  const [startDate, setStartDate] = useState(today);
+  const [endDate, setEndDate] = useState(null);
+  const handleDateChange = (startValue, endValue) => {
+    setStartDate(startValue);
+    setEndDate(endValue);
+  };
+  const handleDayClick = date => {
+    const selectedDate = date.value;
+    if (
+      selectedDate < today ||
+      (startDate != null && selectedDate < startDate)
+    ) {
+      handleDateChange(selectedDate, null);
+      return;
+    }
+    if (!startDate) {
+      handleDateChange(selectedDate, null);
+    } else if (!endDate) {
+      setEndDate(selectedDate);
+      handleDateChange(startDate, selectedDate);
+      const calculatedDays = calculateDaysBetweenDates(startDate, selectedDate);
+    } else {
+      setStartDate(selectedDate);
+      setEndDate(null);
+      handleDateChange(selectedDate, null);
+    }
+  };
+  const [isShowCalendarPopup, setIsShowCalendarPopup] = useState(false);
   return (
     <View className='home' id='home'>
+      {isShowSeachPage && (
+        <View className='home-search-page'>
+          <View className='home-search-title'>
+            搜索<View className='highlight'>地点</View>和
+            <View className='highlight'>时间</View>开启您的探索之旅吧~
+          </View>
+          <View className='home-search-detail'>
+            <View className='home-search-location'>
+              <Image src={PurpleMap} className='purple-map'></Image>
+              <View className='text'>地点</View>
+            </View>
+            <View
+              className='home-search-time'
+              onClick={() => {
+                setIsShowCalendarPopup(true);
+              }}
+            >
+              <Image src={PurpleCalendar} className='purple-calendar'></Image>
+              <View className='text'>时间</View>
+            </View>
+          </View>
+          <View
+            className='home-search-bar'
+            onClick={() => {
+              setIsShowSearchPage(false);
+            }}
+          >
+            搜索
+          </View>
+          {isShowCalendarPopup && (
+            <Popup
+              onClickClose={() => {
+                setIsShowCalendarPopup(false);
+              }}
+              onClickConfirm={() => {
+                setIsShowCalendarPopup(false);
+              }}
+              title={'选择日期'}
+              content={
+                <View className='calendar-wrapper'>
+                  <AtCalendar
+                    isMultiSelect
+                    currentDate={{ start: startDate, end: endDate }}
+                    // validRange={{ start: today }} // 有效日期范围
+                    minDate={today}
+                    onDayClick={handleDayClick}
+                    style={{ width: '100%' }}
+                  />
+                </View>
+              }
+            />
+          )}
+        </View>
+      )}
+      {isShowPost && (
+        <View
+          className='page-post-modal'
+          onClick={() => {
+            setIsShowPost(false);
+          }}
+        >
+          <Button
+            className='close-text-button'
+            onClick={() => {
+              setIsShowPost(false);
+            }}
+          >
+            关闭
+          </Button>
+          <Button
+            className='activity-text-button'
+            onClick={onClickPostActivity}
+          >
+            发布活动
+          </Button>
+
+          <Button className='house-text-button' onClick={onClickPostHouse}>
+            发布房源
+          </Button>
+
+          <Button
+            className='house-request-text-button'
+            onClick={onClickPostSeek}
+          >
+            发布求宿
+          </Button>
+        </View>
+      )}
+
       <>
-        <View className='home-search-bar'>搜索</View>
         <View className='homepage-buttons'>
           <View
             className='homepage-likes'
@@ -174,6 +315,14 @@ const Houses = () => {
             <Image src=''></Image>
             用户
           </View>
+        </View>
+        <View
+          className='home-search-bar'
+          onClick={() => {
+            setIsShowSearchPage(true);
+          }}
+        >
+          搜索
         </View>
         {/* {isClickedSearch ? (
           <SearchAndFilter
