@@ -116,3 +116,14 @@ export const KeyArrowRight =
   'cloud://cloud1-9gjlum193d0ee3c3.636c-cloud1-9gjlum193d0ee3c3-1326922587/images/Keyboard_arrow_right.svg';
 export const KeyArrowLeft =
   'cloud://cloud1-9gjlum193d0ee3c3.636c-cloud1-9gjlum193d0ee3c3-1326922587/images/Keyboard_arrow_left.svg';
+
+export const PostImage =
+  'cloud://cloud1-9gjlum193d0ee3c3.636c-cloud1-9gjlum193d0ee3c3-1326922587/images/post-picture.svg';
+export const DeleteImage =
+  'cloud://cloud1-9gjlum193d0ee3c3.636c-cloud1-9gjlum193d0ee3c3-1326922587/images/delete-icon.svg';
+
+export const PurpleMap =
+  'cloud://cloud1-9gjlum193d0ee3c3.636c-cloud1-9gjlum193d0ee3c3-1326922587/images/purple-map.svg';
+
+export const PurpleCalendar =
+  'cloud://cloud1-9gjlum193d0ee3c3.636c-cloud1-9gjlum193d0ee3c3-1326922587/images/purple-calendar.svg';
