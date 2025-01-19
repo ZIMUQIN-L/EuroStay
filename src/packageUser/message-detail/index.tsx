@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { Message, MessageType } from './MessageTypes';
 import Avatar from '@assets/images/default-avatar.png';
 import PopUpCardReplyQuestion from '../pop-up-card-reply-question';
+import PopUpCardReplyOffer from '../pop-up-card-reply-offer';
 import Taro from '@tarojs/taro';
 import GlobalStore from '@store/GlobalStore';
 
@@ -20,13 +21,98 @@ const MessageDetail: React.FC = () => {
       location: '巴黎市中心公寓近地铁',
       price: '300旅行币',
     }
-
+    const [isAcceptPopupVisible, setIsAcceptPopupVisible] = useState(false); // 控制 Accept 弹窗
+    const [isDeclinePopupVisible, setIsDeclinePopupVisible] = useState(false); // 控制 Decline 弹窗    
     const [isPopupVisible, setPopupVisible] = useState(false);
     const [replyingToMessageId, setReplyingToMessageId] = useState<string | null>(null);
+    const [isResultPopupVisible, setIsResultPopupVisible] = useState(false); // 控制结果弹窗
+    const [resultPopupContent, setResultPopupContent] = useState({ title: '', description: '' }); // 弹窗内容
+    const [isResidentCardVisible, setIsResidentCardVisible] = useState(false);
+    const [isTermsPopupVisible, setIsTermsPopupVisible] = useState(false);
+
+    const handleViewTerms = () => {
+      console.log("handleViewTerms");
+      setIsTermsPopupVisible(true); // 显示弹窗
+    };
+    
+    const handleCloseTermsPopup = () => {
+      setIsTermsPopupVisible(false); // 关闭弹窗
+    };
+
+    
     const handleReplyQuestionClick = (messageId: string) => {
       setReplyingToMessageId(messageId);
       setPopupVisible(true); // 显示弹窗
     };
+
+    const ResultPopup = ({ title, description, onClose }) => (
+      <View className="result-popup">
+        <View className="result-popup-content">
+          {/* 图标部分 */}
+          <View className="result-icon">
+            <Text>✔️</Text> {/* 绿色勾选符号 */}
+          </View>
+          {/* 标题部分 */}
+          <Text className="result-title">{title}</Text>
+          {/* 描述部分 */}
+          {description && <Text className="result-description">{description}</Text>}
+          {/* 按钮 */}
+          <Button className="result-button" onClick={onClose}>
+            知道了
+          </Button>
+        </View>
+      </View>
+    );
+
+
+    const ResidentCard = ({ name, date, location, onViewTerms }) => (
+      <View className="resident-card">
+        <Image src="/path/to/background-image.jpg" className="card-background" />
+        <View className="card-content">
+          <Text className="title">现邀请</Text>
+          <Text className="name">{name}</Text>
+          <Text className="details">于 {date} 入住</Text>
+          <Text className="details">{location}</Text>
+          <Button className="view-terms-button" onClick={onViewTerms}>
+            查看入住公约
+          </Button>
+        </View>
+      </View>
+    );
+
+    const TermsPopup = ({ isVisible, onClose }) => (
+      <View className={`terms-popup ${isVisible ? 'visible' : ''}`}>
+        {/* 弹窗头部 */}
+        <View className="popup-header">
+          <Text className="popup-title">入住公约</Text>
+        </View>
+    
+        {/* 弹窗主体 */}
+        <View className="popup-body">
+          <Text className="section-title">基本规则</Text>
+          <Text className="section-content">
+            夜间保持安静，按预定时间和人数入住，保持房间整洁；公共物品使用后请清洁归位，尊重隐私勿动私人物品；房屋内禁烟，妥善使用设施并及时报告损坏。
+          </Text>
+          <Text className="section-title">时间要求</Text>
+          <Text className="section-content">
+            入住时间：14:00 - 20:00；退房时间：11:00 前；请于晚 22:00 之前回家。
+          </Text>
+          <Text className="section-title">设施使用</Text>
+          <Text className="section-content">
+            厨房、客厅等可使用，需提前告知房东使用时间；公共日用品（如洗手液、调料）可使用，请自备毛巾和牙刷；空调暖气可使用，但请勿长时间开启无人房间内的设备。
+          </Text>
+          <Text className="section-title">其他要求</Text>
+          <Text className="section-content">请勿带宠物进入。</Text>
+        </View>
+    
+        {/* 确认按钮 */}
+        <Button className="confirm-button" onClick={onClose}>
+          确认
+        </Button>
+      </View>
+    );
+    
+    
 
   
     const handleClosePopup = () => {
@@ -35,29 +121,23 @@ const MessageDetail: React.FC = () => {
 
     const handleAcceptOffer = (messageId: string) => {
       console.log(`Offer with ID ${messageId} accepted.`);
-      // 在这里添加确认预定的逻辑
+      setIsAcceptPopupVisible(true); // 显示 Accept 弹窗
+      setIsResidentCardVisible(true);
     };
     
     const handleDeclineOffer = (messageId: string) => {
-      Taro.request({
-        url: 'https://api.eurostay.co/app/discuss/addDis',
-        method: 'POST',
-        data: {
-          introduce: 'as',
-          title: 'asd',
-          topicId: 1
-        },
-        header: {
-          'Content-Type': 'application/json',
-          'token': GlobalStore.userInfo.token
-        }
-      }).then(res => {
-        console.log('后端返回数据:', res.data);
-      }).catch(err => {
-        console.error('请求失败:', err);
-      });
-      // 在这里添加拒绝预定的逻辑
+      console.log(`Offer with ID ${messageId} declined.`);
+      setIsDeclinePopupVisible(true); // 显示 Decline 弹窗
     };
+
+    const handleCloseAcceptPopup = () => {
+      setIsAcceptPopupVisible(false);
+    };
+    
+    const handleCloseDeclinePopup = () => {
+      setIsDeclinePopupVisible(false);
+    };
+    
 
     const handleReplyQuestionSend = (replyContent: string, messageId: string) => {
         if (replyContent.trim() !== '') {
@@ -152,32 +232,32 @@ const MessageDetail: React.FC = () => {
           content: 'answer to message content',
         },
       },
-      {
-        id: '5',
-        type: 'notification',
-        sender: 'host',
-        time: '2024-10-11 09:45',
-        direction: 'left',
-        content: 'xxx has accepted your offe',
-        data: {
-          toUid: 68,
-          answerTo: '1',
-          content: 'answer to message 1',
-        },
-      },
-      {
-        id: '6',
-        type: 'chat',
-        sender: 'host',
-        time: '2024-10-11 09:45',
-        direction: 'left',
-        content: 'hell0',
-        data: {
-          toUid: 68,
-          answerTo: '1',
-          content: 'answer to message 1',
-        },
-      },
+      // {
+      //   id: '5',
+      //   type: 'notification',
+      //   sender: 'host',
+      //   time: '2024-10-11 09:45',
+      //   direction: 'left',
+      //   content: 'xxx has accepted your offe',
+      //   data: {
+      //     toUid: 68,
+      //     answerTo: '1',
+      //     content: 'answer to message 1',
+      //   },
+      // },
+      // {
+      //   id: '6',
+      //   type: 'chat',
+      //   sender: 'host',
+      //   time: '2024-10-11 09:45',
+      //   direction: 'left',
+      //   content: 'hell0',
+      //   data: {
+      //     toUid: 68,
+      //     answerTo: '1',
+      //     content: 'answer to message 1',
+      //   },
+      // },
 
       // 其他示例消息...
     ]);
@@ -325,6 +405,80 @@ const MessageDetail: React.FC = () => {
                   onCancel={handleClosePopup}
                 />
               )}
+
+              {isAcceptPopupVisible && (
+                <PopUpCardReplyOffer
+                  title="确认预定"
+                  question="是否确认入住并扣除旅行币? 扣除旅行币后可以获得房东微信确认旅行细节哦~"
+                  buttonOptions={['我再想想','确认并扣除旅行币']}
+                  onOptionSelect={(selectedOption) => {
+                    if (selectedOption === '确认并扣除旅行币') {
+                      console.log('确认内容:', selectedOption);
+                      setIsAcceptPopupVisible(false); // 关闭当前弹窗
+
+
+                      const newMessage = {
+                        id: `${messages.length + 1}`,
+                        type: 'notification',   
+                        sender: 'host',         // 可以是 host 或 user，视具体情况而定
+                        time: new Date().toLocaleString(),
+                        direction: 'left',
+                        content: '',            // 这里暂时不需要用 content
+                        data: {
+                          invitation: {
+                            name: '沁心',
+                            date: '12月23日',
+                            location: '巴黎市中心公寓近地铁',
+                          }
+                        }
+                      };
+                      setMessages([...messages, newMessage]);
+
+                      setResultPopupContent({ title: '预定成功!', description: '旅行币 - xxxx' }); // 设置结果弹窗内容
+                      setIsResultPopupVisible(true); // 显示结果弹窗
+                      
+                    } else {
+                      console.log('取消了确认操作');
+                      setIsAcceptPopupVisible(false); // 关闭弹窗
+                    }
+                  }}
+                  onCancel={handleCloseAcceptPopup}
+                />
+              )}
+
+              {isDeclinePopupVisible && (
+                <PopUpCardReplyOffer
+                  title="拒绝邀请"
+                  question="是否拒绝房东的邀请, 暂不入住该房源?"
+                  buttonOptions={['我再想想', '确认拒绝']}
+                  onOptionSelect={(selectedOption) => {
+                    if (selectedOption === '确认拒绝') {
+                      console.log('拒绝理由:', selectedOption);
+                      setIsDeclinePopupVisible(false); // 关闭当前弹窗
+                      setResultPopupContent({ title: '已拒绝host的入住邀请', description: '' }); // 设置结果弹窗内容
+                      setIsResultPopupVisible(true); // 显示结果弹窗
+                    } else {
+                      console.log('取消了拒绝操作');
+                      setIsDeclinePopupVisible(false); // 关闭弹窗
+                    }
+                  }}
+                  onCancel={handleCloseDeclinePopup}
+                />
+              )}
+
+
+              {isResultPopupVisible && (
+                <ResultPopup
+                  title={resultPopupContent.title}
+                  description={resultPopupContent.description}
+                  onClose={() => {
+                    setIsResultPopupVisible(false); // 关闭结果弹窗
+                  }}
+                />
+              )}
+
+
+
             </View>
           </View>
 
@@ -397,7 +551,47 @@ const MessageDetail: React.FC = () => {
           </View>
         );
       
-      
+        case 'notification':
+          if (message.data && message.data.invitation) {
+            const { name, date, location } = message.data.invitation;
+            return (
+              <View className="resident-card">
+                {/* 灰色背景图片 */}
+                <Image 
+                  src="/path/to/background-image.jpg" 
+                  className="card-background" 
+                  mode="aspectFill"
+                />
+                
+                <View className="card-content">
+                  <Text className="title">现邀请</Text>
+                  <Text className="name">{name}</Text>
+                  <Text className="details">于 {date} 入住</Text>
+                  <Text className="details">{location}</Text>
+                  
+                  {/* 按钮组 */}
+                  <View className="button-group">
+                    <Button 
+                      className="view-terms-button" 
+                      onClick={handleViewTerms}
+                    >
+                      查看入住公约
+                    </Button>
+                    <Button 
+                      className="view-terms-button"
+                      onClick={() => console.log('其他操作')}
+                    >
+                      评价
+                    </Button>
+                  </View>
+                </View>
+              </View>
+            );
+          } else {
+            // 如果不满足条件，就以普通文本通知形式渲染
+            return <Text className="notification-text">{message.content}</Text>;
+          }
+        
       case 'user':
       case 'host':
       default:
@@ -449,6 +643,20 @@ const MessageDetail: React.FC = () => {
         </View>
       ))}
     </View>
+
+
+    {isTermsPopupVisible && (
+      <View>
+          <TermsPopup 
+            isVisible={isTermsPopupVisible} 
+            onClose={handleCloseTermsPopup} 
+          />
+      </View>
+    )}
+
+    {/* {isTermsPopupVisible && <TermsPopup onClose={handleCloseTermsPopup} />} */}
+
+
 
     {/* 底部输入栏 */}
     <View className="message-bar">

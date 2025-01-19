@@ -1,5 +1,5 @@
 // MessageTypes.ts
-export type MessageType = 'request' | 'question' | 'reply' | 'user' | 'host' | 'offer';
+export type MessageType = 'request' | 'question' | 'reply' | 'user' | 'host' | 'offer'| 'notification'| 'chat';
 
 interface BaseMessage {
   id: string;

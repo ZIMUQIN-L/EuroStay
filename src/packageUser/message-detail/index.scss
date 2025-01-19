@@ -541,6 +541,214 @@
         font-size: 14px;
         font-weight: 400; /* 普通字体 */
       }
+
+
+      .result-popup {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background-color: #ffffff;
+        border-top-left-radius: 16px;
+        border-top-right-radius: 16px;
+        box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        box-sizing: border-box;
+      
+        .result-popup-content {
+          width: 90%;
+          display: flex;
+          flex-direction: column;
+          margin: 0 auto;
+          align-items: center; /* 居中内容 */
+          text-align: center;
+        }
+      
+        .result-icon {
+          width: 60px;
+          height: 60px;
+          background-color: #4caf50;
+          color: #fff;
+          border-radius: 50%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          font-size: 30px;
+          margin-bottom: 40px;
+        }
+      
+        .result-title {
+          font-size: 24px;
+          font-weight: bold;
+          color: #333;
+          margin-bottom: 10px;
+        }
+      
+        .result-description {
+          font-size: 18px;
+          color: #666;
+          margin-bottom: 20px;
+        }
+      
+        .result-button {
+          background-color: #6363ff;
+          color: #fff;
+          padding: 12px;
+          font-size: 16px;
+          font-weight: bold;
+          border-radius: 8px;
+          width: 80%; /* 按钮宽度 */
+          text-align: center;
+          margin-bottom: 40px;
+      
+          &:hover {
+            background-color: #4a4ad9;
+          }
+        }
+      }
+
+
+      .terms-popup {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background-color: #ffffff;
+        border-top-left-radius: 16px;
+        border-top-right-radius: 16px;
+        box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        box-sizing: border-box;
+        transition: transform 0.3s ease-in-out;
+        transform: translateY(100%);
+      
+        &.visible {
+          transform: translateY(0);
+        }
+      
+        .popup-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 20px;
+      
+          .popup-title {
+            font-size: 28px; /* 增大字体 */
+            font-weight: bold;
+            color: #333;
+            text-align: left; /* 左对齐 */
+          }
+      
+          .close-button {
+            font-size: 28px;
+            color: #666;
+            background: none;
+            border: none;
+            cursor: pointer;
+          }
+        }
+      
+        .popup-body {
+          width: 90%;
+          margin: 0 auto;
+          display: flex;
+          flex-direction: column;
+          gap: 20px;
+      
+          .section-title {
+            font-size: 26px; /* 增大字体 */
+            font-weight: bold;
+            color: #333;
+            text-align: left; /* 左对齐 */
+          }
+      
+          .section-content {
+            font-size: 22px; /* 增大字体 */
+            color: #666;
+            line-height: 1.8; /* 调整行间距 */
+            text-align: left; /* 左对齐 */
+          }
+        }
+      
+        .confirm-button {
+          background-color: #6363ff;
+          color: #fff;
+          padding: 16px; /* 调整按钮内边距 */
+          font-size: 26px; /* 增大按钮字体 */
+          font-weight: bold;
+          border-radius: 8px;
+          width: 90%; /* 调整按钮宽度 */
+          text-align: center;
+          margin: 20px auto 0;
+      
+          &:hover {
+            background-color: #4a4ad9;
+          }
+        }
+      }
+      
+      
+
+
+      .resident-card {
+        position: relative;
+        width: 280px;
+        margin: 10px 0;
+        border-radius: 8px;
+        overflow: hidden;
+      
+        .card-background {
+          width: 100%;
+          height: auto; /* 高度调整为自动适应内容 */
+          background: #f0f0f0;
+          display: block;
+        }
+      
+        .card-content {
+          position: relative;
+          padding: 20px;
+          text-align: center;
+          color: #333;
+      
+          .title {
+            font-size: 24px;
+            font-weight: bold;
+          }
+      
+          .name {
+            font-size: 26px;
+            margin-top: 4px;
+          }
+      
+          .details {
+            font-size: 22px;
+            margin-top: 2px;
+          }
+      
+          /* 两个按钮的样式 */
+          .button-group {
+            display: flex;
+            justify-content: center;
+            gap: 10px; /* 按钮之间的间距 */
+            margin-top: 10px;
+      
+            .view-terms-button {
+              font-size: 16px;
+              padding: 5px 10px; /* 调整按钮的大小 */
+              border: 1px solid #ccc;
+              color: #333;
+              background-color: transparent; /* 去除背景色 */
+              border-radius: 4px;
+            }
+          }
+        }
+      }
       
       
 

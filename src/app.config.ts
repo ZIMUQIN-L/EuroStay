@@ -8,6 +8,7 @@ export default {
     'pages/travel/index',
     'pages/messages/index',
     'pages/notification/index',
+    'pages/emergency/index',
   ],
   subPackages: [
     {

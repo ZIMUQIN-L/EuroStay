@@ -100,7 +100,7 @@ const progress = calculateProgress();
                 console.log('Continue Activity');
               }}
             >
-            <View className="bell-container">
+            <View className="bell-container" onClick={() => Taro.navigateTo({ url: '/pages/emergency/index' })}>
               <Image
                 src={bell}
                 style={{ width: '20px', height: '20px' }}
