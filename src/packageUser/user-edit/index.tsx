@@ -4,8 +4,30 @@ import { useState } from 'react';
 import Taro from '@tarojs/taro';
 import './index.scss';
 import dayjs from 'dayjs';
+import GlobalStore from '@store/GlobalStore';
 
 const Index = () => {
+  const [userData, setUserData] = useState(null);
+  
+  Taro.request({
+    url: 'https://api.eurostay.co/app/esuser/showProfile',
+    method: 'POST',
+    data: {
+      uid: 1 // change later
+    },
+    header: {
+      'Content-Type': 'application/json', 
+      'token': GlobalStore.userInfo.token
+    }
+  })
+    .then((res) => {
+      // console.log('Response:', res.data);
+      setUserData(res.data.result);
+    })
+    .catch((err) => {
+      console.error('Request failed:', err);
+    });
+
   const [photoList, setPhotoList] = useState([
     { id: 1, src: '/images/photo1.png', isDeletable: true, isCover: true },
     { id: 2, src: '/images/photo2.png', isDeletable: true },
@@ -258,15 +280,82 @@ const Index = () => {
     setCustomVisitedTag('');
   };
 
+  const uploadPhoto = () => {
+    Taro.chooseImage({
+      count: 1, // Allow selecting only one image
+      sizeType: ["original", "compressed"], // Allow both original and compressed images
+      sourceType: ["album", "camera"], // Allow selecting from album or taking a new photo
+      success: (res) => {
+        const tempFilePath = res.tempFilePaths[0]; // Temporary file path
+        console.log("Selected file path:", tempFilePath);
+  
+        // Simulate uploading to an image hosting service or server to get a URL
+        const mockAvatarUrl = "https://example.com/path-to-uploaded-image.jpg";
+  
+        // Send the URL or identifier to the backend
+        Taro.request({
+          url: "https://api.eurostay.co/app/esuser/userProfileModify", // API endpoint
+          method: "POST",
+          data: {
+            avatar: mockAvatarUrl, // Send the image URL or identifier
+          },
+          header: {
+            "Content-Type": "application/json",
+            token: GlobalStore.userInfo.token, // Authentication token
+          },
+        })
+          .then((response) => {
+            if (response.data.code === 0) {
+              console.log("Avatar updated successfully:", response.data);
+              setUserData((prev) => ({
+                ...prev,
+                avatar: mockAvatarUrl, // Update the avatar URL locally
+              }));
+            } else {
+              console.error("Failed to update avatar:", response.data.msg);
+              Taro.showToast({
+                title: response.data.msg || "Failed to update avatar",
+                icon: "none",
+              });
+            }
+          })
+          .catch((err) => {
+            console.error("Request failed:", err);
+            Taro.showToast({
+              title: "Network error, please try again later",
+              icon: "none",
+            });
+          });
+      },
+      fail: (err) => {
+        console.error("Image selection failed:", err);
+      },
+    });
+  };
+  
+  
+  
+  
+  
+  
+
 
   return (
     <View className="profile-container">
       <View className="header">
-        <Image
-          className="profile-avatar"
-          src="/images/avatar-placeholder.png"
-          mode="aspectFill"
-        />
+        <View className="profile-avatar-container">
+          <Image
+            className={`profile-avatar ${!userData?.avatar ? 'placeholder' : ''}`}
+            src={userData?.avatar}
+            mode="aspectFill"
+            onClick={uploadPhoto}
+          />
+          {!userData?.avatar && (
+            <View className="placeholder-icon">
+              <Text>+</Text>
+            </View>
+          )}
+        </View>
       </View>
       <View className="content">
         <Text className="section-title">照片与视频</Text>
@@ -277,16 +366,14 @@ const Index = () => {
           {photoList.map((item, index) => (
             <View className="photo-item" key={item.id}>
               <Image className="photo" src={item.src} mode="aspectFill" />
-              {item.isDeletable && (
-                <Button
-                  className="delete-btn"
-                  onClick={() => deletePhoto(item.id)}
-                >
-                  X
-                </Button>
-              )}
+              <Button
+                className="delete-btn"
+                onClick={() => deletePhoto(item.id)}
+              >
+                X
+              </Button>
               <Text className="photo-index">
-                {item.isCover ? '首图' : index + 1}
+                {index === 0 ? '首图' : index + 1}
               </Text>
             </View>
           ))}

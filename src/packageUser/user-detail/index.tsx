@@ -54,12 +54,11 @@ const UserDetail: React.FC = () => {
     },
     header: {
       'Content-Type': 'application/json', 
-      'token': 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNzM3MTUzMDI1LCJleHAiOjE3Mzc3NTc4MjV9.Dpv8FWC6I8npZr91OLJDmc6fd9diyUe-ffYdaVlWW2EeJdHeAgmLWBgQLIG7k9bOsllsqispQGutUaBpQlt7Yg' 
-      // change later
-      // 'token': GlobalStore.userInfo.token
+      'token': GlobalStore.userInfo.token
     }
   })
     .then((res) => {
+      // console.log(GlobalStore.userInfo._id)
       // console.log('Response:', res.data);
       setUserData(res.data.result);
     })

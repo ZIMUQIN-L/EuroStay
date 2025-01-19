@@ -5,9 +5,7 @@ import {
 } from '@utils/interfaces';
 import { View, Image, Text } from '@tarojs/components';
 import './index.scss';
-import { Point } from '@utils/cloudIcons';
-import UserCommentCard from '../user-rating-content/user-content-comment';
-import { userReceivedRatingSearch } from '@common/database/ratingInfo/ratingInfo';
+;
 
 const UserDetailContent: React.FC<UserResult> = userDetailInfo => {
   const [aboutMeEntries, setAboutMeEntries] = useState<{
