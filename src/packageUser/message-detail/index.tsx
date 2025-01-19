@@ -39,7 +39,6 @@ const MessageDetail: React.FC = () => {
     };
     
     const handleDeclineOffer = (messageId: string) => {
-      console.log(`Offer with ID ${messageId} declined.${GlobalStore.userInfo.token}`);
       Taro.request({
         url: 'https://api.eurostay.co/app/discuss/addDis',
         method: 'POST',
