@@ -3,8 +3,13 @@ import { observer } from 'mobx-react';
 import ImagesUpload from './images-upload';
 import HouseDes from './house-des';
 import HouseContact from './house-contact';
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import InfoSelection from './info-selection';
+import {
+  formatToday,
+  calculateDaysBetweenDates,
+  formatTimestamp,
+} from '@utils/dateUtil';
 import './index.scss';
 import Taro from '@tarojs/taro';
 import { houseInfoPost } from '@common/database/house/house';
@@ -14,8 +19,8 @@ import {
   pointDetailInfoAdd,
   pointIncrease,
 } from '@common/database/pointSystem/pointSystem';
+import { AtCalendar } from 'taro-ui';
 import { userInfoSearch } from '@common/database/user/user';
-import { formatTimestamp } from '@utils/dateUtil';
 import {
   GreyAdd,
   GreySubstract,
@@ -77,7 +82,7 @@ const Index = () => {
   const [surrounding, setSurrounding] = useState({});
   const [preference, setPreference] = useState({});
 
-  const [state, setState] = useState(11);
+  const [state, setState] = useState(8);
   const systemInfo = Taro.getSystemInfoSync();
   console.log(systemInfo.windowWidth, 'width');
 
@@ -270,7 +275,10 @@ const Index = () => {
     });
   };
   return (
-    <View className='house-post'>
+    <View
+      className='house-post'
+      style={{ minHeight: '100%', backgroundColor: '#ffffff' }}
+    >
       {state == 0 && <Start />}
       {state == 1 && <HouseType />}
       {state == 2 && <HouseAddress />}
@@ -283,7 +291,8 @@ const Index = () => {
       {state == 8 && <Interest />}
       {state == 9 && <Tips />}
       {state == 10 && <Agreement />}
-      {state == 11 && <Price />}
+      {state == 11 && <SelectDate />}
+      {state == 12 && <Price />}
 
       <View className='bottom-bar'>
         {state == 0 ? (
@@ -624,31 +633,127 @@ const StepSeven = () => {
   );
 };
 const Interest = () => {
+  const [isShowmPopup, setIsShowPopup] = useState(false);
   const interestMap = [
-    { name: '玩桌游' },
-    { name: '做饭' },
-    { name: '看电影' },
-    { name: '徒步' },
-    { name: '唱K' },
-    { name: '聊天' },
-    { name: '学习新技能' },
-    { name: '参观景点' },
-    { name: '手工创作' },
-    { name: '其他' },
+    { name: '玩桌游', value: 'board-games' },
+    { name: '做饭', value: 'cooking' },
+    { name: '看电影', value: 'movies' },
+    { name: '徒步', value: 'hiking' },
+    { name: '唱K', value: 'karaok' },
+    { name: '聊天', value: 'chat' },
+    { name: '学习新技能', value: 'new-skills' },
+    { name: '参观景点', value: 'scene-visiting' },
+    { name: '手工创作', value: 'handmaking' },
+    { name: '其他', value: 'others' },
   ];
   return (
     <View className='interest'>
-      <View className='title'>想与房客一起做什么？</View>
-      <View className='des'>让房客了解您的兴趣，一起互动吧！</View>
+      {isShowmPopup && (
+        <Popup
+          onClickClose={() => {
+            setIsShowPopup(false);
+          }}
+          onClickConfirm={() => {
+            setIsShowPopup(false);
+          }}
+          title={'新建其他'}
+          content={
+            <>
+              <View className='content-title'>添加您想与房客一起做的事</View>
+              <View className='interest-input-wrapper'>
+                <Textarea
+                  className='interest-input'
+                  value={''}
+                  onInput={() => {}}
+                />
+                <View className='text-limit'>0/6</View>
+              </View>
+            </>
+          }
+        />
+      )}
+      <View className='interest-title'>想与房客一起做什么？</View>
+      <View className='interest-des'>让房客了解您的兴趣，一起互动吧！</View>
       <View className='interest-wrap'>
         {interestMap.map(item => {
           return (
-            <View className='interest-item'>
+            <View
+              className='interest-item'
+              onClick={() => {
+                if (item.value == 'others') {
+                  setIsShowPopup(true);
+                }
+              }}
+            >
               <Image src='' className='interest-pic'></Image>
               <View className='interest-name'>{item.name}</View>
             </View>
           );
         })}
+      </View>
+    </View>
+  );
+};
+
+const SelectDate = () => {
+  const currentDateMulti = useRef(formatToday());
+  const today = formatToday();
+  // 多选 不连续 多选 选择的日期 [{ value: '2024-06-10' }, { value: '2024-06-12' }]
+  const [selectDataList, setSelectDataList] = useState([]);
+  const [isStartDateSelected, setIsStartDateSelected] = useState(false);
+  const startDate = useRef(formatToday());
+  const selectDateMulti = data => {
+    // 先赋值，防止dom不变
+    if (isStartDateSelected) {
+      currentDateMulti.current = data.value;
+      const list = JSON.parse(JSON.stringify(selectDataList));
+      console.log(
+        data.value,
+        calculateDaysBetweenDates(startDate.current, data.value),
+      );
+      for (
+        let i = 0;
+        i <= calculateDaysBetweenDates(startDate.current, data.value);
+        i++
+      ) {
+        console.log(
+          'add gap',
+          formatTimestamp(
+            new Date(startDate.current).getTime() + i * 24 * 60 * 60 * 1000,
+          ),
+        );
+        list.push({
+          value: formatTimestamp(
+            new Date(startDate.current).getTime() + i * 24 * 60 * 60 * 1000,
+          ),
+        });
+      }
+      setSelectDataList(JSON.parse(JSON.stringify(list)));
+      setIsStartDateSelected(false);
+    } else {
+      setIsStartDateSelected(true);
+      startDate.current = data.value;
+    }
+  };
+
+  return (
+    <View className='select-date'>
+      <View className='select-date-title'>房源空闲档期</View>
+
+      <View className='select-date-des'>选择您可以接待房客的时间</View>
+      <View className='calendar-wrapper'>
+        <AtCalendar
+          multiple={true}
+          // multiple={true}
+          isMultiSelect
+          // marks={selectDataList.current}
+          currentDate={currentDateMulti.current}
+          marks={selectDataList}
+          // validRange={{ start: today }} // 有效日期范围
+          minDate={today}
+          onDayClick={selectDateMulti}
+          style={{ width: '100%' }}
+        />
       </View>
     </View>
   );
@@ -1040,9 +1145,30 @@ const Question = () => {
             <>
               <View className='content-title'>您最多可以添加3个问题</View>
               <View className='personalized-question-groups'>
-                <View className='group-item'>0/50</View>
-                <View className='group-item'>0/50</View>
-                <View className='group-item'>0/50</View>
+                <View className='group-item'>
+                  <Textarea
+                    className='question1'
+                    value={''}
+                    onInput={() => {}}
+                  />
+                  <View className='question-limit'>0/50</View>
+                </View>
+                <View className='group-item'>
+                  <Textarea
+                    className='question2'
+                    value={''}
+                    onInput={() => {}}
+                  />
+                  <View className='question-limit'>0/50</View>
+                </View>
+                <View className='group-item'>
+                  <Textarea
+                    className='question3'
+                    value={''}
+                    onInput={() => {}}
+                  />
+                  <View className='question-limit'>0/50</View>
+                </View>
                 {/* <Textarea
                 className='question-1'
                 value={''}
