@@ -450,11 +450,11 @@ const Index = () => {
         <View className="user-info-section">
           <View className="info-item" onClick={openNameModal}>
             <Text className="info-label">用户名</Text>
-            <Text className="info-value">速食主义</Text>
+            <Text className="info-value">{userData?.username || "尚未完善"}</Text>
           </View>
           <View className="info-item" onClick={openLocationModal}>
             <Text className="info-label">地点</Text>
-            <Text className="info-value">西班牙, Valencia</Text>
+            <Text className="info-value">{userData?.location || "尚未完善"}</Text>
           </View>
           <View className="info-item" onClick={openSexModal}>
             <Text className="info-label">性别</Text>
@@ -462,7 +462,7 @@ const Index = () => {
           </View>
           <View className="info-item" onClick={openMBTIModal}>
             <Text className="info-label">MBTI</Text>
-            <Text className="info-value">INTP</Text>
+            <Text className="info-value">{userData?.mbti || "尚未完善"}</Text>
           </View>
           {/* <View className="info-item" onClick={openEmailModal}>
             <Text className="info-label">邮箱 (仅供收集)</Text>
@@ -474,19 +474,19 @@ const Index = () => {
           </View> */}
           <View className="info-item" onClick={openBirthdayModal}>
             <Text className="info-label">出生日期</Text>
-            <Text className="info-value">添加</Text>
+            <Text className="info-value">{userData?.birthday || "尚未完善"}</Text>
           </View>
           <View className="info-item" onClick={openJobModal}>
             <Text className="info-label">工作</Text>
-            <Text className="info-value">添加</Text>
+            <Text className="info-value">{userData?.occupation || "尚未完善"}</Text>
           </View>
           <View className="info-item" onClick={openSchoolModal}>
             <Text className="info-label">学校</Text>
-            <Text className="info-value">添加</Text>
+            <Text className="info-value">{userData?.school || "尚未完善"}</Text>
           </View>
           <View className="info-item" onClick={openLRBModal}>
             <Text className="info-label">小红书账号</Text>
-            <Text className="info-value">添加</Text>
+            <Text className="info-value">{userData?.xhsContact || "尚未完善"}</Text>
           </View>
           <View className="interest-section">
             <View className="info-item about-me">
