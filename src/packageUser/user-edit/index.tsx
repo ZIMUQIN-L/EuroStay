@@ -13,7 +13,7 @@ const Index = () => {
     url: 'https://api.eurostay.co/app/esuser/showProfile',
     method: 'POST',
     data: {
-      uid: 1 // change later
+      uid: 2 // change later
     },
     header: {
       'Content-Type': 'application/json', 
@@ -22,37 +22,15 @@ const Index = () => {
   })
     .then((res) => {
       // console.log('Response:', res.data);
-      setUserData(res.data.result);
+      const result = res.data.result;
+        setUserData({
+          ...result,
+          backgroundPic: result.backgroundPic || [], // Default to empty array if null
+        });
     })
     .catch((err) => {
       console.error('Request failed:', err);
     });
-
-  const [photoList, setPhotoList] = useState([
-    { id: 1, src: '/images/photo1.png', isDeletable: true, isCover: true },
-    { id: 2, src: '/images/photo2.png', isDeletable: true },
-    { id: 3, src: '/images/photo3.png', isDeletable: true },
-    { id: 4, src: '/images/photo4.png', isDeletable: true },
-    { id: 5, src: '/images/photo5.png', isDeletable: true },
-  ]);
-
-  const deletePhoto = (id) => {
-    setPhotoList(photoList.filter((photo) => photo.id !== id));
-  };
-
-  const addPhoto = () => {
-    Taro.chooseImage({
-      count: 1,
-      success: (res) => {
-        const newPhoto = {
-          id: Date.now(),
-          src: res.tempFilePaths[0],
-          isDeletable: true,
-        };
-        setPhotoList([...photoList, newPhoto]);
-      },
-    });
-  };
 
   const [activeModal, setActiveModal] = useState<string | null>(null); // Track which modal is open
   const [userName, setUserName] = useState('速食主义');
@@ -280,24 +258,22 @@ const Index = () => {
     setCustomVisitedTag('');
   };
 
+  // for profile photo
   const uploadPhoto = () => {
     Taro.chooseImage({
       count: 1, // Allow selecting only one image
-      sizeType: ["original", "compressed"], // Allow both original and compressed images
-      sourceType: ["album", "camera"], // Allow selecting from album or taking a new photo
+      sizeType: ["original", "compressed"],
+      sourceType: ["album", "camera"],
       success: (res) => {
-        const tempFilePath = res.tempFilePaths[0]; // Temporary file path
+        const tempFilePath = res.tempFilePaths[0];
         console.log("Selected file path:", tempFilePath);
-  
-        // Simulate uploading to an image hosting service or server to get a URL
-        const mockAvatarUrl = "https://example.com/path-to-uploaded-image.jpg";
   
         // Send the URL or identifier to the backend
         Taro.request({
           url: "https://api.eurostay.co/app/esuser/userProfileModify", // API endpoint
           method: "POST",
           data: {
-            avatar: mockAvatarUrl, // Send the image URL or identifier
+            avatar: tempFilePath, // Send the image URL or identifier
           },
           header: {
             "Content-Type": "application/json",
@@ -309,7 +285,6 @@ const Index = () => {
               console.log("Avatar updated successfully:", response.data);
               setUserData((prev) => ({
                 ...prev,
-                avatar: mockAvatarUrl, // Update the avatar URL locally
               }));
             } else {
               console.error("Failed to update avatar:", response.data.msg);
@@ -334,8 +309,92 @@ const Index = () => {
   };
   
   
+  const uploadBackgroundPhoto = () => {
+    Taro.chooseImage({
+      count: 1, // Allow selecting only one image at a time
+      sizeType: ["original", "compressed"], // Allow both original and compressed images
+      sourceType: ["album", "camera"], // Allow selecting from album or camera
+      success: (res) => {
+        const tempFilePath = res.tempFilePaths[0]; // Get the selected image path
+        console.log("Selected file path for background:", tempFilePath);
   
+        // Send the updated backgroundPic array to the backend
+        Taro.request({
+          url: "https://api.eurostay.co/app/esuser/userProfileModify", // API endpoint
+          method: "POST",
+          data: {
+            backgroundPic: [...userData.backgroundPic, tempFilePath], // Append the new image
+          },
+          header: {
+            "Content-Type": "application/json",
+            token: GlobalStore.userInfo.token, // Authentication token
+          },
+        })
+          .then((response) => {
+            if (response.data.code === 0) {
+              console.log("Background picture updated successfully:", response.data);
+              setUserData((prev) => ({
+                ...prev,
+                backgroundPic: [...prev.backgroundPic, tempFilePath], // Update the backgroundPic array locally
+              }));
+            } else {
+              console.error("Failed to update background picture:", response.data.msg);
+              Taro.showToast({
+                title: response.data.msg || "Failed to update background picture",
+                icon: "none",
+              });
+            }
+          })
+          .catch((err) => {
+            console.error("Request failed:", err);
+            Taro.showToast({
+              title: "Network error, please try again later",
+              icon: "none",
+            });
+          });
+      },
+      fail: (err) => {
+        console.error("Image selection failed:", err);
+      },
+    });
+  };
+  console.log(userData)
   
+  const deletePhoto = (indexToRemove) => {
+    const updatedPhotos = userData.backgroundPic.filter((_, index) => index !== indexToRemove);
+  
+    Taro.request({
+      url: "https://api.eurostay.co/app/esuser/userProfileModify",
+      method: "POST",
+      data: { backgroundPic: updatedPhotos },
+      header: {
+        "Content-Type": "application/json",
+        token: GlobalStore.userInfo.token,
+      },
+    })
+      .then((response) => {
+        if (response.data.code === 0) {
+          console.log("Photo deleted successfully:", response.data);
+          setUserData((prev) => ({
+            ...prev,
+            backgroundPic: updatedPhotos,
+          }));
+        } else {
+          console.error("Failed to delete photo:", response.data.msg);
+          Taro.showToast({
+            title: response.data.msg || "Failed to delete photo",
+            icon: "none",
+          });
+        }
+      })
+      .catch((err) => {
+        console.error("Request failed:", err);
+        Taro.showToast({
+          title: "Network error, please try again later",
+          icon: "none",
+        });
+      });
+  };
   
   
 
@@ -363,12 +422,13 @@ const Index = () => {
           展示你的多彩人生（第一张将作为封图展示）
         </Text>
         <View className="photo-grid">
-          {photoList.map((item, index) => (
-            <View className="photo-item" key={item.id}>
-              <Image className="photo" src={item.src} mode="aspectFill" />
+        {userData?.backgroundPic && userData.backgroundPic.length > 0 && (
+          userData.backgroundPic.map((item, index) => (
+            <View className="photo-item" key={index}>
+              <Image className="photo" src={item} mode="aspectFill" />
               <Button
                 className="delete-btn"
-                onClick={() => deletePhoto(item.id)}
+                onClick={() => deletePhoto(index)} // Use index if `item.id` is not available
               >
                 X
               </Button>
@@ -376,8 +436,9 @@ const Index = () => {
                 {index === 0 ? '首图' : index + 1}
               </Text>
             </View>
-          ))}
-          <View className="photo-item add-photo-btn" onClick={addPhoto}>
+          ))
+        )}
+          <View className="photo-item add-photo-btn" onClick={uploadBackgroundPhoto}>
             <Text>+</Text>
           </View>
         </View>

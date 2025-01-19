@@ -50,7 +50,7 @@ const UserDetail: React.FC = () => {
     url: 'https://api.eurostay.co/app/esuser/showProfile',
     method: 'POST',
     data: {
-      uid: 1 // change later
+      uid: 2 // change later
     },
     header: {
       'Content-Type': 'application/json', 
