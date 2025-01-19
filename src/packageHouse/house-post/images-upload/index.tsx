@@ -2,6 +2,7 @@ import { View, Image, Text } from '@tarojs/components';
 import './index.scss';
 import Taro from '@tarojs/taro';
 import { cloudImageUpload } from '@common/database/cloudstorage/files';
+import { PostImage, DeleteImage } from '@utils/cloudIcons';
 
 const ImagesUpload = ({ images, onUploadImage, onDeleteImage }) => {
   const hasImages = Array.isArray(images) && images.length > 0;
@@ -86,17 +87,15 @@ const ImagesUpload = ({ images, onUploadImage, onDeleteImage }) => {
           images.map(image => (
             <View className='house-image' key={image}>
               <Image src={image} mode='aspectFill' className='pic' />
-              <View
-                className='image-delete'
-                onClick={() => handleDeleteImage(image)}
-              >
-                删除
-              </View>
+              <Image
+                src={DeleteImage}
+                className='delete'
+                onClick={deleteImageFile}
+              />
             </View>
           ))}
-        <View className='upload' onClick={handleUploadImage}>
-          <Text style={{ fontSize: '22px' }}> + </Text>
-          <Text style={{ fontSize: '10px' }}>上传照片</Text>
+        <View className='house-image' onClick={handleUploadImage}>
+          <Image src={PostImage} mode='aspectFill' className='pic' />
         </View>
       </View>
     </View>

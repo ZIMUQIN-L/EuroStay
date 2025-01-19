@@ -82,7 +82,7 @@ const Index = () => {
   const [surrounding, setSurrounding] = useState({});
   const [preference, setPreference] = useState({});
 
-  const [state, setState] = useState(8);
+  const [state, setState] = useState(5);
   const systemInfo = Taro.getSystemInfoSync();
   console.log(systemInfo.windowWidth, 'width');
 
@@ -554,13 +554,77 @@ const HouseFacility = () => {
   );
 };
 const PostImage = () => {
-  const housePicMap = [
-    { type: '房客住宿区', des: '请拍摄包含房客住宿的床的照片' },
-    { type: '公共区', des: '请拍摄包含客厅/娱乐区的照片' },
-    { type: '卫生间', des: '请拍摄包含卫浴区、马桶的照片' },
-    { type: '其他', des: '点击添加拍摄其他照片' },
-    // { type: '其他的', des: '一段简单的解释一段简单的解释一段简单的解释' },
-  ];
+  const [bedroomImages, setBedroomImages] = useState<string[]>([]);
+  const [livingroomImages, setLivingroomImages] = useState<string[]>([]);
+  const [bathroomImages, setBathdroomImages] = useState<string[]>([]);
+  const [otherImages, setOthermages] = useState<string[]>([]);
+
+  const handleUploadImage = type => {
+    if (type == 'bedroom') {
+      const onUploadImage = uploadedImagePath => {
+        setBedroomImages([...bedroomImages, uploadedImagePath]);
+      };
+      return onUploadImage;
+    } else if (type == 'livingroom') {
+      const onUploadImage = uploadedImagePath => {
+        setLivingroomImages([...livingroomImages, uploadedImagePath]);
+      };
+      return onUploadImage;
+    } else if (type == 'bathroom') {
+      const onUploadImage = uploadedImagePath => {
+        setBathdroomImages([...bathroomImages, uploadedImagePath]);
+      };
+      return onUploadImage;
+    } else if (type == 'others') {
+      const onUploadImage = uploadedImagePath => {
+        setOthermages([...otherImages, uploadedImagePath]);
+      };
+      return onUploadImage;
+    }
+    return () => {};
+  };
+
+  // 删除image
+  const handleDeleteImage = type => {
+    if (type == 'bedroom') {
+      const onDeleteImage = deletedImagePath => {
+        const updatedImages = bedroomImages.filter(
+          image => image !== deletedImagePath,
+        );
+        setBedroomImages(updatedImages);
+      };
+      return onDeleteImage;
+    } else if (type == 'livingroom') {
+      const onDeleteImage = deletedImagePath => {
+        const updatedImages = livingroomImages.filter(
+          image => image !== deletedImagePath,
+        );
+        setLivingroomImages(updatedImages);
+        updatedImages;
+      };
+      return onDeleteImage;
+    } else if (type == 'bathroom') {
+      const onDeleteImage = deletedImagePath => {
+        const updatedImages = bathroomImages.filter(
+          image => image !== deletedImagePath,
+        );
+        setBathdroomImages(updatedImages);
+        updatedImages;
+      };
+      return onDeleteImage;
+    } else if (type == 'others') {
+      const onDeleteImage = deletedImagePath => {
+        const updatedImages = otherImages.filter(
+          image => image !== deletedImagePath,
+        );
+        setOthermages(updatedImages);
+        updatedImages;
+      };
+      return onDeleteImage;
+    }
+    return () => {};
+  };
+
   return (
     <View className='post-image'>
       <View className='title'>您的房源是？</View>
@@ -568,15 +632,42 @@ const PostImage = () => {
         一些传照片的prompt，类似于 请根据指示拍摄清晰且未经修饰的照片之类的{' '}
       </View>
       <View className='house-type'>
-        {housePicMap.map(item => {
-          return (
-            <View className='house-item'>
-              <View className='house-item-title'>{item.type}</View>
-              <View className='des'>{item.des}</View>
-              <Image src='' className='pic'></Image>
-            </View>
-          );
-        })}
+        <View className='house-item'>
+          <View className='house-item-title'>房客住宿区</View>
+          <View className='des'>请拍摄包含房客住宿的床的照片</View>
+          <ImagesUpload
+            images={bedroomImages}
+            onUploadImage={handleUploadImage('bedroom')}
+            onDeleteImage={handleDeleteImage('bedroom')}
+          />
+        </View>
+        <View className='house-item'>
+          <View className='house-item-title'>公共区</View>
+          <View className='des'>请拍摄包含客厅/娱乐区的照片</View>
+          <ImagesUpload
+            images={livingroomImages}
+            onUploadImage={handleUploadImage('livingroom')}
+            onDeleteImage={handleDeleteImage('livingroom')}
+          />
+        </View>
+        <View className='house-item'>
+          <View className='house-item-title'>卫生间</View>
+          <View className='des'>请拍摄包含卫浴区、马桶的照片</View>
+          <ImagesUpload
+            images={bathroomImages}
+            onUploadImage={handleUploadImage('bathroom')}
+            onDeleteImage={handleDeleteImage('bathroom')}
+          />
+        </View>
+        <View className='house-item'>
+          <View className='house-item-title'>其他</View>
+          <View className='des'>点击添加拍摄其他照片</View>
+          <ImagesUpload
+            images={otherImages}
+            onUploadImage={handleUploadImage('others')}
+            onDeleteImage={handleDeleteImage('others')}
+          />
+        </View>
       </View>
     </View>
   );
