@@ -1,20 +1,4 @@
-// import { View, Image, Input, Text, Picker } from '@tarojs/components';
 import { observer } from 'mobx-react';
-// import { useEffect, useState } from 'react';
-// import { useRouter } from '@tarojs/taro';
-// import { DefaultAvatar, DefaultHouse } from '@utils/cloudIcons';
-// import { UserItemProps, UserDetailInfoItemProps } from '@utils/interfaces';
-// import './index.scss';
-// import Taro from '@tarojs/taro';
-// import { cloudAvatarUpload } from '@common/database/cloudstorage/files';
-// import { userInfoSearch, userDetailUpdate } from '@common/database/user/user';
-// import TagAdd from '../../packageActivity/activity-post/tag-add';
-// import {
-//   pointDetailInfoAdd,
-//   pointIncrease,
-// } from '@common/database/pointSystem/pointSystem';
-// import { formatTimestamp } from '@utils/dateUtil';
-
 import { View, Image, Text, Button, Input, Picker } from '@tarojs/components';
 import { useState } from 'react';
 import Taro from '@tarojs/taro';
@@ -332,14 +316,14 @@ const Index = () => {
             <Text className="info-label">MBTI</Text>
             <Text className="info-value">INTP</Text>
           </View>
-          <View className="info-item" onClick={openEmailModal}>
+          {/* <View className="info-item" onClick={openEmailModal}>
             <Text className="info-label">邮箱 (仅供收集)</Text>
             <Text className="info-value">添加</Text>
           </View>
           <View className="info-item" onClick={openWeChatModal}>
             <Text className="info-label">微信 (仅供收集)</Text>
             <Text className="info-value">添加</Text>
-          </View>
+          </View> */}
           <View className="info-item" onClick={openBirthdayModal}>
             <Text className="info-label">出生日期</Text>
             <Text className="info-value">添加</Text>

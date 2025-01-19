@@ -56,6 +56,7 @@ const UserDetail: React.FC = () => {
       'Content-Type': 'application/json', 
       'token': 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNzM3MTUzMDI1LCJleHAiOjE3Mzc3NTc4MjV9.Dpv8FWC6I8npZr91OLJDmc6fd9diyUe-ffYdaVlWW2EeJdHeAgmLWBgQLIG7k9bOsllsqispQGutUaBpQlt7Yg' 
       // change later
+      // 'token': GlobalStore.userInfo.token
     }
   })
     .then((res) => {
@@ -165,16 +166,16 @@ const UserDetail: React.FC = () => {
         <View className="badges">
           <View className="gender-icon">
             {userData?.gender === 1 ? (
-              <Text className="badge-item">♂️</Text> // Icon for male
+              <Text className="badge-item">♂️</Text>
             ) : userData?.gender === 2 ? (
-              <Text className="badge-item">♀️</Text> // Icon for female
+              <Text className="badge-item">♀️</Text>
             ) : (
-              <Text className="badge-item">⚧️</Text> // Icon for non-binary or other
+              <Text className="badge-item">⚧️</Text>
             )}
           </View>
-          <Text className="badge-item">{userData?.location}</Text>
-          <Text className="badge-item">{userData?.school}</Text>
-          <Text className="badge-item">{userData?.occupation}</Text>
+          <Text className="badge-item">{userData.location}</Text>
+          <Text className="badge-item">{userData.school}</Text>
+          <Text className="badge-item">{userData.occupation}</Text>
         </View>
 
 
@@ -184,7 +185,7 @@ const UserDetail: React.FC = () => {
           <Text className="tag-item">{userData?.school}</Text> */}
         </View>
        <View className="self-intro">
-        <Text className="intro-quote">“{userData?.aboutMe}”</Text>
+        <Text className="intro-quote">“{userData?.aboutMe || 尚未完善}”</Text>
       </View>
       </View>
       </View>
