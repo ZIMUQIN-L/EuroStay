@@ -25,7 +25,7 @@ const Index = () => {
       const result = res.data.result;
         setUserData({
           ...result,
-          backgroundPic: result.backgroundPic || [], // Default to empty array if null
+          backgroundPic: result?.backgroundPic || [], // Default to empty array if null
         });
         // setUserName(userData?.username || "")
     })
