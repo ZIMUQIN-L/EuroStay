@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react';
 import { View, Image, Text, Button, Input, Picker } from '@tarojs/components';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Taro from '@tarojs/taro';
 import './index.scss';
 import dayjs from 'dayjs';
@@ -8,7 +8,7 @@ import GlobalStore from '@store/GlobalStore';
 
 const Index = () => {
   const [userData, setUserData] = useState(null);
-  
+  const [userName, setUserName] = useState("dsdd");
   Taro.request({
     url: 'https://api.eurostay.co/app/esuser/showProfile',
     method: 'POST',
@@ -27,18 +27,18 @@ const Index = () => {
           ...result,
           backgroundPic: result.backgroundPic || [], // Default to empty array if null
         });
+        // setUserName(userData?.username || "")
     })
     .catch((err) => {
       console.error('Request failed:', err);
     });
 
   const [activeModal, setActiveModal] = useState<string | null>(null); // Track which modal is open
-  const [userName, setUserName] = useState('速食主义');
   const [userLocation, setUserLocation] = useState('西班牙 Valencia');
   const [userSex, setUserSex] = useState('女性');
   const [selectedMBTI, setSelectedMBTI] = useState('');
-  const [userEmail, setUserEmail] = useState('')
-  const [userWeChat, setUserWeChat] = useState('')
+  // const [userEmail, setUserEmail] = useState('')
+  // const [userWeChat, setUserWeChat] = useState('')
   const [userBirthday, setUserBirthday] = useState('');
   const [schoolName, setSchoolName] = useState('');
   const [enrollmentYear, setEnrollmentYear] = useState('');
@@ -83,22 +83,18 @@ const Index = () => {
 
   // For name
   const handleInputChange = (e) => {
-    const value = e.detail.value;
-    setUserName(value);
-    if (value.length >= 2) {
-      setError(''); // Clear error when valid
-    }
+    setUserName(e.detail.value); 
   };
 
-  const handleEmailChange = (e) => {
-    const value = e.detail.value;
-    setUserEmail(value);
-  }
+  // const handleEmailChange = (e) => {
+  //   const value = e.detail.value;
+  //   setUserEmail(value);
+  // }
 
-  const handleWeChatChange = (e) => {
-    const value = e.detail.value;
-    setUserWeChat(value);
-  }
+  // const handleWeChatChange = (e) => {
+  //   const value = e.detail.value;
+  //   setUserWeChat(value);
+  // }
 
   const handleBirthdayChange = (e) => {
     const value = e.detail.value;
@@ -474,7 +470,7 @@ const Index = () => {
           </View> */}
           <View className="info-item" onClick={openBirthdayModal}>
             <Text className="info-label">出生日期</Text>
-            <Text className="info-value">{userData?.birthday || "尚未完善"}</Text>
+            <Text className="info-value">{userData?.birthday?.split(" ")[0] || "尚未完善"}</Text>
           </View>
           <View className="info-item" onClick={openJobModal}>
             <Text className="info-label">工作</Text>
@@ -589,14 +585,14 @@ const Index = () => {
                 className="modal-input"
                 value={userName}
                 placeholder="请输入名字"
-                maxlength={8}
+                maxlength={12}
                 onInput={handleInputChange}
               />
               {/* <Text className="modal-counter">{userName.length}/24</Text> */}
             </View>
             {/* {error && <Text className="error-message">{error}</Text>} */}
               <Text className="modal-instruction">
-                请设置1-8个字符，不包括 @&lt;&gt;/ 等无效字符
+                请设置1-12个字符
               </Text>
             </View>
           </View>
@@ -721,7 +717,7 @@ const Index = () => {
         </View>
       </View>
       )}
-      {activeModal === 'email' && (
+      {/* {activeModal === 'email' && (
         <View className="modal-overlay">
           <View className="modal-content">
             <View className="modal-header">
@@ -782,7 +778,7 @@ const Index = () => {
             </View>
           </View>
         </View>
-      )}
+      )} */}
       {activeModal === 'birthday' && (
         <View className="modal-overlay">
           <View className="modal-content">

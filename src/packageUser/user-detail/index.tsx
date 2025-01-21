@@ -45,7 +45,7 @@ const UserDetail: React.FC = () => {
   });
 
   const [userData, setUserData] = useState(null);
-
+  useEffect(() => {
   Taro.request({
     url: 'https://api.eurostay.co/app/esuser/showProfile',
     method: 'POST',
@@ -65,7 +65,8 @@ const UserDetail: React.FC = () => {
     .catch((err) => {
       console.error('Request failed:', err);
     });
-  
+  }, []);
+
 
 
   const [userDetailInfo, setUserDetailInfo] =
@@ -172,9 +173,9 @@ const UserDetail: React.FC = () => {
               <Text className="badge-item">⚧️</Text>
             )}
           </View>
-          <Text className="badge-item">{userData.location}</Text>
-          <Text className="badge-item">{userData.school}</Text>
-          <Text className="badge-item">{userData.occupation}</Text>
+          <Text className="badge-item">{userData?.location}</Text>
+          <Text className="badge-item">{userData?.school}</Text>
+          <Text className="badge-item">{userData?.occupation}</Text>
         </View>
 
 
@@ -184,7 +185,7 @@ const UserDetail: React.FC = () => {
           <Text className="tag-item">{userData?.school}</Text> */}
         </View>
        <View className="self-intro">
-        <Text className="intro-quote">“{userData?.aboutMe || 尚未完善}”</Text>
+        <Text className="intro-quote">{userData?.aboutMe || "尚未完善"}</Text>
       </View>
       </View>
       </View>
