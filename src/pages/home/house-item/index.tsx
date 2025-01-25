@@ -10,13 +10,10 @@ import Liked from '@assets/images/liked.svg';
 import { DefaultHouse, DateIcon } from '@utils/cloudIcons';
 import { checkImageUrl } from '@utils/validationUtil';
 import { useState, useEffect } from 'react';
-import RequestCustomCard from '../../../packageUser/request-custom-card';
 import GlobalStore from '@store/GlobalStore';
 import { accomMessageAdd } from '@common/database/accomMessage/accomMessage';
-import { userInfoSearch } from '@common/database/user/user';
 import { LocationOutlined } from '@taroify/icons';
 import './index.scss';
-import { POST } from '@utils/post';
 const HouseItem: React.FC<AccomMssageHouseItemProps> = house => {
   const [isCollection, setIsCollection] = useState(house.isCollection);
   const [imageSrc, setImageSrc] = useState('');
@@ -171,7 +168,7 @@ const HouseItem: React.FC<AccomMssageHouseItemProps> = house => {
   // 跳转至房源详情
   const toHouseDetail = () => {
     Taro.navigateTo({
-      url: `../../packageHouse/house-detail/index?id=${house._id}`,
+      url: `../../packageHouse/house-detail/index?pid=${house.pid}`,
     });
   };
 

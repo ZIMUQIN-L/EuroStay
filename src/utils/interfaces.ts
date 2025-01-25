@@ -32,24 +32,27 @@ export interface UserItemProps {
 
 // 房源详情信息接口
 export interface HouseDetailItemProps {
-  _id: string; // 微信自动生成的_id，无法修改其名称
-  _openid: string;
+  accommodationType: number;
+  agreement: string;
+  availableDate: string[];
   capacity: number;
+  coinPerNight: number;
   description: string;
-  end_date: string; // 后期最好优化成日期格式
-  start_date: string; // 当前数据库名称是start_date和end_date, 或许可以先保持？
-  houseType: string;
-  images: string[];
+  desirableSeeker: string;
+  genderRequirement: number;
+  hostQuestion: string;
   location: string;
-  ownerTarget: string;
-  contact: string;
-  xhsContact: string;
-  houseSetting: { [key: string]: any };
-  houseSurrounding: { [key: string]: any };
-  preference: { [key: string]: any };
-  rating: number; //房源当前评分
-  ratingNumber: number; //房源当前评分数量
-  evaluationNumbers: { [key: string]: number }; // 房源的各项评分
+  media: string[];
+  oneSentence: string;
+  pid: number;
+  precautious: string;
+  propertyInterests: string[];
+  propertyTags: string[];
+  propertyType: number;
+  recommendedTimes: number;
+  title: string;
+  uid: number;
+  undesirableSeeker: string;
 }
 
 // 用户求宿数据接口

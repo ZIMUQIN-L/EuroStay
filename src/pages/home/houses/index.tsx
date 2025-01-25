@@ -57,7 +57,7 @@ const Houses = () => {
   // });
 
   const [userDestination, setUserDestination] = useState<string>('');
-  const [curButton, setCurButton] = useState<string>('activities');
+  const [curButton, setCurButton] = useState<string>('houses');
 
   const [userStartDate, setUserStartDate] = useState<Date>();
   const [userEndDate, setUserEndDate] = useState<Date>();

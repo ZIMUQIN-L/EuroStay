@@ -164,7 +164,7 @@ const HouseContact: React.FC<HouseDetailItemProps> = house => {
     <View>
       <View className='contact-container'>
         <View className='contact-container-left'>
-          <View className='price-container'>旅行币/晚</View>
+          <View className='price-container'>{house.coinPerNight}旅行币/晚</View>
           <View className='date-container'>
             <Text className='date-text'>{formatDate(house.start_date)}</Text>
             <Text className='date-separator'>至</Text>

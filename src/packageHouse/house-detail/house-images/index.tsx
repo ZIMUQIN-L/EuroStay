@@ -9,7 +9,7 @@ const HouseImagesSwiper: React.FC<HouseDetailItemProps> = house => {
     width: '100%',
     height: '100%',
   };
-  const imageUrls = filterValidImageUrls(house.images);
+  const imageUrls = filterValidImageUrls(house.media);
 
   return (
     <View className='detail-page-images'>
@@ -32,7 +32,7 @@ const HouseImagesSwiper: React.FC<HouseDetailItemProps> = house => {
             </View>
           </SwiperItem>
         ) : (
-          house.images.map((image, index) => (
+          house.media.map((image, index) => (
             <SwiperItem key={index} style={fullContainerStyle}>
               <View className='swiper-item' style={fullContainerStyle}>
                 <Image
