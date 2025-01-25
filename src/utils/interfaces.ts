@@ -99,6 +99,40 @@ export interface HouseOwnerReplyMessageItemProps {
   helloMessage: string;
   accomMessageId: string;
 }
+
+//活动详情页
+export interface ActivityDetailProps {
+  active: boolean;
+  address: string;
+  applyFormId: string;
+  applyStatus: number;
+  capacity: number;
+  city: string;
+  contact: string;
+  createdAt: string;
+  description: string;
+  endTime: string;
+  helloMessage: string;
+  id: number;
+  images: string[];
+  official: boolean;
+  point: number;
+  price: number;
+  startTime: string;
+  tags: string[];
+  title: string;
+  uid: number;
+  updatedAt: string;
+  userShortInfoResponse: {
+    avatar: string;
+    cover: string;
+    gender: number;
+    tags: string[];
+    uid: number;
+    username: string;
+  };
+}
+
 //首页活动卡片
 export interface ActivityCardProps {
   id: number;

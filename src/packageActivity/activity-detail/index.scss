@@ -2,13 +2,25 @@
   .swiper {
     padding: 0 20px;
   }
+  .activity-item-wrapper {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    .activity-item {
+      background-color: #f2f2f2;
+      color: #979797;
+      padding: 0 10px;
+      border-radius: 10px;
+      margin-right: 20px;
+    }
+  }
 }
 
 .activity-summary-wrap {
   background-color: #ffffff;
   display: flex;
   justify-content: space-between;
-  padding: 30px 50px;
+  padding: 30px 30px;
   align-items: center;
   .activity-summary-left {
     .activity-summary-title {
@@ -20,6 +32,19 @@
       font-size: 24px;
       color: #191919;
       margin-bottom: 5px;
+    }
+    .activity-summary-time {
+      font-size: 24px;
+      background-color: #f2f2f2;
+      padding: 0 10px;
+      border: 10px;
+      color: #646464;
+
+      .time-pic {
+        width: 20px;
+        height: 20px;
+        margin-right: 5px;
+      }
     }
     .activity-summary-des {
       font-size: 24px;

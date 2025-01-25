@@ -45,7 +45,14 @@ const ActivityCard: React.FC<ActivityCardProps> = activity => {
   };
 
   return (
-    <View className='activity-card' onClick={() => {}}>
+    <View
+      className='activity-card'
+      onClick={() => {
+        Taro.navigateTo({
+          url: `/packageActivity/activity-detail/index?id=${activity.id}`,
+        });
+      }}
+    >
       {true && <View className='corner-label'>ES独家策划</View>}
       <Image
         className='activity-like'
@@ -58,7 +65,7 @@ const ActivityCard: React.FC<ActivityCardProps> = activity => {
               method: 'POST',
               data: {
                 activityId: activity.id,
-                uid: activity.uid, //todo
+                uid: GlobalStore.userInfo._id, //todo
               },
               header: {
                 'Content-Type': 'application/json',
