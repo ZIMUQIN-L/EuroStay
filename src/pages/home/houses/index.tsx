@@ -4,9 +4,18 @@ import './index.scss';
 import Taro, { useReachBottom } from '@tarojs/taro';
 import { useState, useEffect } from 'react';
 import HouseItem from '../house-item';
+import UserCard from '../user-card';
 import { houseInfoSearch } from '@common/database/house/house';
-import { HouseItemProps } from '@utils/interfaces';
+import {
+  HouseItemProps,
+  AccomMssageHouseItemProps,
+  ActivityCardProps,
+} from '@utils/interfaces';
 import { NoDataLogo } from '@utils/cloudIcons';
+import LIKE from '@assets/images/homepage-like.svg';
+import Activity from '@assets/images/homepage-activity.svg';
+import House from '@assets/images/homepage-house.svg';
+import User from '@assets/images/homepage-user.svg';
 import ActivityCard from '@components/ActivityCard';
 import { PurpleCalendar, PurpleMap } from '@utils/cloudIcons';
 import { POST } from '@utils/post';
@@ -48,7 +57,7 @@ const Houses = () => {
   // });
 
   const [userDestination, setUserDestination] = useState<string>('');
-  const [curButton, setCurButton] = useState<string>('houses');
+  const [curButton, setCurButton] = useState<string>('activities');
 
   const [userStartDate, setUserStartDate] = useState<Date>();
   const [userEndDate, setUserEndDate] = useState<Date>();
@@ -57,9 +66,35 @@ const Houses = () => {
   // delete the testdata for now
   const [demoData, setDemoData] = useState<HouseItemProps[]>([]);
   const [token, setToken] = useState('');
-  const [houseList, setHouseList] = useState([]);
+  const [houseList, setHouseList] = useState<AccomMssageHouseItemProps[]>([]);
+  const [userList, setUserList] = useState([]);
+  const [likedHouseList, setLikedHouseList] = useState<
+    AccomMssageHouseItemProps[]
+  >([]);
+  const [activityList, setActivityList] = useState<ActivityCardProps[]>([]);
 
   useEffect(() => {
+    //myuid
+    Taro.request({
+      url: 'https://api.eurostay.co/app/activity/getActivityList',
+      method: 'POST',
+      data: { myUid: 0, page: 0, tag: 'string', uid: 0 },
+      header: {
+        'Content-Type': 'application/json',
+        token: GlobalStore.userInfo.token,
+      },
+    })
+      .then(res => {
+        if (res.statusCode == 200) {
+          console.log('activity.list', res.data.result.data);
+          setActivityList(res.data.result.data);
+        }
+      })
+      .catch(err => {
+        console.error('Request failed');
+        return 1;
+      });
+
     Taro.request({
       url: 'https://api.eurostay.co/app/property/defaultList',
       method: 'POST',
@@ -79,7 +114,6 @@ const Houses = () => {
     })
       .then(res => {
         if (res.statusCode == 200) {
-          console.log(res.data.result.data);
           setHouseList(res.data.result.data);
         }
       })
@@ -88,6 +122,99 @@ const Houses = () => {
         return 1;
       });
   }, []);
+  useEffect(() => {
+    if (curButton == 'users') {
+      Taro.request({
+        url: 'https://api.eurostay.co/app/esuser/getUserList',
+        method: 'POST',
+        data: {
+          myUid: 0,
+          order: 'string',
+          page: 0,
+        },
+        header: {
+          'Content-Type': 'application/json',
+          token: GlobalStore.userInfo.token,
+        },
+      })
+        .then(res => {
+          if (res.statusCode == 200) {
+            console.log('user.list', res.data.result.data);
+            setUserList(res.data.result.data);
+          }
+        })
+        .catch(err => {
+          console.error('Request failed');
+          return 1;
+        });
+    } else if (curButton == 'activities') {
+      Taro.request({
+        url: 'https://api.eurostay.co/app/activity/getActivityList',
+        method: 'POST',
+        data: { myUid: 0, page: 0, tag: 'string', uid: 0 },
+        header: {
+          'Content-Type': 'application/json',
+          token: GlobalStore.userInfo.token,
+        },
+      })
+        .then(res => {
+          if (res.statusCode == 200) {
+            console.log('activity.list', res.data.result.data);
+            setActivityList(res.data.result.data);
+          }
+        })
+        .catch(err => {
+          console.error('Request failed');
+          return 1;
+        });
+    } else if (curButton == 'likes') {
+      Taro.request({
+        url: `https://api.eurostay.co/app/property/myCollectionPropertyList?page=${1}`,
+        method: 'POST',
+        header: {
+          'Content-Type': 'application/json',
+          token: GlobalStore.userInfo.token,
+        },
+      })
+        .then(res => {
+          if (res.statusCode == 200) {
+            console.log('liked.list', res.data.result.data);
+            setLikedHouseList(res.data.result.data);
+          }
+        })
+        .catch(err => {
+          console.error('Request failed');
+          return 1;
+        });
+    } else if (curButton == 'houses') {
+      Taro.request({
+        url: 'https://api.eurostay.co/app/esuser/getUserList',
+        method: 'POST',
+        data: {
+          myUid: 0,
+          order: 'string',
+          page: 0,
+        },
+        header: {
+          'Content-Type': 'application/json',
+          token: GlobalStore.userInfo.token,
+        },
+      })
+        .then(res => {
+          if (res.statusCode == 200) {
+            console.log('user.list', res.data.result.data);
+            setUserList(res.data.result.data);
+          }
+        })
+        .catch(err => {
+          console.error('Request failed');
+          return 1;
+        });
+    }
+  }, [curButton]);
+  useEffect(() => {
+    console.log('activityList.length', activityList);
+  }, [activityList.length]);
 
   const handleClickSearch = () => {
     houseInfoSearch(userDestination, userStartDate, userEndDate).then(
@@ -141,6 +268,7 @@ const Houses = () => {
       handleDateChange(selectedDate, null);
     }
   };
+
   const [isShowCalendarPopup, setIsShowCalendarPopup] = useState(false);
   return (
     <View className='home' id='home'>
@@ -207,7 +335,7 @@ const Houses = () => {
               setCurButton('likes');
             }}
           >
-            <Image src=''></Image>
+            <Image src={LIKE}></Image>
             收藏
           </View>
           <View
@@ -216,17 +344,8 @@ const Houses = () => {
               setCurButton('houses');
             }}
           >
-            <Image src=''></Image>
+            <Image src={House}></Image>
             房源
-          </View>
-          <View
-            className='homepage-activities'
-            onClick={() => {
-              setCurButton('activities');
-            }}
-          >
-            <Image src=''></Image>
-            活动
           </View>
           <View
             className='homepage-user'
@@ -234,43 +353,82 @@ const Houses = () => {
               setCurButton('users');
             }}
           >
-            <Image src=''></Image>
+            <Image src={User}></Image>
             用户
           </View>
-        </View>
-        <View
-          className='home-search-bar'
-          onClick={() => {
-            setIsShowSearchPage(true);
-          }}
-        >
-          搜索
-        </View>
-        {houseList?.length === 0 ? (
-          <View>
-            <Image src={NoDataLogo} />
-            <Text className='home-nodata-container'>暂未查询到数据~</Text>
+          <View
+            className='homepage-activities'
+            onClick={() => {
+              setCurButton('activities');
+            }}
+          >
+            <Image src={Activity}></Image>
+            活动
           </View>
-        ) : curButton == 'houses' ? (
-          <View className='house-list'>
-            {houseList.map(item => {
-              return <HouseItem {...item} />;
-            })}
+        </View>
+        {curButton == 'houses' && (
+          <View
+            className='home-search-bar'
+            onClick={() => {
+              setIsShowSearchPage(true);
+            }}
+          >
+            搜索
           </View>
-        ) : (
-          curButton == 'activities' && (
+        )}
+
+        {curButton == 'houses' ? (
+          houseList?.length === 0 ? (
+            <View>
+              <Image src={NoDataLogo} />
+              <Text className='home-nodata-container'>暂未查询到数据~</Text>
+            </View>
+          ) : (
             <View className='house-list'>
-              {demoData.map(item =>
-                item.premiumHost ? ( // 否则为活动
-                  <ActivityCard
-                    activity={item}
-                    onClick={() => handleActivityClick(item._id)}
-                  />
-                ) : null,
-              )}
+              {houseList.map(item => {
+                return <HouseItem {...item} />;
+              })}
             </View>
           )
-        )}
+        ) : null}
+        {curButton == 'likes' ? (
+          likedHouseList?.length === 0 ? (
+            <View>
+              <Image src={NoDataLogo} />
+              <Text className='home-nodata-container'>暂未查询到数据~</Text>
+            </View>
+          ) : (
+            <View className='house-list'>
+              {likedHouseList.map(item => {
+                return <HouseItem {...item} />;
+              })}
+            </View>
+          )
+        ) : null}
+        {curButton == 'activities' &&
+          (activityList?.length == 0 ? (
+            <View>
+              <Image src={NoDataLogo} />
+              <Text className='home-nodata-container'>暂未查询到数据~</Text>
+            </View>
+          ) : (
+            <View className='house-list'>
+              {activityList.map(item => {
+                return <ActivityCard {...item} />;
+              })}
+            </View>
+          ))}
+        {curButton == 'users' &&
+          (userList?.length != 0 ? (
+            userList.map(item => {
+              return <UserCard {...item} />;
+            })
+          ) : (
+            <View>
+              <Image src={NoDataLogo} />
+              <Text className='home-nodata-container'>暂未查询到数据~</Text>
+            </View>
+          ))}
         <View className='index'>
           <CustomTabBar onHomeSelected={resetState} />
         </View>

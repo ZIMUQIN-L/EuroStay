@@ -1,0 +1,37 @@
+.homepage-user-card {
+  width: 90%;
+  min-height: 900px;
+  margin: 10px auto;
+  //   background-color: black;
+  .user-tags {
+    padding-top: 20px;
+    .user-tag {
+      display: inline-block;
+      background-color: #f4f4f4;
+      padding: 0px 20px;
+      border-radius: 10px;
+      margin-right: 10px;
+    }
+  }
+  .user-avatar {
+    border-radius: 30px;
+    border: 1px solid #d9d9d9;
+    width: 100%;
+    min-height: 750px;
+    // background-color: red;
+    // padding: 20px;
+    position: relative;
+    .user-name {
+      position: absolute;
+      top: 30px;
+      left: 30px;
+      font-size: 32px;
+    }
+    .user-des {
+      position: absolute;
+      bottom: 30px;
+      left: 30px;
+      //   font-size: 32px;
+    }
+  }
+}

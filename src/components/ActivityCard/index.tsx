@@ -2,6 +2,9 @@ import React from 'react';
 import { View, Text, Image } from '@tarojs/components';
 import { useState, useEffect } from 'react';
 import Taro from '@tarojs/taro';
+import Like from '@assets/images/like.svg';
+import Liked from '@assets/images/liked.svg';
+import GlobalStore from '@store/GlobalStore';
 import {
   UserCircleOutlined,
   LocationOutlined,
@@ -14,13 +17,10 @@ import {
 } from '@utils/interfaces';
 import './index.scss';
 import { userInfoSearch } from '@common/database/user/user';
+import { ActivityCardProps } from '@utils/interfaces';
 
-interface ActivityCardProps {
-  activity: ActivityInfoItemProps;
-  onClick: () => void;
-}
-
-const ActivityCard: React.FC<ActivityCardProps> = ({ activity, onClick }) => {
+const ActivityCard: React.FC<ActivityCardProps> = activity => {
+  const [isCollection, setIsCollection] = useState(activity.isCollection);
   if (!activity) return null;
   const [imageSrc, setImageSrc] = React.useState(
     activity.images.length > 0 ? activity.images[0] : '',
@@ -29,9 +29,9 @@ const ActivityCard: React.FC<ActivityCardProps> = ({ activity, onClick }) => {
   const [sourceUser, constSourceUser] = useState<UserDetailInfoItemProps>();
 
   useEffect(() => {
-    userInfoSearch(activity._openid).then((res: UserDetailInfoItemProps[]) => {
-      constSourceUser(res[0]);
-    });
+    // userInfoSearch(activity._openid).then((res: UserDetailInfoItemProps[]) => {
+    //   constSourceUser(res[0]);
+    // });
   }, []);
 
   const handleClickHostAvatar = () => {
@@ -45,20 +45,63 @@ const ActivityCard: React.FC<ActivityCardProps> = ({ activity, onClick }) => {
   };
 
   return (
-    <View className='activity-card' onClick={onClick}>
-      {activity.premiumHost && (
-        <View className='corner-label'>精品Host系列</View>
-      )}
-      <View className='activity-like'>收藏</View>
-      <Image src='' className='host-avatar' />
+    <View className='activity-card' onClick={() => {}}>
+      {true && <View className='corner-label'>ES独家策划</View>}
       <Image
-        src={imageSrc}
+        className='activity-like'
+        src={isCollection ? Liked : Like}
+        onClick={e => {
+          e.stopPropagation();
+          if (!isCollection) {
+            Taro.request({
+              url: 'https://api.eurostay.co/app/activity/addActivityCollection',
+              method: 'POST',
+              data: {
+                activityId: activity.id,
+                uid: activity.uid, //todo
+              },
+              header: {
+                'Content-Type': 'application/json',
+                token: GlobalStore.userInfo.token,
+              },
+            }).then(res => {
+              if (res.statusCode == 200) {
+                console.log('successfully like activity:', activity.id);
+                setIsCollection(true);
+              }
+            });
+          } else {
+            Taro.request({
+              url: 'https://api.eurostay.co/app/activity/cancelActivityCollection',
+              method: 'POST',
+              data: {
+                activityId: activity.id,
+                uid: activity.uid, //todo
+              },
+              header: {
+                'Content-Type': 'application/json',
+                token: GlobalStore.userInfo.token,
+              },
+            }).then(res => {
+              if (res.statusCode == 200) {
+                setIsCollection(false);
+              }
+            });
+          }
+        }}
+      />
+      <Image
+        src={activity.userShortInfoResponse.avatar}
+        className='host-avatar'
+      />
+      <Image
+        src={activity.images?.[0]}
         className='activity-image'
         mode='aspectFit'
         onError={handleImageError}
       />
       <View className='activity-content'>
-        <Text className='activity-price'>旅行币/人</Text>
+        <Text className='activity-price'>{activity.coin}旅行币/人</Text>
         <Text className='title'>{activity.title}</Text>
         {/* <View className='organizer'>
           <UserCircleOutlined className='icon' />
@@ -70,11 +113,11 @@ const ActivityCard: React.FC<ActivityCardProps> = ({ activity, onClick }) => {
           />
           <Text>由 {sourceUser?.nickName} 发起</Text>
         </View> */}
-        <View className='activity-time'>活动时间</View>
+        <View className='activity-time'>{activity.startTime}</View>
         <View className='details'>
           <View className='detail-item'>
             <LocationOutlined className='icon' />
-            <Text>{activity.location}</Text>
+            <Text>{activity.city}</Text>
           </View>
           {/* <View className='detail-item'>
             <GoldCoinOutlined className='icon' />

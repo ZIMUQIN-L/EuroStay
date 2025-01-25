@@ -96,6 +96,47 @@ export interface HouseOwnerReplyMessageItemProps {
   helloMessage: string;
   accomMessageId: string;
 }
+//首页活动卡片
+export interface ActivityCardProps {
+  id: number;
+  uid: number;
+  active: boolean;
+  isCollection: boolean;
+  city: string;
+  official: boolean;
+  coin: number;
+  startTime: string;
+  endTime: string;
+  title: string;
+  images: string[];
+  tags: string[];
+  userShortInfoResponse: {
+    uid: number;
+    username: string;
+    avatar: string;
+    cover: string;
+    gender: number;
+    tags: string[];
+    genderStr: string;
+    mbti: string;
+    aboutMe: string;
+  };
+  createdAt: string;
+  updatedAt: string;
+}
+
+// 首页用户卡片
+export interface UserCardProps {
+  uid: number;
+  username: string;
+  avatar: string;
+  cover: string;
+  gender: number;
+  tags: string[];
+  genderStr: string;
+  mbti: string;
+  aboutMe: string;
+}
 
 // contact info structure
 export interface ContactInfo {
