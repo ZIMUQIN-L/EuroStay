@@ -334,9 +334,15 @@ const Houses = () => {
             onClick={() => {
               setCurButton('likes');
             }}
+            // style={
+            //   curButton == 'likes' ? { borderBottom: '2px solid #7A73FF' } : {}
+            // }
           >
             <Image src={LIKE}></Image>
             收藏
+            <View
+              className={`border ${curButton == 'likes' ? 'active' : ''}`}
+            ></View>
           </View>
           <View
             className='homepage-houses'
@@ -346,6 +352,9 @@ const Houses = () => {
           >
             <Image src={House}></Image>
             房源
+            <View
+              className={`border ${curButton == 'houses' ? 'active' : ''}`}
+            ></View>
           </View>
           <View
             className='homepage-user'
@@ -355,6 +364,9 @@ const Houses = () => {
           >
             <Image src={User}></Image>
             用户
+            <View
+              className={`border ${curButton == 'users' ? 'active' : ''}`}
+            ></View>
           </View>
           <View
             className='homepage-activities'
@@ -364,6 +376,9 @@ const Houses = () => {
           >
             <Image src={Activity}></Image>
             活动
+            <View
+              className={`border ${curButton == 'activities' ? 'active' : ''}`}
+            ></View>
           </View>
         </View>
         {curButton == 'houses' && (
