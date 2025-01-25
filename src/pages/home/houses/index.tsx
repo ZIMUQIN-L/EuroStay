@@ -1,24 +1,24 @@
 import { View, Image, Text, Button } from '@tarojs/components';
 import CustomTabBar from '@components/CustomTabBar';
-import SearchCard from '../search-section';
 import './index.scss';
 import Taro, { useReachBottom } from '@tarojs/taro';
 import { useState, useEffect } from 'react';
 import HouseItem from '../house-item';
 import { houseInfoSearch } from '@common/database/house/house';
 import { HouseItemProps } from '@utils/interfaces';
-import SearchAndFilter from '../search-and-filter';
 import { NoDataLogo } from '@utils/cloudIcons';
-import hostAdPic from '@assets/images/host-ad-toscana-florence.png';
-import { Close } from '@taroify/icons';
-import hostAdPicTest from './home.png';
-import { premiumActivitySearch } from '@common/database/activityInfo/activityInfo';
-import hostAdPicTestTest from './host-ad-toscana-florence.png';
 import ActivityCard from '@components/ActivityCard';
 import { PurpleCalendar, PurpleMap } from '@utils/cloudIcons';
+import { POST } from '@utils/post';
+
 import Popup from '../../../packageHouse/house-post/popup';
 import { AtCalendar } from 'taro-ui';
-import { formatToday, calculateDaysBetweenDates } from '@utils/dateUtil';
+import {
+  formatToday,
+  calculateDaysBetweenDates,
+  formatDate,
+} from '@utils/dateUtil';
+import GlobalStore from '@store/GlobalStore';
 /**
  *
  * 主页的房源列表板块
@@ -31,80 +31,63 @@ const Houses = () => {
     };
   });
   // 上拉进行加载，获取更多房源
-  useReachBottom(() => {
-    houseInfoSearch(
-      userDestination,
-      userStartDate,
-      userEndDate,
-      1,
-      {},
-      {},
-      {},
-      demoData.length,
-    ).then((houseData: HouseItemProps[]) => {
-      setDemoData(prevData => [...prevData, ...houseData]);
-    });
-  });
-  const [showAd, setShowAd] = useState(true);
+  //暂时不要删除
+  // useReachBottom(() => {
+  //   houseInfoSearch(
+  //     userDestination,
+  //     userStartDate,
+  //     userEndDate,
+  //     1,
+  //     {},
+  //     {},
+  //     {},
+  //     demoData.length,
+  //   ).then((houseData: HouseItemProps[]) => {
+  //     setDemoData(prevData => [...prevData, ...houseData]);
+  //   });
+  // });
+
   const [userDestination, setUserDestination] = useState<string>('');
   const [curButton, setCurButton] = useState<string>('houses');
-
-  const handleDestinationChange = inputDestination => {
-    setUserDestination(inputDestination);
-  };
 
   const [userStartDate, setUserStartDate] = useState<Date>();
   const [userEndDate, setUserEndDate] = useState<Date>();
   const [isClickedSearch, setIsClickedSearch] = useState<Boolean>(false);
 
-  // const handleDateChange = (startDate: Date, endDate: Date) => {
-  //   setUserStartDate(startDate);
-  //   setUserEndDate(endDate);
-  // };
-
   // delete the testdata for now
   const [demoData, setDemoData] = useState<HouseItemProps[]>([]);
-
-  // const fetchInitialData = () => {
-  //   houseInfoSearch('', '', '').then((houseData: HouseItemProps[]) => {
-  //     console.log('iniiiii houseData', houseData);
-  //     setDemoData(houseData);
-  //   });
-  // };
-
-  const fetchInitialData = () => {
-    Promise.all([houseInfoSearch('', '', ''), premiumActivitySearch()])
-      .then(([houseData, activityData]) => {
-        // const combined = [...houseData, ...activityData].sort((a, b) => {
-        //   // 这里可以添加排序逻辑,例如按创建时间排序
-        //   return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
-        // });
-        const combined = [...activityData, ...houseData];
-        setDemoData(combined);
-      })
-      .catch(error => {
-        console.error('Error fetching data:', error);
-      });
-  };
+  const [token, setToken] = useState('');
+  const [houseList, setHouseList] = useState([]);
 
   useEffect(() => {
-    fetchInitialData();
-
-    // // 显示广告3秒后隐藏
-    // const adTimer = setTimeout(() => {
-    //   setShowAd(false);
-    // }, 300000);
-
-    // return () => clearTimeout(adTimer);
+    Taro.request({
+      url: 'https://api.eurostay.co/app/property/defaultList',
+      method: 'POST',
+      data: {
+        endDate: '',
+        myUid: 1,
+        order: 'DES_PRICE',
+        page: 0,
+        searchableLocation: '',
+        startDate: '',
+        tags: [],
+      },
+      header: {
+        'Content-Type': 'application/json',
+        token: GlobalStore.userInfo.token,
+      },
+    })
+      .then(res => {
+        if (res.statusCode == 200) {
+          console.log(res.data.result.data);
+          setHouseList(res.data.result.data);
+        }
+      })
+      .catch(err => {
+        console.error('Request failed');
+        return 1;
+      });
   }, []);
-
-  // useEffect(() => {
-  //   houseInfoSearch('阿姆', '2024-03-24', '2024-03-24').then(
-  //     (houseData: HouseItemProps[]) => {
-  //       setDemoData(houseData); // Update demoData state with the fetched data
-  //     },
-  //   );
-  // }, []);
 
   const handleClickSearch = () => {
     houseInfoSearch(userDestination, userStartDate, userEndDate).then(
@@ -122,15 +105,6 @@ const Houses = () => {
     setIsClickedSearch(false);
     fetchInitialData();
   };
-
-  // 使用filter进行查询
-  const handleClickFilter = (houseData: HouseItemProps[]) => {
-    setDemoData(houseData);
-  };
-
-  const handleCloseAd = () => {
-    setShowAd(false);
-  };
   const [isShowSeachPage, setIsShowSearchPage] = useState(false);
 
   const handleActivityClick = (activityId: string) => {
@@ -138,25 +112,7 @@ const Houses = () => {
       url: `/packageActivity/activity-detail/index?id=${activityId}`, // 跳转到活动详情页面
     });
   };
-  const [isShowPost, setIsShowPost] = useState(false);
 
-  const onClickPostSeek = () => {
-    Taro.navigateTo({
-      url: `../../packageHouse/seek-post/index?id=none`,
-    });
-  };
-
-  const onClickPostActivity = () => {
-    Taro.navigateTo({
-      url: `../../packageActivity/activity-post/index?id=none`,
-    });
-  };
-
-  const onClickPostHouse = () => {
-    Taro.navigateTo({
-      url: '../../packageHouse/house-post/index',
-    });
-  };
   const today = formatToday();
   const [startDate, setStartDate] = useState(today);
   const [endDate, setEndDate] = useState(null);
@@ -242,40 +198,6 @@ const Houses = () => {
           )}
         </View>
       )}
-      {isShowPost && (
-        <View
-          className='page-post-modal'
-          onClick={() => {
-            setIsShowPost(false);
-          }}
-        >
-          <Button
-            className='close-text-button'
-            onClick={() => {
-              setIsShowPost(false);
-            }}
-          >
-            关闭
-          </Button>
-          <Button
-            className='activity-text-button'
-            onClick={onClickPostActivity}
-          >
-            发布活动
-          </Button>
-
-          <Button className='house-text-button' onClick={onClickPostHouse}>
-            发布房源
-          </Button>
-
-          <Button
-            className='house-request-text-button'
-            onClick={onClickPostSeek}
-          >
-            发布求宿
-          </Button>
-        </View>
-      )}
 
       <>
         <View className='homepage-buttons'>
@@ -324,34 +246,15 @@ const Houses = () => {
         >
           搜索
         </View>
-        {/* {isClickedSearch ? (
-          <SearchAndFilter
-            onDestinationChange={handleDestinationChange}
-            onDateChange={handleDateChange}
-            onClickSearch={handleClickSearch}
-            userStartDate={userStartDate}
-            userEndDate={userEndDate}
-            destination={userDestination}
-            onClickFilterData={handleClickFilter}
-          />
-        ) : (
-          <SearchCard
-            onDestinationChange={handleDestinationChange}
-            onDateChange={handleDateChange}
-            onClickSearch={handleClickSearch}
-            searchType='houses'
-          />
-        )} */}
-        {demoData.length === 0 ? (
+        {houseList?.length === 0 ? (
           <View>
             <Image src={NoDataLogo} />
             <Text className='home-nodata-container'>暂未查询到数据~</Text>
           </View>
         ) : curButton == 'houses' ? (
           <View className='house-list'>
-            {demoData.map(item => {
-              if (!item.premiumHost)
-                return <HouseItem key={item._id} {...item} />;
+            {houseList.map(item => {
+              return <HouseItem {...item} />;
             })}
           </View>
         ) : (
@@ -374,63 +277,6 @@ const Houses = () => {
       </>
     </View>
   );
-  // return (
-  //   <View className='home' id='home'>
-  //     {showAd ? (
-  //       <View className='ad-modal'>
-  //         <View className='ad-content'>
-  //           <Image className='ad-image' src={hostAdPicTestTest} />
-  //           <Close className='close-icon' onClick={handleCloseAd} />
-  //         </View>
-  //       </View>
-  //     ) : (
-  //       <>
-  //         {isClickedSearch ? (
-  //           <SearchAndFilter
-  //             onDestinationChange={handleDestinationChange}
-  //             onDateChange={handleDateChange}
-  //             onClickSearch={handleClickSearch}
-  //             userStartDate={userStartDate}
-  //             userEndDate={userEndDate}
-  //             destination={userDestination}
-  //             onClickFilterData={handleClickFilter}
-  //           />
-  //         ) : (
-  //           <SearchCard
-  //             onDestinationChange={handleDestinationChange}
-  //             onDateChange={handleDateChange}
-  //             onClickSearch={handleClickSearch}
-  //             searchType='houses'
-  //           />
-  //         )}
-  //         {demoData.length === 0 ? (
-  //           <View>
-  //             <Image src={NoDataLogo} />
-  //             <Text className='home-nodata-container'>暂未查询到数据~</Text>
-  //           </View>
-  //         ) : (
-  //           <View className='house-list'>
-  //             {demoData.map(item => (
-  //               item.premiumHost ? ( // 否则为活动
-  //                 <ActivityCard
-  //                   // key={item._id}
-  //                   activity={item}
-  //                   onClick={() => handleActivityClick(item._id)}
-  //                   // isPremiumHost={item.premiumHost !== undefined} // 根据需要传递属性
-  //                 />
-  //               ) : ( // 判断是否为房源
-  //                 <HouseItem key={item._id} {...item} />
-  //               )
-  //             ))}
-  //           </View>
-  //         )}
-  //         <View className='index'>
-  //           <CustomTabBar onHomeSelected={resetState} />
-  //         </View>
-  //       </>
-  //     )}
-  //   </View>
-  // );
 };
 
 export default Houses;

@@ -21,8 +21,9 @@ const systemList = [
     path: '../../packageUser/traveler-system/index',
   },
 ];
+
 const menuList = [
-  { text: '添加房源', icon: PointIcon, path: '/pages/add-house/index' },
+  { text: '添加房源', icon: PointIcon, path: '/packageHouse/house-post/index' },
   { text: '发起活动', icon: PointIcon, path: '/pages/start-activity/index' },
   { text: '房源列表', icon: PointIcon, path: '/pages/house-list/index' },
   { text: '活动列表', icon: PointIcon, path: '/pages/activity-list/index' },
@@ -119,7 +120,7 @@ const Index = () => {
           </View>
         ))}
       </View>
-      <View className="custom-bar">
+      <View className='custom-bar'>
         <CustomTabBar />
       </View>
     </View>
