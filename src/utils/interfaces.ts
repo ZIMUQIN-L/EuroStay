@@ -32,24 +32,27 @@ export interface UserItemProps {
 
 // 房源详情信息接口
 export interface HouseDetailItemProps {
-  _id: string; // 微信自动生成的_id，无法修改其名称
-  _openid: string;
+  accommodationType: number;
+  agreement: string;
+  availableDate: string[];
   capacity: number;
+  coinPerNight: number;
   description: string;
-  end_date: string; // 后期最好优化成日期格式
-  start_date: string; // 当前数据库名称是start_date和end_date, 或许可以先保持？
-  houseType: string;
-  images: string[];
+  desirableSeeker: string;
+  genderRequirement: number;
+  hostQuestion: string;
   location: string;
-  ownerTarget: string;
-  contact: string;
-  xhsContact: string;
-  houseSetting: { [key: string]: any };
-  houseSurrounding: { [key: string]: any };
-  preference: { [key: string]: any };
-  rating: number; //房源当前评分
-  ratingNumber: number; //房源当前评分数量
-  evaluationNumbers: { [key: string]: number }; // 房源的各项评分
+  media: string[];
+  oneSentence: string;
+  pid: number;
+  precautious: string;
+  propertyInterests: string[];
+  propertyTags: string[];
+  propertyType: number;
+  recommendedTimes: number;
+  title: string;
+  uid: number;
+  undesirableSeeker: string;
 }
 
 // 用户求宿数据接口
@@ -97,6 +100,81 @@ export interface HouseOwnerReplyMessageItemProps {
   accomMessageId: string;
 }
 
+//活动详情页
+export interface ActivityDetailProps {
+  active: boolean;
+  address: string;
+  applyFormId: string;
+  applyStatus: number;
+  capacity: number;
+  city: string;
+  contact: string;
+  createdAt: string;
+  description: string;
+  endTime: string;
+  helloMessage: string;
+  id: number;
+  images: string[];
+  official: boolean;
+  point: number;
+  price: number;
+  startTime: string;
+  tags: string[];
+  title: string;
+  uid: number;
+  updatedAt: string;
+  userShortInfoResponse: {
+    avatar: string;
+    cover: string;
+    gender: number;
+    tags: string[];
+    uid: number;
+    username: string;
+  };
+}
+
+//首页活动卡片
+export interface ActivityCardProps {
+  id: number;
+  uid: number;
+  active: boolean;
+  isCollection: boolean;
+  city: string;
+  official: boolean;
+  coin: number;
+  startTime: string;
+  endTime: string;
+  title: string;
+  images: string[];
+  tags: string[];
+  userShortInfoResponse: {
+    uid: number;
+    username: string;
+    avatar: string;
+    cover: string;
+    gender: number;
+    tags: string[];
+    genderStr: string;
+    mbti: string;
+    aboutMe: string;
+  };
+  createdAt: string;
+  updatedAt: string;
+}
+
+// 首页用户卡片
+export interface UserCardProps {
+  uid: number;
+  username: string;
+  avatar: string;
+  cover: string;
+  gender: number;
+  tags: string[];
+  genderStr: string;
+  mbti: string;
+  aboutMe: string;
+}
+
 // contact info structure
 export interface ContactInfo {
   phone?: string;
@@ -108,18 +186,24 @@ export interface ContactInfo {
  * 消息卡片--房源接口
  */
 export interface AccomMssageHouseItemProps {
-  _id: string; // 微信自动生成的_id，无法修改其名称
-  _openid: string;
-  capacity: number;
-  description: string;
-  end_date: string; // 后期最好优化成日期格式
-  start_date: string; // 当前数据库名称是start_date和end_date, 或许可以先保持？
-  houseType: string;
-  images: string[];
+  pid: number;
+  uid: number;
+  appUserAbstract: {
+    uid: number;
+    username: string;
+    avatar: string;
+    tags: string[];
+    aboutMe: string;
+  };
+  title: string;
+  cover: string;
+  coinsPerNight: number;
+  recommendedTimes: number;
   location: string;
-  ownerTarget: string;
-  contact: string;
-  xhsContact: string;
+  accommodationType: number;
+  propertyType: number;
+  isRecommended: boolean;
+  isCollection: boolean;
 }
 
 export interface UserRatingInfoItemProps {
@@ -155,23 +239,23 @@ export interface UserRatingInfoItemProps {
 export interface UserResult {
   aboutMe: string;
   avatar: string;
-  backgroundPic: string[];  // Array of strings (e.g., URLs for images)
+  backgroundPic: string[]; // Array of strings (e.g., URLs for images)
   birthday: string;
   countryVisited: string[]; // Array of strings (e.g., countries visited)
-  gender: number;           // Assuming 0 = unspecified, 1 = male, 2 = female, etc.
-  greenTag: string[];       // Array of tags for green (positive) categories
-  hobby: string[];          // Array of hobbies
+  gender: number; // Assuming 0 = unspecified, 1 = male, 2 = female, etc.
+  greenTag: string[]; // Array of tags for green (positive) categories
+  hobby: string[]; // Array of hobbies
   location: string;
   memorableStory: string;
   occupation: string;
-  redTag: string[];         // Array of tags for red (negative) categories
+  redTag: string[]; // Array of tags for red (negative) categories
   school: string;
-  tagStr: string[];         // Array of tags as strings
-  uid: number;              // User ID
+  tagStr: string[]; // Array of tags as strings
+  uid: number; // User ID
   username: string;
-  viewOwn: boolean;         // Whether the user is viewing their own profile
+  viewOwn: boolean; // Whether the user is viewing their own profile
   whySwap: string;
-  xhsContact: string;       // Contact information (e.g., a social handle)
+  xhsContact: string; // Contact information (e.g., a social handle)
 }
 
 export interface UserDetailInfoItemProps {
@@ -213,7 +297,6 @@ export interface MockUserDetailInfoItemProps {
   nickName: string; //用户名称 string
   avatarUrl: string; //用户头像 string
   aboutMe: { [key: string]: any };
-  
 }
 
 export interface ActivityInfoItemProps {
@@ -255,7 +338,6 @@ export interface ActivityApplicationItemProps {
   approval: boolean; // 主办方是否允许该用户参加，默认true
 }
 
-
 export interface ActivityApplicationItemDetailProps {
   _id: string; // 该条信息的id
   _openid: string; // 该条信息用户的openid
@@ -269,7 +351,6 @@ export interface ActivityApplicationItemDetailProps {
 
   applicantInfo: Record<string, any>; // 申请者的回答
   applicationTitle: string; // 活动的title
-
 }
 
 export interface EurostayApplicationDetailProps {
@@ -281,7 +362,7 @@ export interface EurostayApplicationDetailProps {
     [key: string]: string | number; // Index signature for dynamic keys with string or number values
   };
   title: string;
-};
+}
 
 export interface ActivityParticipantCombinedItemProps {
   _id: string; // 该条信息的id

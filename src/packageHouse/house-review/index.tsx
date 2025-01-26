@@ -58,39 +58,7 @@ const HouseReview = () => {
       <View className='house-detail-review'>
         <View className='overall-ratings'>
           <View className='average-ratings'>
-            {houseDetail?.rating?.toFixed(2)}
-          </View>
-          <View className='ratings-details'>
-            <View className='rating-container'>
-              <View className='rating-title'>描述相符</View>
-              <View className='rating-number'>
-                {houseDetail?.evaluationNumbers['desMatch']?.toFixed(2)}
-              </View>
-            </View>
-            <View className='rating-container'>
-              <View className='rating-title'>地理位置</View>
-              <View className='rating-number'>
-                {houseDetail?.evaluationNumbers['locationEval']?.toFixed(2)}
-              </View>
-            </View>
-            <View className='rating-container'>
-              <View className='rating-title'>清洁程度</View>
-              <View className='rating-number'>
-                {houseDetail?.evaluationNumbers['cleanEval']?.toFixed(2)}
-              </View>
-            </View>
-            <View className='rating-container'>
-              <View className='rating-title'>服务体验</View>
-              <View className='rating-number'>
-                {houseDetail?.evaluationNumbers['serviceEval']?.toFixed(2)}
-              </View>
-            </View>
-            <View className='rating-container'>
-              <View className='rating-title'>性价比</View>
-              <View className='rating-number'>
-                {houseDetail?.evaluationNumbers['pricePerformance']?.toFixed(2)}
-              </View>
-            </View>
+            <View className='recommend-times'>次</View>推荐
           </View>
         </View>
 
@@ -98,7 +66,6 @@ const HouseReview = () => {
           <View className='review-card-count'>
             {houseDetail?.ratingNumber}条评论
           </View>
-
           {ratingInfo &&
             ratingInfo.map((rating, index) => (
               <View className='review-card-container'>
@@ -126,7 +93,7 @@ const HouseReview = () => {
                     </View>
                   </View>
                   <View className='review-card-top-right'>
-                    <View className='stars'></View>
+                    <View className='stars'>推荐</View>
                     <View className='duration'>
                       {rating.start_date} - {rating.end_date}
                     </View>

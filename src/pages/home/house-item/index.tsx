@@ -5,17 +5,17 @@ import {
   UserItemProps,
   UserDetailInfoItemProps,
 } from '@utils/interfaces';
+import Like from '@assets/images/like.svg';
+import Liked from '@assets/images/liked.svg';
 import { DefaultHouse, DateIcon } from '@utils/cloudIcons';
 import { checkImageUrl } from '@utils/validationUtil';
 import { useState, useEffect } from 'react';
-import RequestCustomCard from '../../../packageUser/request-custom-card';
 import GlobalStore from '@store/GlobalStore';
 import { accomMessageAdd } from '@common/database/accomMessage/accomMessage';
-import { userInfoSearch } from '@common/database/user/user';
 import { LocationOutlined } from '@taroify/icons';
 import './index.scss';
-
 const HouseItem: React.FC<AccomMssageHouseItemProps> = house => {
+  const [isCollection, setIsCollection] = useState(house.isCollection);
   const [imageSrc, setImageSrc] = useState('');
   const [isModalOpen, setModalOpen] = useState(false);
   // if user want to share this message to board or not
@@ -34,18 +34,18 @@ const HouseItem: React.FC<AccomMssageHouseItemProps> = house => {
     useState<UserDetailInfoItemProps | null>(null);
 
   useEffect(() => {
-    const demoUser: UserItemProps = GlobalStore.userInfo;
-    setUser(demoUser);
-    userInfoSearch(house._openid).then(
-      (ownerInfo: UserDetailInfoItemProps[]) => {
-        setOwnerUserInfo(ownerInfo[0]);
-      },
-    );
-    const imageUrl =
-      house.images.length > 0 && checkImageUrl(house.images[0] as string)
-        ? house.images[0]
-        : DefaultHouse;
-    setImageSrc(imageUrl);
+    // const demoUser: UserItemProps = GlobalStore.userInfo;
+    // setUser(demoUser);
+    // userInfoSearch(house._openid).then(
+    //   (ownerInfo: UserDetailInfoItemProps[]) => {
+    //     setOwnerUserInfo(ownerInfo[0]);
+    //   },
+    // );
+    // const imageUrl =
+    //   house.images.length > 0 && checkImageUrl(house.images[0] as string)
+    //     ? house.images[0]
+    //     : DefaultHouse;
+    // setImageSrc(imageUrl);
     // handleSetTargetUserOpenid(house._openid);
   }, []);
 
@@ -168,7 +168,7 @@ const HouseItem: React.FC<AccomMssageHouseItemProps> = house => {
   // 跳转至房源详情
   const toHouseDetail = () => {
     Taro.navigateTo({
-      url: `../../packageHouse/house-detail/index?id=${house._id}`,
+      url: `../../packageHouse/house-detail/index?pid=${house.pid}`,
     });
   };
 
@@ -191,20 +191,81 @@ const HouseItem: React.FC<AccomMssageHouseItemProps> = house => {
     }
   };
 
+  const onClickLikeHouse = () => {
+    // const res = await POST('/app/property/addPropertyCollection', {
+    //   propertyId: house.pid,
+    //   uid: house.uid,
+    // });
+    console.log('res', 11);
+  };
+
   return (
     <View className='homepage-house-card' onClick={toHouseDetail}>
-      <View className='corner-label'>精品Host系列</View>
-      <View className='house-like'>收藏</View>
-      <Image src='' className='host-avatar' />
       <Image
-        src={imageSrc}
+        className='house-like'
+        src={isCollection ? Liked : Like}
+        onClick={e => {
+          e.stopPropagation();
+          if (!isCollection) {
+            Taro.request({
+              url: 'https://api.eurostay.co/app/property/addPropertyCollection',
+              method: 'POST',
+              data: {
+                propertyId: house.pid,
+                uid: house.uid,
+              },
+              header: {
+                'Content-Type': 'application/json',
+                token: GlobalStore.userInfo.token,
+              },
+            }).then(res => {
+              if (res.statusCode == 200) {
+                setIsCollection(true);
+              }
+            });
+          } else {
+            Taro.request({
+              url: 'https://api.eurostay.co/app/property/cancelPropertyCollection',
+              method: 'POST',
+              data: {
+                propertyId: house.pid,
+                uid: house.uid,
+              },
+              header: {
+                'Content-Type': 'application/json',
+                token: GlobalStore.userInfo.token,
+              },
+            }).then(res => {
+              if (res.statusCode == 200) {
+                setIsCollection(false);
+              }
+            });
+          }
+        }}
+      />
+      <Image
+        src={house.cover}
         className='house-image'
         mode='aspectFit'
         onError={handleImageError}
-      />
+      >
+        {house.isRecommended && (
+          <View className='corner-label'>精品Host系列</View>
+        )}
+
+        <View className='host-detail'>
+          <View className='host-tags'>
+            {house.appUserAbstract.tags.map(item => {
+              return <View className='host-tag'>{item}</View>;
+            })}
+          </View>
+          <View className='host-des'>{house.appUserAbstract.aboutMe}</View>
+          <Image src={house.appUserAbstract.avatar} className='host-avatar' />
+        </View>
+      </Image>
       <View className='house-content'>
-        <Text className='house-price'>旅行币/人</Text>
-        <Text className='title'>国家城市·房源名称</Text>
+        <Text className='house-price'>{house.coinsPerNight}旅行币/人</Text>
+        <Text className='title'>{house.title}</Text>
         {/* <View className='organizer'>
           <UserCircleOutlined className='icon' />
           <Image
@@ -215,96 +276,24 @@ const HouseItem: React.FC<AccomMssageHouseItemProps> = house => {
           />
           <Text>由 {sourceUser?.nickName} 发起</Text>
         </View> */}
-        <View className='house-des'>公寓30m2·1室1床1卫·1人·限女生</View>
-        <View className='house-time'>活动时间</View>
+        {/* <View className='house-des'>{house.location}</View> */}
+        {/* <View className='house-time'>活动时间</View> */}
         <View className='details'>
           <View className='detail-item'>
             <LocationOutlined className='icon' />
-            <Text>近鹿特丹</Text>
+            <Text>{house.location}</Text>
           </View>
+          {/* 暂时别删
           <View className='detail-item'>
             <Text>洗衣机</Text>
           </View>
-
-          {/* {activity.tags.map((tag, index) => (
+          {activity.tags.map((tag, index) => (
             <View className='detail-item'>
               <Text key={index}># {tag}</Text>
             </View>
           ))} */}
         </View>
       </View>
-      {/* <Image
-        src={imageSrc}
-        className='house-image'
-        onClick={toHouseDetail}
-        onError={handleImageError}
-      />
-
-      <View
-        style={{
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          marginTop: '10px',
-        }}
-      >
-        <View className='house-details'>
-          <View className='house-location'>
-            <Text>{house.location}</Text>
-          </View>
-          <View className='house-type'>
-            <Text>
-              {house.houseType !== 'unKnown' &&
-              house.houseType !== '' &&
-              house.houseType != undefined
-                ? ` - ${house.houseType}`
-                : ''}
-            </Text>
-          </View>
-          <View className='house-date' style={{ alignItems: 'center' }}>
-            <Image
-              src={DateIcon}
-              style={{ width: '17px', height: '17px', marginRight: '6px' }}
-            />
-            <Text style={{ color: '#979797', fontSize: '12px' }}>
-              {house.start_date + ' to ' + house.end_date}
-            </Text>
-          </View>
-        </View>
-        <View
-          style={{
-            backgroundColor: '#FFD111',
-            color: 'white',
-            width: '30%',
-            justifyContent: 'center',
-            height: '32px',
-            borderRadius: '32px',
-            display: 'flex',
-            alignItems: 'center',
-          }}
-          className='contact-button'
-          onClick={onCreateCustomCardFromTenant}
-        >
-          <Text style={{ fontSize: '14px' }}>联系房主</Text>
-        </View>
-      </View>
-      <View
-        style={{
-          borderBottom: '1px solid #ddd',
-          width: '100%',
-          marginTop: '10px',
-          marginBottom: '20px',
-        }}
-      ></View>
-      {isModalOpen && (
-        <RequestCustomCard
-          onClose={() => setModalOpen(false)}
-          onRequestDesEdit={handleRequestDesEdit}
-          onSendToggleEdit={handleSendToggleEdit}
-          onRequestInfoSelectionEdit={handleRequestInfoSelectionEdit}
-          onSubmitCard={handleSubmitRequestCustomCard}
-        ></RequestCustomCard>
-      )} */}
     </View>
   );
 };

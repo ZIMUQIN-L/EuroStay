@@ -36,11 +36,11 @@
   .corner-label {
     position: absolute;
     top: 25px; /* 距离图片顶部的距离 */
-    left: 15px; /* 距离图片左侧的距离 */
-    background-color: #fdd835; /* 标签背景色 */
+    left: 0px; /* 距离图片左侧的距离 */
+    background-color: #ffffff; /*背景色 */
     color: #333; /* 标签文字颜色 */
-    padding: 5px 10px; /* 内边距 */
-    border-radius: 10px; /* 圆角 */
+    padding: 5px 20px; /* 内边距 */
+    border-radius: 0px 10px 10px 0px; /* 圆角 */
     font-size: 24px;
     font-weight: bold;
     z-index: 1; /* 确保标签在图片之上 */

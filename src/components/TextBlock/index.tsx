@@ -2,12 +2,12 @@ import { View, Text, Image } from '@tarojs/components';
 import { HouseDetailItemProps } from '@utils/interfaces';
 import './index.scss';
 import { DateIcon, CapacityIcon, LocationIcon } from '@utils/cloudIcons';
-interface IProps {
-  title: string;
-  body?: string;
-}
+// interface IProps {
+//   title: string;
+//   body?: string | Element;
+// }
 
-const TextBlock = (props: IProps) => {
+const TextBlock = props => {
   return (
     <View className='text-block-wrap'>
       <View className='text-block-title'>{props.title}</View>

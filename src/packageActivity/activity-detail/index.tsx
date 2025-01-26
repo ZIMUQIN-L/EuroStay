@@ -1,4 +1,3 @@
-import React from 'react';
 import {
   View,
   Text,
@@ -11,6 +10,7 @@ import { useEffect, useState } from 'react';
 import './index.scss';
 import { useRouter } from '@tarojs/taro';
 import UserProfileCard from '@components/UserProfileCard';
+import Calendar from '@assets/images/calendar.svg';
 import {
   StarOutlined,
   LocationOutlined,
@@ -28,11 +28,9 @@ import {
 import {
   ActivityInfoItemProps,
   UserDetailInfoItemProps,
-  MockUserDetailInfoItemProps,
-  UserItemProps,
-  HouseDetailItemProps,
-  ActivityApplicationItemProps,
+  ActivityDetailProps,
 } from '@utils/interfaces';
+
 import { userInfoSearch } from '@common/database/user/user';
 import { houseDetailSearch } from '@common/database/house/house';
 import {
@@ -63,7 +61,7 @@ const fullContainerStyle = {
 const DetailPage = () => {
   const router = useRouter();
   const activityId = router?.params?.id;
-  const [activity, setActivity] = useState<ActivityInfoItemProps>();
+  // const [activity, setActivity] = useState<ActivityInfoItemProps>();
   const [hostInfo, setHostInfo] = useState<UserDetailInfoItemProps>(); //主办方信息
   const [applicable, setApplicable] = useState(false);
   const [currentUser, setCurrentUser] = useState<UserDetailInfoItemProps>();
@@ -76,6 +74,7 @@ const DetailPage = () => {
   const [houseIconDetail, setHouseIconDetail] = useState<{
     [key: string]: boolean;
   } | null>(null);
+  const [activity, setActivityDetail] = useState<ActivityDetailProps>();
 
   const RoomFacilities = [
     {
@@ -129,54 +128,68 @@ const DetailPage = () => {
   ];
 
   useEffect(() => {
-    const curUser = GlobalStore.userInfo;
-    userInfoSearch(curUser._openid).then(
-      (ownerInfo: UserDetailInfoItemProps[]) => {
-        setCurrentUser(ownerInfo[0]);
+    Taro.request({
+      url: `https://api.eurostay.co/app/activity/getActivityDetail?id=${activityId}`,
+      method: 'GET',
+      header: {
+        'Content-Type': 'application/json',
+        token: GlobalStore.userInfo.token,
       },
-    );
-    activityDetailSearch(activityId).then((res: ActivityInfoItemProps) => {
-      setActivity(res);
-      console.log('activity::::', res);
-      userInfoSearch(res._openid).then(
-        (userInfoRes: UserDetailInfoItemProps[]) => {
-          setHostInfo(userInfoRes[0]);
-        },
-      );
-
-      if (res.houseInfoDetail) {
-        setHouseInfoDetail(res.houseInfoDetail);
-      }
-
-      if (res.houseIconDetail) {
-        setHouseIconDetail(res.houseIconDetail);
-      }
-
-      activityContainUser(activityId, GlobalStore.userInfo._openid).then(
-        (items: ActivityApplicationItemProps[]) => {
-          if (items.length == 0) {
-            setApplicable(true);
-          }
-        },
-      );
-
-      // 判断是否有 premiumHost 并获取其信息
-      if (res.hostInfo) {
-        setPremiumHost(res.hostInfo as MockUserDetailInfoItemProps); // 确保类型匹配o
-      } else if (res.premiumHost) {
-        userInfoSearch(res.premiumHost).then(
-          (ownerInfo: UserDetailInfoItemProps[]) => {
-            if (ownerInfo && ownerInfo.length > 0) {
-              setPremiumHost(ownerInfo[0]);
-            } else {
-              setPremiumHost(null); // 如果没有返回有效的数据，设置为空
-            }
-          },
-        );
-      } else {
-        setPremiumHost(null); // 如果没有 hostInfo 和 premiumHost，设置为空
-      }
-    });
+    })
+      .then(res => {
+        if (res.statusCode == 200) {
+          setActivityDetail(res.data.result);
+          // setHouseList(res.data.result.data);
+        }
+      })
+      .catch(err => {
+        console.error('Request failed');
+        return 1;
+      });
+    // const curUser = GlobalStore.userInfo;
+    // userInfoSearch(curUser._openid).then(
+    //   (ownerInfo: UserDetailInfoItemProps[]) => {
+    //     setCurrentUser(ownerInfo[0]);
+    //   },
+    // );
+    // activityDetailSearch(activityId).then((res: ActivityInfoItemProps) => {
+    //   setActivity(res);
+    //   console.log('activity::::', res);
+    //   userInfoSearch(res._openid).then(
+    //     (userInfoRes: UserDetailInfoItemProps[]) => {
+    //       setHostInfo(userInfoRes[0]);
+    //     },
+    //   );
+    //   if (res.houseInfoDetail) {
+    //     setHouseInfoDetail(res.houseInfoDetail);
+    //   }
+    //   if (res.houseIconDetail) {
+    //     setHouseIconDetail(res.houseIconDetail);
+    //   }
+    //   activityContainUser(activityId, GlobalStore.userInfo._openid).then(
+    //     (items: ActivityApplicationItemProps[]) => {
+    //       if (items.length == 0) {
+    //         setApplicable(true);
+    //       }
+    //     },
+    //   );
+    //   // 判断是否有 premiumHost 并获取其信息
+    //   if (res.hostInfo) {
+    //     setPremiumHost(res.hostInfo as MockUserDetailInfoItemProps); // 确保类型匹配o
+    //   } else if (res.premiumHost) {
+    //     userInfoSearch(res.premiumHost).then(
+    //       (ownerInfo: UserDetailInfoItemProps[]) => {
+    //         if (ownerInfo && ownerInfo.length > 0) {
+    //           setPremiumHost(ownerInfo[0]);
+    //         } else {
+    //           setPremiumHost(null); // 如果没有返回有效的数据，设置为空
+    //         }
+    //       },
+    //     );
+    //   } else {
+    //     setPremiumHost(null); // 如果没有 hostInfo 和 premiumHost，设置为空
+    //   }
+    // });
   }, []);
 
   const handleClickHostAvatar = () => {
@@ -258,18 +271,24 @@ const DetailPage = () => {
       </View>
       <View className='activity-summary-wrap'>
         <View className='activity-summary-left'>
-          <View className='activity-summary-title'>活动名称</View>
-          <View className='activity-summary-location'>国家城市·具体地址</View>
-          <View className='activity-summary-des'>1室1床1卫·1人·限女生</View>
+          <View className='activity-summary-title'>{activity?.title}</View>
+          <View className='activity-summary-location'>{activity?.address}</View>
+          <View className='activity-summary-time'>
+            <Image src={Calendar} className='time-pic' /> {activity?.startTime}
+          </View>
         </View>
       </View>
+      <TextBlock title='活动内容' body={activity?.description} />
       <TextBlock
-        title='房源描述'
-        body='详情介绍：两室一卫一厅、与人合租，地理位置好极了！该房源位于米兰理工Bovisa校区附近，交通便利，离中央火车站20min公交！周围有中超和Lidl～'
+        title='包含项目'
+        body={
+          <View className='activity-item-wrapper'>
+            {activity?.tags.map(item => {
+              return <View className='activity-item'>{item}</View>;
+            })}
+          </View>
+        }
       />
-      <TextBlock title='房源亮点与设施' />
-      <TextBlock title='房源位置' />
-      <TextBlock title='住客评价' />
       <ActivityContact />
       {/* <HouseTexts {...houseDetail} /> */}
       {/* <RoomDetailInfo

@@ -155,8 +155,17 @@
         width: 100px;
         height: 100px;
         border-radius: 10px;
-        background-color: #d6d6d6;
+        // background-color: #d6d6d6;
         margin-bottom: 5px;
+      }
+      .border {
+        margin-top: 20px;
+        width: 80px;
+        height: 5px;
+        &.active {
+          background-color: #7a73ff;
+        }
+        border-radius: 2px;
       }
     }
   }

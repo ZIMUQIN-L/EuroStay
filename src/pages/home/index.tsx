@@ -81,14 +81,14 @@ const Index = () => {
           <Text>求宿</Text>
         </View>
       </View> */}
-      <View
+      {/* <View
         className='add-button'
         onClick={() => {
           handleClickAddBtn();
         }}
       >
         <Image src={PostButton}></Image>
-      </View>
+      </View> */}
       <View className='search-area'>
         {activeTab === 'houses' ? <Houses /> : <SeekingAccommodation />}
       </View>

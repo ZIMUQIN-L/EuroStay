@@ -2,7 +2,7 @@
   background-color: #ffffff;
   display: flex;
   justify-content: space-between;
-  padding: 30px 50px;
+  padding: 30px 30px;
   align-items: center;
   .house-summary-left {
     .house-summary-title {
@@ -14,6 +14,7 @@
       font-size: 24px;
       color: #191919;
       margin-bottom: 5px;
+      margin-top: 10px;
     }
     .house-summary-des {
       font-size: 24px;
@@ -24,8 +25,17 @@
     padding: 20px 18px;
     border-radius: 10px;
     height: 100px;
-    width: 170px;
-    background-color: #f2f2f2;
+    // width: 170px;
+    background-color: #eceaff;
+    .house-summary-reviews-des {
+      color: #7f00ff;
+    }
+    .house-summary-reviews-ratings {
+      background-color: #443aff;
+      color: white;
+      margin-left: 10px;
+    }
+
     .house-summary-reviews-top {
       font-size: 28px;
       display: flex;
