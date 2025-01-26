@@ -14,9 +14,9 @@ interface TravelData {
   startDate: string;       // 开始日期
   endDate: string;         // 结束日期
   status: string;          // 状态，如“待评价”，“已完成”
-  type: '求宿' | '供宿' | '活动';  // 旅行类型
+  type: String  // 旅行类型
   cost: number;            // 成本
-  description: string;     // 描述
+//   description: string;     // 描述
   isActive: boolean;       // 是否正在进行
   reviewed: boolean;       // 是否已经发布评价
   duration: string;

@@ -81,7 +81,7 @@ const Index = () => {
                     Taro.request({
                       url: 'https://api.eurostay.co/app/esuser/devLogin',
                       method: 'POST',
-                      data: 'uid=2',
+                      data: 'uid=1',
                       header: {
                         'Content-Type': 'application/x-www-form-urlencoded'
                       }
