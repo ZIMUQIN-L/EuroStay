@@ -4,99 +4,95 @@ import TravelCard from '@components/TravelCard';
 import './index.scss';
 import Taro from '@tarojs/taro';
 import CustomTabBar from '@components/CustomTabBar';
+import GlobalStore from '@store/GlobalStore';
+
+interface TravelData {
+  _id: string;
+  type: string;
+  image: string;
+  title: string;
+  location: string;
+  startDate: string;
+  endDate: string;
+  status: string;
+  cost: number;
+  isActive: boolean;
+  reviewed: boolean;
+  hostname: string;
+  duration: string;
+}
 
 const TravelPage: React.FC = () => {
   const [travels, setTravels] = useState<TravelData[]>([]);
 
+  // 添加日期处理函数
+  const formatDate = (dateString: string) => {
+    return dateString.split(' ')[0];
+  };
+
+  const calculateDuration = (startDate: string, endDate: string) => {
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+    const diffTime = Math.abs(end.getTime() - start.getTime());
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    return `${diffDays}天`;
+  };
+
   useEffect(() => {
-    // Simulate data fetching
     const fetchTravels = async () => {
-      const data: TravelData[] = [
-        {
-          _id: '1',
-          type: '求宿',
-          image: 'path/to/image1.jpg',
-          title: '米兰之旅',
-          location: '米兰',
-          startDate: '2024-10-20',
-          endDate: '2024-10-22',
-          status: '待评价',
-          cost: 500,
-          description: '享受意大利风情。',
-          isActive: true,
-          reviewed: false,
-          hostname: '意大利风情小屋', // 新增字段：主办方
-          duration: '2天',
-        },
-        {
-          _id: '2',
-          type: '供宿',
-          image: 'path/to/image2.jpg',
-          title: '罗马之旅',
-          location: '罗马',
-          startDate: '2024-11-01',
-          endDate: '2024-11-05',
-          status: '已完成',
-          cost: 300,
-          description: '体验古罗马的魅力。',
-          isActive: false,
-          reviewed: false,
-          hostname: '罗马遗迹之家', // 新增字段：主办方
-          duration: '2天',
-        },
-        {
-          _id: '3',
-          type: '活动',
-          image: 'path/to/image3.jpg',
-          title: '威尼斯狂欢节',
-          location: '威尼斯',
-          startDate: '2024-02-10',
-          endDate: '2024-02-12',
-          status: '进行中',
-          cost: 200,
-          description: '参与盛大的狂欢节庆典。',
-          isActive: false,
-          reviewed: true,
-          hostname: '威尼斯狂欢活动组', // 新增字段：主办方
-          duration: '2天'
-        },
-        {
-          _id: '4',
-          type: '活动',
-          image: 'path/to/image3.jpg',
-          title: '威d尼斯狂欢节',
-          location: '威d尼斯',
-          startDate: '2024-02-10',
-          endDate: '2024-02-12',
-          status: '进行中',
-          cost: 200,
-          description: '参与盛节庆典。',
-          isActive: true,
-          reviewed: true,
-          hostname: '威尼', // 新增字段：主办方
-          duration: '2天'
-        },
-      ];
-      setTravels(data);
+      try {
+        const res = await Taro.request({
+          url: 'https://api.eurostay.co/app/esuser/myGuestList?page=1',
+          method: 'POST',
+          data: {},
+          header: {
+            'Content-Type': 'application/json',
+            token: GlobalStore.userInfo.token,
+          },
+        });
+
+        if (res.statusCode === 200 && res.data.code === 0) {
+          const transformedData = res.data.result.data.map(item => ({
+            _id: item.id.toString(),
+            type: '房源', 
+            image: item.cover,
+            title: item.title,
+            location: item.location || '',
+            startDate: formatDate(item.startDate),
+            endDate: formatDate(item.endDate),
+            status: item.status === 1 ? '进行中' : 
+                   item.status === 2 ? '已完成' : '已评价',
+            cost: item.costedCoins,
+            isActive: item.status === 1,
+            reviewed: item.status === 3,
+            hostname: item.hostInfo.username,
+            duration: calculateDuration(item.startDate, item.endDate)
+          }));
+
+          setTravels(transformedData);
+        }
+      } catch (error) {
+        console.error('Failed to fetch travel list:', error);
+      }
     };
 
     fetchTravels();
   }, []);
-  console.log('Travels:', travels);
+
   const handleReview = (id: string) => {
     Taro.navigateTo({
       url: `../../packageUser/review-on-house/index?id=${id}`,
     });
   };
 
-  const navigateToDetail = (id: string, reviewed: string, isActive: boolean) => {
+  const navigateToDetail = (id: string, reviewed: boolean, isActive: boolean) => {
     if (reviewed) {
       Taro.navigateTo({
-        url: `/packageUser/travel-detail/index?id=${id}&reviewed=${reviewed}&isActive=${isActive}`, // 替换为目标页面的路径
+        url: `/packageUser/travel-detail/index?id=${id}&reviewed=${reviewed}&isActive=${isActive}`,
       });
     } else {
       Taro.navigateTo({
-        url: `/packageUser/travel-detail/index?id=${id}&isActive=${isActive}`, // 替换为目标页面的路径
+        url: `/packageUser/travel-detail/index?id=${id}&isActive=${isActive}`,
       });
     }
   };
