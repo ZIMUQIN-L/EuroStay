@@ -112,6 +112,48 @@ const HouseContact: React.FC<HouseDetailItemProps> = house => {
         ownerUserInfo?.avatarUrl,
       ).then(msg => {
         setModalOpen(false);
+        console.log("建立 WebSocket 连接 发送request message");
+        // 建立 WebSocket 连接
+        const token = GlobalStore.userInfo.token; // 替换为实际的 token
+        Taro.connectSocket({
+          url: `wss://api.eurostay.co/app/essocket/${token}`,
+          header: {
+            'content-type': 'application/json', // 根据实际需要设置头部
+          },
+        })
+          .then((socketTask) => {
+            socketTask.onOpen(() => {
+              console.log('WebSocket 已连接');
+
+              // 连接成功后发送消息
+              const requestMessage = {
+                type: 'request',
+                data: {
+                  toUid: 3, // 替换为实际的用户ID
+                  subjectId: 5, // 替换为实际的主题ID
+                  content: 'example new request', // 替换为实际的请求内容
+                },
+              };
+              socketTask.send({
+                data: JSON.stringify(requestMessage),
+              });
+            });
+        
+            socketTask.onMessage((message) => {
+              console.log('收到消息:', message);
+            });
+        
+            socketTask.onError((error) => {
+              console.error('WebSocket 错误:', error);
+            });
+        
+            socketTask.onClose(() => {
+              console.log('WebSocket 已关闭');
+            });
+          })
+          .catch((error) => {
+            console.error('WebSocket 连接失败:', error);
+          });
       });
       if (shareToggle) {
         accomMessageAdd(
