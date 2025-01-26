@@ -16,25 +16,40 @@ const MessagesPage: React.FC = () => {
           id: '1',
           title: '佳雪',
           status: '等待host通过',
+          type: 'private',
           timestamp: '17:09',
           description: '我：发送了一个入住申请',
           dateAndLocation: '12.23-12.25·巴黎市中心公寓近地铁',
+          isNew: true,
         },
         {
           id: '2',
           title: '速食主义',
           status: 'host已通过',
+          type: 'private',
           timestamp: '17:01',
           description: '已通过您的入住申请，请确认预定',
           dateAndLocation: '12.05-12.08·那不勒斯老城区公寓',
+          isNew: true,
         },
         {
           id: '3',
           title: '年糕',
           status: '已关闭',
+          type: 'private',
           timestamp: '10-17',
           description: 'host未通过，交易已关闭',
           dateAndLocation: '12.23-12.25·巴黎市中心公寓近地铁',
+          isNew: true,
+        },
+        {
+          id: '4',
+          title: '探险家协会',
+          status: '已关闭',
+          type: 'system',
+          timestamp: '10-17',
+          description: '您的探险家登记提升啦',
+          isNew: false,
         },
       ];
       setMessages(data);
@@ -79,6 +94,8 @@ const MessagesPage: React.FC = () => {
             dateAndLocation={message.dateAndLocation}
             onClick={() => handleCardClick(message.id)}
             imageSrc="test"
+            type={message.type}
+            isNew={message.isNew}
           />
         ))}
       </View>
