@@ -1,141 +1,182 @@
 import { View, Text, Button, Image } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import React, { useState, useEffect } from 'react';
-import { UserDetailInfoItemProps, UserItemProps } from '@utils/interfaces';
 import './index.scss';
-import { userInfoSearch } from '@common/database/user/user';
 import bell from '@assets/images/bell.svg';
 import CustomTabBar from '@components/CustomTabBar';
+import GlobalStore from '@store/GlobalStore';
+
+interface TravelDetailData {
+  id: number;
+  propertyId: number;
+  applicationId: number;
+  hostInfo: {
+    uid: number;
+    username: string;
+    avatar: string;
+    cover: string;
+    gender: number;
+    tags: string[];
+    genderStr: string;
+    mbti: string;
+    aboutMe: string;
+  };
+  guestInfo: {
+    uid: number;
+    username: string;
+    avatar: string;
+    cover: string;
+    gender: number;
+    tags: string[];
+    genderStr: string;
+    mbti: string;
+    aboutMe: string;
+  };
+  startDate: string;
+  endDate: string;
+  title: string;
+  cover: string;
+  status: number;
+  costedCoins: number;
+  location: string;
+  agreement: string | null;
+}
 
 const TravelDetail = () => {
-
-  const [userDetailInfo, setUserDetailInfo] =
-    useState<UserDetailInfoItemProps>();
+  const [travelDetail, setTravelDetail] = useState<TravelDetailData | null>(null);
   const [reviewed, setReviewed] = useState<boolean | null>(null);
   const [isActive, setIsActive] = useState<boolean | null>(null);
-  const [itemId, setItemId] = useState<string | null>(null);
+
   useEffect(() => {
-
-    // 获取 URL 参数
     const params = Taro.getCurrentInstance().router?.params;
+    const id = params?.id;
     const reviewedParam = params?.reviewed === 'true';
-    const isActiveParam = params?.isActive === 'true'; // 将字符串转换为布尔值
+    const isActiveParam = params?.isActive === 'true';
 
-    // 设置状态
     setReviewed(reviewedParam);
     setIsActive(isActiveParam);
-    console.log("27", params)
 
+    // 获取详情数据
+    const fetchTravelDetail = async () => {
+      try {
+        const res = await Taro.request({
+          url: `https://api.eurostay.co/app/esuser/myTravelInfo`,
+          method: 'POST',
+          data: {
+            id: id,
+            type: 0,
+          },
+          header: {
+            'Content-Type': 'application/json',
+            token: GlobalStore.userInfo.token,
+          },
+        });
+        console.log(res);
+        if (res.statusCode === 200) {
+          setTravelDetail(res.data);
+        }
+      } catch (error) {
+        console.error('Failed to fetch travel detail:', error);
+      }
+    };
 
-    userInfoSearch('op4AH7ZoGt92dlbDy3MD90iIhcOI').then((ownerInfo: UserDetailInfoItemProps[]) => {
-      setUserDetailInfo(ownerInfo[0]);
-    });
+    if (id) {
+      fetchTravelDetail();
+    }
   }, []);
+
+  if (!travelDetail) {
+    return <View>Loading...</View>;
+  }
+
+  // 计算天数
+  const calculateDuration = () => {
+    const start = new Date(travelDetail.startDate);
+    const end = new Date(travelDetail.endDate);
+    const diffTime = Math.abs(end.getTime() - start.getTime());
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    return `${diffDays}天`;
+  };
+
+  // 格式化日期
+  const formatDate = (dateString: string) => {
+    return dateString.split(' ')[0];
+  };
 
   return (
     <View className="travel-detail">
-      {/* Header Section */}
       <View className="header-section">
         <Image
-          src="path/to/room-image.jpg" // 替换为实际图片路径
+          src={travelDetail.cover}
           className="header-image"
         />
-      <View className="header-content">
-        <View className="text-content">
-          <Text className="travel-title">巴黎近地铁小公寓</Text>
-          <Text className="travel-location">意大利 · 佛罗伦萨</Text>
-          <Text className="travel-dates">7天 · 2024.05.02 - 2024.05.10</Text>
-        </View>
-        <View className="alert-icon">
-          <Image
-            src={bell} // 替换为实际警钟图标路径
-            className="bell-icon"
-          />
-        </View>
-      </View>
-      </View>
-
-      {/* Host Information Section */}
-      <View className="host-section">
-      <View className="host-info">
-        <Text className="hosted-by">Hosted by Nana</Text>
-        <View className="contact-host" onClick={() => console.log('Contact Host')}>
-          <Text className="contact-text">联系host</Text>
-          <Text className="arrow-icon">›</Text>
-        </View>
-      </View>
-
-      <View className="host-description">
-        <View className="profile-header">
-          {/* 头像 */}
-          <Image
-            src={userDetailInfo?.avatarUrl || "/default-avatar.png"}
-            className="profile-image"
-          />
-          {/* 用户信息 */}
-          <View className="info">
-            {/* 用户名 */}
-            <Text className="profile-name">
-              {userDetailInfo?.nickName || "未知用户"}
-              <Text className="badge">认证</Text>
-              <Text className="last-online">5min前在线</Text>
+        <View className="header-content">
+          <View className="text-content">
+            <Text className="travel-title">{travelDetail.title}</Text>
+            <Text className="travel-location">{travelDetail.location}</Text>
+            <Text className="travel-dates">
+              {calculateDuration()} · {formatDate(travelDetail.startDate)} - {formatDate(travelDetail.endDate)}
             </Text>
-
-            {/* 徽章 */}
-            <View className="badges">
-              <Text className="badge-item">⛺ 超级Host</Text>
-              <Text className="badge-item">🏠 换宿x次</Text>
-              <Text className="badge-item">🏆 活动x次</Text>
-              <Text className="badge-item">💰 打赏x次</Text>
-            </View>
-
-            {/* 标签 */}
-            <View className="tags">
-              <Text className="tag-item">西班牙Valencia</Text>
-              <Text className="tag-item">INTP</Text>
-              <Text className="tag-item">🙋‍♀️ 天蝎座</Text>
-              <Text className="tag-item">🌍 环球冒险家</Text>
-              <Text className="tag-item">📷 摄影爱好者</Text>
-              <Text className="tag-item">👩‍🍳 厨神</Text>
-            </View>
+          </View>
+          <View className="alert-icon">
+            <Image src={bell} className="bell-icon" />
           </View>
         </View>
-        <View className="divider" />
-        {/* 自我介绍 */}
-        <View className="self-intro">
-          <Text className="intro-quote">
-            “Hello，欢迎来瓦伦西亚找我玩，住我家！如果有更长的自我介绍就继续写。。。。”
-          </Text>
+      </View>
+
+      <View className="host-section">
+        <View className="host-info">
+          <Text className="hosted-by">Hosted by {travelDetail.hostInfo.username}</Text>
+          <View className="contact-host" onClick={() => console.log('Contact Host')}>
+            <Text className="contact-text">联系host</Text>
+            <Text className="arrow-icon">›</Text>
+          </View>
         </View>
 
+        <View className="host-description">
+          <View className="profile-header">
+            <Image
+              className="profile-image"
+              src={travelDetail.hostInfo.avatar}
+              mode="aspectFill"
+            />
+            <View className="profile-info">
+              <Text className="profile-name">{travelDetail.hostInfo.username}</Text>
+              <View className="badges">
+                <Text className="badge-item">⛺ 超级Host</Text>
+                <Text className="badge-item">🏠 换宿x次</Text>
+                <Text className="badge-item">🏆 活动x次</Text>
+                <Text className="badge-item">💰 打赏x次</Text>
+              </View>
+              <View className="tags">
+                {travelDetail.hostInfo.tags.map((tag, index) => (
+                  <Text key={index} className="tag-item">{tag}</Text>
+                ))}
+                <Text className="tag-item">{travelDetail.hostInfo.mbti}</Text>
+                <Text className="tag-item">{travelDetail.hostInfo.genderStr}</Text>
+              </View>
+            </View>
+          </View>
+
+          <View className="divider" />
+          <View className="self-intro">
+            <Text className="intro-quote">"{travelDetail.hostInfo.aboutMe}"</Text>
+          </View>
+        </View>
       </View>
 
-      </View>
-
-      <View className="travel-detail-diverse">
-      {/* 根据 isActive 和 reviewId 动态渲染内容 */}
+      {/* 其他部分的条件渲染保持不变 */}
       {isActive ? (
         <>
-          {/* Agreement Section */}
           <View className="agreement-section">
             <Text className="agreement-title">入住公约</Text>
             <Text className="agreement-details">
-              禁止吸烟或宠物，不允许举办聚会和保有安静时间（如22:00 - 8:00）。
+              {travelDetail.agreement || '暂无入住公约'}
             </Text>
-          </View>
-
-          {/* Address Section */}
-          <View className="address-section">
-            <Text className="address-title">详细地址</Text>
-            <Text className="address-details">Harmennestet 20地址行 城市，国家</Text>
-            <View className="map-placeholder">
-              <Image src="path/to/map-image.png" className="map-image" />
-            </View>
           </View>
         </>
       ) : reviewed ? (
         <>
-          {/* 我的评价板块 */}
           <View className="review-section">
             <Text className="review-title">我的评价</Text>
             <View className="review-card">
@@ -144,44 +185,27 @@ const TravelDetail = () => {
               </Text>
             </View>
           </View>
-
-          {/* 预定信息板块 */}
-          <View className="reservation-section">
-            <Text className="reservation-title">预定信息</Text>
-            <Text className="reservation-details">
-              预定日期：2024-05-01 至 2024-05-07
-            </Text>
-          </View>
         </>
       ) : (
         <>
-          {/* 我的评价板块（按钮） */}
           <View className="review-section">
             <Text className="review-title">我的评价</Text>
             <Button
               className="review-button"
-              onClick={() => Taro.navigateTo({ url: `../../packageUser/review-on-house/index?id='itemId'` })}
+              onClick={() => Taro.navigateTo({ 
+                url: `/packageUser/review-on-house/index?id=${travelDetail.propertyId}` 
+              })}
             >
               还未发布评价, 去评价
             </Button>
           </View>
-
-          {/* 预定信息板块 */}
-          <View className="reservation-section">
-            <Text className="reservation-title">预定信息</Text>
-            <Text className="reservation-details">
-              预定日期：2024-05-01 至 2024-05-07
-            </Text>
-          </View>
         </>
       )}
-    </View>
 
-      {/* Contact Section */}
-      <View className="contact-section">
-        <Text className="contact-title">联系客服</Text>
-        <Text className="contact-details">
-          请发送邮件至 XXX@XXX.com 联系我们。
+      <View className="reservation-section">
+        <Text className="reservation-title">预定信息</Text>
+        <Text className="reservation-details">
+          预定日期：{formatDate(travelDetail.startDate)} 至 {formatDate(travelDetail.endDate)}
         </Text>
       </View>
 
