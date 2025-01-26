@@ -1,125 +1,141 @@
 .card {
   display: flex;
-  flex-direction: row; /* 图片和主内容横向排列 */
-  background-color: #fff;
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
+  flex-direction: row;
+  background: #FFFFFF;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
   margin-bottom: 16px;
-  padding: 12px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.image-section {
-  flex: 1; /* 图片部分占据左侧固定比例 */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-right: 12px; /* 与主内容部分的间距 */
-}
-
-.image-style {
-  width: 150px; /* 设置图片大小 */
-  height: 150px;
-  object-fit: cover;
-  border-radius: 10%; /* 设置圆角图片 */
-}
-
-.image-fallback {
-  width: 150px;
-  height: 150px;
-  background-color: #f0f0f0;
-  border-radius: 10%; /* 设置圆角占位符 */
+  padding: 16px;
+  height: 160px;
 }
 
 .main-content {
-  flex: 4; /* 主内容部分占据剩余空间 */
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+  width: 100%;
+  gap: 16px;
+}
+
+.image-section {
+  flex-shrink: 0;
+  width: 130px;
+  height: 130px;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.image-style {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.image-fallback {
+  width: 100%;
+  height: 100%;
+  background-color: #f5f5f5;
+  border-radius: 8px;
 }
 
 .left-section {
-  flex: 4; /* 左侧内容部分 */
+  flex: 1;
   display: flex;
   flex-direction: column;
-}
-
-.right-section {
-  flex: 1; /* 右侧内容部分 */
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-end;
+  justify-content: space-between;
+  max-width: calc(100% - 130px - 160px);
 }
 
 .header {
-  display: flex;
-  flex-direction: column; /* 将内容排列为纵向 */
-  margin-bottom: 8px; /* 为下方内容添加间距 */
-}
-
-.title {
-  font-size: 26px; /* 大标题字体 */
-  font-weight: bold;
-}
-
-.column{
-  display: flex;
-  flex-direction: column; /* 将内容排列为纵向 */
-  margin-bottom: 8px; /* 为下方内容添加间距 */
-}
-
-.hostname {
-  font-size: 26px; /* 默认字体大小 */
-}
-
-.details,
-.cost,
-.status {
-  font-size: 20px; /* 灰色字体设置为 20px */
-  color: #666;
   margin-bottom: 4px;
 }
 
+.title {
+  font-size: 28px;
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 4px;
+  line-height: 1.3;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 160px;
+  width: 100%;
+}
+
+.title-multiline {
+  font-size: 28px;
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 4px;
+  line-height: 1.3;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.hostname {
+  font-size: 26px;
+  color: #666;
+}
+
+.column {
+  margin-top: 8px;
+}
+
+.details {
+  font-size: 24px;
+  color: #999;
+  margin-bottom: 4px;
+}
+
+.cost {
+  font-size: 24px;
+  color: #999;
+}
+
+.right-section {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding-left: 16px;
+  width: 120px;
+  flex-shrink: 0;
+}
+
 .type-pill {
-  display: inline-block; /* 使其成为内联块状元素 */
-  font-size: 26px; /* 字体大小 */
-  font-weight: bold; /* 加粗 */
-  color: #7A73FF; /* 文本颜色为白色 */
-  background-color: #7a73ff2d; /* 背景颜色 */
-  padding: 6px 12px; /* 内边距，控制高度和宽度 */
-  border-radius: 999px; /* 圆角，形成胶囊形 */
-  text-align: center; /* 居中对齐 */
-  margin-bottom: 8px; /* 与下方内容保持间距 */
+  font-size: 24px;
+  color: #6B63B9;
+  background: rgba(107, 99, 185, 0.1);
+  padding: 4px 12px;
+  border-radius: 20px;
+  white-space: nowrap;
+  text-align: center;
+  min-width: fit-content;
 }
 
 .reply-button {
-  display: flex; /* 使用 Flex 布局 */
-  align-items: center; /* 垂直居中 */
-  justify-content: flex-start; /* 左对齐 */
-  font-size: 26px; /* 字体大小 */
-  color: #7b69ee; /* 按钮文字的颜色，紫色 */
-  cursor: pointer; /* 鼠标变为点击手型 */
-  margin-top: 8px; /* 与其他内容保持间距 */
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: auto;
 }
 
 .reply-text {
-  font-size: 26px; /* 字体大小 */
-  color: #7b69ee; /* 按钮文字的颜色 */
-}
-
-.bell-container {
-  width: 50px; /* 圆形容器的宽度 */
-  height: 50px; /* 圆形容器的高度 */
-  background: #F300000D; /* 背景颜色 */
-  border-radius: 50%; /* 圆形背景 */
-  display: flex; /* 使用 Flex 布局 */
-  align-items: center; /* 图标垂直居中 */
-  justify-content: center; /* 图标水平居中 */
+  font-size: 24px;
+  color: #666;
 }
 
 .arrow-icon {
-  font-size: 30px; /* 箭头大小稍大 */
-  color: #7b69ee; /* 箭头颜色 */
-  margin-left: 4px; /* 与文字保持间距 */
+  font-size: 24px;
+  color: #666;
+}
+
+.bell-container {
+  padding: 8px;
+  background: rgba(107, 99, 185, 0.1);
+  border-radius: 50%;
 }

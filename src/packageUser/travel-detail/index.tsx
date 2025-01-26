@@ -103,6 +103,11 @@ const TravelDetail = () => {
     return dateString.split(' ')[0];
   };
 
+  // 添加预定编号格式化函数
+  const formatOrderId = (id: number) => {
+    return id.toString().padStart(16, '0');
+  };
+
   return (
     <View className="travel-detail">
       <View className="header-section">
@@ -142,25 +147,25 @@ const TravelDetail = () => {
             />
             <View className="profile-info">
               <Text className="profile-name">{travelDetail.hostInfo.username}</Text>
-              <View className="badges">
+              {/* <View className="badges">
                 <Text className="badge-item">⛺ 超级Host</Text>
                 <Text className="badge-item">🏠 换宿x次</Text>
                 <Text className="badge-item">🏆 活动x次</Text>
                 <Text className="badge-item">💰 打赏x次</Text>
-              </View>
+              </View> */}
               <View className="tags">
+                <Text className="tag-item">{travelDetail.hostInfo.genderStr}</Text>
+                <Text className="tag-item">{travelDetail.hostInfo.mbti}</Text>
                 {travelDetail.hostInfo.tags.map((tag, index) => (
                   <Text key={index} className="tag-item">{tag}</Text>
                 ))}
-                <Text className="tag-item">{travelDetail.hostInfo.mbti}</Text>
-                <Text className="tag-item">{travelDetail.hostInfo.genderStr}</Text>
               </View>
             </View>
           </View>
 
           <View className="divider" />
           <View className="self-intro">
-            <Text className="intro-quote">"{travelDetail.hostInfo.aboutMe}"</Text>
+            <Text className="intro-quote">{travelDetail.hostInfo.aboutMe}</Text>
           </View>
         </View>
       </View>
@@ -204,8 +209,26 @@ const TravelDetail = () => {
 
       <View className="reservation-section">
         <Text className="reservation-title">预定信息</Text>
-        <Text className="reservation-details">
-          预定日期：{formatDate(travelDetail.startDate)} 至 {formatDate(travelDetail.endDate)}
+        <View className="reservation-details">
+          <View className="reservation-item">
+            <Text className="item-label">预定编号：</Text>
+            <Text className="item-value">{formatOrderId(travelDetail.id)}</Text>
+          </View>
+          <View className="reservation-item">
+            <Text className="item-label">预定时间：</Text>
+            <Text className="item-value">{formatDate(travelDetail.startDate)} 至 {formatDate(travelDetail.endDate)}</Text>
+          </View>
+          <View className="reservation-item">
+            <Text className="item-label">旅行币：</Text>
+            <Text className="item-value">{travelDetail.costedCoins}</Text>
+          </View>
+        </View>
+      </View>
+
+      <View className="contact-service">
+        <Text className="contact-title">联系客服</Text>
+        <Text className="contact-details">
+          请发送邮件至eurostay.co@gmail.com联系我们
         </Text>
       </View>
 

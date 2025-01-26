@@ -4,219 +4,201 @@
   padding-bottom: 130px;
   .header-section {
     position: relative;
-    margin-bottom: 20px;
+    margin-bottom: 24px;
 
     .header-image {
       width: 100%;
-      height: 400px;
+      height: 440px;
       object-fit: cover;
-      border-radius: 12px;
-      background-color: #666;
+      border-radius: 16px;
     }
 
-
     .header-content {
-      display: flex;
-      justify-content: space-between; /* 左右分布 */
-      align-items: center; /* 垂直居中 */
-      padding: 10px 20px;
-      background: linear-gradient(to top, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0)); /* 渐变背景 */
-      border-radius: 0 0 12px 12px; /* 底部圆角 */
-    
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 32px 24px 24px;
+      background: linear-gradient(to top, rgba(0, 0, 0, 0.6), transparent);
+      border-radius: 0 0 16px 16px;
+
       .text-content {
-        flex: 1; /* 文本内容占据剩余空间 */
-        display: flex;
-        flex-direction: column; /* 垂直排列文字 */
-        align-items: flex-start; /* 左对齐 */
-        margin-right: 10px; /* 与警钟图标的间距 */
+        .travel-title {
+          font-size: 36px;
+          color: #FFFFFF;
+          font-weight: 600;
+          margin-bottom: 8px;
+          display: block;
+        }
+
+        .travel-location {
+          font-size: 28px;
+          color: #FFFFFF;
+          margin-bottom: 8px;
+          display: block;
+          opacity: 0.9;
+        }
+
+        .travel-dates {
+          font-size: 24px;
+          color: #FFFFFF;
+          opacity: 0.8;
+        }
       }
-    
-      .travel-title {
-        font-size: 30px; /* 标题字体大小 */
-        font-weight: bold;
-        color: #333;
-        margin-bottom: 8px; /* 与下面文字的间距 */
-      }
-    
-      .travel-location,
-      .travel-dates {
-        font-size: 24px; /* 较小字体 */
-        color: #666;
-        line-height: 1.5; /* 增加行距，优化可读性 */
-      }
-    
+
       .alert-icon {
-        flex-shrink: 0; /* 防止图标缩小 */
-        display: flex;
-        align-items: center; /* 图标居中 */
-        justify-content: center;
-    
+        position: absolute;
+        top: 24px;
+        right: 24px;
+
         .bell-icon {
-          width: 40px; /* 图标宽度 */
-          height: 40px; /* 图标高度 */
+          width: 48px;
+          height: 48px;
         }
       }
     }
-     
   }
 
   .host-section {
-    margin-bottom: 20px;
-    padding: 10px 20px;
+    padding: 0;
+    margin-bottom: 24px;
+    margin-top: 40px;
+
     .host-info {
       display: flex;
       justify-content: space-between;
-      align-items: center; /* 垂直居中 */
-      margin-top: 10px;
-    
+      align-items: center;
+      margin-bottom: 16px;
+      padding-right: 0;
+
       .hosted-by {
-        font-size: 30px; /* 标题字体大小 */
-        font-weight: bold;
+        font-size: 34px;
+        font-weight: 600;
         color: #333;
       }
-    
+
       .contact-host {
-        display: flex; /* 使用 Flex 布局 */
-        align-items: center; /* 垂直居中 */
-        cursor: pointer; /* 鼠标变为手型 */
-        color: #333; /* 文本颜色 */
-        font-size: 24px; /* 字体大小 */
-      }
-    
-      .contact-text {
-        font-size: 26px; /* 联系host字体大小 */
-        margin-right: 5px; /* 与箭头的间距 */
-      }
-    
-      .arrow-icon {
-        font-size: 26px; /* 箭头大小 */
-        color: #333; /* 与文本保持一致 */
-      }
-    }
-    
-
-    .host-description {
-      margin-top: 10px;
-
-      .host-message {
-        font-size: 20px;
-        color: #555;
-      }
-    }
-  }
-
-
-  .host-description {
-    margin: 20px 0;
-    padding: 20px; /* 内边距 */
-    background-color: #fff; /* 背景色 */
-    border: 1px solid #D9D9D9; /* 边框颜色 */
-    border-radius: 12px; /* 圆角半径 */
-
-    .divider {
-      height: 1px; /* 分割线高度 */
-      background-color: #d9d9d9; /* 分割线颜色 */
-      margin: 20px 0; /* 上下间距 */
-    }
-  
-  
-  .profile-header {
-    background: #fff;
-    border-radius: 20px;
-    padding: 32px;
-    display: flex;
-    align-items: flex-start;
-    position: relative;
-  
-    .profile-image {
-      width: 250px;
-      height: 160px;
-      border-radius: 50%;
-      margin-right: 24px;
-      box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
-    }
-  
-    .info {
-      flex-grow: 1;
-  
-      .profile-name {
-        font-size: 33px;
-        font-weight: bold;
         display: flex;
         align-items: center;
-  
-        .badge {
-          background: #ffd700;
-          color: #fff;
-          font-size: 14px;
-          font-weight: bold;
-          padding: 4px 12px;
-          border-radius: 4px;
-          margin-left: 8px;
-        }
-      }
-  
-      .last-online {
-        font-size: 18px;
-        color: #888;
-        margin: 6px 0;
-        margin-left: 8px;
-      }
-  
-      .badges {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px; /* 调整间距 */
-        margin-top: 12px;
-  
-        .badge-item {
-          background: #f5f5f5;
-          color: #666;
-          font-size: 18px;
-          font-weight: bold;
-          padding: 5px 12px;
-          border-radius: 12px;
-          display: inline-flex;
-          align-items: center;
-        }
-      }
-  
-      .tags {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px; /* 调整间距 */
-        margin-top: 12px;
-  
-        .tag-item {
-          background-color: #7a73ff2d; /* 背景颜色 */
+        color: #666;
+        margin-right: -10px;
+
+        .contact-text {
+          font-size: 30px;
+          margin-right: 12px;
           color: #333;
-          font-size: 18px;
-          padding: 5px 12px;
-          border-radius: 12px;
-          display: inline-flex;
-          align-items: center;
-          white-space: nowrap;
+          font-weight: 300;
+          line-height: 10px;
+        }
+
+        .arrow-icon {
+          font-size: 70px;
+          color: #333;
+          font-weight: 300;
+          transform: translateY(-6px);
+        }
+      }
+    }
+
+    .host-description {
+      background: #FFFFFF;
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      border: 1px solid rgba(0, 0, 0, 0.05);
+
+      .profile-header {
+        display: flex;
+        margin-bottom: 20px;
+
+        .profile-image {
+          width: 80px;
+          height: 80px;
+          border-radius: 40px;
+          margin-right: 16px;
+        }
+
+        .profile-info {
+          flex: 1;
+
+          .profile-name {
+            display: flex;
+            align-items: center;
+            font-size: 32px;
+            font-weight: 550;
+            color: #333;
+            margin-bottom: 16px;
+
+            &::after {
+              content: none;
+            }
+          }
+
+          .badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 12px;
+
+            .badge-item {
+              font-size: 24px;
+              color: #666;
+            }
+          }
+
+          .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 16px;
+
+            .tag-item {
+              font-size: 24px;
+              color: #666;
+              background: rgba(107, 99, 185, 0.1);
+              padding: 6px 16px;
+              border-radius: 20px;
+            }
+          }
+        }
+      }
+
+      .divider {
+        height: 1px;
+        background-color: rgba(0, 0, 0, 0.08);
+        margin: 24px 0;
+      }
+
+      .self-intro {
+        position: relative;
+        padding-left: 24px;
+
+        &::before {
+          content: '"';
+          position: absolute;
+          left: 0;
+          top: 0;
+          font-size: 36px;
+          color: #6B63B9;
+          line-height: 1;
+        }
+
+        .intro-quote {
+          font-size: 26px;
+          color: #666;
+          line-height: 1.6;
+          
+          &::after {
+            content: '"';
+            color: #6B63B9;
+            font-size: 36px;
+            line-height: 1;
+            margin-left: 4px;
+          }
         }
       }
     }
   }
-}
-  
-  /* 自我介绍 */
-  .self-intro {
-    margin-top: 20px;
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 12px;
-  
-    .intro-quote {
-      font-size: 25px;
-      font-style: italic;
-      color: #333;
-      line-height: 1.6;
-    }
-  }
-  
 
   .agreement-section,
   .address-section,
@@ -233,9 +215,10 @@
     .contact-title,
     .review-title,
     .reservation-title {
-      font-size: 30px;
+      font-size: 34px;
       font-weight: bold;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
+      color: #333;
     }
 
     .agreement-details,
@@ -244,7 +227,7 @@
     .review-details,
     .reservation-details {
       font-size: 26px;
-      color: #666;
+      color: #999;
     }
 
     .review-button{
@@ -252,10 +235,10 @@
       background-color: #443AFF;
       color: #fff;
       border-color: #7A73FF;
-      border-radius: 8px; /* 使用固定像素值 */
-      padding: 10px 15px; /* 添加内边距 */
-      text-align: center; /* 居中文本 */
-      cursor: pointer; /* 鼠标悬停时显示手型 */
+      border-radius: 8px;
+      padding: 10px 15px;
+      text-align: center;
+      cursor: pointer;
       margin-top: 10px;
       margin-bottom: 10px;
 
@@ -269,5 +252,50 @@
         border-radius: 12px;
       }
     }
+
+    .review-card {
+      .review-content {
+        color: #999;
+      }
+    }
+  }
+
+  .reservation-section {
+    .reservation-details {
+      .reservation-item {
+        display: flex;
+        margin-bottom: 12px;
+        font-size: 26px;
+        
+        .item-label {
+          color: #999;
+          width: 140px;
+        }
+        
+        .item-value {
+          color: #333;
+          flex: 1;
+        }
+      }
+    }
+  }
+}
+
+.contact-service {
+  margin-bottom: 20px;
+  padding: 10px 20px;
+  flex-direction: column;
+  display: flex;
+
+  .contact-title {
+    font-size: 34px;
+    font-weight: bold;
+    margin-bottom: 12px;
+    color: #333;
+  }
+
+  .contact-details {
+    font-size: 26px;
+    color: #999;
   }
 }
