@@ -19,7 +19,8 @@ class GlobalStore {
       userDes: this._userInfo.userDes,
       userOpenid: this._userInfo.userOpenid,
       userLocation: this._userInfo.userLocation,
-      token: this._userInfo.token
+      token: this._userInfo.token,
+      uid: this._userInfo.uid
     };
     return globalUserInfo;
   }
@@ -32,6 +33,11 @@ class GlobalStore {
   setToken(newToken: string) {
     this._userInfo.token = newToken;
     Taro.setStorageSync('userInfo', this._userInfo); // 持久化
+  }
+
+  setUid(newUid: string) {
+      this._userInfo.uid = newUid;
+      Taro.setStorageSync('userInfo', this._userInfo);
   }
 
   get currentTab() {

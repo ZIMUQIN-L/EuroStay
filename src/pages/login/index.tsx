@@ -1,246 +1,197 @@
-import { useState, useEffect } from 'react';
-import { observer } from '@store/utils';
-import { Button, Image, Toast } from '@taroify/core';
+import { View, Text, Image } from '@tarojs/components';
+import { useEffect, useState } from 'react';
 import Taro from '@tarojs/taro';
 import './index.scss';
 import GlobalStore from '@store/GlobalStore';
-import { View } from '@tarojs/components';
-import { UserItemProps, UserDetailInfoItemProps } from '@utils/interfaces';
-import {
-  userInfoSearch,
-  userInfoAdd,
-  userPointInitialization,
-} from '@common/database/user/user';
-import Loading from './loading';
-import { pointDetailInfoAdd } from '@common/database/pointSystem/pointSystem';
-import { EuroStay } from '@utils/cloudIcons';
-import { formatTimestamp } from '@utils/dateUtil';
 
-const Index = () => {
-  const [loginState, setLoginState] = useState(false);
-  const [loginStateText, setLoginStateText] = useState<String>('错误提示');
-  const [userInfo, setUserInfo] = useState({});
-  const [userOpenidInfo, setUserOpenidInfo] = useState<String>('');
-  const [isLoading, setIsLoading] = useState<Boolean>(false);
+// Mock 图片，后续替换为真实图片
+const MOCK_IMAGES = {
+  intro: 'https://eurostay-1330475057.cos.eu-frankfurt.myqcloud.com/sys/login_page1.png',
+  rules: 'https://eurostay-1330475057.cos.eu-frankfurt.myqcloud.com/sys/login_page2.png',
+  signup: 'https://eurostay-1330475057.cos.eu-frankfurt.myqcloud.com/sys/login_page3.png',
+  guide: 'https://eurostay-1330475057.cos.eu-frankfurt.myqcloud.com/sys/login_page4.png'
+};
 
-  // 如已经登录过则不再登录
-  const userAgreementContent = `在使用留学生换宿信息平台EuroStay（以下简称“平台”）之前，请您仔细阅读并充分理解本协议各条款。您需要选择接受或不接受本协议。除非您接受本协议所有条款，否则您无权注册、登录或使用本服务所提供的相关功能。您的登录、使用等行为将视为对本协议的接受，并同意接受本协议各项条款的约束。1.服务说明：本平台致力于为留学生提供一个交流和分享换宿信息的平台，用户可以发布和查询换宿或租赁信息。本平台上的所有信息均来自用户或其他资源方，并需要用户进一步自行核实，本平台不提供任何形式的担保。2.用户责任：用户必须为自己注册账户下的一切行为负责，包括您所发布的任何内容以及由此产生的任何后果。用户应确保发布信息的真实性、合法性，并承担因使用本服务而引起的所有风险和责任。3.内容规范：用户不得发布任何违法国家法律法规和社会公序良俗的信息，包括但不限于以下内容：涉及国家安全、损害国家荣誉和利益、煽动民族仇恨和歧视、破坏宗教政策和民族团结的信息；传播淫秽、色情、赌博、暴力、恐怖或教唆犯罪的内容；侵犯他人名誉权、肖像权、知识产权等合法权益的信息。4.免责声明：鉴于网络环境的特殊性，本平台无法预见和控制各种风险，包括但不限于信息真实性、合法性的风险，用户间交易的风险，以及网络安全的风险。因此，用户应自行承担以上风险，本平台不承担任何法律责任。5.服务变更、中断或终止：鉴于网络服务的特殊性，用户同意本平台有权随时变更、中断或终止部分或全部的服务。本平台不担保服务不中断，不担保服务的及时性和安全性。6.法律适用与争议解决：本协议的订立、执行和解释及争议的解决均应适用中国法律。如发生本协议相关的争议，应通过友好协商解决；协商不成时，任一方有权将争议提交至本平台注册地的人民法院管辖。7.协议修改：本平台有权随时修改本协议的任何条款，一旦条款内容发生变动，本平台将会在相关的服务页面公告修改内容。如果不同意本平台对条款内容所做的修改，用户有权停止使用网络服务。如果用户继续使用网络服务，则视为接受本平台对条款内容的修改。8.其他：本协议所有条款的标题仅为阅读方便，本身并无实际涵义，不能作为解释本协议条款的依据。本协议条款无论因何种原因部分无效或不可执行，其他条款仍然有效，并对双方具有约束力。9.最终解释权归本平台所有。`;
-
-  const [dbUserData, setDbUserData] = useState<UserItemProps[]>([]);
-
-  const handleUserEnter = () => {
-    Taro.showModal({
-      title: '用户协议',
-      confirmColor: '#A6A0E0',
-      content: userAgreementContent,
-      success: function (res) {
-        if (res.confirm) {
-          setIsLoading(true);
-          Taro.login({
-            success: function (res) {
-              if (res.code) {
-                Taro.cloud
-                  .callFunction({
-                    name: 'getUserOpenid',
-                    data: {},
-                  })
-                  .then(callbackResult => {
-                    // 这里不太确定需不需要synchronize一下
-                    // todo?
-                    if (typeof callbackResult.result === 'string') {
-                      setUserOpenidInfo(callbackResult.result);
-                    }
-                    userInfoSearch(callbackResult.result).then(
-                      (dbUserInfo: UserDetailInfoItemProps[]) => {
-                        setDbUserData(dbUserInfo);
-                        setIsLoading(false);
-                        if (dbUserInfo.length >= 1) {
-                          if (!dbUserInfo[0].point) {
-                            userPointInitialization(dbUserInfo[0]._id);
-                            const timestamp = formatTimestamp(
-                              new Date().valueOf(),
-                            );
-                            pointDetailInfoAdd(
-                              dbUserInfo[0]._openid,
-                              timestamp,
-                              5,
-                              '系统初始积分',
-                              10,
-                              10,
-                            );
-                          }
-                          GlobalStore.userInfo = dbUserInfo[0];
-                          Taro.switchTab({
-                            url: `/pages/home/index`,
-                          });
-                        }
-                      },
-                    );
-
-                    // store the token
-                    Taro.request({
-                      url: 'https://api.eurostay.co/app/esuser/devLogin',
-                      method: 'POST',
-                      data: 'uid=1',
-                      header: {
-                        'Content-Type': 'application/x-www-form-urlencoded'
-                      }
-                    }).then(res => {
-                      console.log("Token", res.data['token']);
-                      GlobalStore.setToken(res.data['token']);
-                    }).catch(err => {
-                      console.error('请求失败:', err);
-                    });
-
-                  })
-                  .catch(err => {
-                    setIsLoading(false);
-                    Taro.hideLoading();
-                    errorDialog('登录失败' + err.errMsg, 'fail');
-                  });
-              } else {
-                setIsLoading(false);
-                Taro.hideLoading();
-                errorDialog('登录失败' + res.errMsg, 'fail');
-              }
-            },
-          });
-        } else if (res.cancel) {
-          Taro.showToast({
-            title: '请同意用户协议',
-            icon: 'error',
-          });
-          handleUserEnter();
-        }
-      },
-    });
-  };
-
-  Taro.useShareAppMessage(res => {
-    return {
-      title: 'EuroStay欧洲换宿',
-      path: '/pages/login/index',
-    };
-  });
-
+const LoginPage = () => {
+  const [currentStep, setCurrentStep] = useState(0);
+  
   useEffect(() => {
-    handleUserEnter();
+    checkLoginStatus();
   }, []);
 
-  const handleUserWithoutLogin = () => {
-    const NoLoginUserInfo: UserItemProps = {
-      _id: '',
-      _openid: '',
-      avatarUrl: '',
-      nickName: '',
-      userDes: '',
-      userOpenid: '',
-      userLocation: '',
-    };
-    GlobalStore.userInfo = NoLoginUserInfo;
-    Taro.switchTab({
-      url: `/pages/home/index`,
-    });
+  // 检查登录状态
+  const checkLoginStatus = async () => {
+    try {
+      const token = Taro.getStorageSync('token');
+      if (token) {
+        // 调用后端 API 验证 token
+        // const response = await Taro.request({
+        //   url: 'your_api_endpoint/check-login',
+        //   method: 'POST',
+        //   header: {
+        //     'Authorization': `Bearer ${token}`
+        //   }
+        // });
+        
+        // if (response.data.isRegistered) {
+        //   // 已注册，直接跳转到首页
+        //   Taro.redirectTo({ url: '/pages/home/index' });
+        //   return;
+        // }
+      }
+      // 未注册或 token 无效，显示引导页
+    } catch (error) {
+      console.error('Login check failed:', error);
+    }
   };
 
-  // 处理用户登录请求
-  const handleUserLogin = () => {
-    setIsLoading(true);
-    Taro.getUserProfile({
-      desc: '用户登录',
-      success: res => {
-        setUserInfo(res.userInfo);
-        userInfoAdd(
-          userOpenidInfo,
-          res.userInfo['nickName'],
-          res.userInfo['avatarUrl'],
-          res.userInfo['userLocation'],
-        ).then(errMsg => {
-          const timestamp = formatTimestamp(new Date().valueOf());
-          pointDetailInfoAdd(
-            userOpenidInfo,
-            timestamp,
-            5,
-            '系统初始积分',
-            10,
-            10,
-          );
-          if (errMsg == 'collection.add:ok') {
-            userInfoSearch(userOpenidInfo).then(
-              (dbUserInfo: UserDetailInfoItemProps[]) => {
-                if (dbUserInfo.length >= 1) {
-                  if (!dbUserInfo[0].point) {
-                    userPointInitialization(dbUserInfo[0]._id);
-                    const timestamp = formatTimestamp(new Date().valueOf());
-                    pointDetailInfoAdd(
-                      dbUserInfo[0]._openid,
-                      timestamp,
-                      5,
-                      '系统初始积分',
-                      10,
-                      10,
-                    );
-                  }
-                  GlobalStore.userInfo = dbUserInfo[0];
-                  setIsLoading(false);
-                  Taro.switchTab({
-                    url: `/pages/home/index`,
-                  });
-                }
-              },
-            );
-          } else {
-            setIsLoading(false);
-            errorDialog('登录失败' + errMsg, 'fail');
-          }
+  const handleNext = () => {
+    if (currentStep < 3) {
+      setCurrentStep(currentStep + 1);
+    }
+  };
+
+  const handleLogin = () => {
+    Taro.login({
+      success: function (res) {
+        if (res.code) {
+          // 调用后端登录接口
+          Taro.request({
+            url: `https://api.eurostay.co/app/esuser/wxLogin?code=${res.code}`,
+            method: 'POST',
+            success: function (response) {
+              if (response.statusCode === 200 && response.data.code === 0) {
+                // 保存 token 和 uid
+                GlobalStore.setToken(response.data.token);
+                GlobalStore.setUid(response.data.uid);
+                setCurrentStep(currentStep + 1);
+                console.log(GlobalStore._userInfo.token);
+                console.log(GlobalStore._userInfo.uid);
+                // Taro.switchTab({ 
+                //   url: '/pages/home/index',
+                //   success: function () {
+                //     Taro.showToast({
+                //       title: '登录成功',
+                //       icon: 'success',
+                //       duration: 2000
+                //     });
+                //   }
+                // });
+              } else {
+                Taro.showToast({
+                  title: response.data.msg || '登录失败',
+                  icon: 'none',
+                  duration: 2000
+                });
+              }
+            },
+            fail: function (err) {
+              console.error('Request failed:', err);
+              Taro.showToast({
+                title: '登录失败，请重试',
+                icon: 'none',
+                duration: 2000
+              });
+            }
+          });
+        } else {
+          console.error('Login failed:', res.errMsg);
+          Taro.showToast({
+            title: '获取用户信息失败',
+            icon: 'none',
+            duration: 2000
+          });
+        }
+      },
+      fail: function (err) {
+        console.error('WeChat login failed:', err);
+        Taro.showToast({
+          title: '微信登录失败',
+          icon: 'none',
+          duration: 2000
         });
-      },
-      fail: err => {
-        setIsLoading(false);
-        errorDialog('登录失败' + err.errMsg, 'fail');
-      },
+      }
     });
   };
 
-  // 错误处理
-  const errorDialog = (text, type) => {
-    setLoginState(true);
-    setLoginStateText(text);
-    // dialogTypeState(type);
-    setTimeout(() => {
-      setLoginState(false);
-    }, 100);
-  };
-  const logo = EuroStay;
-  return (
-    <>
-      {!isLoading ? (
-        <View className='login-container'>
-          <Toast className='login-toast' open={loginState}>
-            {loginStateText}
-          </Toast>
-          <View className='login-logo-container'>
-            <Image className='login-logo-image' src={logo} />
+  const renderStep = () => {
+    switch (currentStep) {
+      case 0:
+        return (
+          <View className='step-container'>
+            <Image className='step-image' src={MOCK_IMAGES.intro} />
+            <Text className='step-title'>我们是谁？</Text>
+            <Text className='step-desc'>欢迎来到EuroStay，一个专属于欧洲华人与旅欧留学生的互助住宿社区！EuroStay让旅行不仅是探索世界，更是连接彼此的故事。</Text>
+            <View className='next-button' onClick={handleNext}>下一步</View>
           </View>
-          <Button
-            className='login-button'
-            color='primary'
-            onClick={handleUserLogin}
-          >
-            微信登陆
-          </Button>
-          <Button
-            className='enter-button'
-            color='primary'
-            onClick={handleUserWithoutLogin}
-          >
-            直接进入
-          </Button>
-        </View>
-      ) : (
-        <Loading />
-      )}
-    </>
+        );
+      case 1:
+        return (
+          <View className='step-container'>
+            <Image className='step-image' src={MOCK_IMAGES.rules} />
+            <Text className='step-title'>社区公约与平台规则</Text>
+            <View className='rules-section'>
+              <Text className='rule-title'>自由协商</Text>
+              <Text className='rule-desc'>在EuroStay，每个人都有机会展示自己，并通过协商建立信任，分享你的故事，互相获取信任，建立连接吧。</Text>
+              <Text className='rule-title'>尊重互信</Text>
+              <Text className='rule-desc'>在交流中保持真诚和礼貌，尊重他人，展示自己的独特性，以真诚的交流建立信任。</Text>
+            </View>
+            <View className='next-button' onClick={handleNext}>我同意并注册</View>
+          </View>
+        );
+      case 2:
+        return (
+          <View className='step-container'>
+            <Image className='step-image' src={MOCK_IMAGES.signup} />
+            <Text className='step-title'>注册</Text>
+            <View className='login-button' onClick={handleLogin}>
+              微信号快捷登录
+            </View>
+          </View>
+        );
+      case 3:
+        return (
+          <View className='step-container'>
+            <Image className='step-image' src={MOCK_IMAGES.guide} />
+            <Text className='step-title'>如何在EuroStay借宿？</Text>
+            <View className='guide-content'>
+              <Text className='guide-item'>旅行币</Text>
+              <Text className='guide-desc'>所有房源的获取需要用host提交申请，在host同意之后支付对应的旅行币。更多详情查看《获取须知》哦。</Text>
+              <Text className='guide-item'>想要借宿</Text>
+              <Text className='guide-desc'>完善个人资料有助于让Host更好地了解你。</Text>
+              <Text className='guide-item'>想提供住宿</Text>
+              <Text className='guide-desc'>完善个人资料和设置房源规则，有助于吸引合适的Guest。</Text>
+            </View>
+            <View className='button-group'>
+              <View 
+                className='secondary-button' 
+                onClick={() => {
+                  Taro.navigateTo({ url: '/packageUser/user-profile/index' });
+                }}
+              >
+                完善个人资料
+              </View>
+              <View 
+                className='primary-button'
+                onClick={() => {
+                  Taro.switchTab({ url: '/pages/home/index' });
+                }}
+              >
+                探索房源
+              </View>
+            </View>
+          </View>
+        );
+      default:
+        return null;
+    }
+  };
+
+  return (
+    <View className='login-page'>
+      {renderStep()}
+    </View>
   );
 };
-export default observer(Index);
+
+export default LoginPage;
