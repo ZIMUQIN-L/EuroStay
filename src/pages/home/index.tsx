@@ -1,27 +1,18 @@
 import { View, Text, Image, Button } from '@tarojs/components';
 import { observer } from 'mobx-react';
-import Houses from './houses';
 import Taro from '@tarojs/taro';
 import { useState } from 'react';
-import HouseSource from '@assets/images/house-source.svg';
 import GlobalStore from '@store/GlobalStore';
-import HouseSourceSelected from '@assets/images/house-source-selected.svg';
-import AccommodationIcon from '@assets/images/accommodation.svg';
-import AccommodationIconSelected from '@assets/images/accommodation-selected.svg';
 import './index.scss';
-import SeekingAccommodation from './seeking-accomadation';
-import PostButton from '@assets/images/add-circle.svg';
-import { userGetNickName } from '@common/database/user/user';
-import {
-  PurpleClose,
-  HouseRequest,
-  PostActivity,
-  PostHouse,
-} from '@utils/cloudIcons';
-import { HousePostImg } from '@assets/images/house-post.svg';
-
+import HomeSearch from '../home-search';
+import Orders from '../orders';
+import Messages from '../messages';
+import User from '../user';
+import '../../app.scss';
 const Index = () => {
-  const [activeTab, setActiveTab] = useState('houses');
+  const [activeTab, setActiveTab] = useState<
+    'search' | 'orders' | 'messages' | 'user'
+  >('search');
 
   Taro.useShareAppMessage(res => {
     return {
@@ -44,55 +35,37 @@ const Index = () => {
         },
       });
     } else {
-      setIsShowPost(true);
+      // setIsShowPost(true);
     }
   };
+  const bottomBar = [
+    { img: '', value: 'search' },
+    { img: '', value: 'orders' },
+    { img: '', value: 'messages' },
+    { img: '', value: 'user' },
+  ];
 
   return (
     <>
-      {/* <View className='tab-bar'>
-        <View
-          className={`tab-item ${activeTab === 'houses' ? 'active' : ''}`}
-          onClick={() => setActiveTab('houses')}
-          style={{ marginRight: '40px' }}
-        >
-          {activeTab === 'houses' ? (
-            <Image
-              src={HouseSourceSelected}
-              style={{ width: '20px', height: '20px' }}
-            />
-          ) : (
-            <Image
-              src={HouseSource}
-              style={{ width: '20px', height: '20px' }}
-            />
-          )}
-          <Text>房源</Text>
+      <View className='homepage'>
+        {activeTab == 'search' && <HomeSearch />}
+        {activeTab == 'orders' && <Orders />}
+        {activeTab == 'messages' && <Messages />}
+        {activeTab == 'user' && <User />}
+        <View className='homepage-bottom-bar fix-iphonex-button'>
+          {bottomBar.map(item => {
+            return (
+              <View
+                className='button'
+                onClick={() => {
+                  //@ts-ignore
+                  setActiveTab(item.value);
+                }}
+              ></View>
+            );
+          })}
         </View>
-        <View
-          className={`tab-item ${activeTab === 'accommodation' ? 'active' : ''}`}
-          onClick={() => setActiveTab('accommodation')}
-        >
-          {activeTab === 'accommodation' ? (
-            <Image src={AccommodationIconSelected} />
-          ) : (
-            <Image src={AccommodationIcon} />
-          )}
-          <Text>求宿</Text>
-        </View>
-      </View> */}
-      {/* <View
-        className='add-button'
-        onClick={() => {
-          handleClickAddBtn();
-        }}
-      >
-        <Image src={PostButton}></Image>
-      </View> */}
-      <View className='search-area'>
-        {activeTab === 'houses' ? <Houses /> : <SeekingAccommodation />}
       </View>
-      {/* 蒙层 */}
     </>
   );
 };

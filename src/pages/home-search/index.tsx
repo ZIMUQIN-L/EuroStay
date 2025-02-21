@@ -5,7 +5,7 @@ import { useState } from 'react';
 const Index = () => {
   return (
     <>
-      <View className='home-messages'>222</View>
+      <View className='home-search'>111</View>
     </>
   );
 };
