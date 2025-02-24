@@ -2,18 +2,18 @@ export default {
   lazyCodeLoading: 'requiredComponents',
   pages: ['pages/home/index'],
   subPackages: [
-    {
-      root: 'packageUser/',
-      pages: [],
-    },
-    {
-      root: 'packageHouse/',
-      pages: [],
-    },
-    {
-      root: 'packageActivity/',
-      pages: [],
-    },
+    // {
+    //   root: 'packageUser/',
+    //   pages: [],
+    // },
+    // {
+    //   root: 'packageHouse/',
+    //   pages: [],
+    // },
+    // {
+    //   root: 'packageActivity/',
+    //   pages: [],
+    // },
   ],
   window: {
     backgroundTextStyle: 'light',
