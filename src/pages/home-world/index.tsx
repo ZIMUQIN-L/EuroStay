@@ -5,7 +5,7 @@ import './index.scss';
 import HomepageSearch from '@components/HomepageSearch';
 import { useState } from 'react';
 
-const HomeSearch = () => {
+const HomeWorld = () => {
   const [activeTab, setActiveTab] = useState('房源');
 
   const mockData = {
@@ -50,4 +50,4 @@ const HomeSearch = () => {
   );
 };
 
-export default HomeSearch;
+export default HomeWorld;

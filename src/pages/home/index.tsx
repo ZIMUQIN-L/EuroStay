@@ -4,7 +4,7 @@ import Taro from '@tarojs/taro';
 import { useState } from 'react';
 import GlobalStore from '@store/GlobalStore';
 import './index.scss';
-import HomeSearch from '../home-search';
+import HomeSearch from '../home-world';
 import Orders from '../orders';
 import Messages from '../messages';
 import User from '../user';
