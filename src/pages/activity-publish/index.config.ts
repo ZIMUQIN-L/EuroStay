@@ -1,0 +1,5 @@
+export default {
+  navigationBarTitleText: '发布活动',
+  navigationBarBackgroundColor: '#fff',
+  navigationBarTextStyle: 'black',
+};

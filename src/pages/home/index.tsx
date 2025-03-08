@@ -63,7 +63,7 @@ const Index = () => {
                   setActiveTab(item.value);
                   if (item.value == 'publish') {
                     Taro.navigateTo({
-                      url: '/pages/house-publish/index',
+                      url: '/pages/activity-publish/index',
                     });
                   }
                 }}

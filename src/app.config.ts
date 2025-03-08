@@ -5,6 +5,7 @@ export default {
     'pages/date-select/index',
     'pages/city-select/index',
     'pages/house-publish/index',
+    'pages/activity-publish/index',
   ],
   subPackages: [
     // {
