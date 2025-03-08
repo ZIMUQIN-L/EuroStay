@@ -11,7 +11,7 @@ import User from '../user';
 import '../../app.scss';
 const Index = () => {
   const [activeTab, setActiveTab] = useState<
-    'search' | 'orders' | 'messages' | 'user'
+    'search' | 'orders' | 'publish' | 'messages' | 'user'
   >('search');
 
   Taro.useShareAppMessage(res => {
@@ -41,6 +41,7 @@ const Index = () => {
   const bottomBar = [
     { img: '', value: 'search' },
     { img: '', value: 'orders' },
+    { img: '', value: 'publish' },
     { img: '', value: 'messages' },
     { img: '', value: 'user' },
   ];
@@ -60,6 +61,11 @@ const Index = () => {
                 onClick={() => {
                   //@ts-ignore
                   setActiveTab(item.value);
+                  if (item.value == 'publish') {
+                    Taro.navigateTo({
+                      url: '/pages/house-publish/index',
+                    });
+                  }
                 }}
               ></View>
             );
