@@ -1,6 +1,8 @@
 export default {
   lazyCodeLoading: 'requiredComponents',
-  pages: ['pages/home/index'],
+  pages: [
+    'pages/home/index',
+  ],
   subPackages: [
     // {
     //   root: 'packageUser/',
@@ -14,6 +16,12 @@ export default {
     //   root: 'packageActivity/',
     //   pages: [],
     // },
+    {
+      root: 'packageMessage',
+      pages: [
+        'message-detail/index',
+      ],
+    }
   ],
   window: {
     backgroundTextStyle: 'light',
