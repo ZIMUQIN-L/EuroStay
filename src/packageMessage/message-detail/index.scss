@@ -1,0 +1,142 @@
+.message-detail {
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+    height: 100vh; /* 如果需要全屏高度 */
+  }
+
+  .message-list {
+    flex: 1;             /* 占据除底部输入框外的全部空间 */
+    overflow-y: auto;    /* 可滚动 */
+    padding: 20rpx;
+    background-color: #ffffff; /* 仅示例，可根据需求更改 */
+  }
+
+
+  .input-box {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 30rpx;
+    background-color: #fff;
+    border-top: 1px solid #e0e0e0;
+
+    .input {
+      padding: 0 20rpx;
+      border: 1px solid #ddd;
+      border-radius: 8rpx;
+      margin-right: 10rpx;
+    }
+
+    .send-btn {
+      background-color: #007aff;
+      color: #fff;
+      border-radius: 8rpx;
+      padding: 0 20rpx;
+    }
+  }
+  
+  /* 顶部标题区域 */
+  .header {
+    padding: 20rpx;
+    border-bottom: 1px solid #f0f0f0;
+  
+    .title {
+      font-size: 32rpx;
+      font-weight: bold;
+    }
+  }
+  
+  /* 消息列表容器 */
+  .message-list {
+    flex: 1; /* 让消息列表占满剩余空间 */
+    padding: 20rpx;
+    overflow-y: auto; /* 如需滚动，可加这个 */
+  }
+  
+  /* 每条消息 */
+  .message-item {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    margin-bottom: 20rpx;
+  
+    .avatar {
+      width: 60rpx;
+      height: 60rpx;
+      border-radius: 50%;
+      margin-right: 20rpx;
+    }
+  
+    /* 气泡本体 */
+    .bubble {
+      background-color: #f8f8f8;
+      border-radius: 10rpx;
+      padding: 20rpx;
+      max-width: 80%;
+      box-shadow: 0 2rpx 4rpx rgba(0, 0, 0, 0.1);
+  
+      .bubble-header {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 8rpx;
+  
+        .name {
+          font-size: 26rpx;
+          font-weight: bold;
+          color: #333;
+        }
+  
+        .time {
+          font-size: 24rpx;
+          color: #999;
+          margin-left: 10rpx;
+        }
+      }
+  
+      .content {
+        display: block;
+        font-size: 26rpx;
+        color: #666;
+        line-height: 1.4;
+        margin-bottom: 10rpx;
+      }
+  
+      .check-btn {
+        background-color: #ff8c00;
+        color: #fff;
+        border-radius: 8rpx;
+        font-size: 26rpx;
+        padding: 0 20rpx;
+      }
+    }
+
+    .input-box {
+      display: flex;
+      align-items: center;
+      padding: 20rpx;
+      background-color: #fff;
+      border-top: 1px solid #e0e0e0;
+  
+      .input {
+        flex: 1;                 // 输入框占满剩余空间
+        padding: 0 20rpx;
+        border: 1px solid #ddd;
+        border-radius: 8rpx;
+        margin-right: 10rpx;
+      }
+  
+      .send-btn {
+        border-radius: 50%;   /* 圆形 */
+        background-color: #f3f3f3;
+        width: 10rpx;
+        color: #000;
+        font-size: 28rpx;
+        display: flex;
+        align-items: center;
+        // justify-content: center;
+      }
+      
+    }
+  }
+  
