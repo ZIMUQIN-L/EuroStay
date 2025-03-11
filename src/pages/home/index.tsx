@@ -1,6 +1,14 @@
 import { View, Text, Image } from '@tarojs/components';
 import { observer } from 'mobx-react';
 import Taro from '@tarojs/taro';
+import worldIcon from '@assets/icons/world.png';
+import worldSelectedIcon from '@assets/icons/world-active.png';
+import orderIcon from '@assets/icons/order.png';
+import orderSelectedIcon from '@assets/icons/order-active.png';
+import userIcon from '@assets/icons/user.png';
+import userSelectedIcon from '@assets/icons/user-active.png';
+import messageIcon from '@assets/icons/message.png';
+import messageSelectedIcon from '@assets/icons/message-active.png';
 import { useState } from 'react';
 import GlobalStore from '@store/GlobalStore';
 import './index.scss';
@@ -42,33 +50,31 @@ const Index = () => {
 
   const bottomBar = [
     { 
-      icon: '/assets/icons/world.png', 
-      activeIcon: '/assets/icons/world-active.png',
+      icon: worldIcon, 
+      activeIcon: worldSelectedIcon,
       text: '世界',
       value: 'world' 
     },
     { 
-      icon: '/assets/icons/order.png', 
-      activeIcon: '/assets/icons/order-active.png',
+      icon: orderIcon, 
+      activeIcon: orderSelectedIcon,
       text: '订单',
       value: 'orders' 
     },
     { 
-      icon: '/assets/icons/post.png', 
-      activeIcon: '/assets/icons/post.png', // 发布按钮不需要激活态
+      isCenter: true,
       text: '发布',
-      value: 'post',
-      isCenter: true
+      value: 'post'
     },
     { 
-      icon: '/assets/icons/message.png', 
-      activeIcon: '/assets/icons/message-active.png',
+      icon: messageIcon, 
+      activeIcon: messageSelectedIcon,
       text: '消息',
       value: 'messages' 
     },
     { 
-      icon: '/assets/icons/user.png', 
-      activeIcon: '/assets/icons/user-active.png',
+      icon: userIcon, 
+      activeIcon: userSelectedIcon,
       text: '我的',
       value: 'user' 
     }
@@ -95,10 +101,14 @@ const Index = () => {
                 }
               }}
             >
-              <Image 
-                className={`tab-icon ${item.isCenter ? 'center-icon' : ''}`}
-                src={isActive ? item.activeIcon : item.icon}
-              />
+              {item.isCenter ? (
+                <View className='plus-icon' />
+              ) : (
+                <Image 
+                  className='tab-icon'
+                  src={isActive ? item.activeIcon : item.icon}
+                />
+              )}
               <Text className={`tab-text ${isActive ? 'active-text' : ''}`}>
                 {item.text}
               </Text>
