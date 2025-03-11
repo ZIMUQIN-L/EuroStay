@@ -1,6 +1,7 @@
 export default {
   lazyCodeLoading: 'requiredComponents',
-  pages: ['pages/home/index'],
+  pages: ['pages/login/index',
+          'pages/home/index'],
   subPackages: [
     // {
     //   root: 'packageUser/',
