@@ -62,7 +62,6 @@ const Index = () => {
       value: 'orders' 
     },
     { 
-      isCenter: true,
       text: '发布',
       value: 'post'
     },
@@ -92,7 +91,7 @@ const Index = () => {
           return (
             <View
               key={item.value}
-              className={`tab-item ${item.isCenter ? 'center-tab' : ''}`}
+              className={`tab-item ${item.value=='post' ? 'center-tab' : ''}`}
               onClick={() => {
                 if (item.value === 'post') {
                   handleClickAddBtn();
@@ -101,7 +100,7 @@ const Index = () => {
                 }
               }}
             >
-              {item.isCenter ? (
+              {item.value=='post' ? (
                 <View className='plus-icon' />
               ) : (
                 <Image 

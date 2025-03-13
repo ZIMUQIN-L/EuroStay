@@ -29,6 +29,11 @@ class GlobalStore {
     Taro.setStorageSync('userInfo', this._userInfo); // 持久化
   }
 
+  setAllInfo(userInfo: ESUserLoginInfoProps) {
+    this._userInfo = userInfo;
+    Taro.setStorageSync('userInfo', this._userInfo);
+  }
+
   setToken(newToken: string) {
     this._userInfo.token = newToken;
     Taro.setStorageSync('userInfo', this._userInfo); // 持久化

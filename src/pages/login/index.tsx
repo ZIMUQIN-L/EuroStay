@@ -2,10 +2,24 @@ import { View, Text, Image } from '@tarojs/components';
 import { useState, useEffect } from 'react';
 import Taro from '@tarojs/taro';
 import './index.scss';
-import { loginIp, logoIp } from '@utils/cloudIcons';
+import { loginIp, logoIp, LoginLoadingIcon } from '@utils/cloudIcons';
 import GlobalStore  from '@store/GlobalStore';
-import Loading from './loading';
 
+const Loading = () => {
+    return (
+      <View className='loading'>
+        <View className='loading-container'>
+          <View className='loading-spinner'>
+            <View className='loading-circle'></View>
+            <Image src={LoginLoadingIcon} className='loading-logo' />
+          </View>
+        </View>
+        <Text className='loading-text'>EuroStay</Text>
+      </View>
+    );
+  };
+
+  
 const Login = () => {
   const [hasUserAgreed, setHasUserAgreed] = useState(false);
   const [isChecking, setIsChecking] = useState(true);
@@ -22,6 +36,7 @@ const Login = () => {
             url: `https://api.eurostay.co/app/esuser/loginCheck?code=${res.code}`,
             method: 'POST',
             success: function (response) {
+                console.log(response);
               if (response.statusCode === 200 && response.data.code === 0) {
                 const { exist, userInfo } = response.data;
                 if (exist) {
@@ -207,5 +222,6 @@ const Login = () => {
     </View>
   );
 };
+
 
 export default Login;
