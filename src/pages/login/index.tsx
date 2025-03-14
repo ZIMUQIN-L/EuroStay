@@ -36,7 +36,6 @@ const Login = () => {
             url: `https://api.eurostay.co/app/esuser/loginCheck?code=${res.code}`,
             method: 'POST',
             success: function (response) {
-                console.log(response);
               if (response.statusCode === 200 && response.data.code === 0) {
                 const { exist, userInfo } = response.data;
                 if (exist) {
@@ -110,7 +109,6 @@ const Login = () => {
             url: `https://api.eurostay.co/app/esuser/wxLogin?code=${res.code}`,
             method: 'POST',
             success: function (response) {
-              console.log(response);
               if (response.statusCode === 200 && response.data.code === 0) {
                 // 保存 token 和 uid
                 GlobalStore.setToken(response.data.token);
