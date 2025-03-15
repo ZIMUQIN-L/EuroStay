@@ -8,5 +8,7 @@ export const infoIcon = `${cloudPath}/info.png`
 export const contactIcon = `${cloudPath}/contact.png`
 export const starIcon = `${cloudPath}/star.png`
 export const editIcon = `${cloudPath}/edit.png`
+export const bgMonthly = `${cloudPath}/bg-monthly.png`
+export const bgYearly = `${cloudPath}/bg-yearly.png`
 
 

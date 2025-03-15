@@ -105,7 +105,7 @@ const UserSetting = () => {
       {/* VIP卡片 */}
       <View 
         className={`vip-card ${GlobalStore.userInfo.isVip ? 'not-vip' : ''}`} 
-        onClick={() => Taro.navigateTo({ url: '/packageUser/user-setting/index' })}
+        onClick={() => Taro.navigateTo({ url: '/packageUser/user-vip/index' })}
       >
         <Image 
           className='vip-bg' 
