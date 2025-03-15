@@ -45,6 +45,9 @@ const Index = () => {
       });
     } else {
       // setIsShowPost(true);
+      Taro.navigateTo({
+        url: `/packageUser/user-setting/index`,
+      });
     }
   };
 

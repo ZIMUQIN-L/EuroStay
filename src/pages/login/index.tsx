@@ -36,12 +36,12 @@ const Login = () => {
             url: `https://api.eurostay.co/app/esuser/loginCheck?code=${res.code}`,
             method: 'POST',
             success: function (response) {
-                console.log(response);
               if (response.statusCode === 200 && response.data.code === 0) {
                 const { exist, userInfo } = response.data;
                 if (exist) {
-                  GlobalStore.setToken(userInfo.token);
                   GlobalStore.setUid(userInfo.uid);
+                  GlobalStore.setAllInfo(userInfo);
+                  GlobalStore.setToken(response.data.token);
                   Taro.reLaunch({
                     url: '/pages/home/index'
                   });
@@ -110,19 +110,10 @@ const Login = () => {
             url: `https://api.eurostay.co/app/esuser/wxLogin?code=${res.code}`,
             method: 'POST',
             success: function (response) {
-              console.log(response);
               if (response.statusCode === 200 && response.data.code === 0) {
                 // 保存 token 和 uid
+                GlobalStore.setAllInfo(response.data.userInfo);
                 GlobalStore.setToken(response.data.token);
-                GlobalStore.setUid(response.data.uid);
-                GlobalStore.setGender(response.data.userInfo.gender);
-                GlobalStore.setAboutMe(response.data.userInfo.aboutMe);
-                GlobalStore.setAvatar(response.data.userInfo.avatar);
-                GlobalStore.setLocation(response.data.userInfo.location);
-                GlobalStore.setIsVip(response.data.userInfo.isVip);
-                GlobalStore.setUsername(response.data.userInfo.username);
-                console.log(GlobalStore._userInfo.token);
-                console.log(GlobalStore._userInfo.uid);
                 Taro.reLaunch({ 
                   url: '/pages/home/index',
                   success: function () {
