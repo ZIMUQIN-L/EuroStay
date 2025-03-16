@@ -17,7 +17,8 @@ export default {
         'edit-location/index',
         'edit-about/index',
         'edit-tags/index',
-        'edit-email/index'
+        'edit-email/index',
+        'edit-phone/index'
       ],
     },
     // {

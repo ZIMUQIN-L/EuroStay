@@ -11,5 +11,6 @@ export const editIcon = `${cloudPath}/edit.png`;
 export const bgMonthly = `${cloudPath}/bg-monthly.png`;
 export const bgYearly = `${cloudPath}/bg-yearly.png`;
 export const eswx = `${cloudPath}/eswx.png`;
+export const phoneLogo = `${cloudPath}/phone-logo.png`;
 
 
