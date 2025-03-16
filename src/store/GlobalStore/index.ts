@@ -8,6 +8,23 @@ class GlobalStore {
 
   constructor() {
     makeAutoObservable(this, {}, { autoBind: true });
+
+    const stored = Taro.getStorageSync('userInfo')
+    if (stored) {
+      this._userInfo = stored
+    } else {
+      // 2) 设置一个默认初始对象, 避免是undefined
+      this._userInfo = {
+        avatar: '',
+        username: '',
+        aboutMe: '',
+        location: '',
+        token: '',
+        gender: 0,
+        uid: 0,
+        isVip: false,
+      }
+    }
   }
 
   get userInfo() {
