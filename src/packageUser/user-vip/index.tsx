@@ -1,6 +1,6 @@
 import { View, Text, Image } from '@tarojs/components';
 import { useState, useEffect } from 'react';
-import {bgMonthly, bgYearly} from '@utils/cloudIcons';
+import {bgMonthly, bgYearly, infoIcon, contactIcon, starIcon, editIcon} from '@utils/cloudIcons';
 import GlobalStore from '@store/GlobalStore';
 import './index.scss';
 import Taro from '@tarojs/taro';
@@ -49,20 +49,37 @@ const UserVip = () => {
           <View className='option-card monthly'>
             <Image className='bg-image' src={bgMonthly} />
             <View className='price-info'>
-              <Text className='label'>连续包月</Text>
-              <Text className='currency'>€</Text>
-              <Text className='amount'>19.9</Text>
+              <View className='left'>
+                <Text className='label'>连续包月</Text>
+                <View className='price'>
+                  <Text className='currency'>€</Text>
+                  <Text className='amount'>19.9</Text>
+                  <Text className='unit'>/月</Text>
+                </View>
+              </View>
+              <View className='right'>
+                <Text className='original-price'>原价€29.9</Text>
+                <Text className='discount'>限时67折</Text>
+              </View>
             </View>
           </View>
 
           <View className='option-card yearly'>
             <Image className='bg-image' src={bgYearly} />
             <View className='price-info'>
-              <Text className='label'>连续包年</Text>
-              <Text className='currency'>€</Text>
-              <Text className='amount'>x9.9</Text>
+              <View className='left'>
+                <Text className='label'>连续包年</Text>
+                <View className='price'>
+                  <Text className='currency'>€</Text>
+                  <Text className='amount'>199</Text>
+                  <Text className='unit'>/年</Text>
+                </View>
+              </View>
+              <View className='right'>
+                <Text className='original-price'>原价€358.8</Text>
+                <Text className='discount'>限时5.5折</Text>
+              </View>
             </View>
-            <Text className='save-tip'>立省€xx</Text>
           </View>
         </View>
 
@@ -84,19 +101,27 @@ const UserVip = () => {
         <View className='benefits-section' onClick={handleNavigateToRights}>
           <Text className='section-title'>会员权益</Text>
           <View className='benefits-grid'>
-            {Array(4).fill(null).map((_, index) => (
+            {[
+              { icon: infoIcon, text: '房源详情' },
+              { icon: contactIcon, text: '联系房东' },
+              { icon: editIcon, text: '预定房源' },
+              { icon: starIcon, text: '订单追踪' }
+            ].map((item, index) => (
               <View key={index} className='benefit-item'>
-                <View className='benefit-icon'>待解锁</View>
-                <Text className='benefit-text'>联系房东</Text>
+                <View className='benefit-icon'>
+                  <Image className='icon-image' src={item.icon} />
+                  {!GlobalStore._userInfo?.isVip && (
+                    <View className='mask'>
+                      <Text className='unlock-text'>待解锁</Text>
+                    </View>
+                  )}
+                </View>
+                <Text className='benefit-text'>{item.text}</Text>
               </View>
             ))}
           </View>
         </View>
 
-        {/* 成长任务 */}
-        <View className='tasks-section'>
-          <Text className='section-title'>成长任务</Text>
-        </View>
       </View>
     </View>
   );

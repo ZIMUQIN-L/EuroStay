@@ -72,12 +72,12 @@ const UserSetting = () => {
     {
       icon: infoIcon,
       text: '关于ES',
-      path: '/packageUser/user-setting/index'
+      path: '/packageUser/about-es/index'
     },
     {
       icon: contactIcon,
       text: '联系我们',
-      path: '/packageUser/user-setting/index'
+      path: '/packageUser/user-contact/index'
     }
   ];
 

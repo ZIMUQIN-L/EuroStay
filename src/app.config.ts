@@ -11,6 +11,8 @@ export default {
         'user-setting/index',
         'user-editing/index',
         'user-vip/index',
+        'about-es/index',
+        'user-contact/index',
         'edit-nickname/index',
         'edit-location/index',
         'edit-about/index',
