@@ -1,7 +1,7 @@
 import { View, Text, Image } from '@tarojs/components'
 import './index.scss'
 
-const RejectMessageBox = (props) => {
+const RejectMessageFromHostBox = (props) => {
     const { avatar, name, time, reason, direction = 'left' } = props
 
     // 根据 direction 动态设置文案
@@ -25,4 +25,4 @@ const RejectMessageBox = (props) => {
     )
 }
 
-export default RejectMessageBox
+export default RejectMessageFromHostBox

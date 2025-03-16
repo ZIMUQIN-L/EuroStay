@@ -1,7 +1,7 @@
 import { View, Text, Image } from '@tarojs/components'
 import { observer } from 'mobx-react'
 import Taro from '@tarojs/taro'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import './index.scss' // 记得在这里引入自己的样式文件
 
 const Index = () => {
@@ -45,11 +45,44 @@ const Index = () => {
   ])
 
 
-  const handleItemClick = (id) => {
+  useEffect(() => {
+    // 1. 获取 token
+    const token = Taro.getStorageSync('token')
+    console.log('拿到的 token:', token)
+
+    // 2. 发起请求：搜索 /app/esmessages/sessionList
+    Taro.request({
+      url: '/app/esmessages/sessionList',  // 你的接口地址
+      method: 'GET',                      // 或者 'POST' 等
+      header: {
+        // 假设是常见的后端验证方式，比如 Bearer token 或自定义 token
+        // 具体看后端需求写
+        Authorization: `Bearer ${token}`, 
+      },
+      // data: {}, // 如果需要请求体，可在这里写
+    })
+      .then((res) => {
+        // 3. 处理响应：假设 res.data 就是你的消息列表
+        console.log('sessionList 响应:', res)
+        if (res.statusCode === 200 && res.data) {
+          // 更新到 messages 状态
+          setMessages(res.data)
+        } else {
+          Taro.showToast({ title: '获取会话列表失败', icon: 'none' })
+        }
+      })
+      .catch((err) => {
+        console.error('请求出错:', err)
+        Taro.showToast({ title: '请求出错', icon: 'none' })
+      })
+  }, []) // 空数组确保只在组件初次挂载时执行
+
+
+  const handleItemClick = (id, name) => {
     console.log("id from session list", id);
     // 这里把消息的 id 传给详情页
     Taro.navigateTo({
-      url: `/packageMessage/message-detail/index?id=${id}`,
+      url: `/packageMessage/message-detail/index?id=${id}&name=${encodeURIComponent(name)}`,
     })
   }
 
@@ -63,7 +96,7 @@ const Index = () => {
                 <View
                 className='message-item'
                 key={item.id}
-                onClick={() => handleItemClick(item.id)}
+                onClick={() => handleItemClick(item.id, item.name)}
               >
           <Image className='avatar' src={item.avatar} />
           <View className='message-content'>

@@ -7,33 +7,47 @@
 
   .message-list {
     flex: 1;             /* 占据除底部输入框外的全部空间 */
-    overflow-y: auto;    /* 可滚动 */
-    padding: 20rpx;
-    background-color: #ffffff; /* 仅示例，可根据需求更改 */
-  }
+    overflow-y: auto; /* 如需滚动，可加这个 */
 
+  }
 
   .input-box {
     display: flex;
-    flex-direction: row;
     align-items: center;
-    padding: 30rpx;
+    padding: 16px 18px;
+    margin: 10rpx;                /* 距底部或周围留点空隙 */
+    margin-bottom: 25rpx;
+    border: 2px solid #ccc;
+    border-radius: 30px;           /* 整体圆角 */
+    background-color: #ffffff;    /* 让它有白色背景，便于看出圆角边框 */
+  }
+
+  .input {
+    flex: 1;               /* 占满剩余空间 */
+    border: none;          /* 去除小程序默认边框 */
+    outline: none;
+    font-size: 24px;
+    /* 如果需要，也可在这里加点 padding */
+  }
+  
+  /* 发送按钮样式 */
+  .send-btn {
+    margin-left: 8px;
+    flex-shrink: 0;
+    width: 40rpx !important;
+    height: 40rpx !important;
+    border: 1px solid #979797;
+    border-radius: 50%;    /* 让它变成圆形 */
     background-color: #fff;
-    border-top: 1px solid #e0e0e0;
 
-    .input {
-      padding: 0 20rpx;
-      border: 1px solid #ddd;
-      border-radius: 8rpx;
-      margin-right: 10rpx;
-    }
-
-    .send-btn {
-      background-color: #007aff;
-      color: #fff;
-      border-radius: 8rpx;
-      padding: 0 20rpx;
-    }
+    color: #979797;
+  
+    /* 垂直水平居中 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* 字体 */
+    font-size: 24px;
   }
   
   /* 顶部标题区域 */
@@ -47,12 +61,6 @@
     }
   }
   
-  /* 消息列表容器 */
-  .message-list {
-    flex: 1; /* 让消息列表占满剩余空间 */
-    padding: 20rpx;
-    overflow-y: auto; /* 如需滚动，可加这个 */
-  }
   
   /* 每条消息 */
   .message-item {
@@ -111,32 +119,6 @@
       }
     }
 
-    .input-box {
-      display: flex;
-      align-items: center;
-      padding: 20rpx;
-      background-color: #fff;
-      border-top: 1px solid #e0e0e0;
-  
-      .input {
-        flex: 1;                 // 输入框占满剩余空间
-        padding: 0 20rpx;
-        border: 1px solid #ddd;
-        border-radius: 8rpx;
-        margin-right: 10rpx;
-      }
-  
-      .send-btn {
-        border-radius: 50%;   /* 圆形 */
-        background-color: #f3f3f3;
-        width: 10rpx;
-        color: #000;
-        font-size: 28rpx;
-        display: flex;
-        align-items: center;
-        // justify-content: center;
-      }
-      
-    }
+    
   }
   
