@@ -2,8 +2,6 @@ export default {
   lazyCodeLoading: 'requiredComponents',
   pages: [
     'pages/home/index',
-    'pages/date-select/index',
-    'pages/city-select/index',
     'pages/house-publish/index',
     'pages/activity-publish/index',
   ],

@@ -5,6 +5,8 @@ import Taro from '@tarojs/taro';
 class GlobalStore {
   _currentTab: string = 'home';
   _userInfo: UserItemProps;
+  searchStartDate: string;
+  searchEndDate: string;
 
   constructor() {
     makeAutoObservable(this, {}, { autoBind: true });
@@ -20,7 +22,7 @@ class GlobalStore {
       userOpenid: this._userInfo.userOpenid,
       userLocation: this._userInfo.userLocation,
       token: this._userInfo.token,
-      uid: this._userInfo.uid
+      uid: this._userInfo.uid,
     };
     return globalUserInfo;
   }
@@ -30,14 +32,23 @@ class GlobalStore {
     Taro.setStorageSync('userInfo', this._userInfo); // 持久化
   }
 
+  set setStartDate(searchStartDate: string) {
+    this.searchStartDate = searchStartDate;
+    Taro.setStorageSync('searchStartDate', this.searchStartDate); // 持久化
+  }
+  set setEndDate(endDate: string) {
+    this.searchEndDate = endDate;
+    Taro.setStorageSync('searchEndDate', this.searchEndDate); // 持久化
+  }
+
   setToken(newToken: string) {
     this._userInfo.token = newToken;
     Taro.setStorageSync('userInfo', this._userInfo); // 持久化
   }
 
   setUid(newUid: string) {
-      this._userInfo.uid = newUid;
-      Taro.setStorageSync('userInfo', this._userInfo);
+    this._userInfo.uid = newUid;
+    Taro.setStorageSync('userInfo', this._userInfo);
   }
 
   get currentTab() {

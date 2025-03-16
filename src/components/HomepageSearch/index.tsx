@@ -1,35 +1,35 @@
 import { View, Text, Input } from '@tarojs/components';
-import { useState } from 'react';
-import Taro from '@tarojs/taro';
+import { useEffect, useState } from 'react';
 import './index.scss';
 
+import { formatToday } from '@utils/dateUtil';
+
 interface HomepageSearchProps {
-  onSearch?: (searchParams: {
-    location: string;
-    startDate: string;
-    endDate: string;
-    guests: number;
-  }) => void;
+  activeTab: '活动' | '房源';
+  isShowDateSelectProps: boolean;
+  onDateSelectChange: (value: boolean) => void;
+  onCitySelectChange: (value: boolean) => void;
+  startDate: string;
+  endDate: string;
+  location: number;
+  onSearch: () => void;
+  onCapacityChanged: (value: number) => void;
 }
 
-const HomepageSearch: React.FC<HomepageSearchProps> = ({ onSearch }) => {
+const HomepageSearch: React.FC<HomepageSearchProps> = ({
+  activeTab,
+  isShowDateSelectProps,
+  onDateSelectChange,
+  startDate,
+  endDate,
+  onCitySelectChange,
+  onCapacityChanged,
+  onSearch,
+}) => {
   const [location, setLocation] = useState('意大利');
-  const [startDate, setStartDate] = useState('2月15日');
-  const [endDate, setEndDate] = useState('2月18日');
+  const [startDate_, setStartDate] = useState(startDate);
+  const [endDate_, setEndDate] = useState(endDate);
   const [guests, setGuests] = useState(1);
-
-  const handleSearch = () => {
-    if (onSearch) {
-      onSearch({
-        location,
-        startDate,
-        endDate,
-        guests,
-      });
-    }
-  };
-
-  console.log(11111);
 
   return (
     <View className='searchContainer'>
@@ -37,7 +37,7 @@ const HomepageSearch: React.FC<HomepageSearchProps> = ({ onSearch }) => {
         <View
           className='locationSection'
           onClick={() => {
-            Taro.navigateTo({ url: '/pages/city-select/index' });
+            onCitySelectChange(true);
           }}
         >
           <Text>地区</Text>
@@ -47,8 +47,7 @@ const HomepageSearch: React.FC<HomepageSearchProps> = ({ onSearch }) => {
         <View
           className='dateSection'
           onClick={() => {
-            console.log(2222);
-            Taro.navigateTo({ url: '/pages/date-select/index' });
+            onDateSelectChange(true);
           }}
         >
           <Text>日期</Text>
@@ -58,34 +57,41 @@ const HomepageSearch: React.FC<HomepageSearchProps> = ({ onSearch }) => {
             {endDate}
           </View>
         </View>
-
-        <View className='guestsSection'>
-          <Text>人数</Text>
-          <View className='guestButtons'>
-            <View
-              className={`guest-button ${guests === 1 ? 'selected' : ''}`}
-              onClick={() => setGuests(1)}
-            >
-              1人
-            </View>
-            <View
-              className={`guest-button ${guests === 2 ? 'selected' : ''}`}
-              onClick={() => setGuests(2)}
-            >
-              2人
-            </View>
-            <View
-              className={`guest-button ${guests === 3 ? 'selected' : ''}`}
-              onClick={() => setGuests(3)}
-            >
-              3人及以上
+        {activeTab == '房源' && (
+          <View className='guestsSection'>
+            <Text>人数</Text>
+            <View className='guestButtons'>
+              <View
+                className={`guest-button ${guests === 1 ? 'selected' : ''}`}
+                onClick={() => {
+                  onCapacityChanged(1);
+                }}
+              >
+                1人
+              </View>
+              <View
+                className={`guest-button ${guests === 2 ? 'selected' : ''}`}
+                onClick={() => {
+                  onCapacityChanged(2);
+                }}
+              >
+                2人
+              </View>
+              <View
+                className={`guest-button ${guests === 3 ? 'selected' : ''}`}
+                onClick={() => {
+                  onCapacityChanged(3);
+                }}
+              >
+                3人及以上
+              </View>
             </View>
           </View>
-        </View>
+        )}
       </View>
 
-      <View className='searchButton' onClick={handleSearch}>
-        查询房源
+      <View className='searchButton' onClick={onSearch}>
+        查询{activeTab}
       </View>
     </View>
   );

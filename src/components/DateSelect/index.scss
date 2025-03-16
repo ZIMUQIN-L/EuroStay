@@ -1,6 +1,9 @@
 .date-select {
   background: #fff;
   min-height: 100vh;
+  position: absolute;
+  min-width: 100%;
+  z-index: 1000000;
 
   .calendar-container {
     padding: 0 30px;

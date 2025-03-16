@@ -1,7 +1,7 @@
 .home-search {
   padding: 20px 5%;
   background: #fff;
-
+  padding-bottom: 200px;
   .tab-container {
     display: flex;
     justify-content: space-between;
@@ -38,5 +38,9 @@
     margin-top: 30px;
     display: flex;
     justify-content: space-between;
+    flex-wrap: wrap;
+    .homepage-card-wrapper {
+      min-width: 48%;
+    }
   }
 }

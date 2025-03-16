@@ -1,7 +1,10 @@
 .city-select {
   background: #f5f5f5;
   min-height: 100vh;
-
+  min-height: 100vh;
+  position: absolute;
+  min-width: 100%;
+  z-index: 1000000;
   .search-box {
     padding: 5%;
     background: #fff;

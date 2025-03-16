@@ -4,16 +4,15 @@ import './index.scss';
 import { AtCalendar } from 'taro-ui';
 import { formatToday } from '@utils/dateUtil';
 
-const DateSelect = () => {
+interface IProps {
+  onDateChanged: (value1: string, value2: string) => void;
+}
+
+const DateSelect = (props: IProps) => {
   const today = formatToday();
   const [startDate, setStartDate] = useState(today);
   const [endDate, setEndDate] = useState(null);
   const [isSelected, setIsSelected] = useState(false);
-
-  const handleDateChange = (startValue, endValue) => {
-    setStartDate(startValue);
-    setEndDate(endValue);
-  };
 
   return (
     <View className='date-select'>
@@ -34,6 +33,7 @@ const DateSelect = () => {
             if (isSelected) {
               setEndDate(selectedDate);
               setIsSelected(false);
+              props.onDateChanged(startDate, selectedDate);
               return;
             }
             setStartDate(selectedDate);
