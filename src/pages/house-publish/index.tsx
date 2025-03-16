@@ -1,9 +1,10 @@
 import { View, Text, Input, Image, Picker } from '@tarojs/components';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Taro from '@tarojs/taro';
 import './index.scss';
 import { AtCalendar } from 'taro-ui';
 import { formatToday } from '@utils/dateUtil';
+import Popup from '../../components/Popup';
 
 const HousePublish = () => {
   const [formData, setFormData] = useState({
@@ -23,6 +24,19 @@ const HousePublish = () => {
   const [startDate, setStartDate] = useState(today);
   const [endDate, setEndDate] = useState(null);
   const [isSelected, setIsSelected] = useState(false);
+  const [customTags, setCustomTags] = useState<string[]>([]);
+  const [isShowTagPop, setIsShowTagPop] = useState(false);
+  const [curTag, setCurTag] = useState('');
+  const [customReqs, setCustomReqs] = useState<string[]>([]);
+  const [isShowReqPop, setIsShowReqPop] = useState(false);
+  const [curReq, setCurReq] = useState('');
+  const [multiDays, setMultiDays] = useState<[string, string][]>([]);
+
+  useEffect(() => {
+    Taro.setNavigationBarTitle({
+      title: '发布房源',
+    });
+  }, []);
 
   const handleDateChange = (startValue, endValue) => {
     setStartDate(startValue);
@@ -112,6 +126,58 @@ const HousePublish = () => {
 
   return (
     <View className='house-publish'>
+      {isShowTagPop && (
+        <Popup
+          className={'tag-pop'}
+          content={
+            <Input
+              className='input'
+              placeholder='请输入房源标签'
+              placeholderClass='placeholder'
+              value={curTag}
+              onInput={e => {
+                setCurTag(e.detail.value);
+              }}
+            />
+          }
+          title='请输入个性化房源标签'
+          onClickClose={() => {
+            setIsShowTagPop(false);
+          }}
+          onClickConfirm={e => {
+            setIsShowTagPop(false);
+            handleTagSelect(curTag);
+            const newTags = [...customTags, curTag];
+            setCustomTags(newTags);
+          }}
+        />
+      )}
+      {isShowReqPop && (
+        <Popup
+          className={'req-pop'}
+          content={
+            <Input
+              className='input'
+              placeholder='请输入其他要求'
+              placeholderClass='placeholder'
+              value={curReq}
+              onInput={e => {
+                setCurReq(e.detail.value);
+              }}
+            />
+          }
+          title='请输入其他要求'
+          onClickClose={() => {
+            setIsShowReqPop(false);
+          }}
+          onClickConfirm={e => {
+            setIsShowReqPop(false);
+            handleOtherReqSelect(curReq);
+            const newReqs = [...customReqs, curReq];
+            setCustomReqs(newReqs);
+          }}
+        />
+      )}
       <View className='section'>
         <View className='section-title'>
           <View className='section-title-icon' />
@@ -143,6 +209,28 @@ const HousePublish = () => {
                 {tag.name}
               </Text>
             ))}
+            {customTags.map((tag, index) => (
+              <Text
+                key={tags.length + index}
+                className={`tag ${customTags.includes(tag) ? 'active' : ''}`}
+                onClick={() => {
+                  const newTags = customTags.includes(tag)
+                    ? customTags.filter(t => t !== tag)
+                    : [...customTags, tag];
+                  setCustomTags(newTags);
+                }}
+              >
+                {tag}
+              </Text>
+            ))}
+            <Text
+              className='option'
+              onClick={() => {
+                setIsShowTagPop(true);
+              }}
+            >
+              +
+            </Text>
           </View>
         </View>
 
@@ -266,7 +354,7 @@ const HousePublish = () => {
           </View>
 
           <View className='other-options'>
-            <Text className='label '>其他</Text>
+            <Text className='label'>其他</Text>
             {otherReqs.map(req => (
               <Text
                 key={req.id}
@@ -276,7 +364,23 @@ const HousePublish = () => {
                 {req.name}
               </Text>
             ))}
-            <Text className='option'>+</Text>
+            {customReqs.map((req, index) => (
+              <Text
+                key={otherReqs.length + index}
+                className={`option ${formData.otherRequirements.includes(req) ? 'active' : ''}`}
+                onClick={() => handleOtherReqSelect(req)}
+              >
+                {req}
+              </Text>
+            ))}
+            <Text
+              className='option'
+              onClick={() => {
+                setIsShowReqPop(true);
+              }}
+            >
+              +
+            </Text>
           </View>
         </View>
         <View className='input-item'>
@@ -302,15 +406,33 @@ const HousePublish = () => {
         <View className='input-item'>
           <View className='label'>
             <Text>可出租时间*</Text>
+            <View className='multi-days'>
+              {multiDays.map((day, index) => (
+                <View key={index} className='multi-day active'>
+                  {day[0]} - {day[1]}
+                </View>
+              ))}
+            </View>
           </View>
           <View className='date-select '>
             <AtCalendar
               isMultiSelect
+              multiSelect={multiDays}
+              selectedDates={multiDays}
+              selectedDate={multiDays}
               currentDate={{ start: startDate, end: endDate }}
               // validRange={{ start: today }} // 有效日期范围
               minDate={today}
               onDayClick={date => {
                 const selectedDate = date.value;
+                const flag = multiDays.some(
+                  day =>
+                    new Date(day[0]) < new Date(selectedDate) &&
+                    new Date(day[1]) > new Date(selectedDate),
+                );
+                if (flag) {
+                  return;
+                }
                 if (selectedDate < startDate) {
                   setStartDate(selectedDate);
                   setEndDate(null);
@@ -320,6 +442,7 @@ const HousePublish = () => {
                 if (isSelected) {
                   setEndDate(selectedDate);
                   setIsSelected(false);
+                  setMultiDays([...multiDays, [startDate, selectedDate]]);
                   return;
                 }
                 setStartDate(selectedDate);

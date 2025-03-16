@@ -9,8 +9,9 @@ import userIcon from '@assets/icons/user.png';
 import userSelectedIcon from '@assets/icons/user-active.png';
 import messageIcon from '@assets/icons/message.png';
 import messageSelectedIcon from '@assets/icons/message-active.png';
-import { useState } from 'react';
-import GlobalStore from '@store/GlobalStore';
+import postHouse from '@assets/icons/post-house.svg';
+import postActivity from '@assets/icons/post-activity.svg';
+import { useEffect, useState } from 'react';
 import './index.scss';
 import HomeSearch from '../home-world';
 import Orders from '../orders';
@@ -23,33 +24,14 @@ const Index = () => {
     'world' | 'orders' | 'post' | 'messages' | 'user'
   >('world');
 
+  const [isShowPostModal, setIsShowPostModal] = useState<boolean>(false);
+
   Taro.useShareAppMessage(res => {
     return {
       title: 'EuroStay欧洲换宿',
       path: '/pages/login/index',
     };
   });
-
-  const handleClickAddBtn = () => {
-    if (!GlobalStore.userInfo.uid) {
-      Taro.showModal({
-        title: '转至登录页面',
-        content: '请登录后发布信息~',
-        success: function (res) {
-          if (res.confirm) {
-            Taro.reLaunch({
-              url: `/pages/login/index`,
-            });
-          }
-        },
-      });
-    } else {
-      // setIsShowPost(true);
-      Taro.navigateTo({
-        url: `/packageUser/user-setting/index`,
-      });
-    }
-  };
 
   const bottomBar = [
     {
@@ -83,7 +65,39 @@ const Index = () => {
   ];
 
   return (
-    <View className='homepage'>
+    <View className={`homepage ${isShowPostModal ? 'modal' : ''}`}>
+      {isShowPostModal && (
+        <View
+          className='post-modal'
+          onClick={e => {
+            e.stopPropagation();
+            e.preventDefault();
+          }}
+        >
+          <View
+            className='post-house'
+            onClick={() => {
+              Taro.redirectTo({
+                url: '/pages/house-publish/index',
+              });
+            }}
+          >
+            <Image className='icon' src={postHouse} />
+            上传房源
+          </View>
+          <View
+            className='post-activity'
+            onClick={() => {
+              Taro.redirectTo({
+                url: '/pages/activity-publish/index',
+              });
+            }}
+          >
+            <Image className='icon' src={postActivity} />
+            上传活动
+          </View>
+        </View>
+      )}
       {activeTab === 'world' && <HomeSearch />}
       {activeTab === 'orders' && <Orders />}
       {activeTab === 'messages' && <Messages />}
@@ -97,7 +111,7 @@ const Index = () => {
               className={`tab-item ${item.value == 'post' ? 'center-tab' : ''}`}
               onClick={() => {
                 if (item.value === 'post') {
-                  handleClickAddBtn();
+                  setIsShowPostModal(true);
                 } else {
                   setActiveTab(item.value as any);
                 }
