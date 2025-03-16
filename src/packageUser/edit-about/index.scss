@@ -1,0 +1,92 @@
+.edit-about {
+  min-height: 100vh;
+  background: linear-gradient(180deg, rgba(138, 112, 214, 0.1) 0%, rgba(138, 112, 214, 0) 100%);
+  padding: 32px;
+  box-sizing: border-box;
+
+  .content-container {
+    background: #FFFFFF;
+    border-radius: 30px;
+    padding: 32px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  }
+
+  .input-section {
+    margin-bottom: 48px;
+
+    .hint {
+      font-size: 28px;
+      color: #8A70D6;
+      margin-bottom: 24px;
+      display: block;
+    }
+
+    .textarea-container {
+      position: relative;
+      background: #F2F2F2;
+      border-radius: 16px;
+      padding: 24px;
+      padding-bottom: 60px;
+      min-height: 200px;
+
+      .textarea {
+        width: 100%;
+        font-size: 28px;
+        color: #333333;
+        line-height: 1.5;
+        min-height: 140px;
+        padding-bottom: 24px;
+      }
+
+      .counter {
+        position: absolute;
+        bottom: 24px;
+        right: 24px;
+        font-size: 24px;
+        color: #999999;
+        background: #F2F2F2;
+        padding: 4px 8px;
+        border-radius: 8px;
+      }
+    }
+  }
+
+  .button-group {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    padding: 0 40px;
+    padding-top: 30px;
+
+    .confirm-button {
+      height: 75px;
+      background: #8A70D6;
+      border-radius: 44px;
+      color: #FFFFFF;
+      font-size: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      &:active {
+        opacity: 0.9;
+      }
+    }
+
+    .cancel-button {
+      height: 75px;
+      background: transparent;
+      border-radius: 44px;
+      color: #333333;
+      font-size: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 4px solid rgba(138, 112, 214, 0.3);
+
+      &:active {
+        opacity: 0.9;
+      }
+    }
+  }
+} 

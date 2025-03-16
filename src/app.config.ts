@@ -11,7 +11,16 @@ export default {
       root: 'packageUser/',
       pages: [
         'user-setting/index',
-        'user-editing/index'
+        'user-editing/index',
+        'user-vip/index',
+        'about-es/index',
+        'user-contact/index',
+        'edit-nickname/index',
+        'edit-location/index',
+        'edit-about/index',
+        'edit-tags/index',
+        'edit-email/index',
+        'edit-phone/index'
       ],
     },
     // {

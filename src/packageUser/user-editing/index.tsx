@@ -68,7 +68,7 @@ const UserEditing = () => {
         aboutMe: userInfo?.aboutMe,
         avatar: userInfo?.avatar,
         backgroundPic: userInfo?.backgroundPic,
-        birthday: userInfo?.birthday || '',
+        birthday: userInfo?.birthday || '2001-01-01',
         gender: userInfo?.gender,
         location: userInfo?.location,
         tags: userInfo?.tags || [],
@@ -91,6 +91,15 @@ const UserEditing = () => {
               icon: 'success',
               duration: 2000
             });
+            GlobalStore.setAvatar(userInfo ? userInfo.avatar: GlobalStore._userInfo.avatar);
+            GlobalStore.setUsername(userInfo ? userInfo.username: GlobalStore._userInfo.username);
+            GlobalStore.setGender(userInfo ? userInfo.gender: GlobalStore._userInfo.gender);
+            GlobalStore.setLocation(userInfo ? userInfo.location: GlobalStore._userInfo.location);
+            GlobalStore.setAboutMe(userInfo ? userInfo.aboutMe: GlobalStore._userInfo.aboutMe);
+
+            Taro.navigateBack({
+                delta:1
+            });
             // 更新成功后刷新用户信息
             fetchUserInfo();
           } else {
@@ -111,7 +120,7 @@ const UserEditing = () => {
       });
     }
 
-  const handleUpload = async () => {
+  const handleUpload = async (type: 'avatar' | 'background') => {
     try {
       const res = await Taro.chooseImage({
         count: 1,
@@ -123,16 +132,24 @@ const UserEditing = () => {
         const uploadRes = await Taro.uploadFile({
           url: 'https://api.eurostay.co/app/common/upload',
           filePath: res.tempFilePaths[0],
-          name: 'image',
+          name: 'Image',
           formData: {
-            prefix: 'test' // 额外的字符串参数
+            prefix: 'test'
           },
           header: {
             'token': GlobalStore.userInfo.token,
-            'Content-Type': 'application/json'
+          },
+          success: function(result) {
+              const responseData = JSON.parse(result.data);
+              const imageUrl = responseData["result"];
+              // 根据类型更新不同的字段
+              setUserInfo(prev => prev ? {
+                ...prev,
+                ...(type === 'avatar' ? { avatar: imageUrl } : { backgroundPic: imageUrl })
+              } : null);
+              return imageUrl;
           }
         });
-        console.log(uploadRes);
       }
     } catch (error) {
       console.error('Upload failed:', error);
@@ -143,12 +160,37 @@ const UserEditing = () => {
     }
   };
 
+  // 修改菜单项点击处理逻辑
+  const handleNavigation = (path?: string, params?: Record<string, any>) => {
+    if (!path) return;
+    
+    // 构建查询字符串，添加空值检查
+    const queryString = params 
+      ? Object.entries(params)
+          .filter(([_, value]) => value !== undefined && value !== null) // 过滤掉 undefined 和 null
+          .map(([key, value]) => `${key}=${encodeURIComponent(value?.toString() || '')}`)
+          .join('&')
+      : '';
+
+    // 构建完整路径
+    const fullPath = queryString ? `${path}?${queryString}` : path;
+
+    // 导航到目标页面
+    Taro.navigateTo({ 
+      url: fullPath,
+      events: {
+        updateData: function(data) {
+          setUserInfo(prev => prev ? { ...prev, ...data } : null);
+        }
+      }
+    });
+  };
 
   const accountItems = [
     {
       label: '账号',
       value: userInfo?.uid?.toString().padStart(16, '0') || '',
-      readonly: true
+      readOnly: true
     },
     {
       label: '邮箱',
@@ -233,7 +275,7 @@ const UserEditing = () => {
       label: '个人照片',
       subLabel: '（将展示在世界板块）',
       customContent: (
-        <View className='photo-upload' onClick={() => handleUpload()}>
+        <View className='photo-upload' onClick={() => handleUpload('background')}>
           {userInfo?.backgroundPic ? (
             <Image className='uploaded-photo' src={userInfo.backgroundPic} mode='aspectFill' />
           ) : (
@@ -256,7 +298,7 @@ const UserEditing = () => {
 
   return (
     <View className='user-editing'>
-      <View className='avatar-section' onClick={() => handleUpload()}>
+      <View className='avatar-section' onClick={() => handleUpload('avatar')}>
         <Image 
           className='avatar'
           src={userInfo?.avatar || ''}
@@ -271,25 +313,10 @@ const UserEditing = () => {
         {accountItems.map((item, index) => (
           <View 
             key={index}
-            className={`menu-item ${item.readonly ? 'readonly' : ''}`}
+            className={`menu-item ${item.readOnly ? 'readonly' : ''}`}
             onClick={() => {
-              if (item.path && !item.readonly) {
-                const url = new URL(item.path, window.location.href);
-                if (item.params) {
-                  Object.entries(item.params).forEach(([key, value]) => {
-                    if (value !== undefined) {
-                      url.searchParams.append(key, value.toString());
-                    }
-                  });
-                }
-                Taro.navigateTo({ 
-                  url: url.pathname + url.search,
-                  events: {
-                    updateData: function(data) {
-                      setUserInfo(prev => prev ? { ...prev, ...data } : null);
-                    }
-                  }
-                });
+              if (item.path && !item.readOnly) {
+                handleNavigation(item.path, item.params);
               }
             }}
           >
@@ -300,7 +327,7 @@ const UserEditing = () => {
               <Text className={`value ${!item.value ? 'placeholder' : ''}`}>
                 {item.value || item.placeholder}
               </Text>
-              {!item.readonly && <Text className='arrow'>›</Text>}
+              {!item.readOnly && <Text className='arrow'>›</Text>}
             </View>
           </View>
         ))}
@@ -313,20 +340,17 @@ const UserEditing = () => {
             className={`menu-item ${item.customContent ? 'with-custom-content' : ''}`}
             onClick={() => {
               if (item.path) {
-                const url = new URL(item.path, window.location.href);
-                if (item.params) {
-                  Object.entries(item.params).forEach(([key, value]) => {
-                    if (value !== undefined) {
-                      url.searchParams.append(key, value.toString());
-                    }
-                  });
-                }
                 Taro.navigateTo({ 
-                  url: url.pathname + url.search,
+                  url: `${item.path}?currentValue=${encodeURIComponent(item.value || '')}`,
                   events: {
                     updateData: function(data) {
                       setUserInfo(prev => prev ? { ...prev, ...data } : null);
                     }
+                  },
+                  success: function(res) {
+                    res.eventChannel.on('updateData', function(data) {
+                      setUserInfo(prev => prev ? { ...prev, ...data } : null);
+                    });
                   }
                 });
               }
