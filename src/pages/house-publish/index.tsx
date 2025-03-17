@@ -3,8 +3,14 @@ import { useEffect, useState } from 'react';
 import Taro from '@tarojs/taro';
 import './index.scss';
 import { AtCalendar } from 'taro-ui';
-import { formatToday } from '@utils/dateUtil';
+import {
+  calculateDaysBetweenDates,
+  formatTimestamp,
+  formatToday,
+  mergeDateRanges,
+} from '@utils/dateUtil';
 import Popup from '../../components/Popup';
+import GlobalStore from '@store/GlobalStore';
 
 const HousePublish = () => {
   const [formData, setFormData] = useState({
@@ -31,7 +37,7 @@ const HousePublish = () => {
   const [isShowReqPop, setIsShowReqPop] = useState(false);
   const [curReq, setCurReq] = useState('');
   const [multiDays, setMultiDays] = useState<[string, string][]>([]);
-
+  const [marks, setMarks] = useState<{ value: string }[]>([]);
   useEffect(() => {
     Taro.setNavigationBarTitle({
       title: '发布房源',
@@ -95,16 +101,41 @@ const HousePublish = () => {
     setFormData({ ...formData, otherRequirements: newReqs });
   };
 
-  const handleImageUpload = () => {
-    Taro.chooseImage({
-      count: 6 - formData.houseImages.length,
-      success: res => {
-        setFormData({
-          ...formData,
-          houseImages: [...formData.houseImages, ...res.tempFilePaths],
+  const handleUpload = async () => {
+    try {
+      const res = await Taro.chooseImage({
+        count: 1,
+        sizeType: ['compressed'],
+        sourceType: ['album', 'camera'],
+      });
+
+      if (res.tempFilePaths && res.tempFilePaths[0]) {
+        const uploadRes = await Taro.uploadFile({
+          url: 'https://api.eurostay.co/app/common/upload',
+          filePath: res.tempFilePaths[0],
+          name: 'Image',
+          formData: {
+            prefix: 'test',
+          },
+          header: {
+            token: GlobalStore.userInfo.token,
+          },
+          success: function (result) {
+            const responseData = JSON.parse(result.data);
+            const imageUrl = responseData['result'];
+            // 根据类型更新不同的字段
+            console.log(imageUrl);
+            return imageUrl;
+          },
         });
-      },
-    });
+      }
+    } catch (error) {
+      console.error('Upload failed:', error);
+      Taro.showToast({
+        title: '上传失败',
+        icon: 'none',
+      });
+    }
   };
 
   const handleCountryChange = e => {
@@ -123,6 +154,20 @@ const HousePublish = () => {
       city: selectedCity,
     });
   };
+
+  useEffect(() => {
+    let marksList: { value: string }[] = [];
+    multiDays.forEach(day => {
+      for (let i = 0; i <= calculateDaysBetweenDates(day[0], day[1]); i++) {
+        marksList.push({
+          value: formatTimestamp(
+            new Date(day[0]).getTime() + i * 24 * 60 * 60 * 1000,
+          ),
+        });
+      }
+    });
+    setMarks(marksList);
+  }, [multiDays.length]);
 
   return (
     <View className='house-publish'>
@@ -397,7 +442,7 @@ const HousePublish = () => {
               </View>
             ))}
             {formData.houseImages.length < 6 && (
-              <View className='upload-button' onClick={handleImageUpload}>
+              <View className='upload-button' onClick={handleUpload}>
                 <Text className='plus'>+</Text>
               </View>
             )}
@@ -408,7 +453,13 @@ const HousePublish = () => {
             <Text>可出租时间*</Text>
             <View className='multi-days'>
               {multiDays.map((day, index) => (
-                <View key={index} className='multi-day active'>
+                <View
+                  key={index}
+                  className='multi-day active'
+                  onClick={() => {
+                    setMultiDays(multiDays.filter(d => d !== day));
+                  }}
+                >
                   {day[0]} - {day[1]}
                 </View>
               ))}
@@ -417,9 +468,8 @@ const HousePublish = () => {
           <View className='date-select '>
             <AtCalendar
               isMultiSelect
-              multiSelect={multiDays}
-              selectedDates={multiDays}
-              selectedDate={multiDays}
+              multiple={true}
+              marks={marks}
               currentDate={{ start: startDate, end: endDate }}
               // validRange={{ start: today }} // 有效日期范围
               minDate={today}
@@ -442,7 +492,24 @@ const HousePublish = () => {
                 if (isSelected) {
                   setEndDate(selectedDate);
                   setIsSelected(false);
-                  setMultiDays([...multiDays, [startDate, selectedDate]]);
+                  const mergedMultiDays = mergeDateRanges([
+                    ...multiDays,
+                    [startDate, selectedDate],
+                  ]);
+                  setMultiDays(mergedMultiDays);
+                  let list: { value: string }[] = [];
+                  for (
+                    let i = 0;
+                    i <= calculateDaysBetweenDates(startDate, selectedDate);
+                    i++
+                  ) {
+                    list.push({
+                      value: formatTimestamp(
+                        new Date(startDate).getTime() + i * 24 * 60 * 60 * 1000,
+                      ),
+                    });
+                  }
+                  setMarks([...marks, ...list]);
                   return;
                 }
                 setStartDate(selectedDate);
@@ -504,7 +571,7 @@ const HousePublish = () => {
               </View>
             ))}
             {formData.houseImages.length < 6 && (
-              <View className='upload-button' onClick={handleImageUpload}>
+              <View className='upload-button' onClick={handleUpload}>
                 <Text className='plus'>+</Text>
               </View>
             )}

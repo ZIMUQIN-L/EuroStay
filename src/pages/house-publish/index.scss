@@ -132,9 +132,38 @@
           color: #000000;
           font-weight: bolder;
         }
+        .flex__item
+          .flex__item--now
+          .flex__item--selected
+          .flex__item--selected-head {
+          .at-calendar__list.flex .flex__item-container {
+            max-width: 60rpx;
+            max-height: 60rpx;
+          }
+        }
+        .flex__item
+          .flex__item--now
+          .flex__item--selected
+          .flex__item--selected-tail {
+          .at-calendar__list.flex .flex__item-container {
+            max-width: 60rpx;
+            max-height: 60rpx;
+          }
+        }
+        .flex__item-container {
+          max-width: 60rpx;
+          max-height: 60rpx;
+        }
         .at-calendar__list.flex .flex__item-container {
-          width: 60rpx;
-          height: 60rpx;
+          width: 60rpx !important;
+          height: 60rpx !important;
+        }
+        .flex__item-extra .extra {
+          position: absolute;
+        }
+        .at-calendar__list.flex .flex__item-container {
+          max-width: 60rpx;
+          max-height: 60rpx;
         }
       }
 
