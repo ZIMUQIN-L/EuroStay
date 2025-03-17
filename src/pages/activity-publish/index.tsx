@@ -1,17 +1,19 @@
 import { View, Text, Input, Image, Picker } from '@tarojs/components';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Taro from '@tarojs/taro';
 import './index.scss';
 import { AtCalendar } from 'taro-ui';
 import { formatToday } from '@utils/dateUtil';
-
+import GlobalStore from '@store/GlobalStore';
+import Popup from '../../components/Popup';
+import '../../components/Popup/index.scss';
 const ActivityPublish = () => {
   const [formData, setFormData] = useState({
     activityName: '',
     activityTag: [],
     activityDesc: '',
-    country: '国家',
-    city: '城市',
+    country: { id: 0, cname: '选择国家', name: '' },
+    city: { id: 0, cname: '选择城市', name: '' },
     detailAddress: '',
     price: '',
     participantGender: '',
@@ -22,12 +24,71 @@ const ActivityPublish = () => {
   });
   const today = formatToday();
   const [startDate, setStartDate] = useState(today);
-  const [endDate, setEndDate] = useState(null);
-  const [isSelected, setIsSelected] = useState(false);
-
-  const handleDateChange = (startValue, endValue) => {
-    setStartDate(startValue);
-    setEndDate(endValue);
+  const [isShowActivityTagPop, setIsShowActivityTagPop] = useState(false);
+  const [curTag, setCurTag] = useState('');
+  const [customTags, setCustomTags] = useState<string[]>([]);
+  const [countries, setCountries] = useState<
+    { id: number; cname: string; name: string }[]
+  >([]);
+  const [cities, setCities] = useState<
+    { id: number; cname: string; name: string }[]
+  >([]);
+  useEffect(() => {
+    getCountries();
+  }, []);
+  useEffect(() => {
+    getCities();
+  }, [formData.country.id]);
+  const getCities = async () => {
+    console.log(GlobalStore.userInfo.token);
+    await Taro.request({
+      url: `https://api.eurostay.co/app/eslocation/cityList`,
+      method: 'GET',
+      header: {
+        token: GlobalStore.userInfo.token,
+      },
+      data: {
+        countryId: formData.country.id,
+      },
+      success: function (response) {
+        console.log(response);
+        if (response.statusCode === 200 && response.data.code === 0) {
+          setCities(response.data.result);
+          console.log(response.data.result);
+        }
+      },
+      fail: function (err) {
+        Taro.showToast({
+          title: '网络请求失败，请重试',
+          icon: 'none',
+          duration: 2000,
+        });
+      },
+    });
+  };
+  const getCountries = async () => {
+    console.log(GlobalStore.userInfo.token);
+    await Taro.request({
+      url: `https://api.eurostay.co/app/eslocation/countryList`,
+      method: 'GET',
+      header: {
+        token: GlobalStore.userInfo.token,
+      },
+      success: function (response) {
+        console.log(response);
+        if (response.statusCode === 200 && response.data.code === 0) {
+          setCountries(response.data.result);
+          console.log(response.data.result);
+        }
+      },
+      fail: function (err) {
+        Taro.showToast({
+          title: '网络请求失败，请重试',
+          icon: 'none',
+          duration: 2000,
+        });
+      },
+    });
   };
 
   const tags = [
@@ -49,16 +110,6 @@ const ActivityPublish = () => {
     { id: 2, name: '友好' },
     { id: 3, name: '有经验' },
   ];
-
-  const countries = ['中国', '法国', '德国', '意大利', '西班牙', '英国'];
-  const cities = {
-    中国: ['北京', '上海', '广州', '深圳'],
-    法国: ['巴黎', '里昂', '马赛', '波尔多'],
-    德国: ['柏林', '慕尼黑', '汉堡', '科隆'],
-    意大利: ['罗马', '米兰', '佛罗伦萨', '威尼斯'],
-    西班牙: ['马德里', '巴塞罗那', '瓦伦西亚', '塞维利亚'],
-    英国: ['伦敦', '曼彻斯特', '利物浦', '爱丁堡'],
-  };
 
   const handleTagSelect = tag => {
     const newTags = formData.activityTag.includes(tag)
@@ -95,16 +146,17 @@ const ActivityPublish = () => {
   };
 
   const handleCountryChange = e => {
+    console.log(e, 'country');
     const selectedCountry = countries[e.detail.value];
     setFormData({
       ...formData,
       country: selectedCountry,
-      city: '选择城市',
+      city: { id: 0, cname: '选择城市', name: '' }, // 重置城市
     });
   };
 
   const handleCityChange = e => {
-    const selectedCity = cities[formData.country][e.detail.value];
+    const selectedCity = cities[e.detail.value];
     setFormData({
       ...formData,
       city: selectedCity,
@@ -117,9 +169,87 @@ const ActivityPublish = () => {
       startTime: e.detail.value,
     });
   };
+  const handleSubmit = async () => {
+    console.log({
+      title: formData.activityName,
+      description: formData.activityDesc,
+      location: formData.detailAddress,
+      searchableLocation: formData.city.id,
+      price: Number(formData.price),
+      images: formData.activityImages,
+      tags: formData.activityTag,
+      capacity: formData.participantCount,
+      startTime: startDate + 'T' + formData.startTime + ':00',
+    });
+    await Taro.request({
+      url: `https://api.eurostay.co/app/activity/addActivity`,
+      method: 'POST',
+      header: {
+        token: GlobalStore.userInfo.token,
+      },
+      data: {
+        title: formData.activityName,
+        description: formData.activityDesc,
+        location: formData.detailAddress,
+        searchableLocation: formData.city.id,
+        price: Number(formData.price),
+        images: formData.activityImages,
+        tags: formData.activityTag,
+        capacity: formData.participantCount,
+        startTime: startDate + 'T' + formData.startTime + ':00',
+      },
+      success: function (response) {
+        console.log(response);
+        if (response.statusCode === 200 && response.data.code === 0) {
+          console.log(response.data, 'res');
+          Taro.showToast({
+            title: '你已成功上传活动！活动正在等待审核，审核通过后将公众可见。',
+            icon: 'none',
+            duration: 2000,
+          });
+          setTimeout(() => {
+            Taro.navigateBack();
+          }, 2000);
+        }
+      },
+      fail: function (err) {
+        Taro.showToast({
+          title: '网络请求失败，请重试',
+          icon: 'none',
+          duration: 2000,
+        });
+      },
+    });
+  };
 
   return (
     <View className='activity-publish'>
+      {isShowActivityTagPop && (
+        <Popup
+          className={'activity-tag-pop'}
+          content={
+            <Input
+              className='input'
+              placeholder='请输入活动标签'
+              placeholderClass='placeholder'
+              value={curTag}
+              onInput={e => {
+                setCurTag(e.detail.value);
+              }}
+            />
+          }
+          title='请输入个性化活动标签'
+          onClickClose={() => {
+            setIsShowActivityTagPop(false);
+          }}
+          onClickConfirm={e => {
+            setIsShowActivityTagPop(false);
+            handleTagSelect(curTag);
+            const newTags = [...customTags, curTag];
+            setCustomTags(newTags);
+          }}
+        />
+      )}
       <View className='section'>
         <View className='section-title'>
           <View className='section-title-icon' />
@@ -151,6 +281,28 @@ const ActivityPublish = () => {
                 {tag.name}
               </Text>
             ))}
+            {customTags.map((tag, index) => (
+              <Text
+                key={tags.length + index}
+                className={`tag ${customTags.includes(tag) ? 'active' : ''}`}
+                onClick={() => {
+                  const newTags = customTags.includes(tag)
+                    ? customTags.filter(t => t !== tag)
+                    : [...customTags, tag];
+                  setCustomTags(newTags);
+                }}
+              >
+                {tag}
+              </Text>
+            ))}
+            <Text
+              className='option'
+              onClick={() => {
+                setIsShowActivityTagPop(true);
+              }}
+            >
+              +
+            </Text>
           </View>
         </View>
 
@@ -172,27 +324,27 @@ const ActivityPublish = () => {
           <View className='address-select'>
             <Picker
               mode='selector'
-              range={countries}
+              range={countries.map(country => country.cname)}
               onChange={handleCountryChange}
               className='picker'
             >
               <View className='picker-item'>
                 <Text
-                  className={formData.country === '国家' ? 'placeholder' : ''}
+                  className={formData.country.id === 0 ? 'placeholder' : ''}
                 >
-                  {formData.country}
+                  {formData.country.cname}
                 </Text>
               </View>
             </Picker>
             <Picker
               mode='selector'
-              range={cities[formData.country] || []}
+              range={cities.map(city => city.cname)}
               onChange={handleCityChange}
               className='picker'
             >
               <View className='picker-item'>
-                <Text className={formData.city === '城市' ? 'placeholder' : ''}>
-                  {formData.city}
+                <Text className={formData.city.id === 0 ? 'placeholder' : ''}>
+                  {formData.city.cname}
                 </Text>
               </View>
             </Picker>
@@ -236,8 +388,10 @@ const ActivityPublish = () => {
               type='number'
               placeholder='0'
               placeholderClass='placeholder'
-              value={formData.price}
-              onInput={e => setFormData({ ...formData, price: e.detail.value })}
+              value={formData.participantCount}
+              onInput={e =>
+                setFormData({ ...formData, participantCount: e.detail.value })
+              }
             />
             <Text className='unit'>人</Text>
           </View>
@@ -270,24 +424,12 @@ const ActivityPublish = () => {
           <View className='date-select'>
             <AtCalendar
               isMultiSelect
-              currentDate={{ start: startDate, end: endDate }}
+              multiple={true}
+              currentDate={{ start: startDate, end: startDate }}
               minDate={today}
               onDayClick={date => {
                 const selectedDate = date.value;
-                if (selectedDate < startDate) {
-                  setStartDate(selectedDate);
-                  setEndDate(null);
-                  setIsSelected(true);
-                  return;
-                }
-                if (isSelected) {
-                  setEndDate(selectedDate);
-                  setIsSelected(false);
-                  return;
-                }
                 setStartDate(selectedDate);
-                setEndDate(null);
-                setIsSelected(true);
               }}
               style={{ width: '100%' }}
             />
@@ -306,7 +448,9 @@ const ActivityPublish = () => {
         </View>
       </View>
 
-      <View className='submit-post-activity'>发布活动</View>
+      <View className='submit-post-activity' onClick={handleSubmit}>
+        发布活动
+      </View>
     </View>
   );
 };

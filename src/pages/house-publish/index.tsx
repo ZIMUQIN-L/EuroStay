@@ -10,6 +10,7 @@ import {
   mergeDateRanges,
   formatDate,
 } from '@utils/dateUtil';
+import '../../components/Popup/index.scss';
 import Popup from '../../components/Popup';
 import GlobalStore from '@store/GlobalStore';
 
@@ -258,7 +259,8 @@ const HousePublish = () => {
       whyHost: formData.story,
       wxId: formData.wechat,
       qrCode: formData.paymentImages?.[0],
-      availableDates: marks.map(mark => formatDate(new Date(mark.value))),
+      requirements: formData.otherRequirements,
+      availableDate: marks.map(mark => formatDate(new Date(mark.value))),
     });
     await Taro.request({
       url: `https://api.eurostay.co/app/property/upload`,
@@ -279,13 +281,20 @@ const HousePublish = () => {
         whyHost: formData.story,
         wxId: formData.wechat,
         qrCode: formData.paymentImages?.[0],
-        availableDates: marks.map(mark => formatDate(new Date(mark.value))),
+        requirements: formData.otherRequirements,
+        availableDate: marks.map(mark => formatDate(new Date(mark.value))),
       },
       success: function (response) {
         console.log(response);
         if (response.statusCode === 200 && response.data.code === 0) {
-          setCities(response.data.result);
-          console.log(response.data.result);
+          Taro.showToast({
+            title: '你已成功上传房源！房源正在等待审核，审核通过后将公众可见。',
+            icon: 'none',
+            duration: 2000,
+          });
+          setTimeout(() => {
+            Taro.navigateBack();
+          }, 2000);
         }
       },
       fail: function (err) {

@@ -3,7 +3,50 @@
   // padding: 20px;
   background: #f5f5f5;
   min-height: 100vh;
-
+  .popup-wrapper {
+    z-index: 999;
+    //   padding-bottom: 250px;
+    min-width: 100%;
+    position: fixed;
+    background-color: white;
+    bottom: 0;
+    border-radius: 50px 50px 0px 0px;
+    border-top: 5px solid rgba(0, 0, 0, 0.1);
+    overflow: scroll;
+    //   box-shadow: 4px 12px rgba(0, 0, 0, 0.1);
+    .popup-content {
+      z-index: 0;
+      padding-top: 100px;
+      overflow: scroll;
+    }
+    .popup-top {
+      max-width: 90%;
+      min-width: 90%;
+      border-radius: 50px 50px 50px 50px;
+      overflow: hidden;
+      background-color: white;
+      position: fixed;
+      z-index: 1;
+      // top: 0
+      min-width: 90%;
+      padding: 10px 20px;
+      padding-right: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      .back {
+        .back-icon {
+          width: 60px;
+          height: 60px;
+          margin-top: 10px;
+        }
+      }
+      .confirm {
+        color: #443aff;
+        //   margin-right: 60px;
+      }
+    }
+  }
   .tag-pop,
   .req-pop {
     min-height: 20%;

@@ -80,7 +80,8 @@ const Index = () => {
             onClick={e => {
               e.stopPropagation();
               e.preventDefault();
-              Taro.redirectTo({
+              setIsShowPostModal(false);
+              Taro.navigateTo({
                 url: '/pages/house-publish/index',
               });
             }}
@@ -93,7 +94,8 @@ const Index = () => {
             onClick={e => {
               e.stopPropagation();
               e.preventDefault();
-              Taro.redirectTo({
+              setIsShowPostModal(false);
+              Taro.navigateTo({
                 url: '/pages/activity-publish/index',
               });
             }}
