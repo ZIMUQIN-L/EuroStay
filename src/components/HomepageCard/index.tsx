@@ -6,7 +6,14 @@ import {
   homeActivityProps,
   homePropertyProps,
 } from '@utils/interfaces';
-
+import {
+  uuIcon,
+  uuSelectedIcon,
+  propertyIcon,
+  propertySelectedIcon,
+  activityIcon,
+  activitySelectedIcon,
+} from '@utils/cloudIcons';
 const HomepageCard = (props: {
   user: homeUserProps;
   activity: homeActivityProps;
@@ -43,13 +50,13 @@ const HomepageCard = (props: {
           )}
           <View className='button-wrapper'>
             <Image
-              src={''}
+              src={uuSelectedIcon}
               className='user'
               onClick={() => setActiveTab('友友')}
             />
             {props.activity && (
               <Image
-                src={''}
+                src={activityIcon}
                 className='activity'
                 onClick={() => setActiveTab('活动')}
               />
@@ -57,7 +64,7 @@ const HomepageCard = (props: {
 
             {props.property && (
               <Image
-                src={''}
+                src={propertyIcon}
                 className='house'
                 onClick={() => setActiveTab('房源')}
               />
@@ -87,14 +94,14 @@ const HomepageCard = (props: {
           <View className='button-wrapper'>
             {props.user && (
               <Image
-                src={''}
+                src={uuIcon}
                 className='user'
                 onClick={() => setActiveTab('友友')}
               />
             )}
             {props.activity && (
               <Image
-                src={''}
+                src={activitySelectedIcon}
                 className='activity'
                 onClick={() => setActiveTab('活动')}
               />
@@ -102,7 +109,7 @@ const HomepageCard = (props: {
 
             {props.property && (
               <Image
-                src={''}
+                src={propertyIcon}
                 className='house'
                 onClick={() => setActiveTab('房源')}
               />
@@ -126,14 +133,14 @@ const HomepageCard = (props: {
           <View className='button-wrapper'>
             {props.user && (
               <Image
-                src={''}
+                src={uuIcon}
                 className='user'
                 onClick={() => setActiveTab('友友')}
               />
             )}
             {props.activity && (
               <Image
-                src={''}
+                src={activityIcon}
                 className='activity'
                 onClick={() => setActiveTab('活动')}
               />
@@ -141,7 +148,7 @@ const HomepageCard = (props: {
 
             {props.property && (
               <Image
-                src={''}
+                src={propertySelectedIcon}
                 className='house'
                 onClick={() => setActiveTab('房源')}
               />
