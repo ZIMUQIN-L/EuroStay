@@ -11,7 +11,7 @@ interface HomepageSearchProps {
   onCitySelectChange: (value: boolean) => void;
   startDate: string;
   endDate: string;
-  location: number;
+  location_: { id: number; cname: string; name: string };
   onSearch: () => void;
   onCapacityChanged: (value: number) => void;
 }
@@ -22,13 +22,16 @@ const HomepageSearch: React.FC<HomepageSearchProps> = ({
   onDateSelectChange,
   startDate,
   endDate,
+  location_,
   onCitySelectChange,
   onCapacityChanged,
   onSearch,
 }) => {
-  const [location, setLocation] = useState('意大利');
-  const [startDate_, setStartDate] = useState(startDate);
-  const [endDate_, setEndDate] = useState(endDate);
+  useEffect(() => {
+    console.log(location_.cname, 'location_.cname');
+    setLocation(location_.cname);
+  }, [location_.cname]);
+  const [location, setLocation] = useState(location_.cname);
   const [guests, setGuests] = useState(1);
 
   return (
@@ -64,6 +67,7 @@ const HomepageSearch: React.FC<HomepageSearchProps> = ({
               <View
                 className={`guest-button ${guests === 1 ? 'selected' : ''}`}
                 onClick={() => {
+                  setGuests(1);
                   onCapacityChanged(1);
                 }}
               >
@@ -72,6 +76,7 @@ const HomepageSearch: React.FC<HomepageSearchProps> = ({
               <View
                 className={`guest-button ${guests === 2 ? 'selected' : ''}`}
                 onClick={() => {
+                  setGuests(2);
                   onCapacityChanged(2);
                 }}
               >
@@ -80,6 +85,7 @@ const HomepageSearch: React.FC<HomepageSearchProps> = ({
               <View
                 className={`guest-button ${guests === 3 ? 'selected' : ''}`}
                 onClick={() => {
+                  setGuests(3);
                   onCapacityChanged(3);
                 }}
               >
@@ -90,7 +96,11 @@ const HomepageSearch: React.FC<HomepageSearchProps> = ({
         )}
       </View>
 
-      <View className='searchButton' onClick={onSearch}>
+      <View
+        className='searchButton'
+        onClick={onSearch}
+        style={{ backgroundColor: '#6b4eff' }}
+      >
         查询{activeTab}
       </View>
     </View>

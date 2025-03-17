@@ -113,7 +113,7 @@ const HomepageCard = (props: {
               <View className='title'>{props.activity?.title}</View>
               <View className='startTime'>{props.activity?.startTime}</View>
             </View>
-            <View className='bottom-right'>{props.activity?.price}</View>
+            <View className='bottom-right'>€{props.activity?.price}/次</View>
           </View>
         </>
       )}
@@ -152,7 +152,7 @@ const HomepageCard = (props: {
               <View className='title'>{props.property?.title}</View>
               <View className='startTime'>{props.property?.startTime}</View>
             </View>
-            <View className='bottom-right'>{props.property?.price}</View>
+            <View className='bottom-right'>€{props.property?.price}/晚</View>
           </View>
         </>
       )}

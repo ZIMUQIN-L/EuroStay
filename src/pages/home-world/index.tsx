@@ -16,7 +16,6 @@ import CitySelect from '@components/CitySelect';
 
 const HomeWorld = () => {
   const [activeTab, setActiveTab] = useState<'友友' | '房源' | '活动'>(null);
-  const [topCityList, setTopCityList] = useState([]);
   const instance = getCurrentInstance();
   // 输出当前页面的 URL 参数对象
   console.log('router', instance?.router?.params);
@@ -58,7 +57,11 @@ const HomeWorld = () => {
     }
     return [];
   }, [activeTab, userList, propertyList, activityList]);
-  const [location, setLocation] = useState<number>(0);
+  const [location, setLocation] = useState<{
+    id: number;
+    cname: string;
+    name: string;
+  }>({ id: 0, cname: '选择城市', name: '' });
   const [startDate, setStartDate] = useState<string>('');
   const [endDate, setEndDate] = useState<string>('');
   const [capacity, setCapacity] = useState<number>();
@@ -66,9 +69,23 @@ const HomeWorld = () => {
   const [isShowCitySelect, setIsShowCitySelect] = useState(false);
 
   useEffect(() => {
+    setStartDate('');
+    setEndDate('');
+    setCapacity(1);
+    setLocation({ id: 0, cname: '选择城市', name: '' });
+  }, [activeTab]);
+  useEffect(() => {
+    console.log(location.cname, 'location.cname ');
+  }, [location.cname]);
+  useEffect(() => {
     setActiveTab('友友');
     getList('app/esuser/getUserList', setUserList);
-    getList('app/activity/getActivityList', setActivityList);
+    getList('app/activity/getActivityList', setActivityList, {
+      searchableLocation: 0,
+      startDate: '',
+      endDate: '',
+      order: 'DES',
+    });
     getList('/app/property/getPropertyList', setPropertyList, {
       searchableLocation: 0,
       startDate: '',
@@ -78,37 +95,17 @@ const HomeWorld = () => {
     });
     // post('/app/eslocation/topCities', setTopCityList, {});
   }, []);
-  const post = (path, callback, params = {}) => {
-    let res = [];
-    Taro.request({
-      url: `https://api.eurostay.co${path}`,
-      method: 'POST',
-      header: {
-        token: GlobalStore.userInfo.token,
-      },
-      data: {
-        myUid: GlobalStore.userInfo.uid,
-        ...params,
-      },
-      success: function (response) {
-        if (response.statusCode === 200 && response.data.code === 0) {
-          res = response.data.result.data;
-          callback && callback(res);
-          console.log(path, 'city', res);
-        }
-      },
-      fail: function (err) {
-        Taro.showToast({
-          title: '网络请求失败，请重试',
-          icon: 'none',
-          duration: 2000,
-        });
-      },
-    });
-  };
 
   const getList = (path, callback, params = {}) => {
     let res = [];
+    console.log(
+      {
+        myUid: GlobalStore.userInfo.uid,
+        page: 1,
+        ...params,
+      },
+      'params',
+    );
     Taro.request({
       url: `https://api.eurostay.co/${path}`,
       method: 'POST',
@@ -117,16 +114,15 @@ const HomeWorld = () => {
       },
       data: {
         myUid: GlobalStore.userInfo.uid,
-        order: 'DESC',
-        page: '1',
+        page: 1,
         ...params,
       },
       success: function (response) {
         if (response.statusCode === 200 && response.data.code === 0) {
           res = response.data.result.data;
           callback && callback(res);
-          console.log(path, '1111', res);
         }
+        console.log(path, '1111', response.data);
       },
       fail: function (err) {
         Taro.showToast({
@@ -194,7 +190,7 @@ const HomeWorld = () => {
             onDateSelectChange={value => {
               setIsShowDateSelect(value);
             }}
-            location={location}
+            location_={location}
             onCitySelectChange={value => {
               setIsShowCitySelect(value);
             }}
@@ -202,18 +198,19 @@ const HomeWorld = () => {
               setCapacity(value);
             }}
             onSearch={() => {
+              console.log(activeTab, 'activeTab');
               if (activeTab == '房源') {
                 getList('/app/property/getPropertyList', setPropertyList, {
-                  searchableLocation: location,
+                  searchableLocation: location.id,
                   startDate: startDate,
                   endDate: endDate,
-                  order: 'DES_PRICE',
                   capacity: capacity,
+                  order: 'DES_PRICE',
                 });
               }
               if (activeTab == '活动') {
                 getList('app/activity/getActivityList', setActivityList, {
-                  searchableLocation: location,
+                  searchableLocation: location.id,
                   startDate: startDate,
                   endDate: endDate,
                   order: 'DES',

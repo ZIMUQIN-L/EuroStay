@@ -5,16 +5,50 @@ import Taro from '@tarojs/taro';
 import GlobalStore from '@store/GlobalStore';
 
 interface IProps {
-  onCitySelected: (_: number) => void;
+  onCitySelected: (_: { id: number; cname: string; name: string }) => void;
 }
 const CitySelect = (props: IProps) => {
   const [searchValue, setSearchValue] = useState('');
-  const [topCityList, setTopCityList] = useState([]);
+  const [topCityList, setTopCityList] = useState<
+    {
+      id: number;
+      cname: string;
+      name: string;
+    }[]
+  >([]);
+  const [allCityList, setAllCityList] = useState<
+    {
+      id: number;
+      cname: string;
+      name: string;
+      pinyin: string;
+    }[]
+  >([]);
+  const [cityGroups, setCityGroups] = useState<{
+    [key: string]: { id: number; cname: string; name: string }[];
+  }>({});
 
   useEffect(() => {
     console.log('cuty select');
     post('/app/eslocation/topCities', setTopCityList, {});
+    post('/app/eslocation/allCities', setAllCityList, {});
+    getCityGroups();
   }, []);
+  useEffect(() => {
+    getCityGroups();
+  }, [allCityList.length]);
+  const getCityGroups = () => {
+    const groups = {};
+    allCityList.forEach(city => {
+      const firstLetter = city.pinyin[0].toUpperCase();
+      if (!groups[firstLetter]) {
+        groups[firstLetter] = [];
+      }
+      groups[firstLetter].push(city);
+    });
+    console.log(groups, 'groups');
+    setCityGroups(groups);
+  };
 
   const post = (path, callback, params = {}) => {
     let res = [];
@@ -23,7 +57,7 @@ const CitySelect = (props: IProps) => {
       url: `https://api.eurostay.co${path}`,
       method: 'GET',
       header: {
-        token: '2f68dbbf-519d-4f01-9636-e2421b68f379',
+        token: GlobalStore.userInfo.token,
       },
       data: {
         myUid: GlobalStore.userInfo.uid,
@@ -31,7 +65,7 @@ const CitySelect = (props: IProps) => {
       },
       success: function (response) {
         if (response.statusCode === 200 && response.data.code === 0) {
-          res = response.data.result.data;
+          res = response.data.result;
           callback && callback(res);
         }
         console.log(path, '1111', response.data);
@@ -44,30 +78,6 @@ const CitySelect = (props: IProps) => {
         });
       },
     });
-  };
-
-  const hotCities = [
-    '阿姆斯特丹',
-    '慕尼黑',
-    '巴塞罗那',
-    '罗马',
-    '巴黎',
-    '里斯本',
-    '伦敦',
-    '梵蒂冈',
-    '米兰',
-    '佛罗伦萨',
-    '威尼斯',
-    '伊斯坦布尔',
-    '布拉格',
-    '马德里',
-  ];
-
-  const cityGroups = {
-    A: ['阿姆斯特丹'],
-    B: ['巴塞罗那', '巴黎', '布拉格'],
-    C: ['CDEFG'],
-    D: ['DEFG'],
   };
 
   return (
@@ -85,15 +95,15 @@ const CitySelect = (props: IProps) => {
       <View className='hot-cities'>
         <Text className='section-title'>热门城市</Text>
         <View className='city-grid'>
-          {hotCities.map((city, index) => (
+          {topCityList.map((city, index) => (
             <View
               key={index}
               className='city-item'
               onClick={() => {
-                props.onCitySelected(index);
+                props.onCitySelected(city);
               }}
             >
-              {city}
+              {city.cname}
             </View>
           ))}
         </View>
@@ -107,10 +117,10 @@ const CitySelect = (props: IProps) => {
               key={index}
               className='city-row'
               onClick={() => {
-                props.onCitySelected(index);
+                props.onCitySelected(city);
               }}
             >
-              {city}
+              {city.cname}
             </View>
           ))}
         </View>
