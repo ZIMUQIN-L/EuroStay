@@ -7,12 +7,37 @@ import Taro from '@tarojs/taro';
 
 const UserVip = () => {
   const [agreed, setAgreed] = useState(false);
+  const [selectedPlan, setSelectedPlan] = useState<'monthly' | 'yearly'>('monthly');
+  const [vipEndDate, setVipEndDate] = useState('');
+
+  // 获取会员信息
+  useEffect(() => {
+    fetchVipInfo();
+  }, []);
+
+  const fetchVipInfo = async () => {
+    try {
+      const res = await Taro.request({
+        url: 'https://api.eurostay.co/app/vip/vipInfo',
+        method: 'POST',
+        header: {
+          'token': GlobalStore._userInfo.token
+        }
+      });
+
+      if (res.data.code === 0) {
+        setVipEndDate(res.data.endDate);
+      }
+    } catch (error) {
+      console.error('获取会员信息失败', error);
+    }
+  };
 
   const handleAgreement = () => {
     setAgreed(!agreed);
   };
 
-  const handleSubscribe = () => {
+  const handleSubscribe = async () => {
     if (!agreed) {
       Taro.showToast({
         title: '请先同意会员协议',
@@ -20,7 +45,55 @@ const UserVip = () => {
       });
       return;
     }
-    // 处理开通/续费会员逻辑
+
+    try {
+      // 调用充值接口
+      const res = await Taro.request({
+        url: 'https://api.eurostay.co/app/vip/recharge',
+        method: 'POST',
+        header: {
+          'token': GlobalStore._userInfo.token,
+          'Content-Type': 'application/json'
+        },
+        data: {
+          month: 1,
+          price: 1
+        }
+      });
+
+      if (res.data.code === 0) {
+        const paymentData = res.data.data;
+        // 调用支付
+        await Taro.requestPayment({
+          timeStamp: paymentData.timeStamp,
+          nonceStr: paymentData.nonceStr,
+          package: paymentData.package,
+          signType: paymentData.signType,
+          paySign: paymentData.paySign,
+          success: () => {
+            Taro.showToast({
+              title: '支付成功',
+              icon: 'success'
+            });
+            // 刷新会员信息
+            fetchVipInfo();
+          },
+          fail: (err) => {
+            console.error('支付失败', err);
+            Taro.showToast({
+              title: '支付失败',
+              icon: 'none'
+            });
+          }
+        });
+      }
+    } catch (error) {
+      console.error('请求失败', error);
+      Taro.showToast({
+        title: '请求失败',
+        icon: 'none'
+      });
+    }
   };
 
   const handleNavigateToRights = () => {
@@ -37,7 +110,7 @@ const UserVip = () => {
         <View className='info-text'>
           <Text className='nickname'>{GlobalStore._userInfo?.username || ''}</Text>
           <Text className='vip-status'>
-            {GlobalStore._userInfo?.isVip ? '包年会员LV1' : '暂未开通会员'}
+            {GlobalStore._userInfo?.isVip ? `会员有效期至 ${vipEndDate}` : '暂未开通会员'}
           </Text>
         </View>
       </View>
@@ -46,7 +119,10 @@ const UserVip = () => {
       <View className='content-container'>
         {/* 会员套餐选项 */}
         <View className='subscription-options'>
-          <View className='option-card monthly'>
+          <View 
+            className={`option-card monthly ${selectedPlan === 'monthly' ? 'selected' : ''}`}
+            onClick={() => setSelectedPlan('monthly')}
+          >
             <Image className='bg-image' src={bgMonthly} />
             <View className='price-info'>
               <View className='left'>
@@ -64,7 +140,10 @@ const UserVip = () => {
             </View>
           </View>
 
-          <View className='option-card yearly'>
+          <View 
+            className={`option-card yearly ${selectedPlan === 'yearly' ? 'selected' : ''}`}
+            onClick={() => setSelectedPlan('yearly')}
+          >
             <Image className='bg-image' src={bgYearly} />
             <View className='price-info'>
               <View className='left'>
