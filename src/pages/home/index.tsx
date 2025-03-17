@@ -72,11 +72,14 @@ const Index = () => {
           onClick={e => {
             e.stopPropagation();
             e.preventDefault();
+            setIsShowPostModal(false);
           }}
         >
           <View
             className='post-house'
-            onClick={() => {
+            onClick={e => {
+              e.stopPropagation();
+              e.preventDefault();
               Taro.redirectTo({
                 url: '/pages/house-publish/index',
               });
@@ -87,7 +90,9 @@ const Index = () => {
           </View>
           <View
             className='post-activity'
-            onClick={() => {
+            onClick={e => {
+              e.stopPropagation();
+              e.preventDefault();
               Taro.redirectTo({
                 url: '/pages/activity-publish/index',
               });

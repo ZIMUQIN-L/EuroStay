@@ -8,23 +8,35 @@ import {
   formatTimestamp,
   formatToday,
   mergeDateRanges,
+  formatDate,
 } from '@utils/dateUtil';
 import Popup from '../../components/Popup';
 import GlobalStore from '@store/GlobalStore';
+
+enum Gender {
+  Female = 0,
+  Male = 1,
+  Other = 3,
+  NoLimit = 2,
+  Default = 999,
+}
 
 const HousePublish = () => {
   const [formData, setFormData] = useState({
     houseName: '',
     houseTag: [],
     houseDesc: '',
-    country: '国家',
-    city: '城市',
+    country: { id: 0, cname: '选择国家', name: '' },
+    city: { id: 0, cname: '选择城市', name: '' },
     detailAddress: '',
     price: '',
-    tenantGender: '',
-    tenantCount: '',
+    tenantGender: Gender.Default,
+    tenantCount: 999,
     otherRequirements: [],
     houseImages: [],
+    paymentImages: [],
+    story: '',
+    wechat: '',
   });
   const today = formatToday();
   const [startDate, setStartDate] = useState(today);
@@ -38,11 +50,72 @@ const HousePublish = () => {
   const [curReq, setCurReq] = useState('');
   const [multiDays, setMultiDays] = useState<[string, string][]>([]);
   const [marks, setMarks] = useState<{ value: string }[]>([]);
+  const [countries, setCountries] = useState<
+    { id: number; cname: string; name: string }[]
+  >([]);
+  const [cities, setCities] = useState<
+    { id: number; cname: string; name: string }[]
+  >([]);
   useEffect(() => {
     Taro.setNavigationBarTitle({
       title: '发布房源',
     });
+    getCountries();
   }, []);
+  useEffect(() => {
+    getCities();
+  }, [formData.country.id]);
+  const getCities = async () => {
+    console.log(GlobalStore.userInfo.token);
+    await Taro.request({
+      url: `https://api.eurostay.co/app/eslocation/cityList`,
+      method: 'GET',
+      header: {
+        token: GlobalStore.userInfo.token,
+      },
+      data: {
+        countryId: formData.country.id,
+      },
+      success: function (response) {
+        console.log(response);
+        if (response.statusCode === 200 && response.data.code === 0) {
+          setCities(response.data.result);
+          console.log(response.data.result);
+        }
+      },
+      fail: function (err) {
+        Taro.showToast({
+          title: '网络请求失败，请重试',
+          icon: 'none',
+          duration: 2000,
+        });
+      },
+    });
+  };
+  const getCountries = async () => {
+    console.log(GlobalStore.userInfo.token);
+    await Taro.request({
+      url: `https://api.eurostay.co/app/eslocation/countryList`,
+      method: 'GET',
+      header: {
+        token: GlobalStore.userInfo.token,
+      },
+      success: function (response) {
+        console.log(response);
+        if (response.statusCode === 200 && response.data.code === 0) {
+          setCountries(response.data.result);
+          console.log(response.data.result);
+        }
+      },
+      fail: function (err) {
+        Taro.showToast({
+          title: '网络请求失败，请重试',
+          icon: 'none',
+          duration: 2000,
+        });
+      },
+    });
+  };
 
   const handleDateChange = (startValue, endValue) => {
     setStartDate(startValue);
@@ -69,16 +142,6 @@ const HousePublish = () => {
     { id: 3, name: '喜欢小狗' },
   ];
 
-  const countries = ['中国', '法国', '德国', '意大利', '西班牙', '英国'];
-  const cities = {
-    中国: ['北京', '上海', '广州', '深圳'],
-    法国: ['巴黎', '里昂', '马赛', '波尔多'],
-    德国: ['柏林', '慕尼黑', '汉堡', '科隆'],
-    意大利: ['罗马', '米兰', '佛罗伦萨', '威尼斯'],
-    西班牙: ['马德里', '巴塞罗那', '瓦伦西亚', '塞维利亚'],
-    英国: ['伦敦', '曼彻斯特', '利物浦', '爱丁堡'],
-  };
-
   const handleTagSelect = tag => {
     const newTags = formData.houseTag.includes(tag)
       ? formData.houseTag.filter(t => t !== tag)
@@ -101,7 +164,7 @@ const HousePublish = () => {
     setFormData({ ...formData, otherRequirements: newReqs });
   };
 
-  const handleUpload = async () => {
+  const handleUpload = async (type: string) => {
     try {
       const res = await Taro.chooseImage({
         count: 1,
@@ -122,9 +185,20 @@ const HousePublish = () => {
           },
           success: function (result) {
             const responseData = JSON.parse(result.data);
-            const imageUrl = responseData['result'];
+            const imageUrl: string = responseData['result'];
             // 根据类型更新不同的字段
             console.log(imageUrl);
+            if (type === 'house') {
+              setFormData({
+                ...formData,
+                houseImages: [...formData.houseImages, imageUrl],
+              });
+            } else {
+              setFormData({
+                ...formData,
+                paymentImages: [...formData.paymentImages, imageUrl],
+              });
+            }
             return imageUrl;
           },
         });
@@ -139,16 +213,17 @@ const HousePublish = () => {
   };
 
   const handleCountryChange = e => {
+    console.log(e, 'country');
     const selectedCountry = countries[e.detail.value];
     setFormData({
       ...formData,
       country: selectedCountry,
-      city: '选择城市', // 重置城市
+      city: { id: 0, cname: '选择城市', name: '' }, // 重置城市
     });
   };
 
   const handleCityChange = e => {
-    const selectedCity = cities[formData.country][e.detail.value];
+    const selectedCity = cities[e.detail.value];
     setFormData({
       ...formData,
       city: selectedCity,
@@ -168,6 +243,60 @@ const HousePublish = () => {
     });
     setMarks(marksList);
   }, [multiDays.length]);
+
+  const handleSubmit = async () => {
+    console.log({
+      title: formData.houseName,
+      description: formData.houseDesc,
+      location: formData.detailAddress,
+      searchableLocation: formData.city.id,
+      price: Number(formData.price),
+      images: formData.houseImages,
+      tags: formData.houseTag,
+      gender: formData.tenantGender,
+      capacity: formData.tenantCount,
+      whyHost: formData.story,
+      wxId: formData.wechat,
+      qrCode: formData.paymentImages?.[0],
+      availableDates: marks.map(mark => formatDate(new Date(mark.value))),
+    });
+    await Taro.request({
+      url: `https://api.eurostay.co/app/property/upload`,
+      method: 'POST',
+      header: {
+        token: GlobalStore.userInfo.token,
+      },
+      data: {
+        title: formData.houseName,
+        description: formData.houseDesc,
+        location: formData.detailAddress,
+        searchableLocation: formData.city.id,
+        price: Number(formData.price),
+        images: formData.houseImages,
+        tags: formData.houseTag,
+        gender: formData.tenantGender,
+        capacity: formData.tenantCount,
+        whyHost: formData.story,
+        wxId: formData.wechat,
+        qrCode: formData.paymentImages?.[0],
+        availableDates: marks.map(mark => formatDate(new Date(mark.value))),
+      },
+      success: function (response) {
+        console.log(response);
+        if (response.statusCode === 200 && response.data.code === 0) {
+          setCities(response.data.result);
+          console.log(response.data.result);
+        }
+      },
+      fail: function (err) {
+        Taro.showToast({
+          title: '网络请求失败，请重试',
+          icon: 'none',
+          duration: 2000,
+        });
+      },
+    });
+  };
 
   return (
     <View className='house-publish'>
@@ -297,27 +426,27 @@ const HousePublish = () => {
           <View className='address-select'>
             <Picker
               mode='selector'
-              range={countries}
+              range={countries?.map(country => country.cname)}
               onChange={handleCountryChange}
               className='picker'
             >
               <View className='picker-item'>
                 <Text
-                  className={formData.country === '国家' ? 'placeholder' : ''}
+                  className={formData.country.id === 0 ? 'placeholder' : ''}
                 >
-                  {formData.country}
+                  {formData.country.cname}
                 </Text>
               </View>
             </Picker>
             <Picker
               mode='selector'
-              range={cities[formData.country] || []}
+              range={cities.map(city => city.cname)}
               onChange={handleCityChange}
               className='picker'
             >
               <View className='picker-item'>
-                <Text className={formData.city === '城市' ? 'placeholder' : ''}>
-                  {formData.city}
+                <Text className={formData.city.id === 0 ? 'placeholder' : ''}>
+                  {formData.city.cname}
                 </Text>
               </View>
             </Picker>
@@ -359,26 +488,26 @@ const HousePublish = () => {
             <View className='gender-options'>
               <Text className='label'>性别</Text>
               <Text
-                className={`option ${formData.tenantGender === '男' ? 'active' : ''}`}
-                onClick={() => handleGenderSelect('男')}
+                className={`option ${formData.tenantGender === Gender.Male ? 'active' : ''}`}
+                onClick={() => handleGenderSelect(Gender.Male)}
               >
                 男
               </Text>
               <Text
-                className={`option ${formData.tenantGender === '女' ? 'active' : ''}`}
-                onClick={() => handleGenderSelect('女')}
+                className={`option ${formData.tenantGender === Gender.Female ? 'active' : ''}`}
+                onClick={() => handleGenderSelect(Gender.Female)}
               >
                 女
               </Text>
               <Text
-                className={`option ${formData.tenantGender === '其他' ? 'active' : ''}`}
-                onClick={() => handleGenderSelect('其他')}
+                className={`option ${formData.tenantGender === Gender.Other ? 'active' : ''}`}
+                onClick={() => handleGenderSelect(Gender.Other)}
               >
                 其他
               </Text>
               <Text
-                className={`option ${formData.tenantGender === '不限制性别' ? 'active' : ''}`}
-                onClick={() => handleGenderSelect('不限制性别')}
+                className={`option ${formData.tenantGender === Gender.NoLimit ? 'active' : ''}`}
+                onClick={() => handleGenderSelect(Gender.NoLimit)}
               >
                 不限制性别
               </Text>
@@ -390,8 +519,8 @@ const HousePublish = () => {
             {tenantCounts.map(count => (
               <Text
                 key={count.id}
-                className={`option ${formData.tenantCount === count.name ? 'active' : ''}`}
-                onClick={() => handleTenantCountSelect(count.name)}
+                className={`option ${formData.tenantCount === count.id ? 'active' : ''}`}
+                onClick={() => handleTenantCountSelect(count.id)}
               >
                 {count.name}
               </Text>
@@ -442,7 +571,10 @@ const HousePublish = () => {
               </View>
             ))}
             {formData.houseImages.length < 6 && (
-              <View className='upload-button' onClick={handleUpload}>
+              <View
+                className='upload-button'
+                onClick={() => handleUpload('house')}
+              >
                 <Text className='plus'>+</Text>
               </View>
             )}
@@ -535,10 +667,8 @@ const HousePublish = () => {
             className='input'
             placeholder='请简单分享你的故事'
             placeholderClass='placeholder'
-            value={formData.houseName}
-            onInput={e =>
-              setFormData({ ...formData, houseName: e.detail.value })
-            }
+            value={formData.story}
+            onInput={e => setFormData({ ...formData, story: e.detail.value })}
           />
         </View>
       </View>
@@ -553,25 +683,30 @@ const HousePublish = () => {
             className='input'
             placeholder='请输入你的微信号（房客不可见）'
             placeholderClass='placeholder'
-            value={formData.houseName}
-            onInput={e =>
-              setFormData({ ...formData, houseName: e.detail.value })
-            }
+            value={formData.wechat}
+            onInput={e => setFormData({ ...formData, wechat: e.detail.value })}
           />
         </View>
         <View className='input-item'>
           <View className='label label-flex with-margin'>
             <Text>微信收款二维码*</Text>
-            <Text className='image-count'>0/1张</Text>
+            <Text className='image-count'>
+              {formData.paymentImages.length}/1张
+            </Text>
           </View>
           <View className='image-upload'>
-            {formData.houseImages.map((image, index) => (
+            {formData.paymentImages.map((image, index) => (
               <View key={index} className='image-item'>
                 <Image src={image} mode='aspectFill' />
               </View>
             ))}
-            {formData.houseImages.length < 6 && (
-              <View className='upload-button' onClick={handleUpload}>
+            {formData.paymentImages.length == 0 && (
+              <View
+                className='upload-button'
+                onClick={() => {
+                  handleUpload('payment');
+                }}
+              >
                 <Text className='plus'>+</Text>
               </View>
             )}
@@ -581,7 +716,9 @@ const HousePublish = () => {
           </View>
         </View>
       </View>
-      <View className='submit-post-house'>上传房源</View>
+      <View className='submit-post-house' onClick={handleSubmit}>
+        上传房源
+      </View>
     </View>
   );
 };
