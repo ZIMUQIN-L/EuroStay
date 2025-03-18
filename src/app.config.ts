@@ -3,6 +3,7 @@ export default {
   pages: [
     'pages/login/index',
     'pages/home/index',
+    'pages/common-setting/index',
     'pages/house-publish/index',
     'pages/activity-publish/index',
   ],
