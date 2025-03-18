@@ -71,7 +71,7 @@ const HomepageCard = (props: {
             )}
           </View>
           <View className='homepage-card-bottom'>
-            <Image src='' className='user-avatar' />
+            <Image src={props.user.avatar} className='user-avatar' />
             <View className='user-details'>
               <View className='user-name'>{props.user.username}</View>
               <View className='user-tags'>

@@ -43,4 +43,13 @@
       min-width: 48%;
     }
   }
+
+  .loading-tips,
+  .no-more-tips {
+    width: 100%;
+    text-align: center;
+    padding: 20px 0;
+    color: #999;
+    font-size: 24px;
+  }
 }

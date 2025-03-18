@@ -3,7 +3,7 @@ import HomepageCard from '@components/HomepageCard';
 import './index.scss';
 import HomepageSearch from '@components/HomepageSearch';
 import { useEffect, useMemo, useState } from 'react';
-import Taro from '@tarojs/taro';
+import Taro, { useReachBottom } from '@tarojs/taro';
 import GlobalStore from '@store/GlobalStore';
 import { getCurrentInstance } from '@tarojs/taro';
 import DateSelect from '@components/DateSelect';
@@ -17,8 +17,6 @@ import CitySelect from '@components/CitySelect';
 const HomeWorld = () => {
   const [activeTab, setActiveTab] = useState<'友友' | '房源' | '活动'>(null);
   const instance = getCurrentInstance();
-  // 输出当前页面的 URL 参数对象
-  console.log('router', instance?.router?.params);
   const [userList, setUserList] = useState<
     {
       user: homeUserProps;
@@ -68,10 +66,15 @@ const HomeWorld = () => {
   const [isShowDateSelect, setIsShowDateSelect] = useState(false);
   const [isShowCitySelect, setIsShowCitySelect] = useState(false);
 
+  // 添加页码和加载状态
+  const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
+
   useEffect(() => {
     setStartDate('');
     setEndDate('');
-    setCapacity(1);
+    setCapacity(3);
     setLocation({ id: 0, cname: '选择城市', name: '' });
   }, [activeTab]);
   useEffect(() => {
@@ -96,16 +99,13 @@ const HomeWorld = () => {
     // post('/app/eslocation/topCities', setTopCityList, {});
   }, []);
 
-  const getList = (path, callback, params = {}) => {
-    let res = [];
-    console.log(
-      {
-        myUid: GlobalStore.userInfo.uid,
-        page: 1,
-        ...params,
-      },
-      'params',
-    );
+  // 修改 getList 函数以支持分页
+  const getList = (path, callback, params = {}, isLoadMore = false) => {
+    if (loading || (!hasMore && isLoadMore)) return;
+    
+    setLoading(true);
+    const currentPage = isLoadMore ? page : 1;
+
     Taro.request({
       url: `https://api.eurostay.co/${path}`,
       method: 'POST',
@@ -113,16 +113,26 @@ const HomeWorld = () => {
         token: GlobalStore.userInfo.token,
       },
       data: {
-        myUid: GlobalStore.userInfo.uid,
-        page: 1,
+        myUid: 0,
+        page: currentPage,
         ...params,
       },
       success: function (response) {
         if (response.statusCode === 200 && response.data.code === 0) {
-          res = response.data.result.data;
-          callback && callback(res);
+          const newData = response.data.result.data;
+          if (isLoadMore) {
+            if (newData.length === 0) {
+              setHasMore(false);
+            } else {
+              callback(prev => [...prev, ...newData]);
+              setPage(currentPage + 1);
+            }
+          } else {
+            callback(newData);
+            setPage(2);
+            setHasMore(true);
+          }
         }
-        console.log(path, '1111', response.data);
       },
       fail: function (err) {
         Taro.showToast({
@@ -131,8 +141,46 @@ const HomeWorld = () => {
           duration: 2000,
         });
       },
+      complete: function () {
+        setLoading(false);
+      },
     });
   };
+
+  // 处理触底加载
+  const handleLoadMore = () => {
+    if (!activeTab || loading || !hasMore) return;
+    
+    if (activeTab === '友友') {
+      getList('app/esuser/getUserList', setUserList, {}, true);
+    } else if (activeTab === '房源') {
+      getList('/app/property/getPropertyList', setPropertyList, {
+        searchableLocation: location.id,
+        startDate: startDate,
+        endDate: endDate,
+        capacity: capacity,
+        order: 'DES_PRICE',
+      }, true);
+    } else if (activeTab === '活动') {
+      getList('app/activity/getActivityList', setActivityList, {
+        searchableLocation: location.id,
+        startDate: startDate,
+        endDate: endDate,
+        order: 'DES',
+      }, true);
+    }
+  };
+
+  // 使用 useReachBottom hook
+  useReachBottom(() => {
+    handleLoadMore();
+  });
+
+  // 切换 tab 时重置分页状态
+  useEffect(() => {
+    setPage(1);
+    setHasMore(true);
+  }, [activeTab]);
 
   if (isShowDateSelect) {
     return (
@@ -198,7 +246,9 @@ const HomeWorld = () => {
               setCapacity(value);
             }}
             onSearch={() => {
-              console.log(activeTab, 'activeTab');
+              setPage(1);
+              setHasMore(true);
+              
               if (activeTab == '房源') {
                 getList('/app/property/getPropertyList', setPropertyList, {
                   searchableLocation: location.id,
@@ -248,6 +298,14 @@ const HomeWorld = () => {
                 />
               );
             })}
+          
+          {/* 添加加载状态提示 */}
+          {loading && (
+            <View className='loading-tips'>加载中...</View>
+          )}
+          {!hasMore && curList.length > 0 && (
+            <View className='no-more-tips'>没有更多数据了</View>
+          )}
         </View>
       </View>
     </>

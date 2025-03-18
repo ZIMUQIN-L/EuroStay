@@ -35,7 +35,7 @@ export default {
   ],
   window: {
     backgroundTextStyle: 'light',
-    enablePullDownRefresh: false,
+    enablePullDownRefresh: true,
     onReachBottomDistance: 50,
   },
   style: 'v2',

@@ -40,58 +40,11 @@
       }
 
       .section-content {
-        .content-section {
-          margin-bottom: 32px;
-
-          .content-title {
-            font-size: 30px;
-            color: #333;
-            font-weight: 500;
-            margin-bottom: 24px;
-            display: block;
-          }
-
-          .content-subsection {
-            margin-bottom: 24px;
-            padding-left: 16px;
-
-            .content-subtitle {
-              font-size: 28px;
-              color: #333;
-              font-weight: 500;
-              margin-bottom: 16px;
-              display: block;
-            }
-
-            .content-text {
-              font-size: 28px;
-              color: #666;
-              line-height: 1.6;
-              margin-bottom: 16px;
-              display: block;
-            }
-
-            .content-list {
-              padding-left: 16px;
-
-              .list-item {
-                font-size: 28px;
-                color: #666;
-                line-height: 1.6;
-                margin-bottom: 12px;
-                display: block;
-              }
-            }
-          }
-        }
-
-        .content-text {
-          font-size: 28px;
-          color: #666;
-          line-height: 1.6;
-          margin-bottom: 16px;
-          display: block;
-        }
+        font-size: 28px;
+        color: #666;
+        line-height: 1.6;
+        font-family: 'Alibaba PuHuiTi';
+        padding-left: 16px;
       }
     }
   }

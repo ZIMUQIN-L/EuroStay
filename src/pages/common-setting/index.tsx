@@ -6,26 +6,8 @@ import './index.scss';
 // 定义内容类型
 type ContentType = 'privacy' | 'service' | 'about' | 'contact';
 
-// 定义内容结构的类型
-type ListItem = {
-  subtitle: string;
-  content: string;
-  list?: string[];
-};
-
-type Section = {
-  title: string;
-  sections?: ListItem[];
-  content?: string;
-};
-
-type Content = {
-  title: string;
-  content: string | Section[];
-};
-
 // 内容映射
-const contentMap: Record<ContentType, Content> = {
+const contentMap = {
   privacy: {
     title: '隐私政策',
     content: [
@@ -120,7 +102,7 @@ const contentMap: Record<ContentType, Content> = {
       },
       {
         title: '7. 联系我们',
-        content: '如果您对本数据隐私协议有任何疑问或需要进一步的信息，请通过以下方式联系我们：电子邮件：eurostay@gmail.com'
+        content: '如果您对本数据隐私协议有任何疑问或需要进一步的信息，请通过以下方式联系我们：'
       }
     ]
   },
@@ -140,7 +122,7 @@ const contentMap: Record<ContentType, Content> = {
 
 const CommonSetting = () => {
   const [type, setType] = useState<ContentType>('about');
-  const [content, setContent] = useState<Content>(contentMap.about);
+  const [content, setContent] = useState(contentMap.about);
 
   useEffect(() => {
     // 获取页面参数
@@ -157,7 +139,7 @@ const CommonSetting = () => {
     Taro.navigateBack();
   };
 
-  const renderContent = (content: string | Section[]) => {
+  const renderContent = (content) => {
     if (Array.isArray(content)) {
       return content.map((section, index) => (
         <View key={index} className='content-section'>
@@ -181,9 +163,6 @@ const CommonSetting = () => {
               )}
             </View>
           ))}
-          {section.content && (
-            <Text className='content-text'>{section.content}</Text>
-          )}
         </View>
       ));
     }
