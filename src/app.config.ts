@@ -5,6 +5,7 @@ export default {
     'pages/home/index',
     'pages/house-publish/index',
     'pages/activity-publish/index',
+    'pages/common-setting/index'
   ],
   subPackages: [
     {

@@ -28,7 +28,7 @@
         color: #333;
         font-family: 'Alibaba PuHuiTi';
         font-weight: 400;
-        margin-bottom: 4px;
+        margin-bottom: 16px;
       }
 
       .vip-status {
@@ -67,6 +67,9 @@
         // border: 2px solid rgba(122, 99, 199, 0.6);
         box-shadow: 0px 1px 4px #fff inset, 0px 4px 4px #fff inset;
         box-sizing: border-box;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        border: 2px solid transparent;
   
         .bg-image {
           position: absolute;
@@ -155,6 +158,12 @@
             color: #999999;
             z-index: 2;
           }
+        }
+
+        &.selected {
+          border-color: #8A70D6;
+          transform: scale(1.02);
+          box-shadow: 0 6px 16px rgba(138, 112, 214, 0.1);
         }
       }
     }
