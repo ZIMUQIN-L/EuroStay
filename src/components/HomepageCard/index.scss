@@ -1,0 +1,103 @@
+.homepage-card {
+  display: inline-block;
+  min-width: 48%;
+  max-width: 48%;
+  height: 500px;
+  // background-color: antiquewhite;
+  border-radius: 30px;
+  overflow: hidden;
+  position: relative;
+  margin-bottom: 30px;
+  &-bottom {
+    color: white;
+    margin-top: -3%;
+    display: flex;
+    padding: 0 5%;
+    // padding-top: -1%;
+    background-color: #7a63c7;
+    align-items: center;
+    min-height: 25%;
+    justify-content: flex-start;
+    &.activity {
+      margin-top: 10px;
+      justify-content: space-between;
+      align-items: flex-start;
+      .bottom-left {
+        .title {
+          font-size: 24px;
+          // font-weight: bold;
+          // color: white;
+        }
+        .startTime {
+          margin-top: 5px;
+          font-size: 20px;
+        }
+      }
+      .bottom-right {
+        margin-left: 15px;
+        font-size: 20px;
+        // font-weight: bold;
+      }
+    }
+    .user-avatar {
+      // background-color: blue;
+      width: 80px;
+      height: 80px;
+      border-radius: 80px;
+    }
+    .user-details {
+      margin-left: 20px;
+      .user-name {
+        font-size: 24px;
+        color: white;
+      }
+      .user-tags {
+        margin-top: 8px;
+        display: flex;
+        color: #7a63c7;
+
+        .tag-item {
+          background-color: white;
+          margin-right: 5px;
+          border-radius: 20px;
+          padding: 5px 8px;
+          // border: 1px solid black;
+        }
+        font-size: 18px;
+      }
+    }
+  }
+  .user-pic {
+    max-width: 100%;
+    height: 75%;
+    // background-color: aqua;
+  }
+  .button-wrapper {
+    position: absolute;
+    bottom: 25%;
+    display: flex;
+    flex-direction: column;
+    right: 20px;
+    min-width: 50px;
+    .user,
+    .house,
+    .activity {
+      margin-bottom: 20px;
+      // border-radius: 20px;
+      max-width: 60px;
+      max-height: 60px;
+      // background-color: black;
+    }
+  }
+  .user-location {
+    background-color: white;
+    border-radius: 20px;
+    font-size: 24px;
+    padding: 5px 10px;
+    border: 1px solid #7a63c7;
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    color: #7a63c7;
+  }
+}

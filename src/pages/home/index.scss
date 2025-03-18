@@ -1,9 +1,40 @@
 .homepage {
   position: relative;
-  min-height: 100%;
+  // min-height: 100%;
   min-width: 100%;
   background-color: white !important;
-  
+  &.modal {
+    position: fixed;
+  }
+
+  .post-modal {
+    position: fixed;
+    background-color: #d9d9d9cc;
+    z-index: 100000;
+    min-height: 100%;
+    max-height: 100%;
+    min-width: 100%;
+    padding-top: 90%;
+    .post-house,
+    .post-activity {
+      margin: 0 auto;
+      height: 150px;
+      width: 80%;
+      background-color: white;
+      border: 1px solid #7a63c7;
+      margin-bottom: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50px;
+      Image {
+        width: 50px;
+        height: 50px;
+        margin-right: 30px;
+      }
+    }
+  }
+
   .homepage-bottom-bar {
     min-width: 100%;
     height: 120px;
@@ -80,7 +111,7 @@
       .tab-text {
         font-size: 24px;
         color: #999;
-        
+
         &.active-text {
           color: #8a70d6;
           font-weight: 500;

@@ -3,29 +3,29 @@ import { useState, useEffect } from 'react';
 import Taro from '@tarojs/taro';
 import './index.scss';
 import { loginIp, logoIp, LoginLoadingIcon } from '@utils/cloudIcons';
-import GlobalStore  from '@store/GlobalStore';
+import GlobalStore from '@store/GlobalStore';
 
 const Loading = () => {
-    return (
-      <View className='loading'>
-        <View className='loading-container'>
-          <View className='loading-spinner'>
-            <View className='loading-circle'></View>
-            <Image src={LoginLoadingIcon} className='loading-logo' />
-          </View>
+  return (
+    <View className='loading'>
+      <View className='loading-container'>
+        <View className='loading-spinner'>
+          <View className='loading-circle'></View>
+          <Image src={LoginLoadingIcon} className='loading-logo' />
         </View>
-        <Text className='loading-text'>EuroStay</Text>
       </View>
-    );
-  };
+      <Text className='loading-text'>EuroStay</Text>
+    </View>
+  );
+};
 
-  
 const Login = () => {
   const [hasUserAgreed, setHasUserAgreed] = useState(false);
   const [isChecking, setIsChecking] = useState(true);
 
   useEffect(() => {
     checkLoginStatus();
+    console.log(GlobalStore.userInfo.token);
   }, []);
 
   const checkLoginStatus = () => {
@@ -43,7 +43,7 @@ const Login = () => {
                   GlobalStore.setAllInfo(userInfo);
                   GlobalStore.setToken(response.data.token);
                   Taro.reLaunch({
-                    url: '/pages/home/index'
+                    url: '/pages/home/index',
                   });
                 } else {
                   setIsChecking(false);
@@ -53,7 +53,7 @@ const Login = () => {
                 Taro.showToast({
                   title: response.data.msg || '网络请求失败',
                   icon: 'none',
-                  duration: 2000
+                  duration: 2000,
                 });
               }
             },
@@ -63,9 +63,9 @@ const Login = () => {
               Taro.showToast({
                 title: '网络请求失败，请重试',
                 icon: 'none',
-                duration: 2000
+                duration: 2000,
               });
-            }
+            },
           });
         } else {
           setIsChecking(false);
@@ -73,7 +73,7 @@ const Login = () => {
           Taro.showToast({
             title: '获取用户信息失败',
             icon: 'none',
-            duration: 2000
+            duration: 2000,
           });
         }
       },
@@ -83,9 +83,9 @@ const Login = () => {
         Taro.showToast({
           title: '微信登录检查失败',
           icon: 'none',
-          duration: 2000
+          duration: 2000,
         });
-      }
+      },
     });
   };
 
@@ -98,7 +98,7 @@ const Login = () => {
       Taro.showToast({
         title: '请先阅读并同意用户服务协议和隐私政策',
         icon: 'none',
-        duration: 2000
+        duration: 2000,
       });
       return;
     }
@@ -114,21 +114,21 @@ const Login = () => {
                 // 保存 token 和 uid
                 GlobalStore.setAllInfo(response.data.userInfo);
                 GlobalStore.setToken(response.data.token);
-                Taro.reLaunch({ 
+                Taro.reLaunch({
                   url: '/pages/home/index',
                   success: function () {
                     Taro.showToast({
                       title: '登录成功',
                       icon: 'success',
-                      duration: 2000
+                      duration: 2000,
                     });
-                  }
+                  },
                 });
               } else {
                 Taro.showToast({
                   title: response.data.msg || '登录失败',
                   icon: 'none',
-                  duration: 2000
+                  duration: 2000,
                 });
               }
             },
@@ -137,16 +137,16 @@ const Login = () => {
               Taro.showToast({
                 title: '登录失败，请重试',
                 icon: 'none',
-                duration: 2000
+                duration: 2000,
               });
-            }
+            },
           });
         } else {
           console.error('Login failed:', res.errMsg);
           Taro.showToast({
             title: '获取用户信息失败',
             icon: 'none',
-            duration: 2000
+            duration: 2000,
           });
         }
       },
@@ -155,46 +155,33 @@ const Login = () => {
         Taro.showToast({
           title: '微信登录失败',
           icon: 'none',
-          duration: 2000
+          duration: 2000,
         });
-      }
+      },
     });
   };
 
   if (isChecking) {
-    return (
-        <Loading />
-    );
+    return <Loading />;
   }
 
   return (
     <View className='login-container'>
       <View className='logo-section'>
-        <Image
-          className='logo-image'
-          src={logoIp}
-          mode='aspectFit'
-        />
+        <Image className='logo-image' src={logoIp} mode='aspectFit' />
       </View>
 
       <View className='illustration-section'>
-        <Image
-          className='beach-illustration'
-          src={loginIp}
-          mode='aspectFit'
-        />
+        <Image className='beach-illustration' src={loginIp} mode='aspectFit' />
       </View>
 
       <View className='login-section'>
-        <View 
-          className='wechat-login-btn'
-          onClick={handleWechatLogin}
-        >
+        <View className='wechat-login-btn' onClick={handleWechatLogin}>
           <Text>微信登录</Text>
         </View>
 
         <View className='agreement-section'>
-          <View 
+          <View
             className={`checkbox ${hasUserAgreed ? 'checked' : ''}`}
             onClick={handleCheckboxChange}
           />
@@ -227,6 +214,5 @@ const Login = () => {
     </View>
   );
 };
-
 
 export default Login;

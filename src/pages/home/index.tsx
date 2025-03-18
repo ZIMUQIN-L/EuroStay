@@ -9,10 +9,11 @@ import userIcon from '@assets/icons/user.png';
 import userSelectedIcon from '@assets/icons/user-active.png';
 import messageIcon from '@assets/icons/message.png';
 import messageSelectedIcon from '@assets/icons/message-active.png';
-import { useState } from 'react';
-import GlobalStore from '@store/GlobalStore';
+import postHouse from '@assets/icons/post-house.svg';
+import postActivity from '@assets/icons/post-activity.svg';
+import { useEffect, useState } from 'react';
 import './index.scss';
-import HomeSearch from '../home-search';
+import HomeSearch from '../home-world';
 import Orders from '../orders';
 import Messages from '../messages';
 import User from '../user';
@@ -23,6 +24,8 @@ const Index = () => {
     'world' | 'orders' | 'post' | 'messages' | 'user'
   >('world');
 
+  const [isShowPostModal, setIsShowPostModal] = useState<boolean>(false);
+
   Taro.useShareAppMessage(res => {
     return {
       title: 'EuroStay欧洲换宿',
@@ -30,60 +33,78 @@ const Index = () => {
     };
   });
 
-  const handleClickAddBtn = () => {
-    if (!GlobalStore.userInfo.uid) {
-      Taro.showModal({
-        title: '转至登录页面',
-        content: '请登录后发布信息~',
-        success: function (res) {
-          if (res.confirm) {
-            Taro.reLaunch({
-              url: `/pages/login/index`,
-            });
-          }
-        },
-      });
-    } else {
-      // setIsShowPost(true);
-      Taro.navigateTo({
-        url: `/packageUser/user-setting/index`,
-      });
-    }
-  };
-
   const bottomBar = [
-    { 
-      icon: worldIcon, 
+    {
+      icon: worldIcon,
       activeIcon: worldSelectedIcon,
       text: '世界',
-      value: 'world' 
+      value: 'world',
     },
-    { 
-      icon: orderIcon, 
+    {
+      icon: orderIcon,
       activeIcon: orderSelectedIcon,
       text: '订单',
-      value: 'orders' 
+      value: 'orders',
     },
-    { 
+    {
       text: '发布',
-      value: 'post'
+      value: 'post',
     },
-    { 
-      icon: messageIcon, 
+    {
+      icon: messageIcon,
       activeIcon: messageSelectedIcon,
       text: '消息',
-      value: 'messages' 
+      value: 'messages',
     },
-    { 
-      icon: userIcon, 
+    {
+      icon: userIcon,
       activeIcon: userSelectedIcon,
       text: '我的',
-      value: 'user' 
-    }
+      value: 'user',
+    },
   ];
 
   return (
-    <View className='homepage'>
+    <View className={`homepage ${isShowPostModal ? 'modal' : ''}`}>
+      {isShowPostModal && (
+        <View
+          className='post-modal'
+          onClick={e => {
+            e.stopPropagation();
+            e.preventDefault();
+            setIsShowPostModal(false);
+          }}
+        >
+          <View
+            className='post-house'
+            onClick={e => {
+              e.stopPropagation();
+              e.preventDefault();
+              setIsShowPostModal(false);
+              Taro.navigateTo({
+                url: '/pages/house-publish/index',
+              });
+            }}
+          >
+            <Image className='icon' src={postHouse} />
+            上传房源
+          </View>
+          <View
+            className='post-activity'
+            onClick={e => {
+              e.stopPropagation();
+              e.preventDefault();
+              setIsShowPostModal(false);
+              Taro.navigateTo({
+                url: '/pages/activity-publish/index',
+              });
+            }}
+          >
+            <Image className='icon' src={postActivity} />
+            上传活动
+          </View>
+        </View>
+      )}
       {activeTab === 'world' && <HomeSearch />}
       {activeTab === 'orders' && <Orders />}
       {activeTab === 'messages' && <Messages />}
@@ -94,19 +115,19 @@ const Index = () => {
           return (
             <View
               key={item.value}
-              className={`tab-item ${item.value=='post' ? 'center-tab' : ''}`}
+              className={`tab-item ${item.value == 'post' ? 'center-tab' : ''}`}
               onClick={() => {
                 if (item.value === 'post') {
-                  handleClickAddBtn();
+                  setIsShowPostModal(true);
                 } else {
                   setActiveTab(item.value as any);
                 }
               }}
             >
-              {item.value=='post' ? (
+              {item.value == 'post' ? (
                 <View className='plus-icon' />
               ) : (
-                <Image 
+                <Image
                   className='tab-icon'
                   src={isActive ? item.activeIcon : item.icon}
                 />

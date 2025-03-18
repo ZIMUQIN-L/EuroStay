@@ -3,6 +3,33 @@
  * @param second 时间戳
  * @returns
  */
+
+export function mergeDateRanges(dateRanges: [string, string][]) {
+  // 首先对日期区间进行排序
+  const sortedRanges: [string, string][] = dateRanges.sort(
+    (a, b) => new Date(a[0]).getTime() - new Date(b[0]).getTime(),
+  );
+
+  let merged = [sortedRanges[0]];
+
+  for (let i = 1; i < sortedRanges.length; i++) {
+    let prev = merged[merged.length - 1]; // 上一个合并的区间
+    let curr = sortedRanges[i];
+
+    if (new Date(curr[0]) <= new Date(prev[1])) {
+      // 如果当前区间的开始时间在上一个区间的结束时间之前，进行合并
+      prev[1] = formatDate(
+        new Date(
+          Math.max(new Date(prev[1]).getTime(), new Date(curr[1]).getTime()),
+        ),
+      );
+    } else {
+      // 没有重叠，直接加入结果集
+      merged.push(curr);
+    }
+  }
+  return merged;
+}
 export function changeTimeBySecond(second: number) {
   let hourTime = 0;
   let minuteTime = 0;

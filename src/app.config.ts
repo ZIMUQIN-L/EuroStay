@@ -1,10 +1,12 @@
 export default {
   lazyCodeLoading: 'requiredComponents',
   pages: [
-        'pages/login/index',
-        'pages/home/index',
-        'pages/common-setting/index',
-        ],
+    'pages/login/index',
+    'pages/home/index',
+    'pages/house-publish/index',
+    'pages/activity-publish/index',
+    'pages/common-setting/index'
+  ],
   subPackages: [
     {
       root: 'packageUser/',
@@ -19,7 +21,7 @@ export default {
         'edit-about/index',
         'edit-tags/index',
         'edit-email/index',
-        'edit-phone/index'
+        'edit-phone/index',
       ],
     },
     // {
