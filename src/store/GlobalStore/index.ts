@@ -1,33 +1,54 @@
 import { makeAutoObservable } from 'mobx';
-import { UserItemProps } from '@utils/interfaces';
+import { ESUserLoginInfoProps } from '@utils/interfaces';
 import Taro from '@tarojs/taro';
 
 class GlobalStore {
   _currentTab: string = 'home';
-  _userInfo: UserItemProps;
+  _userInfo: ESUserLoginInfoProps;
 
   constructor() {
     makeAutoObservable(this, {}, { autoBind: true });
+
+    const stored = Taro.getStorageSync('userInfo')
+    if (stored) {
+      this._userInfo = stored
+    } else {
+      // 2) 设置一个默认初始对象, 避免是undefined
+      this._userInfo = {
+        avatar: '',
+        username: '',
+        aboutMe: '',
+        location: '',
+        token: '',
+        gender: 0,
+        uid: 0,
+        isVip: false,
+      }
+    }
   }
 
   get userInfo() {
-    const globalUserInfo: UserItemProps = {
-      _id: this._userInfo._id,
-      _openid: this._userInfo._openid,
-      avatarUrl: this._userInfo.avatarUrl,
-      nickName: this._userInfo.nickName,
-      userDes: this._userInfo.userDes,
-      userOpenid: this._userInfo.userOpenid,
-      userLocation: this._userInfo.userLocation,
+    const globalUserInfo: ESUserLoginInfoProps = {
+      avatar: this._userInfo.avatar,
+      username: this._userInfo.username,
+      aboutMe: this._userInfo.aboutMe,
+      location: this._userInfo.location,
       token: this._userInfo.token,
-      uid: this._userInfo.uid
+      gender: this._userInfo.gender,
+      uid: this._userInfo.uid,
+      isVip: this._userInfo.isVip
     };
     return globalUserInfo;
   }
 
-  set userInfo(updateUserInfo: UserItemProps) {
+  set userInfo(updateUserInfo: ESUserLoginInfoProps) {
     this._userInfo = { ...this._userInfo, ...updateUserInfo };
     Taro.setStorageSync('userInfo', this._userInfo); // 持久化
+  }
+
+  setAllInfo(userInfo: ESUserLoginInfoProps) {
+    this._userInfo = userInfo;
+    Taro.setStorageSync('userInfo', this._userInfo);
   }
 
   setToken(newToken: string) {
@@ -35,9 +56,39 @@ class GlobalStore {
     Taro.setStorageSync('userInfo', this._userInfo); // 持久化
   }
 
-  setUid(newUid: string) {
-      this._userInfo.uid = newUid;
-      Taro.setStorageSync('userInfo', this._userInfo);
+  setAboutMe(newAboutMe: string) {
+    this._userInfo.aboutMe = newAboutMe;
+    Taro.setStorageSync('userInfo', this._userInfo); // 持久化
+  }
+
+  setUid(newUid: number) {
+    this._userInfo.uid = newUid;
+    Taro.setStorageSync('userInfo', this._userInfo);
+  }
+
+  setAvatar(newAvatar: string) {
+    this._userInfo.avatar = newAvatar;
+    Taro.setStorageSync('userInfo', this._userInfo);
+  }
+
+  setUsername(newUsername: string) {
+    this._userInfo.username = newUsername;
+    Taro.setStorageSync('userInfo', this._userInfo);
+  }
+
+  setLocation(newLocation: string) {
+    this._userInfo.location = newLocation;
+    Taro.setStorageSync('userInfo', this._userInfo);
+  }
+
+  setGender(newGender: number) {
+    this._userInfo.gender = newGender;
+    Taro.setStorageSync('userInfo', this._userInfo);
+  }
+
+  setIsVip(newIsVip: boolean) {
+    this._userInfo.isVip = newIsVip;
+    Taro.setStorageSync('userInfo', this._userInfo);
   }
 
   get currentTab() {
