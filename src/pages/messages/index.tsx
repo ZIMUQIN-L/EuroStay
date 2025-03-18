@@ -3,6 +3,7 @@ import { observer } from 'mobx-react'
 import Taro from '@tarojs/taro'
 import { useState, useEffect } from 'react'
 import './index.scss' // 记得在这里引入自己的样式文件
+import GlobalStore from '@store/GlobalStore'
 
 const Index = () => {
   // 模拟一些消息数据
@@ -47,34 +48,32 @@ const Index = () => {
 
   useEffect(() => {
     // 1. 获取 token
-    const token = Taro.getStorageSync('token')
-    console.log('拿到的 token:', token)
+    const token = GlobalStore.userInfo.token;
+    const uid = GlobalStore.userInfo.uid;
+    console.log('拿到的 token:', token, "uid", uid)
 
     // 2. 发起请求：搜索 /app/esmessages/sessionList
     Taro.request({
-      url: '/app/esmessages/sessionList',  // 你的接口地址
-      method: 'GET',                      // 或者 'POST' 等
+      url: 'https://api.eurostay.co/app/esmessages/sessionList',
+      method: 'GET',
       header: {
-        // 假设是常见的后端验证方式，比如 Bearer token 或自定义 token
-        // 具体看后端需求写
-        Authorization: `Bearer ${token}`, 
+        token: token,
       },
-      // data: {}, // 如果需要请求体，可在这里写
+      data: {
+        pageNum: 1,  // 传给后端的参数
+      },
+    }).then((res) => {
+      console.log('sessionList 响应:', res)
+      // 如果后端返回了你的消息列表，就更新 state
+      if (res.statusCode === 200 && res.data) {
+        setMessages(res.data)
+      }
+    }).catch((err) => {
+      console.error('请求出错:', err)
     })
-      .then((res) => {
-        // 3. 处理响应：假设 res.data 就是你的消息列表
-        console.log('sessionList 响应:', res)
-        if (res.statusCode === 200 && res.data) {
-          // 更新到 messages 状态
-          setMessages(res.data)
-        } else {
-          Taro.showToast({ title: '获取会话列表失败', icon: 'none' })
-        }
-      })
-      .catch((err) => {
-        console.error('请求出错:', err)
-        Taro.showToast({ title: '请求出错', icon: 'none' })
-      })
+
+
+
   }, []) // 空数组确保只在组件初次挂载时执行
 
 
