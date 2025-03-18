@@ -200,13 +200,27 @@ const Login = () => {
           />
           <Text className='agreement-text'>
             我已阅读并同意Eurostay
-            <Text className='link' onClick={() => {
-              Taro.navigateTo({ url: '/pages/terms/index' });
-            }}>《用户服务协议》</Text>
+            <Text 
+              className='link' 
+              onClick={() => {
+                Taro.navigateTo({ 
+                  url: '/pages/common-setting/index?type=service'  // 修改为common-setting
+                });
+              }}
+            >
+              《用户服务协议》
+            </Text>
             及
-            <Text className='link' onClick={() => {
-              Taro.navigateTo({ url: '/pages/privacy/index' });
-            }}>《隐私政策》</Text>
+            <Text 
+              className='link' 
+              onClick={() => {
+                Taro.navigateTo({ 
+                  url: '/pages/common-setting/index?type=privacy'  // 修改为common-setting
+                });
+              }}
+            >
+              《隐私政策》
+            </Text>
           </Text>
         </View>
       </View>
