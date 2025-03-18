@@ -186,6 +186,12 @@ const UserEditing = () => {
     });
   };
 
+  // 添加手机号格式化函数
+  const formatPhoneNumber = (phone: string | null | undefined) => {
+    if (!phone) return '';
+    return phone.replace(/(\d{3})\d{4}(\d{4})/, '$1****$2');
+  };
+
   const accountItems = [
     {
       label: '账号',
@@ -201,7 +207,7 @@ const UserEditing = () => {
     },
     {
       label: '手机号',
-      value: userInfo?.mobile || '',
+      value: formatPhoneNumber(userInfo?.mobile),  // 使用格式化函数处理手机号
       placeholder: '输入你的手机号',
       path: '/packageUser/edit-phone/index',
       params: { currentValue: userInfo?.mobile }
