@@ -14,6 +14,7 @@ import {
   ReviewItem 
 } from '../../services/user';
 import './index.scss';
+import { settingIcon } from '@utils/cloudIcons';
 
 const UserProfile = () => {
   const router = useRouter();
@@ -184,7 +185,7 @@ const UserProfile = () => {
               <Text className="username">{userInfo?.username}</Text>
               {userInfo?.isVip && <Text className="vip-badge">VIP</Text>}
             </View>
-            <Text className="user-id">ID: {userInfo?.uid? formatUid(userInfo?.uid): formatUid(0)}</Text>
+            <Text className="user-id">账号: {userInfo?.uid? formatUid(userInfo?.uid): formatUid(0)}</Text>
             <Text className="location">地区: {userInfo?.location || '未知'}</Text>
           </View>
         </View>
@@ -204,11 +205,11 @@ const UserProfile = () => {
             <View className="action-buttons">
               {isCurrentUser ? (
                 <>
-                  <View className="edit-profile" onClick={() => Taro.navigateTo({ url: '/pages/user/edit/index' })}>
+                  <View className="edit-profile" onClick={() => Taro.navigateTo({ url: '/packageUser/user-editing/index' })}>
                     编辑资料
                   </View>
-                  <View className="settings" onClick={() => Taro.navigateTo({ url: '/pages/settings/index' })}>
-                    设置
+                  <View className="setting-btn" onClick={() => Taro.navigateTo({ url: '/packageUser/user-setting/index' })}>
+                    <Image className="setting-icon" src={settingIcon} />
                   </View>
                 </>
               ) : (
@@ -321,7 +322,7 @@ const UserProfile = () => {
                 {reviewList.map(review => (
                   <ReviewCard
                     key={review.id}
-                    userAvatar={review.reviewer_info?.avatar || 'https://placekitten.com/150/150'} // 使用默认头像
+                    userAvatar={review.reviewer_info?.avatar || 'https://eurostay-1330475057.cos.eu-frankfurt.myqcloud.com/sys/loading.png'} // 使用默认头像
                     userName={review.reviewer_info?.username || '用户'} // 使用默认用户名
                     userType={review.from_host ? '房东' : '房客'}
                     isRecommended={review.recommend}

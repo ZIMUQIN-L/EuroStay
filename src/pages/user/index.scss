@@ -48,9 +48,11 @@
           margin-bottom: 12px;
   
           .username {
-            font-size: 36px;
+            font-size: 38px;
             font-weight: bold;
+            font-family: 'Alibaba PuHuiTi';
             color: #333;
+            font-weight: 500;
             margin-right: 10px;
           }
   
@@ -64,14 +66,16 @@
         }
   
         .user-id {
-          font-size: 26px;
-          color: #666;
+          font-size: 24px;
+          color: rgb(0, 0, 0);
+          font-family: 'Alibaba PuHuiTi';
           margin-bottom: 12px;
         }
   
         .location {
-          font-size: 26px;
-          color: #666;
+          font-size: 24px;
+          color: rgb(0, 0, 0);
+          font-family: 'Alibaba PuHuiTi';
           display: flex;
           align-items: center;
         }
@@ -82,9 +86,10 @@
       margin-top: 24px;
 
       .about-me {
-        font-size: 28px;
+        font-size: 30px;
         color: #333;
         line-height: 1.5;
+        font-family: 'Alibaba PuHuiTi';
         white-space: pre-wrap;
         margin-bottom: 24px;
       }
@@ -104,10 +109,16 @@
           .tag {
             border: 2px solid #8364e8;
             color: #8364e8;
-            padding: 5px 17px;
+            padding: 2px 16px;
+            font-family: 'Alibaba PuHuiTi';
             border-radius: 30px;
-            font-size: 21px;
+            font-size: 24px;
             font-weight: 500;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(131, 100, 232, 0.1);
           }
         }
 
@@ -117,25 +128,39 @@
           margin-bottom: 25px;
 
           .edit-profile,
-          .settings,
           .say-hello {
             padding: 8px 21px;
-            border-radius: 30px;
-            font-size: 26px;
-            cursor: pointer;
+            border-radius: 100px;
+            font-size: 28px;
+            width: 128px;
+            font-family: 'Alibaba PuHuiTi';
+            background-color: #7a63c7;
+            color: white;
             display: flex;
             align-items: center;
             justify-content: center;
+            font-weight: 400;
           }
 
-          .edit-profile {
-            background-color: #8364e8;
-            color: white;
-          }
+        //   .edit-profile {
+        //     background-color: #8364e8;
+        //     color: white;
+        //   }
 
-          .settings {
+          .setting-btn {
             background-color: #F5F5F5;
-            color: #333;
+            width: 70px;
+            height: 70px;
+            border-radius: 36px;
+            background-color: #F5F5F5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            .setting-icon {
+              width: 64px;
+              height: 64px;
+            }
           }
 
           .say-hello {
