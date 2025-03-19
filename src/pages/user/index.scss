@@ -23,7 +23,7 @@
     position: relative;
     padding: 30px;
     border-radius: 24px 24px 0 0;
-    margin-bottom: 20px;
+    margin-bottom: -10px;
 
     .basic-info {
       display: flex;
@@ -79,28 +79,70 @@
     }
 
     .user-details {
-      margin-top: 32px;
+      margin-top: 24px;
 
       .about-me {
         font-size: 28px;
         color: #333;
         line-height: 1.5;
         white-space: pre-wrap;
+        margin-bottom: 24px;
       }
 
-      .tags {
+      .details-bottom {
         display: flex;
+        justify-content: space-between;
+        align-items: center;
         flex-wrap: wrap;
         gap: 16px;
-        margin-top: 24px;
 
-        .tag {
-          border: 2px solid #8364e8;
-          color: #8364e8;
-          padding: 6px 21px;
-          border-radius: 30px;
-          font-size: 26px;
-          font-weight: 500;
+        .tags {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 16px;
+
+          .tag {
+            border: 2px solid #8364e8;
+            color: #8364e8;
+            padding: 5px 17px;
+            border-radius: 30px;
+            font-size: 21px;
+            font-weight: 500;
+          }
+        }
+
+        .action-buttons {
+          display: flex;
+          gap: 12px;
+          margin-bottom: 25px;
+
+          .edit-profile,
+          .settings,
+          .say-hello {
+            padding: 8px 21px;
+            border-radius: 30px;
+            font-size: 26px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+
+          .edit-profile {
+            background-color: #8364e8;
+            color: white;
+          }
+
+          .settings {
+            background-color: #F5F5F5;
+            color: #333;
+          }
+
+          .say-hello {
+            background-color: #8364e8;
+            color: white;
+            padding: 8px 24px;
+          }
         }
       }
     }
@@ -154,7 +196,6 @@
   .tab-content {
     background: #fff;
     min-height: 300px;
-    // margin: 0 20px;
     padding: 24px;
     padding-bottom: 200px;
 
@@ -163,6 +204,58 @@
       text-align: center;
       padding: 40px 0;
       font-size: 28px;
+    }
+
+    .posts-list,
+    .participated-list,
+    .reviews-list {
+      .load-more {
+        text-align: center;
+        padding: 20px 0;
+        color: #8364e8;
+        font-size: 28px;
+      }
+
+      .loading {
+        text-align: center;
+        padding: 20px 0;
+        color: #999;
+        font-size: 28px;
+      }
+    }
+  }
+
+  .action-buttons {
+    display: flex;
+    gap: 12px;
+    margin-top: 16px;
+
+    .edit-profile,
+    .settings,
+    .say-hello {
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 14px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .edit-profile {
+      background-color: #6B4FBB;
+      color: white;
+    }
+
+    .settings {
+      background-color: #F5F5F5;
+      color: #333;
+    }
+
+    .say-hello {
+      background-color: #6B4FBB;
+      color: white;
+      padding: 8px 24px;
     }
   }
 } 
