@@ -19,3 +19,4 @@ export const propertyIcon = `${cloudPath}/property.png`;
 export const propertySelectedIcon = `${cloudPath}/property-active.png`;
 export const activityIcon = `${cloudPath}/activity.png`;
 export const activitySelectedIcon = `${cloudPath}/activity-active.png`;
+export const settingIcon = `${cloudPath}/setting.png`;

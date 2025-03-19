@@ -9,9 +9,9 @@ import {
   getUserPostedList, 
   getUserParticipatedList, 
   getUserReviewList,
-  type UserShortInfo, 
-  type PostedItem,
-  type ReviewItem 
+  UserShortInfo, 
+  PostedItem,
+  ReviewItem 
 } from '../../services/user';
 import './index.scss';
 
@@ -48,6 +48,11 @@ const UserProfile = () => {
       fetchReviewList(1);
     }
   }, [activeTab, userInfo]);
+
+  
+  const formatUid = (uid: number) => {
+    return uid.toString().padStart(16, '0');
+  };
 
   const fetchUserInfo = async () => {
     try {
@@ -179,7 +184,7 @@ const UserProfile = () => {
               <Text className="username">{userInfo?.username}</Text>
               {userInfo?.isVip && <Text className="vip-badge">VIP</Text>}
             </View>
-            <Text className="user-id">ID: {userInfo?.uid}</Text>
+            <Text className="user-id">ID: {userInfo?.uid? formatUid(userInfo?.uid): formatUid(0)}</Text>
             <Text className="location">地区: {userInfo?.location || '未知'}</Text>
           </View>
         </View>
@@ -236,7 +241,7 @@ const UserProfile = () => {
           className={`tab-item ${activeTab === 'reviews' ? 'active' : ''}`}
           onClick={() => setActiveTab('reviews')}
         >
-          <Text>评价</Text>
+          <Text>我的评价</Text>
           {activeTab === 'reviews' && <View className="tab-line" />}
         </View>
 
@@ -348,3 +353,4 @@ const UserProfile = () => {
 };
 
 export default UserProfile;
+
