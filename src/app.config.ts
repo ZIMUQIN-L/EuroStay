@@ -35,6 +35,7 @@ export default {
       root: 'packageMessage',
       pages: [
         'message-detail/index',
+        'strangers/index'
       ],
     }
   ],

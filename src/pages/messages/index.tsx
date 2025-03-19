@@ -6,6 +6,31 @@ import './index.scss' // 记得在这里引入自己的样式文件
 import GlobalStore from '@store/GlobalStore'
 
 const Index = () => {
+
+
+
+
+  const specialMessages = [
+    {
+      id: 'stranger',
+      avatar: 'https://example.com/avatar1.png',
+      name: '陌生人打招呼',
+      message: 'Anna: 你好啊！刚刚刷到你的房子感觉超级美...',
+      time: '11:20 am',
+      type: 'stranger', // 标记为陌生人类型
+      unread: 1, // 未读数量
+    },
+    {
+      id: 'system',
+      avatar: 'https://example.com/avatar2.png',
+      name: '系统消息',
+      message: '你有一个待评价的订单，需要评价完成后才可以接下新的订单...',
+      time: '11:20 am',
+      type: 'system', // 标记为系统消息类型
+      unread: 1, // 未读数量
+    },
+  ];
+  
   // 模拟一些消息数据
   const [messages, setMessages] = useState([
     {
@@ -62,7 +87,7 @@ const Index = () => {
     const token = GlobalStore.userInfo.token || Taro.getStorageSync('token');
   
     if (!token) {
-      console.error('❌ 缺少 token，无法获取消息列表');
+      console.error('缺少 token，无法获取消息列表');
       return;
     }
   
@@ -117,10 +142,46 @@ const Index = () => {
     })
   }
 
+    // 处理特殊消息项点击
+    const handleSpecialItemClick = (item) => {
+      if (item.type === 'stranger') {
+        // 陌生人打招呼，导航到陌生人列表页
+        Taro.navigateTo({
+          url: `/packageMessage/strangers/index`,
+        })
+      } else {
+        // 系统消息，导航到消息详情页
+        Taro.navigateTo({
+          url: `/packageMessage/message-detail/index?id=${item.id}&name=${encodeURIComponent(item.name)}`,
+        })
+      }
+    }
+
   return (
     <View className='home-messages'>
       {/* 头部标题或其它内容可以放这里 */}
       <View className='title'>消息</View>
+      {specialMessages.map((item) => (
+        <View
+          className='message-item special-item'
+          key={item.id}
+          onClick={() => handleSpecialItemClick(item)}
+        >
+          <View className='avatar-container'>
+            <Image className='avatar' src={item.avatar} />
+            {/* {item.unread > 0 && (
+              <View className='unread-badge'>{item.unread}</View>
+            )} */}
+          </View>
+          <View className='message-content'>
+            <View className='message-header'>
+              <Text className='name'>{item.name}</Text>
+              <Text className='time'>{item.time}</Text>
+            </View>
+            <Text className='message-text'>{item.message}</Text>
+          </View>
+        </View>
+      ))}
 
       {/* 消息列表 */}
       {messages.map((item) => (
