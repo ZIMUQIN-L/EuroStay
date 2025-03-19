@@ -1,5 +1,5 @@
 import { View, Button, Input, ScrollView } from '@tarojs/components'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 // 假设你已经有以下两个组件
 import SimpleMessageBox from '@components/MessageComponents/SimpleMessageBox'
 import RequestMessageBox from '@components/MessageComponents/RequestMessageBox'
@@ -11,9 +11,9 @@ import Avatar from '@assets/images/accommodation.svg'
 import CustomNavBar from '@components/MessageComponents/message-detail-nav-bar'
 import Taro from '@tarojs/taro'
 import ContactMessageBox from '@components/MessageComponents/ContactMessageBox'
+import GlobalStore from '../../store/GlobalStore'
 
 
-let direction = "left";
 const MessageDetail = () => {
   const router = Taro.getCurrentInstance().router
   const { id, name } = router?.params || {}
@@ -139,9 +139,165 @@ const MessageDetail = () => {
         time: '09:10'
       },
       direction: "right"
-    }
+    },
   ])
 
+  useEffect(() => {
+    fetchMessageList();
+  }, []); 
+
+
+
+  const createMessageObject = (msg, currentUid) => {
+    // 判断消息方向
+    const direction = msg.fromUid === currentUid ? 'right' : 'left';
+    
+    // 格式化时间 (只保留小时:分钟)
+    const time = msg.createTime ? msg.createTime.split(' ')[1].substring(0, 5) : '';
+    
+    // 根据 mtype 确定消息类型
+    let messageType;
+    
+    switch(msg.mtype) {
+      case 0: messageType = 'simple'; break;
+      case 1: messageType = 'request'; break;
+      case 2: messageType = 'request'; break;
+      case 3: messageType = 'offer'; break;
+      case 4: messageType = 'reject-fh'; break;
+      case 5: messageType = 'contact'; break;
+      case 6: messageType = 'reject-fg'; break;
+      case 7: messageType = 'simple'; break;
+      default: messageType = 'simple';
+    }
+    
+    // 创建基本消息对象
+    let messageObj = {
+      id: msg.id,
+      type: messageType,
+      direction: direction,
+      data: {
+        time: time
+      }
+    };
+    
+    // 为不同类型的消息添加特定字段
+    switch(messageType) {
+      case 'simple':
+        // 普通文本消息
+        messageObj.data = {
+          ...messageObj.data,
+          toUid: msg.toUid,
+          subjectId: msg.subjectId,
+          content: msg.content || ''
+        };
+        break;
+        
+      case 'request':
+        // 申请请求消息
+        messageObj.data = {
+          ...messageObj.data,
+          toUid: msg.toUid,
+          subjectId: msg.subjectId,
+          name: msg.guestName || msg.fromName || '申请人'
+        };
+        break;
+        
+      case 'offer':
+        // 房东批准消息
+        messageObj.data = {
+          ...messageObj.data,
+          toUid: msg.toUid,
+          subjectId: msg.subjectId,
+          hostname: msg.hostName || '房东',
+          applicantname: msg.guestName || '申请人',
+          price: msg.price || '$0'
+        };
+        break;
+        
+      case 'reject-fh':
+        // 房东拒绝消息
+        messageObj.data = {
+          ...messageObj.data,
+          toUid: msg.toUid,
+          subjectId: msg.subjectId,
+          name: msg.hostName || '房东',
+          reason: msg.reason || msg.content || '未提供原因'
+        };
+        break;
+        
+      case 'reject-fg':
+        // 租客取消消息
+        messageObj.data = {
+          ...messageObj.data,
+          toUid: msg.toUid,
+          subjectId: msg.subjectId,
+          name: msg.guestName || '申请人',
+          reason: msg.reason || msg.content || '申请人取消了预订'
+        };
+        break;
+        
+      case 'contact':
+        // 联系信息消息
+        messageObj.data = {
+          ...messageObj.data,
+          toUid: msg.toUid,
+          subjectId: msg.subjectId
+          // 联系信息消息可能不需要其他特殊字段
+        };
+        break;
+    }
+    
+    return messageObj;
+  };
+  
+  // 使用方法
+  const fetchMessageList = async () => {
+    const token = GlobalStore.userInfo.token || Taro.getStorageSync('token');
+    // 获取当前用户的 UID
+    const currentUid = GlobalStore.userInfo.uid || Taro.getStorageSync('uid');
+  
+    if (!token) {
+      console.error('缺少 token，无法获取消息列表');
+      return;
+    }
+  
+    try {
+      const res = await Taro.request({
+        url: 'https://api.eurostay.co/app/esmessages/messageList',
+        method: 'GET',
+        header: {
+          token: token, // 传递 token 进行身份验证
+        },
+        data: {
+          requestId: id,
+          pageNum: 1,
+        }
+      });
+  
+      console.log('messageList 响应:', res);
+  
+      if (res.statusCode === 200 && res.data.code === 0 && res.data.result.records) {
+        console.log('成功获取消息列表:', res.data.result);
+        
+        // 使用新函数处理每条消息
+        const formattedMessages = res.data.result.records.map(msg => 
+          createMessageObject(msg, currentUid)
+        );
+        
+        // 更新消息列表
+        // setMessages(formattedMessages);
+        
+        // 滚动到底部
+        Taro.nextTick(() => {
+          setScrollTop(999999);
+        });
+      } else {
+        console.error('获取消息列表失败:', res.data.msg);
+      }
+    } catch (error) {
+      console.error('网络请求失败:', error);
+    }
+  };
 
   const handleInput = (e) => {
     // Taro / 小程序里通常是 e.detail.value
@@ -149,31 +305,68 @@ const MessageDetail = () => {
   }
 
   // 点击发送
-  const handleSend = () => {
+  const handleSend = async () => {
     if (!inputValue.trim()) {
       return
     }
-
+    
+    // 格式化当前时间为时:分格式
+    const now = new Date();
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    const formattedTime = `${hours}:${minutes}`;
+    
     // 创建一个新的消息对象
     const newMessage = {
-      id: new Date().getTime(), // 用时间戳来模拟一个唯一id
+      id: now.getTime(), // 用时间戳来模拟一个唯一id
       type: 'simple',
       data: {
         toUid: 68,
         subjectId: 5,
         content: inputValue,     // 这里就是你刚才输入的内容
-        time: '09:10'           // 或者用格式化后的当前时间
+        time: formattedTime     // 使用当前格式化的时间
       },
       direction: 'right'
     }
-
-    // 将新消息追加到消息列表
-    setMessages([...messages, newMessage])
-    // 发送后清空输入框
-    setInputValue('')
-
-    setScrollTop(9999999)
+    
+    try {
+      // 创建要发送到WebSocket的消息对象
+      const wsMessage = {
+        fromUid: GlobalStore.userInfo.uid, // 发送者ID
+        toUid: 68, // 接收者ID，应该从props或其他地方获取
+        sessionId: id, // 会话ID
+        content: inputValue,
+        mtype: 0, // 普通文本消息
+        subjectId: 5 // 应该从props或其他地方获取
+      };
+      
+      // 发送WebSocket消息
+      await GlobalStore.sendWebSocketMessage(wsMessage);
+      
+      // 更新本地消息列表
+      setMessages(prevMessages => {
+        const updatedMessages = [...prevMessages, newMessage];
+        
+        // 使用nextTick确保在下一个渲染循环
+        Taro.nextTick(() => {
+          setScrollTop(999999);
+        });
+        
+        return updatedMessages;
+      });
+      
+      // 发送后清空输入框
+      setInputValue('');
+      
+    } catch (error) {
+      console.error('发送消息失败:', error);
+      Taro.showToast({
+        title: '发送失败，请重试',
+        icon: 'none'
+      });
+    }
   }
+
 
 
 
@@ -192,7 +385,9 @@ const MessageDetail = () => {
     };
 
     setMessages([...messages, newMessage])
-    setScrollTop(9999999);
+    Taro.nextTick(() => {
+      setScrollTop(999999);
+    });
 
   }
 

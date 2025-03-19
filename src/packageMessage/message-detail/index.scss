@@ -11,43 +11,42 @@
 
   }
 
+  /* 输入框容器样式 */
   .input-box {
     display: flex;
     align-items: center;
-    padding: 16px 18px;
-    margin: 10rpx;                /* 距底部或周围留点空隙 */
-    margin-bottom: 25rpx;
-    border: 2px solid #ccc;
-    border-radius: 30px;           /* 整体圆角 */
-    background-color: #ffffff;    /* 让它有白色背景，便于看出圆角边框 */
+    padding: 16rpx 30rpx;
+    margin: 20rpx 30rpx;
+    border-radius: 50rpx;
+    background-color: #F5F5F5;
+    height: 83rpx;
   }
 
+  /* 输入框本身 */
   .input {
-    flex: 1;               /* 占满剩余空间 */
-    border: none;          /* 去除小程序默认边框 */
+    flex: 1;
+    border: none;
+    background-color: transparent;
     outline: none;
-    font-size: 24px;
-    /* 如果需要，也可在这里加点 padding */
+    height: 60rpx;
+    font-size: 32rpx;
+    color: #333;
   }
-  
+
   /* 发送按钮样式 */
   .send-btn {
-    margin-left: 8px;
+    margin-left: 20rpx;
     flex-shrink: 0;
-    width: 40rpx !important;
-    height: 40rpx !important;
+    width: 50rpx;
+    height: 50rpx;
     border: 1px solid #979797;
-    border-radius: 50%;    /* 让它变成圆形 */
+    border-radius: 50%;
     background-color: #fff;
-
     color: #979797;
-  
-    /* 垂直水平居中 */
     display: flex;
     align-items: center;
     justify-content: center;
-    /* 字体 */
-    font-size: 24px;
+    font-size: 32rpx;
   }
   
   /* 顶部标题区域 */
@@ -104,7 +103,7 @@
   
       .content {
         display: block;
-        font-size: 26rpx;
+        font-size: 32rpx;
         color: #666;
         line-height: 1.4;
         margin-bottom: 10rpx;

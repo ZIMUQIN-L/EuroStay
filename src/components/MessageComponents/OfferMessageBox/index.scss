@@ -1,93 +1,111 @@
 .message-box {
   display: flex;
-  margin-bottom: 20rpx;   // 每条消息与下一条的间距
+  margin-bottom: 20rpx;
   align-items: flex-start;
-
+  
   .avatar {
-    width: 80rpx;         // 头像更大
+    width: 80rpx;
     height: 80rpx;
     border-radius: 50%;
   }
-
+  
   .bubble {
-    max-width: 65%;
+    max-width: 70%;
     background-color: #F5F5F5;
-    border-radius: 10rpx;
-    padding: 20rpx;
-    margin: 0 30rpx;      // 让气泡整体与头像拉开一点距离
-    flex-shrink: 0;       // 如果不想气泡被挤压，可以加上
+    border-radius: 30rpx;
+    padding: 30rpx 36rpx;
+    margin: 0 20rpx;
+    position: relative;
   }
-
+  
   .content {
-    margin-bottom: 6rpx;
-    font-size: 28rpx;
+    display: block;
+    margin-bottom: 30rpx;
+    font-size: 32rpx;
+    line-height: 1.5;
     color: #333333;
-
-    /* 让文本自动换行 */
-    white-space: pre-wrap;      /* 保留换行符并自动换行 */
-    word-break: break-word;     /* 对长单词进行换行 */
-    overflow-wrap: break-word;  /* 对旧版浏览器的兼容写法 */
+    word-wrap: break-word;
+    white-space: pre-wrap;
+    word-break: break-word;
+    overflow-wrap: break-word;
   }
-
+  
   .time {
     font-size: 24rpx;
-    color: #999;
+    color: #999999;
+    margin-top: 10rpx;
+    text-align: right;
+    display: block;
+  }
+  
+  .extra-image {
+    width: 100%;
+    margin: 20rpx auto;
+    border-radius: 8rpx;
+    display: block;
+  }
+  
+  .action-button {
+    height: 86rpx;
+    line-height: 86rpx;
+    background-color: #FFD35E;
+    color: #333333;
+    font-size: 28rpx;
+    font-weight: normal;
+    border-radius: 100rpx;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    white-space: nowrap;
+    box-shadow: none;
+    
+    &::after {
+      border: none;
+    }
+  }
+  
+  .single-btn {
+    padding: 0 80rpx;
+    min-width: 240rpx;
+    margin: 20rpx auto 10rpx;
+  }
+  
+  .button-group {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20rpx;
+    margin-bottom: 10rpx;
+    
+    .group-btn {
+      flex: 1;
+      margin: 0 10rpx;
+      
+      &:first-child {
+        margin-left: 0;
+      }
+      
+      &:last-child {
+        margin-right: 0;
+      }
+    }
   }
 }
 
 /* 左侧消息 */
 .message-box.left {
-  flex-direction: row;   // 默认从左到右
+  flex-direction: row;
+  
   .avatar {
-    margin-right: 10rpx; // 增大头像与气泡的间距
+    margin-right: 10rpx;
   }
 }
 
 /* 右侧消息 */
 .message-box.right {
-  flex-direction: row-reverse; // 头像在右，气泡在左
+  flex-direction: row-reverse;
+  
   .avatar {
-    margin-left: 10rpx;        // 增大头像与气泡的间距
+    margin-left: 10rpx;
   }
 }
-
-.single-btn {
-  margin-top: 10rpx;
-  background-color: #FFD35E;
-  font-size: 26rpx;
-  border-radius: 15rpx;
-  padding: 10rpx 5rpx;
-  white-space: nowrap;
-  margin: 15rpx auto 0;
-  color: #333;
-}
-
-/* 当需要两个按钮时 */
-.button-group {
-  display: flex;
-  margin-top: 10rpx;
-
-  /* 如果你想让两个按钮平分宽度 */
-  .action-btn {
-    flex: 1;
-    margin: 0 5rpx;
-    font-size: 26rpx;
-    background-color: #FFD35E;
-    border-radius: 15rpx;
-    padding: 10rpx 5rpx;
-    white-space: nowrap;
-    margin: 15rpx 5rpx 0; 
-    color: #333;
-  }
-}
-
-
-
-.extra-image {
-  width: 100%;
-  // max-width: 500rpx;
-  // height: auto;
-  // display: block;
-  margin: 15rpx auto;
-}
-

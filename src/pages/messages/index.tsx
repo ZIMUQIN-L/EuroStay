@@ -51,31 +51,63 @@ const Index = () => {
     const token = GlobalStore.userInfo.token;
     const uid = GlobalStore.userInfo.uid;
     console.log('拿到的 token:', token, "uid", uid)
-
-    // 2. 发起请求：搜索 /app/esmessages/sessionList
-    Taro.request({
-      url: 'https://api.eurostay.co/app/esmessages/sessionList',
-      method: 'GET',
-      header: {
-        token: token,
-      },
-      data: {
-        pageNum: 1,  // 传给后端的参数
-      },
-    }).then((res) => {
-      console.log('sessionList 响应:', res)
-      // 如果后端返回了你的消息列表，就更新 state
-      if (res.statusCode === 200 && res.data) {
-        setMessages(res.data)
-      }
-    }).catch((err) => {
-      console.error('请求出错:', err)
-    })
+    fetchMessages();
 
 
 
   }, []) // 空数组确保只在组件初次挂载时执行
 
+
+  const fetchMessages = async () => {
+    const token = GlobalStore.userInfo.token || Taro.getStorageSync('token');
+  
+    if (!token) {
+      console.error('❌ 缺少 token，无法获取消息列表');
+      return;
+    }
+  
+    try {
+      // 发送请求
+      const res = await Taro.request({
+        url: 'https://api.eurostay.co/app/esmessages/sessionList',
+        method: 'GET',
+        header: {
+          token: token, // 传递 token 进行身份验证
+        },
+        data: {
+          pageNum: 1, // 分页参数
+        },
+      });
+  
+      console.log('sessionList 响应:', res);
+  
+
+      if (res.statusCode === 200 && res.data.code === 0) {
+        const records = res.data.result.records || [];
+  
+
+        const formattedMessages = records.map((record) => ({
+          id: record.id,
+          avatar: 'https://example.com/avatar4.png',
+          name: `User ${record.initUid}`,
+          message: record.topMessage,
+          time: formatTime(record.updateTime),
+        }));
+  
+        // 更新 `messages` 状态
+        setMessages(formattedMessages);
+      } else {
+        console.error('获取消息列表失败:', res.data.msg);
+      }
+    } catch (error) {
+      console.error('网络请求失败:', error);
+    }
+  };
+
+  const formatTime = (dateString) => {
+    const date = new Date(dateString);
+    return `${date.getHours()}:${date.getMinutes() < 10 ? '0' : ''}${date.getMinutes()}`;
+  };
 
   const handleItemClick = (id, name) => {
     console.log("id from session list", id);
