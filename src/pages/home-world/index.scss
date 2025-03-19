@@ -1,7 +1,12 @@
 .home-search {
   padding: 20px 5%;
   background: #fff;
-  padding-bottom: 200px;
+  padding-bottom: 120px;
+  
+  &.modal {
+    overflow: hidden;
+  }
+
   .tab-container {
     display: flex;
     justify-content: space-between;

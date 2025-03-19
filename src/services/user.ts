@@ -1,5 +1,6 @@
 import request from '../utils/request';
 import GlobalStore from '@store/GlobalStore'
+import Taro from '@tarojs/taro';
 
 export interface UserShortInfo {
   uid: number;
@@ -98,11 +99,11 @@ export interface ReviewListResponse {
 }
 
 // 获取当前登录用户的信息（通过 token 识别用户）
-export async function getCurrentUserInfo() {
+export async function getCurrentUserInfo(uid?: number) {
   return request<UserShortInfoResponse>({
     url: '/app/esuser/getUserShortInfo',
     method: 'POST',
-    data: { id: GlobalStore.userInfo.uid },
+    data: { id: uid || GlobalStore.userInfo.uid },
   });
 }
 

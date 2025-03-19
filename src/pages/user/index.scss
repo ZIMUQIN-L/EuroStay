@@ -3,6 +3,7 @@
   width: 100%;
   min-height: 100vh;
   background: #f8f8f8;
+  padding-bottom: 120px;
 
   .loading {
     display: flex;
@@ -281,6 +282,19 @@
       background-color: #6B4FBB;
       color: white;
       padding: 8px 24px;
+    }
+  }
+
+  &.modal {
+    &::after {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.7);
+      z-index: 998;
     }
   }
 } 

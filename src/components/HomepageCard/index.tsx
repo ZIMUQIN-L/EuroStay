@@ -1,5 +1,6 @@
 import { View, Image } from '@tarojs/components';
 import { useEffect, useState } from 'react';
+import Taro from '@tarojs/taro';
 import './index.scss';
 import {
   homeUserProps,
@@ -44,7 +45,16 @@ const HomepageCard = (props: {
     <View className={`${getCardClass()} ${props.id}`}>
       {activeTab == '友友' && (
         <>
-          <Image src={props.user.backgroundPic} className='user-pic'></Image>
+          <Image 
+            src={props.user.backgroundPic} 
+            className='user-pic' 
+            onClick={() => {
+                console.log(props.user);
+              Taro.navigateTo({
+                url: `/pages/user/index?uid=${props.user.uid}`
+              })
+            }}
+          ></Image>
           {props.user.location && (
             <View className='user-location'>{props.user.location}</View>
           )}

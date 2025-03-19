@@ -11,9 +11,6 @@ const BASE_URL = 'https://api.eurostay.co';
 
 async function request<T>(options: RequestOptions): Promise<T> {
   const token = GlobalStore.userInfo.token;
-  console.log('🔍 Request Token:', token);
-  console.log('🔍 Request URL:', `${BASE_URL}${options.url}`);
-  console.log('🔍 Request Data:', options.data);
   
   try {
     const response = await Taro.request({

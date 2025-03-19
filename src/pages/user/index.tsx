@@ -15,6 +15,8 @@ import {
 } from '../../services/user';
 import './index.scss';
 import { settingIcon } from '@utils/cloudIcons';
+import TabBar from '@components/TabBar';
+import { observer } from 'mobx-react-lite';
 
 const UserProfile = () => {
   const router = useRouter();
@@ -35,6 +37,7 @@ const UserProfile = () => {
   const [hasMoreParticipated, setHasMoreParticipated] = useState(true);
   const [hasMoreReviews, setHasMoreReviews] = useState(true);
   const [isCurrentUser, setIsCurrentUser] = useState(false);
+  const [isShowPostModal, setIsShowPostModal] = useState(false);
 
   useEffect(() => {
     fetchUserInfo();
@@ -58,7 +61,7 @@ const UserProfile = () => {
   const fetchUserInfo = async () => {
     try {
       setLoading(true);
-      const response = await getCurrentUserInfo();
+      const response = await getCurrentUserInfo (pageUid ? Number(pageUid) : undefined);
       if (response.code === 0) {
         setUserInfo(response.result);
         setIsCurrentUser(!pageUid || String(GlobalStore.userInfo?.uid) === pageUid);
@@ -166,12 +169,17 @@ const UserProfile = () => {
     return (
       <View className="user-profile">
         <View className="loading">加载中...</View>
+        <TabBar 
+          onWorldSelected={() => {}}
+          setIsShowPostModal={setIsShowPostModal}
+          isShowPostModal={isShowPostModal}
+        />
       </View>
     );
   }
 
   return (
-    <View className="user-profile">
+    <View className={`user-profile ${isShowPostModal ? 'modal' : ''}`}>
       <Image
         className="background-image"
         src={userInfo?.backgroundPic || ''}
@@ -349,9 +357,15 @@ const UserProfile = () => {
           </View>
         )}
       </View>
+
+      <TabBar 
+        onWorldSelected={() => {}}
+        setIsShowPostModal={setIsShowPostModal}
+        isShowPostModal={isShowPostModal}
+      />
     </View>
   );
 };
 
-export default UserProfile;
+export default observer(UserProfile);
 

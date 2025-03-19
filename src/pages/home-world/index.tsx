@@ -1,5 +1,6 @@
 import { View } from '@tarojs/components';
 import HomepageCard from '@components/HomepageCard';
+import { observer } from 'mobx-react';
 import './index.scss';
 import HomepageSearch from '@components/HomepageSearch';
 import { useEffect, useMemo, useState } from 'react';
@@ -13,6 +14,7 @@ import {
   homePropertyProps,
 } from '@utils/interfaces';
 import CitySelect from '@components/CitySelect';
+import TabBar from '@components/TabBar';
 
 const HomeWorld = () => {
   const [activeTab, setActiveTab] = useState<'友友' | '房源' | '活动'>(null);
@@ -65,6 +67,8 @@ const HomeWorld = () => {
   const [capacity, setCapacity] = useState<number>();
   const [isShowDateSelect, setIsShowDateSelect] = useState(false);
   const [isShowCitySelect, setIsShowCitySelect] = useState(false);
+  const [isShowPostModal, setIsShowPostModal] = useState(false);
+  const [scrollTop, setScrollTop] = useState(0);
 
   // 添加页码和加载状态
   const [page, setPage] = useState(1);
@@ -182,6 +186,21 @@ const HomeWorld = () => {
     setHasMore(true);
   }, [activeTab]);
 
+  // 在打开 modal 时保存当前滚动位置
+  const handlePostModalOpen = (show: boolean) => {
+    if (show) {
+      setScrollTop(document.documentElement.scrollTop || document.body.scrollTop);
+    }
+    setIsShowPostModal(show);
+  };
+
+  // 在关闭 modal 时恢复滚动位置
+  useEffect(() => {
+    if (!isShowPostModal && scrollTop > 0) {
+      window.scrollTo(0, scrollTop);
+    }
+  }, [isShowPostModal]);
+
   if (isShowDateSelect) {
     return (
       <DateSelect
@@ -207,7 +226,7 @@ const HomeWorld = () => {
 
   return (
     <>
-      <View className='home-search'>
+      <View className={`home-search ${isShowPostModal ? 'modal' : ''}`}>
         <View className='tab-container'>
           <View
             className={`tab-item ${activeTab === '友友' ? 'active' : ''}`}
@@ -308,8 +327,19 @@ const HomeWorld = () => {
           )}
         </View>
       </View>
+      
+      <TabBar 
+        onWorldSelected={() => {
+          // 如果当前已经在世界tab，可以触发刷新或回到顶部等操作
+          if (activeTab === '友友') {
+            // 可以添加你的刷新逻辑
+          }
+        }}
+        setIsShowPostModal={handlePostModalOpen}
+        isShowPostModal={isShowPostModal}
+      />
     </>
   );
 };
 
-export default HomeWorld;
+export default observer(HomeWorld);
