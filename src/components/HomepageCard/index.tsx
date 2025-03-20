@@ -97,7 +97,11 @@ const HomepageCard = (props: {
 
       {activeTab == '活动' && props.activity && (
         <>
-          <Image src={props.activity.images?.[0]} className='user-pic'></Image>
+          <Image src={props.activity.images?.[0]} className='user-pic' onClick={
+              () => {
+                Taro.navigateTo({ url: `/packageHouse/housing-detail/index?id=${props.activity.id}&type=1` });
+              }
+          }></Image>
           {props.activity.location && (
             <View className='user-location'>{props.activity.location}</View>
           )}
@@ -136,7 +140,11 @@ const HomepageCard = (props: {
       )}
       {activeTab == '房源' && props.property && (
         <>
-          <Image src={props.property.images?.[0]} className='user-pic'></Image>
+          <Image src={props.property.images?.[0]} className='user-pic' onClick={
+              () => {
+                Taro.navigateTo({ url: `/packageHouse/housing-detail/index?id=${props.property.id}&type=0` });
+              }
+          }></Image>
           {props.property.location && (
             <View className='user-location'>{props.property?.location}</View>
           )}

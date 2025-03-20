@@ -1,4 +1,115 @@
-.home-orders {
+.role-selection {
+  background: #f5f5f5;
+  min-height: 100vh;
+  padding-bottom: 120px; 
+  
+  .role-tabs {
+    height: 96px;
+    font-weight: 540;
+    display: flex;
+    background: #f5f5f5;
+    z-index: 100;
+    position: fixed;
+    left: 0px;
+    right: 0px;
+    top: 0px;
+
+    .role-tab {
+      height: 96px;
+      width: 50%;
+      display: flex;
+      // border-radius: 20px;
+      text-align: center;
+      justify-content: center;
+      align-items: center;
+      font-size: 32px;
+      color: #000000;
+      position: relative;
+      // padding-bottom: 10px;
+
+      &.active {
+        color: #7a63c7;
+        background-color: #ffffff;
+      }
+    }
+  }
+}
+
+.order-tabs {
+  height: 45px; /////////////////
+  display: flex;
+  justify-content: space-around;
+  padding: 24px;
+  background-color: #f5f5f5;
+  // margin-top: 10px;
+  position: fixed;
+  // margin-left: 24px;
+  // margin-right: 24px;
+  // left: 0px;
+  // right: 0px;
+  padding-left: 36px;
+  padding-right: 36px;
+  left: 0px;
+  right: 0px;
+  top: 96px;
+  z-index: 100;
+
+  .order-tab {
+    position: relative;
+    font-size: 30px;
+    font-weight: 540;
+    color: #777777;
+
+    &.active {
+      color: #000000;
+    }
+    &.active::after {
+      content: '';
+      position: absolute;
+      left: 50%;
+      bottom: -5px;
+      width: 80%;
+      height: 5px;
+      background-color: #9887d1;
+      color: #000000;
+      transform: translateX(-50%);
+    }
+
+    .order-badge {
+      position: absolute;
+      // margin-right: 3px;
+      // margin-top: 3px;
+      top: -5px;
+      right: -20px;
+      background: #ffd35e;
+      color: #000000;
+      font-size: 16px;
+      // padding: 0 10px;
+      border-radius: 10px;
+      width: 20px;
+      height: 20px;
+      // line-height: 32px;
+      text-align: center;
+      // box-shadow: 0 2px 4px rgba(255, 184, 0, 0.2);
+    }
+  }
+}
+
+// a class for scrollable contents in each tab
+.order-list-scrollable {
+  background-color: #f5f5f5;
+  overflow-y: auto; // auto, visible, hidden
+  // how to forbid this from scrolling in x direction?
+  // overflow-x: hidden;
+  position: relative;
+  // overflow-x: hidden;
+  // position: absolute;
+  top: 180px;
+  margin-bottom: 200px;
+  padding-bottom: 120px;
+}
+
+.orders-page {
   min-height: 100vh;
   padding-bottom: 120px;  // 为底部 TabBar 留出空间
 
@@ -10,8 +121,15 @@
       left: 0;
       right: 0;
       bottom: 0;
-      background: rgba(0, 0, 0, 0.7);
+      background: rgba(255, 255, 255, 0.5);
       z-index: 998;
     }
   }
-} 
+
+  // ... 其他样式保持不变 ...
+
+  .order-list-scrollable {
+    padding-bottom: 120px;  // 确保内容不被 TabBar 遮挡
+  }
+}
+
