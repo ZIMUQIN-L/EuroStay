@@ -2,6 +2,7 @@ import { View } from '@tarojs/components'
 import './index.scss'
 
 const HostAwaitingOrder = ({
+    type,
     orderStatus,
     orderId,
     houseName,
@@ -29,7 +30,7 @@ const HostAwaitingOrder = ({
 
         <View className='info-card-table-row'>
           <View className='info-card-table-key'>
-            房源名称
+            {type === 0 ? '房源' : '活动'}名称
             <View className='info-card-table-value'>
               {houseName}
             </View>
@@ -38,7 +39,7 @@ const HostAwaitingOrder = ({
 
         <View className='info-card-table-row'>
           <View className='info-card-table-key'>
-            房源 ID
+          {type === 0 ? '房源' : '活动'} ID
             <View className='info-card-table-value'>
               {houseId}
             </View>
@@ -49,14 +50,14 @@ const HostAwaitingOrder = ({
           <View className='info-card-table-key'>
             价格
             <View className='info-card-table-value'>
-              €{price}/晚，{days}晚共€
+            {type === 0 ? `€${price}/晚，共${days}晚` : price === 0 ? '免费' : `€${price}`}
             </View>
           </View>
         </View>
 
         <View className='info-card-table-row'>
           <View className='info-card-table-key'>
-            换宿时间
+            {type === 0 ? '换宿' : '活动开始'}时间
             <View className='info-card-table-value'>
               {time}
             </View>

@@ -36,7 +36,7 @@ import Taro from '@tarojs/taro';
 const HostCardSmall = ({
     avatar,
     role,
-    userName,
+    username,
     detail,
     tags,
     buttonText,
@@ -50,7 +50,7 @@ const HostCardSmall = ({
                 className='host-avatar'
                 mode="aspectFill"
             />
-            <View className='host-name'>{role}：{userName}</View>
+            <View className='host-name'>{role}：{username}</View>
             <View className='host-detail'>{detail}</View>
             <View className='host-button'
                 onClick={() => {buttonFunc()}}

@@ -3,6 +3,7 @@ import './index.scss'
 import { observer } from 'mobx-react';
 
 const ApplicantInfo = ({
+    type,
     title,  
     name,
     id,
@@ -58,28 +59,33 @@ const ApplicantInfo = ({
         <View className='info-card-table-row'>
           <View className='info-card-table-key'>
             自我介绍
-            <Textarea 
+            <View className='info-card-table-value'>
+              {identity}
+            </View>
+            {/* <Textarea 
               className='info-card-table-value'
               autoHeight
               disabled
             >
               {selfIntroduction}
-            </Textarea>
+            </Textarea> */}
           </View>
         </View>
 
-        <View className='info-card-table-row'>
-          <View className='info-card-table-key'>
-            换宿人数
-            <View className='info-card-table-value'>
-              {numberOfGuests}人
+        {type === 0 &&
+          <View className='info-card-table-row'>
+            <View className='info-card-table-key'>
+              换宿人数
+              <View className='info-card-table-value'>
+                {numberOfGuests}人
+              </View>
             </View>
           </View>
-        </View>
+        }
 
         <View className='info-card-table-row'>
           <View className='info-card-table-key'>
-            换宿原因
+            {type === 0 ? '换宿' : '申请'}原因
             <View className='info-card-table-value'>
               {reason}
             </View>

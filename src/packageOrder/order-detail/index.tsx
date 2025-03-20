@@ -7,64 +7,359 @@ import OrderInfo from '../../components/OrderInfo';
 import ApplicantInfo from '../../components/ApplicantInfo';
 import UserCardSmall from '../../components/UserCardSmall';
 import './index.scss'
+import GlobalStore from '@store/GlobalStore';
+import { UserShortInfo, OrderDetail, ApplicantDetail } from '@utils/interfaces';
 
 const Index: React.FC = () => {
     Taro.setBackgroundColor({
         backgroundColor: '#f5f5f5'
     })
 
+    const [infoHost, setInfoHost] = useState<UserShortInfo>({});
+    const [infoGuest, setInfoGuest] = useState<UserShortInfo>({});
+    const [infoOrder, setInfoOrder] = useState<OrderDetail>({});
+    const [infoApplicant, setInfoApplicant] = useState<ApplicantDetail>({});
+
+    const [loadingComplete, setLoadingComplete] = useState(false);
+
     const router = useRouter();
     const role = router?.params?.role;
     const status = router?.params?.status;
+    const type = router?.params?.type;
+    const id = router?.params?.id;
+    const experienceId = router?.params?.experienceId;
+    const title = router?.params?.title;
 
-    const mockDataApplicant = {
-        avatar: 'https://s3-alpha-sig.figma.com/img/97db/b7df/347e0ff352700de47ef1413cb12e9dc3?Expires=1742169600&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=KFeX8o~0GFsUQx4TGKDn-SlumPmawxwESuVBlUzsteaUWqte3eFcX-5RvxdIuq2V63F0i3CjMRg~tFLf3GcLVSlB97ym4BSBNjh2s3PvbqpCTYbbc771BA0feZ5MR4yC5MSYOHx1ikwtHdYOsfVU6hq~KA5ORGYvOxDHgGNyWsni6529kWpK5uYsPxU5B8~v~-peMQIZ5fAbbipKZeDIx4mLtPpLRsrt-2ms3ylO5qUfP8zCd-uHawKc6IJSiZZceiOSm7AjpGK~Ttiz~vumkm5ttMlkHDmQWrfMKMdwPl5fr7zfHxqHHA50jtnONpVET0wxZ5cM3X7MuGd6d9P3ZA__',
-        role: '申请人',
-        userName: '下辈子想当棵草',
-        tags: ['游戏', 'INFJ', '旅游'],
-        buttonText: '和ta聊聊',
-        buttonFunc: () => {}
+    const [rejectMessage, setRejectMessage] = useState('');
+    const [showRejectModal, setShowRejectModal] = useState(false)
+
+    const hostConfirm = () => {
+        Taro.request({
+            url: Number(type) === 0 ? `https://api.eurostay.co/app/property/approvePropertyApplication`: `https://api.eurostay.co/app/activity/approveActivityApplication`,
+            method: 'POST',
+            header: {
+                token: GlobalStore.userInfo.token,
+            },
+            data: {
+                id: Number(id),
+            },
+            success: function (response) {
+                Taro.showToast({
+                    title: '已同意申请，等待 Guest 确认',
+                    icon: 'success',
+                    duration: 2000,
+                });
+            },
+            fail: function (err) {
+                Taro.showToast({
+                    title: '网络请求失败，请重试',
+                    icon: 'none',
+                    duration: 2000,
+                });
+            },
+            complete: function () {
+              Taro.navigateBack()
+            }
+        });
+    }
+
+    const handelReject = () => {
+        if (role === 'host') {
+            hostReject();
+        } else {
+            guestReject();
         }
-    const mockDataOrder = {
-        orderStatus: status === 'ongoing' ? '订单进行中' : status === 'expired' ? '订单已失效' : role === 'host' ? '订单待审核' : '订单待确认',
-        orderId: '12345',
-        houseName: '柏林小木屋',
-        houseId: '2001',
-        price: 30,
-        days: 2,
-        time: '2025年2月9日 至 2025年2月11日'
     }
 
-    const mockDataUser = {
-        title: role === 'host' ? '申请人信息': '你的信息',
-        name: '下辈子想当棵草',
-        id: '1111',
-        gender: '女',
-        identity: '学生',
-        selfIntroduction: '我是一个超级爱旅游的背包客，暑期出来旅游想要交朋友并且省钱旅游～我会设计、做甜点等等，你如果喜欢的话我也可以和你分享哦！',
-        numberOfGuests: 1,
-        reason: '来旅游~超级喜欢你的房子！'
+    const hostReject = () => {
+        Taro.request({
+            url: Number(type) === 0 ? `https://api.eurostay.co/app/property/rejectPropertyApplication` : 'https://api.eurostay.co/app/activity/rejectActivityApplication',
+            method: 'POST',
+            header: {
+                token: GlobalStore.userInfo.token,
+            },
+            data: {
+                id: Number(id),
+                reason: rejectMessage,
+            },
+            success: function (response) {
+                Taro.showToast({
+                    title: '已拒绝申请',
+                    icon: 'success',
+                    duration: 2000,
+                });
+            },
+            fail: function (err) {
+                Taro.showToast({
+                    title: '网络请求失败，请重试',
+                    icon: 'none',
+                    duration: 2000,
+                });
+            },
+            complete: function () {
+              Taro.navigateBack()
+            }
+        });
     }
+
+    const guestConfirm = () => {
+        Taro.request({
+            url: Number(type) === 0 ? `https://api.eurostay.co/app/property/acceptOffer` : 'https://api.eurostay.co/app/activity/acceptOffer',
+            method: 'POST',
+            header: {
+                token: GlobalStore.userInfo.token,
+            },
+            data: {
+                id: Number(id),
+            },
+            success: function (response) {
+                Taro.showToast({
+                    title: '已确认订单',
+                    icon: 'success',
+                    duration: 2000,
+                });
+            },
+            fail: function (err) {
+                Taro.showToast({
+                    title: '网络请求失败，请重试',
+                    icon: 'none',
+                    duration: 2000,
+                });
+            },
+            complete: function () {
+              Taro.navigateBack()
+            }
+        });
+    }
+
+    const guestReject = () => {
+        Taro.request({
+            url: Number(type) === 0 ? `https://api.eurostay.co/app/property/rejectOffer` : 'https://api.eurostay.co/app/activity/rejectOffer',
+            method: 'POST',
+            header: {
+                token: GlobalStore.userInfo.token,
+            },
+            data: {
+                id: Number(id),
+                reason: rejectMessage,
+            },
+            success: function (response) {
+                Taro.showToast({
+                    title: '已拒绝申请',
+                    icon: 'success',
+                    duration: 2000,
+                });
+            },
+            fail: function (err) {
+                Taro.showToast({
+                    title: '网络请求失败，请重试',
+                    icon: 'none',
+                    duration: 2000,
+                });
+            },
+            complete: function () {
+              Taro.navigateBack()
+            }
+        });
+    }
+
+    const getOrderStatus = (status: number): string => {
+        switch (status) {
+            case 0:
+                return "申请中";
+            case 1:
+                return "申请通过待确认";
+            case 2:
+                return "进行中";
+            case 3:
+                return "待评价";
+            case 4:
+                return "已失效";
+            case 5:
+                return "已完成";
+            default:
+                return "";
+        }
+    }
+
+    const getDays = (startDate: string, endDate: string): number => {
+        if (startDate === '' || endDate === '') {
+            return 0;
+        }
+        const start = new Date(startDate.replace('-', '/').replace('-', '/'));
+        const end = new Date(endDate.replace('-', '/').replace('-', '/'));
+        return (end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24) - 1;
+    }
+
+    const getDate = (date: string): string => {
+        if (date === '') {
+            return '';
+        }
+        const dateObj = new Date(date.replace('-', '/').replace('-', '/'));
+        return `${dateObj.getFullYear()}年${dateObj.getMonth() + 1}月${dateObj.getDay()}日`;
+    }
+
+    const getGender = (gender: number): string => {
+        switch (gender) {
+            case 0:
+                return "女";
+            case 1:
+                return "男";
+            case 2:
+                return "都有";
+            default:
+                return "";
+        }
+    }
+
+    const getOrderDetail = () => {
+        if (loadingComplete) {
+            return;
+        }
+        if (Number(type) === 0) {
+            Taro.request({
+                url: `https://api.eurostay.co/app/property/showApplicationInfo`,
+                method: 'POST',
+                header: {
+                    token: GlobalStore.userInfo.token,
+                },
+                data: {
+                    id: Number(id),
+                },
+                success: function (response) {
+                    setInfoGuest({
+                        uid: response.data.result.guestInfo.uid,
+                        avatar: response.data.result.guestInfo.avatar,
+                        role: 'Guest',
+                        username: response.data.result.guestInfo.username,
+                        tags: response.data.result.guestInfo.tags,
+                        buttonText: '和ta聊聊',
+                    });
+                    setInfoOrder({
+                        type: 0,
+                        orderStatus: getOrderStatus(response.data.result.status),
+                        orderId: response.data.result.applicationId,
+                        houseName: title,
+                        houseId: experienceId,
+                        price: response.data.result.price,
+                        days: getDays(response.data.result.startDate, response.data.result.endDate),
+                        time: `${getDate(response.data.result.startDate)} 至 ${getDate(response.data.result.endDate)}`,
+                    });
+                    setInfoHost({
+                        uid: response.data.result.hostInfo.uid,
+                        avatar: response.data.result.hostInfo.avatar,
+                        role: 'Host',
+                        username: response.data.result.hostInfo.username,
+                        tags: response.data.result.hostInfo.tags,
+                        buttonText: '和ta聊聊',
+                    });
+                    setInfoApplicant({
+                        type: 0,
+                        title: role === 'host' ? '申请人信息': '你的信息',
+                        name: response.data.result.guestInfo.username,
+                        id: response.data.result.guestInfo.uid,
+                        gender: getGender(response.data.result.gender),
+                        identity: response.data.result.occupation,
+                        selfIntroduction: response.data.result.selfIntro,
+                        numberOfGuests: response.data.result.capacity,
+                        reason: response.data.result.why
+                    });
+                },
+                fail: function (err) {
+                    Taro.showToast({
+                        title: '网络请求失败，请重试',
+                        icon: 'none',
+                        duration: 2000,
+                    });
+                },
+                complete: function () {
+                    setLoadingComplete(true);
+                }
+            });
+        } else {
+            Taro.request({
+                url: 'https://api.eurostay.co/app/activity/showApplicationInfo',
+                method: 'POST',
+                header: {
+                    token: GlobalStore.userInfo.token,
+                },
+                data: {
+                    id: Number(id),
+                },
+                success: function (response) {
+                    setInfoGuest({
+                        uid: response.data.result.guestInfo.uid,
+                        avatar: response.data.result.guestInfo.avatar,
+                        role: 'Guest',
+                        username: response.data.result.guestInfo.username,
+                        tags: response.data.result.guestInfo.tags,
+                        buttonText: '和ta聊聊',
+                    });
+                    setInfoOrder({
+                        type: 1,
+                        orderStatus: getOrderStatus(response.data.result.status),
+                        orderId: response.data.result.applicationId,
+                        houseName: title,
+                        houseId: experienceId,
+                        price: response.data.result.price,
+                        // days: getDays(response.data.result.startDate, response.data.result.endDate),
+                        time: response.data.result.startDate,
+                    });
+                    setInfoHost({
+                        uid: response.data.result.hostInfo.uid,
+                        avatar: response.data.result.hostInfo.avatar,
+                        role: 'Host',
+                        username: response.data.result.hostInfo.username,
+                        tags: response.data.result.hostInfo.tags,
+                        buttonText: '和ta聊聊',
+                    });
+                    setInfoApplicant({
+                        type: 1,
+                        title: role === 'host' ? '申请人信息': '你的信息',
+                        name: response.data.result.guestInfo.username,
+                        id: response.data.result.guestInfo.uid,
+                        gender: getGender(response.data.result.gender),
+                        identity: response.data.result.occupation,
+                        selfIntroduction: response.data.result.selfIntro,
+                        reason: response.data.result.why
+                    });
+                },
+                fail: function (err) {
+                    Taro.showToast({
+                        title: '网络请求失败，请重试',
+                        icon: 'none',
+                        duration: 2000,
+                    });
+                },
+                complete: function () {
+                    setLoadingComplete(true);
+                }
+            });
+        }
+    }
+
+    getOrderDetail();
 
     return (
-        console.log(role, status),
-        // how to show some <View> only if the user is a host? Say there's const isHost = true
-        // <View></View> How? 
         <>
-            {role === 'host' && <UserCardSmall {...mockDataApplicant}/>}
+            {/* {role === 'host' && <UserCardSmall {...mockDataApplicant}/>}
             <OrderInfo {...mockDataOrder}/>
-            <ApplicantInfo {...mockDataUser}/>
+            <ApplicantInfo {...mockDataUser}/> */}
+            {role === 'host' && <UserCardSmall {...infoGuest}/>}
+            {/* {role === 'guest' && <UserCardSmall {...infoHost}/>} */}
+            <OrderInfo {...infoOrder}/>
+            <ApplicantInfo {...infoApplicant}/>
             {role === 'host' && status === 'awaiting' && 
                 <>
                     <View 
                         className='purple-fill-button' 
-                        // onClick={console.log('cofirm')}
+                        onClick={() => hostConfirm()}
                     >
                         同意申请
                     </View>
                     <View 
                         className='purple-empty-button' 
-                        // onClick={cancel}>
+                        onClick={() => setShowRejectModal(true)}
                     >
                         拒绝申请
                     </View>
@@ -90,15 +385,15 @@ const Index: React.FC = () => {
                 <>
                     <View 
                         className='yellow-fill-button' 
-                        // onClick={console.log('cofirm')}
+                        onClick={() => guestConfirm()}
                     >
-                        确认入住
+                        确认{Number(type) === 0 ? '入住' : '参加'}
                     </View>
                     <View 
                         className='yellow-empty-button' 
-                        // onClick={cancel}>
+                        onClick={() => setShowRejectModal(true)}
                     >
-                        取消入住
+                        取消{Number(type) === 0 ? '入住' : '参加'}
                     </View>
                 </>
             }
@@ -115,12 +410,29 @@ const Index: React.FC = () => {
                     className='yellow-fill-button' 
                     // onClick={console.log('cofirm')}
                 >
-                    和房东聊聊
+                    和Host聊聊
                 </View>
             }
-            {/* <GeustAwaitingOrder {...mockDataOrder}/>
-            <GeustAwaitingUser {...mockDataUser}/>
-            <GeustAwaitingButton/> */}
+            {/* 拒绝弹窗 */}
+            {showRejectModal && (
+                <View className='reject-modal-mask'>
+                <View className='reject-modal'>
+                    <View className='modal-title'>确认拒绝？请简述拒绝理由</View>
+                    <Input
+                    className='message-input'
+                    placeholder='请说明拒绝理由，此理由将发给对方'
+                    value={rejectMessage}
+                    onInput={e => setRejectMessage(e.detail.value)}
+                    />
+                    <View 
+                    className={role === 'host' ? 'purple-confirm-button' : 'yellow-confirm-button'}
+                    onClick={handelReject}
+                    >
+                    发送
+                    </View>
+                </View>
+                </View>
+            )}
         </>
     );
 };

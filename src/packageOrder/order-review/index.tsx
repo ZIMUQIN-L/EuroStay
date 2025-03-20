@@ -1,9 +1,10 @@
-import { View, Input, Textarea, Text, Image } from '@tarojs/components'
+import { View, Input, Textarea, Text, Image, Button } from '@tarojs/components'
 import { observer } from 'mobx-react';
 import { useState } from 'react'
 import { useRouter } from '@tarojs/taro';
 import Taro from '@tarojs/taro'
 import './index.scss'
+import GlobalStore from '@store/GlobalStore';
 
 const Index: React.FC = () => {
     const [images, setImages] = useState<string[]>([])
@@ -13,17 +14,25 @@ const Index: React.FC = () => {
 
     const router = useRouter();
     const role = router?.params?.role;
+    const type = router?.params?.type;
+    const id = router?.params?.id;
+    const experienceId = router?.params?.experienceId;
+    const title = router?.params?.title;
 
-    const [complete, setComplete] = useState<'yes' | 'no'>('yes')
+    const [complete, setComplete] = useState('') // useState<'yes' | 'no'>('yes')
+    const [recommend, setRecommend] = useState('') // useState<'yes' | 'no'>('no')
+    const [finish, setFinish] = useState(false)
 
-    const handleReviewComplete = (complete: 'yes' | 'no') => {
-        setComplete(complete)
+    const handleReviewComplete = (c: 'yes' | 'no') => {
+        setComplete(c)
     }
 
-    const [recommend, setRecommend] = useState<'yes' | 'no'>('no')
+    const [guestId, setGuestId] = useState('')
 
-    const handleRecommend = (recommend: 'yes' | 'no') => {
-        setRecommend(recommend)
+    const [hostId, setHostId] = useState('')
+
+    const handleRecommend = (r: 'yes' | 'no') => {
+        setRecommend(r)
     }
 
     const handleAddImage = () => {
@@ -52,38 +61,89 @@ const Index: React.FC = () => {
       }
 
     const handleSubmit = () => {
-        // 这里添加表单验证和提交逻辑
-        Taro.showToast({
-        title: '你已成功评价！正在等待审核，审核通过后，待对方也完成评价或7天后评价内容将会显示。',
-        icon: 'success'
-        })
-        Taro.navigateBack()
+        Taro.request({
+            url: Number(type) === 0 ? `https://api.eurostay.co/app/property/showApplicationInfo` : 'https://api.eurostay.co/app/activity/showApplicationInfo',
+            method: 'POST',
+            header: {
+                token: GlobalStore.userInfo.token,
+            },
+            data: {
+                id: Number(id),
+            },
+            success: function (response) {
+                setGuestId(response.data.result.guestInfo.uid);
+                setHostId(response.data.result.hostInfo.uid);
+                Taro.request({
+                    url: Number(type) === 0 ? 'https://api.eurostay.co/app/property/postPropertyReview' : 'https://api.eurostay.co/app/activity/postActivityReview',
+                    method: 'POST',
+                    header: {
+                        token: GlobalStore.userInfo.token,
+                    },
+                    data: {
+                        experienceId: Number(experienceId),
+                        applicationId: Number(id),
+                        targetUid: role === 'host' ? Number(response.data.result.guestInfo.uid) : Number(response.data.result.hostInfo.uid),
+                        done: complete === 'yes' ? true : false,
+                        recommend: recommend === 'yes' ? true : false,
+                        content: content,
+                        images: images,
+                    },
+                    success: function (res) {
+                        Taro.showToast({
+                            title: '你已成功评价！正在等待审核，审核通过后，待对方也完成评价或7天后评价内容将会显示。',
+                            icon: 'success',
+                            duration: 2000,
+                        })
+                    },
+                    fail: function (err) {
+                        Taro.showToast({
+                            title: '网络请求失败，请重试',
+                            icon: 'none',
+                            duration: 2000,
+                        });
+                    },
+                    complete: function () {
+                      Taro.navigateBack()
+                    }
+                })
+            },
+            fail: function (err) {
+                Taro.showToast({
+                    title: '网络请求失败，请重试',
+                    icon: 'none',
+                    duration: 2000,
+                });
+            },
+            complete: function () {
+                setFinish(true)
+            }
+        });
     }
 
     return (
         <>
-            <Text className='review-title'>是否完成本次换宿？</Text>
-            <View className='review-options'>
+            <Text className='review-title'>是否完成本次{Number(type) === 0 ? '换宿' : '活动'}？</Text>
+            <View className='review-buttons'>
                 <View 
-                className={`review-option ${complete === 'yes' ? 'active' : ''}`}
+                className={`review-button ${complete === 'yes' ? 'active' : ''}`}
                 onClick={() => handleReviewComplete('yes')}
                 >
                 是
                 </View>
                 <View 
-                className={`review-option ${complete === 'no' ? 'active' : ''}`}
+                className={`review-button ${complete === 'no' ? 'active' : ''}`}
                 onClick={() => handleReviewComplete('no')}
                 >
                 否
                 </View>
             </View>
             
-            {role === 'host' && <Text className='review-title'>是否推荐本次换宿房客？</Text>}
-            {role === 'guest' && <Text className='review-title'>是否推荐本次换宿房源？</Text>}
+            {role === 'host' && <Text className='review-title'>是否推荐本次Guest？</Text>}
+            {role === 'guest' && <Text className='review-title'>是否推荐本次Host？</Text>}
 
-            <View className='review-options'>
+            <View className='review-buttons'>
                 <View 
-                className={`review-option ${recommend === 'yes' ? 'active' : ''}`}
+                className={`review-button ${recommend === 'yes' ? 'active' : ''}`}
                 onClick={() => handleRecommend('yes')}
                 >
                 推荐

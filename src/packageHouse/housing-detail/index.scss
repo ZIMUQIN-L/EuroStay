@@ -107,7 +107,8 @@
           font-size: 36px;
           color: #7A63C7;
   
-          &.star-icon.active {
+          &.active {
+          // &.star-icon.active {
             color: #FFD700;
           }
         }
@@ -318,3 +319,36 @@
       }
     }
   }
+
+  .date-select {
+    background: #fff;
+    min-height: 100vh;
+    position: absolute;
+    min-width: 100%;
+    z-index: 1000000;
+  
+    .calendar-container {
+      padding: 0 30px;
+      .calendar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+  
+      .date-text {
+        font-size: 32px;
+        color: #333;
+        margin-right: 10px;
+      }
+  
+      .nights-text {
+        font-size: 32px;
+        color: #666;
+        margin-left: 10px;
+      }
+    }
+  }
+  @import '~taro-ui/dist/style/components/calendar.scss';
+  @import '~taro-ui/dist/style/components/toast.scss';
+  @import '~taro-ui/dist/style/components/icon.scss';
+  

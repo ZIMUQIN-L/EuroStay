@@ -3,12 +3,13 @@ import { View, Image, Text } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 
 const UserCardSmall = ({
+    uid,
     avatar,
     role,
-    userName,
+    username,
     tags,
     buttonText,
-    buttonFunc
+    buttonFunc=()=>{}
 }) => {
     require('./index.scss');
     return (
@@ -18,7 +19,7 @@ const UserCardSmall = ({
                 className='user-avatar'
                 mode="aspectFill"
             />
-            <View className='user-name'>{role}：{userName}</View>
+            <View className='user-name'>{role}：{username}</View>
             <View className='user-button'
                 onClick={() => {buttonFunc()}}
                 >{buttonText}

@@ -3,9 +3,11 @@ import { observer } from 'mobx-react';
 import { useState } from 'react'
 import Taro from '@tarojs/taro'
 import './index.scss'
+import { useRouter } from '@tarojs/taro';
+import GlobalStore from '@store/GlobalStore';
 
 const Index = () => {
-  const [gender, setGender] = useState<'male' | 'female' | 'both'>('male')
+  const [gender, setGender] = useState<'male' | 'female' | 'both'>('')
   const [identity, setIdentity] = useState('')
   const [introduction, setIntroduction] = useState('')
   const [contact, setContact] = useState('')
@@ -15,6 +17,19 @@ const Index = () => {
     start: '',
     end: ''
   })
+
+  const router = useRouter();
+  const id = router?.params?.id;
+  const type = router?.params?.type;
+
+  const getGenderId = (g) => {
+    switch(g) {
+      case 'female': return 0
+      case 'male': return 1
+      case 'both': return 2
+      default: return -1
+    }
+  }
 
   Taro.useShareAppMessage(res => {
     return {
@@ -34,12 +49,76 @@ const Index = () => {
   }
 
   const handleSubmit = () => {
-    // 这里添加表单验证和提交逻辑
-    // Taro.showToast({
-    //   title: '申请已提交',
-    //   icon: 'success'
-    // })
-    Taro.navigateBack()
+    if (Number(type) === 0) {
+      Taro.request({
+        url: 'https://api.eurostay.co/app/property/applyProperty',
+        method: 'POST',
+        header: {
+          token: GlobalStore.userInfo.token,
+        },
+        data: {
+          propertyId: Number(id),
+          startDate: '2025-03-20',
+          endDate: '2025-03-21',
+          gender: getGenderId(gender),
+          occupation: identity,
+          contact: contact,
+          capacity: Number(guestCount),
+          why: reason,
+          selfIntro: introduction
+        },
+        success: (res) => {
+          Taro.showToast({
+            title: '申请已提交',
+            icon: 'success',
+            duration: 2000,
+          })
+        },
+        fail: function (err) {
+          Taro.showToast({
+            title: '网络请求失败，请重试',
+            icon: 'none',
+            duration: 2000,
+          });
+        },
+        complete: function () {
+          Taro.navigateBack()
+        }
+      })
+    } else {
+      Taro.request({
+        url: 'https://api.eurostay.co/app/activity/applyActivity',
+        method: 'POST',
+        header: {
+          token: GlobalStore.userInfo.token,
+        },
+        data: {
+          activityId: Number(id),
+          gender: getGenderId(gender),
+          occupation: identity,
+          contact: contact,
+          why: reason,
+          selfIntro: introduction
+        },
+        success: (res) => {
+          Taro.showToast({
+            title: '申请已提交',
+            icon: 'success',
+            duration: 2000,
+          })
+        },
+        fail: function (err) {
+          Taro.showToast({
+            title: '网络请求失败，请重试',
+            icon: 'none',
+            duration: 2000,
+          });
+        },
+        complete: function () {
+          Taro.navigateBack()
+        }
+      })
+    }
   }
 
   return (
@@ -97,21 +176,25 @@ const Index = () => {
     <View className='info-card'>
       <View className='info-card-header'>
         <View className='purple-badge'/>
-        换宿信息
+        {Number(type) === 0 ? '换宿信息' : '申请信息'}
       </View>
 
       {/* <View className='info-card-context'> */}
+      { Number(type) === 0 &&
         <Text className='info-card-sec-title'>换宿人数*</Text>
+      }
+      { Number(type) === 0 &&
         <Input 
           className='info-card-input'
           type='number'
           value={guestCount}
           onInput={e => setGuestCount(e.detail.value)}
         />
+      }
       {/* </View> */}
       
       {/* <View className='info-card-context'> */}
-        <Text className='info-card-sec-title'>换宿原因*</Text>
+        <Text className='info-card-sec-title'>{Number(type) === 0 ? '换宿原因' : '申请原因'}*</Text>
         <Textarea
           className='info-card-input'
           // placeholder='请说明换宿原因'

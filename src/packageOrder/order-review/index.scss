@@ -31,14 +31,14 @@
   margin: 10px auto;
 }
 
-.review-options {
+.review-buttons {
   display: flex;
   gap: 32px;
   // width: 80%;
   // margin: 10px auto;
   margin-left: 36px;
 
-  .review-option {
+  .review-button {
       // width: 90px;
       min-width: 128px;
       height: 65px;
@@ -61,9 +61,12 @@
       z-index: 2;
       top: 0px;
       left: 0px;
-      &:active {
-          background: #FFD35E;
-      }
+      // &:active {
+      //     background: #FFD35E;
+      // }
+      &.active {
+        background: #FFD35E;
+    }
   }
 }
 

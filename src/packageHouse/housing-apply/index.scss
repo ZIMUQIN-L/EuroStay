@@ -115,7 +115,10 @@
                 // &:hover {
                 //     background: #FFD35E;
                 // }
-                &:active {
+                // &:active {
+                //     background: #FFD35E;
+                // }
+                &.active {
                     background: #FFD35E;
                 }
             }
