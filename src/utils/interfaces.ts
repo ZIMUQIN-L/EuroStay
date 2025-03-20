@@ -1,3 +1,16 @@
+import { interceptor } from "@tarojs/taro/types";
+
+export interface ESUserLoginInfoProps {
+    uid: number;
+    avatar: string;
+    aboutMe: string;
+    username: string;
+    isVip: Boolean;
+    gender: number;
+    location: string;
+    token: string;
+}
+
 /**
  * 房源信息接口
  */
@@ -33,143 +46,72 @@ export interface homePropertyProps {
   title: string;
 }
 
-export interface HouseItemProps {
-  _id: string; // 微信自动生成的_id，无法修改其名称
-  _openid: string;
-  capacity: number;
-  description: string;
-  end_date: string; // 后期最好优化成日期格式
-  start_date: string; // 当前数据库名称是start_date和end_date, 或许可以先保持？
-  houseType: string;
-  images: string[];
-  location: string;
-  ownerTarget: string;
-  contact: string;
-  xhsContact: string;
+
+export interface OrderInfo {
+    type: number;
+    id: number;
+    experienceId: number;
+    status: number;
+    update_time: string;
+    title: string;
+    price: number;
+    date: string;
+    location: string;
+    image: string;
 }
 
-/**
- * 用户信息接口
- */
-export interface UserItemProps {
-  _id: string;
-  _openid: string;
-  avatarUrl: string;
-  nickName: string;
-  userDes: string;
-  userOpenid: string;
-  userLocation: string;
-  token: string;
-  uid: string;
-}
-
-// 房源详情信息接口
-export interface HouseDetailItemProps {
-  accommodationType: number;
-  agreement: string;
-  availableDate: string[];
-  capacity: number;
-  coinPerNight: number;
-  description: string;
-  desirableSeeker: string;
-  genderRequirement: number;
-  hostQuestion: string;
-  location: string;
-  media: string[];
-  oneSentence: string;
-  pid: number;
-  precautious: string;
-  propertyInterests: string[];
-  propertyTags: string[];
-  propertyType: number;
-  recommendedTimes: number;
-  title: string;
-  uid: number;
-  undesirableSeeker: string;
-}
-
-// 用户求宿数据接口
-// both for message board and for accommodation page
-export interface UserAccomMessageItemProps {
-  // 必需参数
-  _id: string; // 微信自动生成的_id，无法修改其名称
-  _openid: string;
-  end_date: string;
-  start_date: string;
-  capacity: number;
-  gender: string;
-  location: string;
-  sourceUserOpenid: string;
-  sourceUserNickName: string;
-  sourceUserAvatarUrl: string;
-  description: string;
-  // 消息类型: withTargetHouse, withoutTargetHouse, both
-  type: string;
-  // 状态: unread, read, contactReceived, rejected, booked, checkedIn, ownerRated, guestRated, bothRated
-  status: string;
-
-  // optional params
-  contact: string;
-  answerToOwner: string;
-  houseId: string;
-  images?: string[];
-  targetUserNickName: string;
-  //   targetUserAvatarUrl: string;
-  targetUserOpenid: string;
-  targetUserAvatarUrl: string;
-}
-
-// 房主回复消息数据接口
-// both for replying message board and for accommodation page
-export interface HouseOwnerReplyMessageItemProps {
-  // 必需参数
-  _id: string; // 微信自动生成的_id，无法修改其名称
-  _openid: string;
-  sourceUserOpenid: string;
-  sourceUserNickName: string;
-  sourceUserAvatarUrl: string;
-  contact: string;
-  helloMessage: string;
-  accomMessageId: string;
-}
-
-//活动详情页
-export interface ActivityDetailProps {
-  active: boolean;
-  address: string;
-  applyFormId: string;
-  applyStatus: number;
-  capacity: number;
-  city: string;
-  contact: string;
-  createdAt: string;
-  description: string;
-  endTime: string;
-  helloMessage: string;
-  id: number;
-  images: string[];
-  official: boolean;
-  point: number;
-  price: number;
-  startTime: string;
-  tags: string[];
-  title: string;
-  uid: number;
-  updatedAt: string;
-  userShortInfoResponse: {
+export interface UserShortInfo {
+    uid: number;
     avatar: string;
-    cover: string;
-    gender: number;
-    tags: string[];
-  };
+    role: string;
+    username: string;
+    tags: Array<string>;
+    buttonText: string;
+    buttonFunc: () => void;
 }
-export interface ESUserLoginInfoProps {
-  uid: number;
-  avatar: string;
-  aboutMe: string;
-  username: string;
-  isVip: Boolean;
-  gender: number;
-  location: string;
-  token: string;
+
+export interface OrderDetail {
+    type: number
+    orderStatus: string;
+    orderId: number;
+    houseName: string;
+    houseId: string;
+    price: number;
+    days: number;
+    time: string;
+}
+
+export interface ApplicantDetail {
+    type: number,
+    title: string;
+    name: string;
+    id: number;
+    gener: string;
+    identity: string;
+    selfIntroduction: string;
+    numberOfGuests: number;
+    reason: string;
+}
+
+export interface HostDetail {
+    avatar: string;
+    role: string;
+    username: string;
+    detail: string;
+    tags: Array<string>;
+    buttonText: string;
+    buttonFunc: () => void;
+}
+
+export interface Order {
+    title: string;
+    tags: Array<string>;
+    description: string;
+    price: number;
+    location: string;
+    images: Array<string>;
+    pid: number;
+    uid: number;
+    whyHost: string;
+    availableDate: Array<string>;
 }

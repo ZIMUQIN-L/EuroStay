@@ -1,0 +1,161 @@
+.info-card {
+    margin: 10px auto;
+    margin-top: 24px;
+    margin-bottom: 24px;
+    border-radius: 30px;
+    background-color: #ffffff;
+    padding-top: 36px;
+    padding-bottom: 36px;
+    padding-right: 32px;
+    padding-left: 32px;
+    align-self: center;
+    width: 80%;
+    position: relative;
+
+    .info-card-header {
+        font-weight: 540;
+        height: 40px;
+        // display: flex;
+        // position: relative;
+        padding: 0 16px;
+        font-size: 30px;
+        color: #333333;
+        left: 36px;
+        // top: 0px;
+        // top: 36px;
+
+        .purple-badge {
+            position: absolute;
+            top: 41px;
+            left: 32px;
+            background-color: #7A63C7;
+            width: 12px;
+            height: 32px;
+        }
+
+        .status {
+            font-weight: 500;
+            position: absolute;
+            color: #777777;
+            font-size: 28px;
+            right: 24px;
+            // padding: 0 24px;
+            top: 36px;
+        }
+    }
+    // .info-card-context {
+    //     margin-top: 36px;
+
+    .info-card-table-row {
+        display: flex;
+        height: 40px;
+        width: 100%;
+        justify-content: space-between;
+        padding-bottom: 24px;
+
+        .info-card-table-key {
+            font-weight: 500;
+            position: relative;
+            top: 24px;
+            left: 0px; 
+            width: 100%;
+            // max-width: 30%;
+            // display: flex;
+            // margin: 10px auto;
+            // margin-top: 24px;
+            color: #7A63C7;
+            font-size: 26px;
+
+            .info-card-table-value {
+                position: absolute;
+                top: 0px;
+                right: 0px;
+                max-width: 70%;
+                // display: flex;
+                // margin: 10px auto;
+                // margin-top: 24px;
+                color: #333333;
+                font-size: 26px;
+            }
+        }
+    }
+
+        .info-card-sec-title {
+            font-weight: 500;
+            // position: relative;
+            // padding-top: 36px;
+            // top: 36px;
+            display: flex;
+            margin: 10px auto;
+            margin-top: 24px;
+            left: 0px;
+            color: #7A63C7;
+            font-size: 26px;
+        }
+        .info-card-input {
+            // position: relative;
+            width: 100%;
+            height: 40px;
+            // padding: 0 24px;
+            font-size: 26px;
+            color: #333333;
+            box-sizing: border-box;
+            top: 0px;
+            left: 0px;
+            border-bottom: 2px solid #f5f5f5;
+            // ::after {
+            //     content: '';
+            //     position: absolute;
+            //     width: 100%;
+            //     color: #cecece;
+            //     // border: 1px;
+            // }
+        }
+        .info-card-input-multilines {
+            width: 100%;
+            min-height: 40px;
+            max-height: 120px;
+            font-size: 26px;
+            color: #333333;
+            box-sizing: border-box;
+            top: 0px;
+            left: 0px;
+            border-bottom: 2px solid #f5f5f5;
+        }
+        .info-card-options {
+            display: flex;
+            gap: 32px;
+    
+            .info-card-option {
+                width: 90px;
+                height: 40px;
+                border-radius: 30px;
+                // padding-top: 2px;
+                // padding-bottom: 2px;
+                // padding-right: 32px;
+                // padding-left: 32px;
+                font-size: 26px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                border-radius: 40px;
+                // border: 1px solid #ffffff;
+                background: #F2F2F2;
+                color: #333333;
+                cursor: pointer;
+                text-align: center;
+                opacity: 1.0;
+                z-index: 2;
+                top: 0px;
+                left: 0px;
+                // &:hover {
+                //     background: #FFD35E;
+                // }
+                &:active {
+                    background: #FFD35E;
+                }
+            }
+        }   
+    // }
+}
+

@@ -27,6 +27,20 @@ export default {
         'edit-phone/index',
       ],
     },
+    {
+      root: 'packageHouse/',
+      pages: [
+        'housing-apply/index',
+        'housing-detail/index',
+      ],
+    },
+    {
+      root: 'packageOrder/',
+      pages: [
+        'order-detail/index',
+        'order-review/index',
+      ],
+    }
     // {
     //   root: 'packageHouse/',
     //   pages: [],
@@ -38,6 +52,9 @@ export default {
   ],
   window: {
     backgroundTextStyle: 'light',
+    navigationBarTitleText: '小程序',
+    navigationBarBackgroundColor: '#f5f5f5',
+    navigationBarTextStyle: 'black',
     enablePullDownRefresh: true,
     onReachBottomDistance: 50,
   },

@@ -1,0 +1,99 @@
+.UserCardSmall {
+    margin: 10px auto;
+    margin-top: 24px;
+    margin-bottom: 24px;
+    border-radius: 30px;
+    border: 1px solid #f5f5f5;
+    background-color: #ffffff;
+    // padding-top: 36px;
+    // padding-bottom: 36px;
+    // padding-right: 40px;
+    // padding-left: 40px;
+    // align-self: center;
+    // align-items: center;
+    // justify-content: center;
+    width: 90%;
+    position: relative;
+    display: flex;
+    height: 146px;
+
+    // .user-info {
+    //     // position: relative;
+    //     // top: 36px;
+    //     // bottom: 36px;
+    //     // left: 64px;
+    //     // right: 64px;
+    //     width: 90%;
+    //     // height: 74px;
+    //     margin: 10px auto;
+    //     padding: 0 24px;
+    //     background: #b8e791;
+    //     // display: flex;
+
+        .user-avatar {
+            position: absolute;
+            width: 74px;
+            height: 74px;
+            border-radius: 37px;
+            top: 36px;
+            left: 40px;
+        }
+    
+        .user-name {
+            position: absolute;
+            font-size: 26px;
+            color: #333333;
+            top: 40px;
+            left: 140px;
+            font-weight: 540;
+        }
+    
+        .user-button {
+            display: flex;
+            // margin: 10px auto;
+            position: absolute;
+            top: 44px;
+            right: 40px;
+            width: 160px;
+            height: 58px;
+            border-radius: 100px;
+            background-color: #7A63C7;
+            color: #ffffff;
+            font-size: 26px;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            justify-items: center;
+            text-justify: center;
+        }
+    
+        .user-tags {
+            // margin-top: 24px;
+            position: absolute;
+            display: flex;
+            bottom: 36px;
+            left: 140px;
+            justify-content: space-between;
+
+            .user-tag {
+                display: flex;
+                text-align: center;
+                // margin: auto;
+                margin-right: 5px;
+                align-items: center;
+                justify-content: center;
+                // justify-content: space-between;
+                // bottom: 0px;
+                // width: 45px; ////
+                height: 15px;
+                // height: 27px;
+                border-radius: 20px;
+                // margin-right: 5px;
+                padding: 5px 8px;
+                border: 3px solid #7A63C7;
+                color: #7A63C7;
+            }
+            font-size: 16px;
+        }
+    // }
+}
