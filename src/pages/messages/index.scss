@@ -1,0 +1,17 @@
+.home-messages {
+  min-height: 100vh;
+  padding-bottom: 120px;  // 为底部 TabBar 留出空间
+
+  &.modal {
+    &::after {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.7);
+      z-index: 998;
+    }
+  }
+} 
