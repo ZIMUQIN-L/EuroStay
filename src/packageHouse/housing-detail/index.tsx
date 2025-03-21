@@ -1,6 +1,6 @@
 import { View, Image, Text, Swiper, SwiperItem, Input } from '@tarojs/components'
 import { AtCalendar } from 'taro-ui';
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Taro from '@tarojs/taro'
 import HostCardSmall from '../../components/HostCardSmall';
 import './index.scss'
@@ -12,7 +12,7 @@ import { formatToday } from '@utils/dateUtil';
 
 const HouseDetail: React.FC = () => {
   const [currentImage, setCurrentImage] = useState(0)
-  const [isStarred, setIsStarred] = useState()
+  const [isStarred, setIsStarred] = useState(false); 
   const [showLikeModal, setShowLikeModal] = useState(false)
   const [likeMessage, setLikeMessage] = useState('')
   const [username, setUsername] = useState('')
@@ -131,7 +131,9 @@ const HouseDetail: React.FC = () => {
     })
   }
 
-  getOrderDetail(Number(id), Number(type));
+  useEffect(() => {
+    getOrderDetail(Number(id), Number(type));
+  }, []);
 
   const handleShare = () => {
     Taro.showShareMenu({
