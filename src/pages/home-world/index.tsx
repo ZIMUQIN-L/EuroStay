@@ -17,7 +17,7 @@ import CitySelect from '@components/CitySelect';
 import TabBar from '@components/TabBar';
 
 const HomeWorld = () => {
-  const [activeTab, setActiveTab] = useState<'友友' | '房源' | '活动'>(null);
+  const [activeTab, setActiveTab] = useState<'友友' | '房源' | '活动'>('友友');
   const instance = getCurrentInstance();
   const [userList, setUserList] = useState<
     {
@@ -64,26 +64,25 @@ const HomeWorld = () => {
   }>({ id: 0, cname: '选择城市', name: '' });
   const [startDate, setStartDate] = useState<string>('');
   const [endDate, setEndDate] = useState<string>('');
-  const [capacity, setCapacity] = useState<number>();
+  const [capacity, setCapacity] = useState<number>(1);
   const [isShowDateSelect, setIsShowDateSelect] = useState(false);
   const [isShowCitySelect, setIsShowCitySelect] = useState(false);
   const [isShowPostModal, setIsShowPostModal] = useState(false);
   const [scrollTop, setScrollTop] = useState(0);
 
-  // 添加页码和加载状态
-  const [page, setPage] = useState(1);
-  const [loading, setLoading] = useState(false);
-  const [hasMore, setHasMore] = useState(true);
+  // 为每个tab创建独立的页码状态
+  const [userPage, setUserPage] = useState(1);
+  const [propertyPage, setPropertyPage] = useState(1);
+  const [activityPage, setActivityPage] = useState(1);
 
-  useEffect(() => {
-    setStartDate('');
-    setEndDate('');
-    setCapacity(3);
-    setLocation({ id: 0, cname: '选择城市', name: '' });
-  }, [activeTab]);
-  useEffect(() => {
-    console.log(location.cname, 'location.cname ');
-  }, [location.cname]);
+  // 为每个tab创建独立的hasMore状态
+  const [hasMoreUser, setHasMoreUser] = useState(true);
+  const [hasMoreProperty, setHasMoreProperty] = useState(true);
+  const [hasMoreActivity, setHasMoreActivity] = useState(true);
+
+  // 添加页码和加载状态
+  const [loading, setLoading] = useState(false);
+
   useEffect(() => {
     setActiveTab('友友');
     getList('app/esuser/getUserList', setUserList);
@@ -93,22 +92,48 @@ const HomeWorld = () => {
       endDate: '',
       order: 'DES',
     });
-    getList('/app/property/getPropertyList', setPropertyList, {
+    getList('app/property/getPropertyList', setPropertyList, {
       searchableLocation: 0,
       startDate: '',
       endDate: '',
       order: 'DES_PRICE',
       capacity: 1,
     });
-    // post('/app/eslocation/topCities', setTopCityList, {});
   }, []);
 
-  // 修改 getList 函数以支持分页
+  // 修改 getList 函数以使用对应tab的页码
   const getList = (path, callback, params = {}, isLoadMore = false) => {
-    if (loading || (!hasMore && isLoadMore)) return;
+    if (loading) return;
     
+    const getCurrentPage = () => {
+      switch (activeTab) {
+        case '友友':
+          return userPage;
+        case '房源':
+          return propertyPage;
+        case '活动':
+          return activityPage;
+        default:
+          return 1;
+      }
+    };
+
+    const getHasMore = () => {
+      switch (activeTab) {
+        case '友友':
+          return hasMoreUser;
+        case '房源':
+          return hasMoreProperty;
+        case '活动':
+          return hasMoreActivity;
+        default:
+          return true;
+      }
+    };
+
+    if (isLoadMore && !getHasMore()) return;
     setLoading(true);
-    const currentPage = isLoadMore ? page : 1;
+    const currentPage = isLoadMore ? getCurrentPage() : 1;
 
     Taro.request({
       url: `https://api.eurostay.co/${path}`,
@@ -125,16 +150,48 @@ const HomeWorld = () => {
         if (response.statusCode === 200 && response.data.code === 0) {
           const newData = response.data.result.data;
           if (isLoadMore) {
-            if (newData.length === 0) {
-              setHasMore(false);
+            if (newData.length < response.data.result.per_page) {
+              switch (activeTab) {
+                case '友友':
+                  setHasMoreUser(false);
+                  break;
+                case '房源':
+                  setHasMoreProperty(false);
+                  break;
+                case '活动':
+                  setHasMoreActivity(false);
+                  break;
+              }
             } else {
               callback(prev => [...prev, ...newData]);
-              setPage(currentPage + 1);
+              switch (activeTab) {
+                case '友友':
+                  setUserPage(currentPage + 1);
+                  break;
+                case '房源':
+                  setPropertyPage(currentPage + 1);
+                  break;
+                case '活动':
+                  setActivityPage(currentPage + 1);
+                  break;
+              }
             }
           } else {
             callback(newData);
-            setPage(2);
-            setHasMore(true);
+            switch (path) {
+              case 'app/esuser/getUserList':
+                setUserPage(currentPage + 1);
+                setHasMoreUser(newData.length === response.data.result.per_page);
+                break;
+              case 'app/property/getPropertyList':
+                setPropertyPage(currentPage + 1);
+                setHasMoreProperty(newData.length === response.data.result.per_page);
+                break;
+              case 'app/activity/getActivityList':
+                setActivityPage(currentPage + 1);
+                setHasMoreActivity(newData.length === response.data.result.per_page);
+                break;
+            }
           }
         }
       },
@@ -153,7 +210,14 @@ const HomeWorld = () => {
 
   // 处理触底加载
   const handleLoadMore = () => {
-    if (!activeTab || loading || !hasMore) return;
+    if (!activeTab || loading) return;
+
+    if ((activeTab === '友友' && !hasMoreUser) ||
+        (activeTab === '房源' && !hasMoreProperty) ||
+        (activeTab === '活动' && !hasMoreActivity)) {
+        return
+    }
+
     
     if (activeTab === '友友') {
       getList('app/esuser/getUserList', setUserList, {}, true);
@@ -179,12 +243,6 @@ const HomeWorld = () => {
   useReachBottom(() => {
     handleLoadMore();
   });
-
-  // 切换 tab 时重置分页状态
-  useEffect(() => {
-    setPage(1);
-    setHasMore(true);
-  }, [activeTab]);
 
   // 在打开 modal 时保存当前滚动位置
   const handlePostModalOpen = (show: boolean) => {
@@ -265,8 +323,12 @@ const HomeWorld = () => {
               setCapacity(value);
             }}
             onSearch={() => {
-              setPage(1);
-              setHasMore(true);
+              setUserPage(1);
+              setHasMoreUser(true);
+              setPropertyPage(1);
+              setHasMoreProperty(true);
+              setActivityPage(1);
+              setHasMoreActivity(true);
               
               if (activeTab == '房源') {
                 getList('/app/property/getPropertyList', setPropertyList, {
@@ -322,7 +384,13 @@ const HomeWorld = () => {
           {loading && (
             <View className='loading-tips'>加载中...</View>
           )}
-          {!hasMore && curList.length > 0 && (
+          {!hasMoreUser && activeTab === '友友' && curList.length > 0 && (
+            <View className='no-more-tips'>没有更多数据了</View>
+          )}
+          {!hasMoreProperty && activeTab === '房源' && curList.length > 0 && (
+            <View className='no-more-tips'>没有更多数据了</View>
+          )}
+          {!hasMoreActivity && activeTab === '活动' && curList.length > 0 && (
             <View className='no-more-tips'>没有更多数据了</View>
           )}
         </View>
