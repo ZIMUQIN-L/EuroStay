@@ -1,4 +1,4 @@
-import { View, Text, Input, Image, Picker } from '@tarojs/components';
+import { View, Text, Input, Image, Picker, Textarea } from '@tarojs/components';
 import { useEffect, useState } from 'react';
 import Taro from '@tarojs/taro';
 import './index.scss';
@@ -7,8 +7,32 @@ import { formatToday } from '@utils/dateUtil';
 import GlobalStore from '@store/GlobalStore';
 import Popup from '../../components/Popup';
 import '../../components/Popup/index.scss';
+
+interface ActivityFormData {
+  activityName: string;
+  activityTag: string[];
+  activityDesc: string;
+  country: {
+    id: number;
+    cname: string;
+    name: string;
+  };
+  city: {
+    id: number;
+    cname: string;
+    name: string;
+  };
+  detailAddress: string;
+  price: string;
+  participantGender: string;
+  participantCount: string;
+  otherRequirements: string[];
+  activityImages: string[];
+  startTime: string;
+}
+
 const ActivityPublish = () => {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<ActivityFormData>({
     activityName: '',
     activityTag: [],
     activityDesc: '',
@@ -111,38 +135,64 @@ const ActivityPublish = () => {
     { id: 3, name: '有经验' },
   ];
 
-  const handleTagSelect = tag => {
+  const handleTagSelect = (tag: string) => {
     const newTags = formData.activityTag.includes(tag)
       ? formData.activityTag.filter(t => t !== tag)
       : [...formData.activityTag, tag];
     setFormData({ ...formData, activityTag: newTags });
   };
 
-  const handleGenderSelect = gender => {
+  const handleGenderSelect = (gender: string) => {
     setFormData({ ...formData, participantGender: gender });
   };
 
-  const handleParticipantCountSelect = count => {
+  const handleParticipantCountSelect = (count: string) => {
     setFormData({ ...formData, participantCount: count });
   };
 
-  const handleOtherReqSelect = req => {
+  const handleOtherReqSelect = (req: string) => {
     const newReqs = formData.otherRequirements.includes(req)
       ? formData.otherRequirements.filter(r => r !== req)
       : [...formData.otherRequirements, req];
     setFormData({ ...formData, otherRequirements: newReqs });
   };
 
-  const handleImageUpload = () => {
-    Taro.chooseImage({
-      count: 6 - formData.activityImages.length,
-      success: res => {
-        setFormData({
-          ...formData,
-          activityImages: [...formData.activityImages, ...res.tempFilePaths],
+  const handleImageUpload = async () => {
+    try {
+      const res = await Taro.chooseImage({
+        count: 6 - formData.activityImages.length,
+        sizeType: ['compressed'],
+        sourceType: ['album', 'camera'],
+      });
+
+      if (res.tempFilePaths && res.tempFilePaths[0]) {
+        const uploadRes = await Taro.uploadFile({
+          url: 'https://api.eurostay.co/app/common/upload',
+          filePath: res.tempFilePaths[0],
+          name: 'Image',
+          formData: {
+            prefix: 'test',
+          },
+          header: {
+            token: GlobalStore.userInfo.token,
+          },
+          success: function (result) {
+            const responseData = JSON.parse(result.data);
+            const imageUrl = responseData['result'];
+            setFormData({
+              ...formData,
+              activityImages: [...formData.activityImages, imageUrl],
+            });
+          }
         });
-      },
-    });
+      }
+    } catch (error) {
+      console.error('Upload failed:', error);
+      Taro.showToast({
+        title: '上传失败',
+        icon: 'none',
+      });
+    }
   };
 
   const handleCountryChange = e => {
@@ -170,17 +220,9 @@ const ActivityPublish = () => {
     });
   };
   const handleSubmit = async () => {
-    console.log({
-      title: formData.activityName,
-      description: formData.activityDesc,
-      location: formData.detailAddress,
-      searchableLocation: formData.city.id,
-      price: Number(formData.price),
-      images: formData.activityImages,
-      tags: formData.activityTag,
-      capacity: formData.participantCount,
-      startTime: startDate + 'T' + formData.startTime + ':00',
-    });
+    // 组合完整地址
+    const fullAddress = `${formData.country.cname}${formData.city.cname}||${formData.detailAddress}`;
+
     await Taro.request({
       url: `https://api.eurostay.co/app/activity/addActivity`,
       method: 'POST',
@@ -190,7 +232,7 @@ const ActivityPublish = () => {
       data: {
         title: formData.activityName,
         description: formData.activityDesc,
-        location: formData.detailAddress,
+        location: fullAddress, // 使用组合后的地址
         searchableLocation: formData.city.id,
         price: Number(formData.price),
         images: formData.activityImages,
@@ -308,14 +350,15 @@ const ActivityPublish = () => {
 
         <View className='input-item'>
           <Text className='label'>活动描述*</Text>
-          <Input
-            className='input'
+          <Textarea
+            className='textarea'
             placeholder='请简短对此活动进行描述'
             placeholderClass='placeholder'
             value={formData.activityDesc}
             onInput={e =>
               setFormData({ ...formData, activityDesc: e.detail.value })
             }
+            autoHeight
           />
         </View>
 
@@ -353,14 +396,15 @@ const ActivityPublish = () => {
 
         <View className='input-item'>
           <Text className='label'>详细地址</Text>
-          <Input
-            className='input'
+          <Textarea
+            className='textarea'
             placeholder='请填写活动地点的详细地址'
             placeholderClass='placeholder'
             value={formData.detailAddress}
             onInput={e =>
               setFormData({ ...formData, detailAddress: e.detail.value })
             }
+            autoHeight
           />
         </View>
 
@@ -380,9 +424,8 @@ const ActivityPublish = () => {
           </View>
         </View>
         <View className='input-item'>
-          <Text className='label'>参赛者要求</Text>
-          <View className='capacity-input'>
-            <Text className='capacity-label'>人数</Text>
+          <Text className='label'>参与人数</Text>
+          <View className='price-input'>
             <Input
               className='input'
               type='number'
@@ -408,6 +451,16 @@ const ActivityPublish = () => {
             {formData.activityImages.map((image, index) => (
               <View key={index} className='image-item'>
                 <Image src={image} mode='aspectFill' />
+                <View 
+                  className='delete-icon' 
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    const newImages = formData.activityImages.filter((_, i) => i !== index);
+                    setFormData({ ...formData, activityImages: newImages });
+                  }}
+                >
+                  ×
+                </View>
               </View>
             ))}
             {formData.activityImages.length < 6 && (

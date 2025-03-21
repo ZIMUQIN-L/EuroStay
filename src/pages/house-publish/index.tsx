@@ -21,8 +21,33 @@ enum Gender {
   Default = 999,
 }
 
+interface HouseFormData {
+  houseName: string;
+  houseTag: string[];
+  houseDesc: string;
+  country: {
+    id: number;
+    cname: string;
+    name: string;
+  };
+  city: {
+    id: number;
+    cname: string;
+    name: string;
+  };
+  detailAddress: string;
+  price: string;
+  tenantGender: number;
+  tenantCount: number;
+  otherRequirements: string[];
+  houseImages: string[];
+  paymentImages: string[];
+  story: string;
+  wechat: string;
+}
+
 const HousePublish = () => {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<HouseFormData>({
     houseName: '',
     houseTag: [],
     houseDesc: '',
@@ -142,7 +167,7 @@ const HousePublish = () => {
     { id: 3, name: '喜欢小狗' },
   ];
 
-  const handleTagSelect = tag => {
+  const handleTagSelect = (tag: string) => {
     const newTags = formData.houseTag.includes(tag)
       ? formData.houseTag.filter(t => t !== tag)
       : [...formData.houseTag, tag];
@@ -157,7 +182,7 @@ const HousePublish = () => {
     setFormData({ ...formData, tenantCount: count });
   };
 
-  const handleOtherReqSelect = req => {
+  const handleOtherReqSelect = (req: string) => {
     const newReqs = formData.otherRequirements.includes(req)
       ? formData.otherRequirements.filter(r => r !== req)
       : [...formData.otherRequirements, req];
@@ -245,22 +270,9 @@ const HousePublish = () => {
   }, [multiDays.length]);
 
   const handleSubmit = async () => {
-    console.log({
-      title: formData.houseName,
-      description: formData.houseDesc,
-      location: formData.detailAddress,
-      searchableLocation: formData.city.id,
-      price: Number(formData.price),
-      images: formData.houseImages,
-      tags: formData.houseTag,
-      gender: formData.tenantGender,
-      capacity: formData.tenantCount,
-      whyHost: formData.story,
-      wxId: formData.wechat,
-      qrCode: formData.paymentImages?.[0],
-      requirements: formData.otherRequirements,
-      availableDate: marks.map(mark => formatDate(new Date(mark.value))),
-    });
+    // 组合完整地址，使用 "||" 作为分隔符
+    const fullAddress = `${formData.country.cname}${formData.city.cname}||${formData.detailAddress}`;
+
     await Taro.request({
       url: `https://api.eurostay.co/app/property/upload`,
       method: 'POST',
@@ -270,7 +282,7 @@ const HousePublish = () => {
       data: {
         title: formData.houseName,
         description: formData.houseDesc,
-        location: formData.detailAddress,
+        location: fullAddress, // 使用组合后的地址
         searchableLocation: formData.city.id,
         price: Number(formData.price),
         images: formData.houseImages,
