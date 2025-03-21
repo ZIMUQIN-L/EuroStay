@@ -3,6 +3,7 @@ import { Swiper } from '@taroify/core';
 import './index.scss';
 import Taro from '@tarojs/taro';
 import { settingIcon, favoriteIcon } from '@utils/cloudIcons';
+import { parseLocation } from '@utils/addressUtil';
 
 interface HouseCardProps {
   type: number,
@@ -61,7 +62,7 @@ const HouseCard: React.FC<HouseCardProps> = ({
         </View>
         <View className="info-row">
           <Text className="date">{availableDate}</Text>
-          <Text className="location">{location}</Text>
+          <Text className="location">{parseLocation(location)}</Text>
         </View>
       </View>
     </View>
