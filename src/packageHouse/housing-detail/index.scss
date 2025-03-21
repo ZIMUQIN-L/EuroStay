@@ -221,13 +221,16 @@
     }
 
     .house-tags {
+        max-width: 60%;
         // position: absolute;
         display: flex;
+        flex-flow: wrap;
         bottom: 36px;
         margin-left: 24px;
         justify-content: space-between;
 
             .house-tag {
+                flex-flow: row;
                 display: flex;
                 text-align: center;
                 // margin: auto;
@@ -251,6 +254,17 @@
     }
   }
 
+  .review-line {
+    width: 90%;
+    // display: flex;
+    margin: 10px auto;
+    // padding: 10px auto;
+    margin-bottom: 10px;
+    border-radius: 30px;
+    // border: 1px solid #E9E9E9;
+    justify-self: center;
+  }
+
   .detail-text {
     width: 90%;
     display: flex;
@@ -271,8 +285,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 40px;
-    margin-top: 96px;
+    margin-bottom: 250px;
+    margin-top: 160px;
     margin: 10px auto;
   }
 
@@ -292,7 +306,7 @@
         color: #333333;
         font-weight: 540;
         margin-left: 28px;
-        left: -12px;
+        left: -10px;
         margin-top: 24px;
         font-weight: 540;
         // top: 0px;
@@ -316,16 +330,17 @@
           position: absolute;
           right: 16px;
           margin-right: 16px;
+          color: #666666;
       }
     }
   }
 
   .date-select {
     background: #fff;
-    min-height: 100vh;
-    position: absolute;
-    min-width: 100%;
-    z-index: 1000000;
+    position: relative;
+    margin: 10px auto;
+    // display: flex;
+    width: 90%;
   
     .calendar-container {
       padding: 0 30px;
@@ -340,11 +355,59 @@
         color: #333;
         margin-right: 10px;
       }
-  
-      .nights-text {
-        font-size: 32px;
-        color: #666;
-        margin-left: 10px;
+      .at-calendar__list.flex .flex__item--selected {
+        color: black;
+        background-color: #ffd35e;
+      }
+      .house-publish .section .input-item .date-select .container-text {
+        color: black !important;
+      }
+
+      .at-calendar__list.flex
+        .flex__item--selected-head.flex__item--selected-tail
+        .flex__item-container {
+        background-color: #ffd35e;
+      }
+      .flex__item--selected {
+        color: #000000;
+        background-color: #ffd35e;
+      }
+      .at-calendar__list.flex .flex__item--today {
+        color: #000000;
+        font-weight: bolder;
+      }
+      .flex__item
+        .flex__item--now
+        .flex__item--selected
+        .flex__item--selected-head {
+        .at-calendar__list.flex .flex__item-container {
+          max-width: 60rpx;
+          max-height: 60rpx;
+        }
+      }
+      .flex__item
+        .flex__item--now
+        .flex__item--selected
+        .flex__item--selected-tail {
+        .at-calendar__list.flex .flex__item-container {
+          max-width: 60rpx;
+          max-height: 60rpx;
+        }
+      }
+      .flex__item-container {
+        max-width: 60rpx;
+        max-height: 60rpx;
+      }
+      .at-calendar__list.flex .flex__item-container {
+        width: 60rpx !important;
+        height: 60rpx !important;
+      }
+      .flex__item-extra .extra {
+        position: absolute;
+      }
+      .at-calendar__list.flex .flex__item-container {
+        max-width: 60rpx;
+        max-height: 60rpx;
       }
     }
   }

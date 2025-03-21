@@ -115,4 +115,16 @@ export interface Order {
     uid: number;
     whyHost: string;
     availableDate: Array<string>;
+    startTime: string;
+}
+
+export interface ReviewCardProps {
+  userAvatar: string;
+  userName: string;
+  userType: string;
+  isRecommended: boolean;
+  reviewContent: string;
+  images?: string[];
+  reviewDate: string;
+  location: string;
 }

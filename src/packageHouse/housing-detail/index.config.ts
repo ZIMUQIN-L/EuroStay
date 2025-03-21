@@ -1,5 +1,5 @@
 export default {
-    navigationBarTitleText: '房源详情',
+    navigationBarTitleText: '详情',
     navigationBarBackgroundColor: '#f5f5f5',
     navigationBarTextStyle: 'white',
     navigationStyle: 'custom',

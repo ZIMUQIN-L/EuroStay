@@ -71,7 +71,7 @@ const Index = () => {
   const getDate = (date: string): string => {
     const dateObj = new Date(date.replace('-', '/').replace('-', '/'));
     return `${dateObj.getFullYear()}年${dateObj.getMonth() + 1}月${dateObj.getDay()}日`;
-}
+  }
 
   const getOrderList = (callback, type: number, isLoadMore = false) => {
     if (loading || (!hasMore && isLoadMore)) return;
