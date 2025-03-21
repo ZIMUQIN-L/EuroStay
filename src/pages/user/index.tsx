@@ -53,6 +53,11 @@ const UserProfile = () => {
     }
   }, [activeTab, userInfo]);
 
+  const parseStartDate = (startDate) => {
+    const date = new Date(startDate.replace(/-/g, "/"));
+    return `${date.getMonth() + 1}月${date.getDate()}日起可入住`;
+  };
+
   
   const formatUid = (uid: number) => {
     return uid.toString().padStart(16, '0');
@@ -264,9 +269,10 @@ const UserProfile = () => {
                 {postedList.map(item => (
                   <HouseCard
                     key={item.id}
+                    type={item.type}
                     images={item.images}
                     title={item.title}
-                    availableDate={item.startDate}
+                    availableDate={item.type == 0? parseStartDate(item.startDate): item.startTime}
                     price={item.price}
                     currency="€"
                     location={item.location}
@@ -297,9 +303,10 @@ const UserProfile = () => {
                 {participatedList.map(item => (
                   <HouseCard
                     key={item.id}
+                    type={item.type}
                     images={item.images}
                     title={item.title}
-                    availableDate={item.startDate}
+                    availableDate={item.type == 0? parseStartDate(item.startDate): item.startTime}
                     price={item.price}
                     currency="€"
                     location={item.location}

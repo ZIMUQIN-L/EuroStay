@@ -143,10 +143,10 @@
             font-weight: 400;
           }
 
-        //   .edit-profile {
-        //     background-color: #8364e8;
-        //     color: white;
-        //   }
+          .edit-profile {
+            background-color: #7a63c7;
+            color: white;
+          }
 
           .setting-btn {
             background-color: #F5F5F5;
@@ -165,9 +165,12 @@
           }
 
           .say-hello {
-            background-color: #8364e8;
+            background-color: #7a63c7;
             color: white;
-            padding: 8px 24px;
+            width: 128px;
+            height: 56px;
+            font-family: 'Alibaba PuHuiTi';
+            padding: 8px 21px;
           }
         }
       }
