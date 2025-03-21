@@ -7,7 +7,7 @@ import { useRouter } from '@tarojs/taro';
 import GlobalStore from '@store/GlobalStore';
 
 const Index = () => {
-  const [gender, setGender] = useState<'male' | 'female' | 'both'>('')
+  const [gender, setGender] = useState<'male' | 'female' | 'both'>('female')
   const [identity, setIdentity] = useState('')
   const [introduction, setIntroduction] = useState('')
   const [contact, setContact] = useState('')

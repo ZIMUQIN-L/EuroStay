@@ -1,4 +1,4 @@
-import { View, Text, Input, Image, Picker } from '@tarojs/components';
+import { View, Text, Input, Image, Picker, Textarea } from '@tarojs/components';
 import { useEffect, useState } from 'react';
 import Taro from '@tarojs/taro';
 import './index.scss';
@@ -17,7 +17,6 @@ import GlobalStore from '@store/GlobalStore';
 enum Gender {
   Female = 0,
   Male = 1,
-  Other = 3,
   NoLimit = 2,
   Default = 999,
 }
@@ -282,7 +281,7 @@ const HousePublish = () => {
         wxId: formData.wechat,
         qrCode: formData.paymentImages?.[0],
         requirements: formData.otherRequirements,
-        availableDate: marks.map(mark => formatDate(new Date(mark.value))),
+        availableDate: multiDays.flatMap(pair => pair).sort((a, b) => new Date(a).getTime() - new Date(b).getTime()),
       },
       success: function (response) {
         console.log(response);
@@ -419,14 +418,15 @@ const HousePublish = () => {
 
         <View className='input-item'>
           <Text className='label'>房源描述*</Text>
-          <Input
-            className='input'
+          <Textarea
+            className='textarea'
             placeholder='请简短对此房源进行描述'
             placeholderClass='placeholder'
             value={formData.houseDesc}
             onInput={e =>
               setFormData({ ...formData, houseDesc: e.detail.value })
             }
+            autoHeight
           />
         </View>
 
@@ -464,14 +464,15 @@ const HousePublish = () => {
 
         <View className='input-item'>
           <Text className='label'>详细地址</Text>
-          <Input
-            className='input'
+          <Textarea
+            className='textarea'
             placeholder='请填写房源所在的地址：如门号、道路、区域、邮编'
             placeholderClass='placeholder'
             value={formData.detailAddress}
             onInput={e =>
               setFormData({ ...formData, detailAddress: e.detail.value })
             }
+            autoHeight
           />
         </View>
 
@@ -507,12 +508,6 @@ const HousePublish = () => {
                 onClick={() => handleGenderSelect(Gender.Female)}
               >
                 女
-              </Text>
-              <Text
-                className={`option ${formData.tenantGender === Gender.Other ? 'active' : ''}`}
-                onClick={() => handleGenderSelect(Gender.Other)}
-              >
-                其他
               </Text>
               <Text
                 className={`option ${formData.tenantGender === Gender.NoLimit ? 'active' : ''}`}
@@ -577,6 +572,16 @@ const HousePublish = () => {
             {formData.houseImages.map((image, index) => (
               <View key={index} className='image-item'>
                 <Image src={image} mode='aspectFill' />
+                <View 
+                  className='delete-icon' 
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    const newImages = formData.houseImages.filter((_, i) => i !== index);
+                    setFormData({ ...formData, houseImages: newImages });
+                  }}
+                >
+                  ×
+                </View>
               </View>
             ))}
             {formData.houseImages.length < 6 && (
@@ -597,11 +602,16 @@ const HousePublish = () => {
                 <View
                   key={index}
                   className='multi-day active'
-                  onClick={() => {
-                    setMultiDays(multiDays.filter(d => d !== day));
-                  }}
                 >
-                  {day[0]} - {day[1]}
+                  <Text>{day[0]} - {day[1]}</Text>
+                  <View 
+                    className='delete-icon'
+                    onClick={() => {
+                      setMultiDays(multiDays.filter((_, i) => i !== index));
+                    }}
+                  >
+                    ×
+                  </View>
                 </View>
               ))}
             </View>
@@ -672,12 +682,13 @@ const HousePublish = () => {
           <Text className='label'>
             为什么成为了Eurostray的房东？最想和房客一起做的事？*
           </Text>
-          <Input
-            className='input'
+          <Textarea
+            className='textarea'
             placeholder='请简单分享你的故事'
             placeholderClass='placeholder'
             value={formData.story}
             onInput={e => setFormData({ ...formData, story: e.detail.value })}
+            autoHeight
           />
         </View>
       </View>
