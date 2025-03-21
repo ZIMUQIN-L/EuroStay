@@ -279,7 +279,14 @@ const UserProfile = () => {
                     currency="€"
                     location={item.location}
                     mode="posted"
-                    onSettingClick={() => handleSettingClick(item.id)}
+                    onSettingClick={() => {
+                        console.log("yes");
+                        if (item.type === 0) {
+                            Taro.navigateTo({
+                                url: `/pages/house-publish/index?pid=${item.id}`
+                              });}
+                        }
+                    }
                   />
                 ))}
                 {hasMore && !postsLoading && (
