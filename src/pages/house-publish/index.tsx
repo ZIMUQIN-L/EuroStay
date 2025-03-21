@@ -56,7 +56,7 @@ const HousePublish = () => {
     detailAddress: '',
     price: '',
     tenantGender: Gender.Default,
-    tenantCount: 999,
+    tenantCount: 0,
     otherRequirements: [],
     houseImages: [],
     paymentImages: [],
@@ -269,53 +269,125 @@ const HousePublish = () => {
     setMarks(marksList);
   }, [multiDays.length]);
 
+  const validateForm = () => {
+    const errors: string[] = [];
+
+    // 检查必填字段
+    if (!formData.houseName.trim()) {
+      errors.push('请填写房源名称');
+    }
+
+    if (formData.houseTag.length === 0) {
+      errors.push('请至少选择一个房源标签');
+    }
+
+    if (!formData.houseDesc.trim()) {
+      errors.push('请填写房源描述');
+    }
+
+    if (formData.country.id === 0 || formData.city.id === 0) {
+      errors.push('请选择房源所在地区');
+    }
+
+    if (!formData.detailAddress.trim()) {
+      errors.push('请填写详细地址');
+    }
+
+    if (!formData.price || Number(formData.price) <= 0) {
+      errors.push('请填写有效的房源价格');
+    }
+
+    if (formData.tenantGender === Gender.Default) {
+      errors.push('请选择租客性别要求');
+    }
+
+    if (formData.tenantCount === 0) {
+      errors.push('请选择租客人数要求');
+    }
+
+    if (formData.houseImages.length === 0) {
+      errors.push('请至少上传一张房源照片');
+    }
+
+    if (multiDays.length === 0) {
+      errors.push('请选择可出租时间');
+    }
+
+    if (!formData.story.trim()) {
+      errors.push('请填写你的故事');
+    }
+
+    if (!formData.wechat.trim()) {
+      errors.push('请填写微信号');
+    }
+
+    if (formData.paymentImages.length === 0) {
+      errors.push('请上传微信收款二维码');
+    }
+
+    return errors;
+  };
+
   const handleSubmit = async () => {
-    // 组合完整地址，使用 "||" 作为分隔符
+    const errors = validateForm();
+    
+    if (errors.length > 0) {
+      // 如果有错误，显示第一个错误信息
+      Taro.showToast({
+        title: errors[0],
+        icon: 'none',
+        duration: 2000
+      });
+      return;
+    }
+
+    // 组合完整地址
     const fullAddress = `${formData.country.cname}${formData.city.cname}||${formData.detailAddress}`;
 
-    await Taro.request({
-      url: `https://api.eurostay.co/app/property/upload`,
-      method: 'POST',
-      header: {
-        token: GlobalStore.userInfo.token,
-      },
-      data: {
-        title: formData.houseName,
-        description: formData.houseDesc,
-        location: fullAddress, // 使用组合后的地址
-        searchableLocation: formData.city.id,
-        price: Number(formData.price),
-        images: formData.houseImages,
-        tags: formData.houseTag,
-        gender: formData.tenantGender,
-        capacity: formData.tenantCount,
-        whyHost: formData.story,
-        wxId: formData.wechat,
-        qrCode: formData.paymentImages?.[0],
-        requirements: formData.otherRequirements,
-        availableDate: multiDays.flatMap(pair => pair).sort((a, b) => new Date(a).getTime() - new Date(b).getTime()),
-      },
-      success: function (response) {
-        console.log(response);
-        if (response.statusCode === 200 && response.data.code === 0) {
-          Taro.showToast({
-            title: '你已成功上传房源！房源正在等待审核，审核通过后将公众可见。',
-            icon: 'none',
-            duration: 2000,
-          });
-          setTimeout(() => {
-            Taro.navigateBack();
-          }, 2000);
+    try {
+      const response = await Taro.request({
+        url: `https://api.eurostay.co/app/property/upload`,
+        method: 'POST',
+        header: {
+          token: GlobalStore.userInfo.token,
+        },
+        data: {
+          title: formData.houseName,
+          description: formData.houseDesc,
+          location: fullAddress,
+          searchableLocation: formData.city.id,
+          price: Number(formData.price),
+          images: formData.houseImages,
+          tags: formData.houseTag,
+          gender: formData.tenantGender,
+          capacity: formData.tenantCount,
+          whyHost: formData.story,
+          wxId: formData.wechat,
+          qrCode: formData.paymentImages?.[0],
+          requirements: formData.otherRequirements,
+          availableDate: multiDays.flatMap(pair => pair).sort((a, b) => new Date(a).getTime() - new Date(b).getTime()),
         }
-      },
-      fail: function (err) {
+      });
+
+      if (response.statusCode === 200 && response.data.code === 0) {
         Taro.showToast({
-          title: '网络请求失败，请重试',
+          title: '你已成功上传房源！房源正在等待审核，审核通过后将公众可见。',
           icon: 'none',
           duration: 2000,
         });
-      },
-    });
+        setTimeout(() => {
+          Taro.navigateBack();
+        }, 2000);
+      } else {
+        throw new Error('上传失败');
+      }
+    } catch (error) {
+      Taro.showToast({
+        title: '网络请求失败，请重试',
+        icon: 'none',
+        duration: 2000,
+      });
+    }
   };
 
   return (
@@ -379,7 +451,7 @@ const HousePublish = () => {
         </View>
 
         <View className='input-item'>
-          <Text className='label'>房源名称</Text>
+          <Text className='label'>房源名称*</Text>
           <Input
             className='input'
             placeholder='请输入房源名称'
@@ -475,10 +547,10 @@ const HousePublish = () => {
         </View>
 
         <View className='input-item'>
-          <Text className='label'>详细地址</Text>
+          <Text className='label'>详细地址*</Text>
           <Textarea
             className='textarea'
-            placeholder='请填写房源所在的地址：如门号、道路、区域、邮编'
+            placeholder='请填写房源所在的地址：如门号、道路、区域、邮编，该信息会被展现给所有ES社群的uu哦~'
             placeholderClass='placeholder'
             value={formData.detailAddress}
             onInput={e =>
@@ -489,7 +561,7 @@ const HousePublish = () => {
         </View>
 
         <View className='input-item'>
-          <Text className='label'>房源价格</Text>
+          <Text className='label'>房源价格*</Text>
           <View className='price-input'>
             <Text className='currency'>€</Text>
             <Input

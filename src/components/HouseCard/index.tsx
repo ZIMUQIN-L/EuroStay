@@ -4,10 +4,12 @@ import './index.scss';
 import Taro from '@tarojs/taro';
 import { settingIcon, favoriteIcon } from '@utils/cloudIcons';
 import { parseLocation } from '@utils/addressUtil';
+import GlobalStore from '@store/GlobalStore';
 
 interface HouseCardProps {
   type: number,
   id: number,
+  uid: number,
   images: string[];
   title: string;
   availableDate: string;
@@ -22,6 +24,7 @@ interface HouseCardProps {
 const HouseCard: React.FC<HouseCardProps> = ({
   type,
   id,
+  uid,
   images,
   title,
   availableDate,
@@ -32,6 +35,8 @@ const HouseCard: React.FC<HouseCardProps> = ({
   onSettingClick,
   onFavoriteClick,
 }) => {
+  const isCurrentUser = uid === GlobalStore.userInfo?.uid;
+
   return (
     <View className="house-card">
       <View className="image-container">
@@ -45,7 +50,7 @@ const HouseCard: React.FC<HouseCardProps> = ({
             </Swiper.Item>
           ))}
         </Swiper>
-        {mode === 'posted' ? (
+        {mode === 'posted' && isCurrentUser ? (
           <View className="settings-button" onClick={onSettingClick}>
             <Image className="settings-icon" src={settingIcon} />
           </View>

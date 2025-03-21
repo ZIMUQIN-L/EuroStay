@@ -219,49 +219,107 @@ const ActivityPublish = () => {
       startTime: e.detail.value,
     });
   };
+
+  // 添加验证函数
+  const validateForm = () => {
+    const errors: string[] = [];
+
+    // 检查必填字段
+    if (!formData.activityName.trim()) {
+      errors.push('请填写活动名称');
+    }
+
+    if (formData.activityTag.length === 0) {
+      errors.push('请至少选择一个活动标签');
+    }
+
+    if (!formData.activityDesc.trim()) {
+      errors.push('请填写活动描述');
+    }
+
+    if (formData.country.id === 0 || formData.city.id === 0) {
+      errors.push('请选择活动所在地区');
+    }
+
+    if (!formData.detailAddress.trim()) {
+      errors.push('请填写详细地址');
+    }
+
+    if (!formData.participantCount || Number(formData.participantCount) <= 0) {
+      errors.push('请填写有效的参与人数');
+    }
+
+    if (formData.activityImages.length === 0) {
+      errors.push('请至少上传一张活动照片');
+    }
+
+    if (!startDate) {
+      errors.push('请选择活动日期');
+    }
+
+    if (!formData.startTime) {
+      errors.push('请选择开始时间');
+    }
+
+    return errors;
+  };
+
+  // 修改提交函数
   const handleSubmit = async () => {
+    const errors = validateForm();
+    
+    if (errors.length > 0) {
+      // 如果有错误，显示第一个错误信息
+      Taro.showToast({
+        title: errors[0],
+        icon: 'none',
+        duration: 2000
+      });
+      return;
+    }
+
     // 组合完整地址
     const fullAddress = `${formData.country.cname}${formData.city.cname}||${formData.detailAddress}`;
 
-    await Taro.request({
-      url: `https://api.eurostay.co/app/activity/addActivity`,
-      method: 'POST',
-      header: {
-        token: GlobalStore.userInfo.token,
-      },
-      data: {
-        title: formData.activityName,
-        description: formData.activityDesc,
-        location: fullAddress, // 使用组合后的地址
-        searchableLocation: formData.city.id,
-        price: Number(formData.price),
-        images: formData.activityImages,
-        tags: formData.activityTag,
-        capacity: formData.participantCount,
-        startTime: startDate + 'T' + formData.startTime + ':00',
-      },
-      success: function (response) {
-        console.log(response);
-        if (response.statusCode === 200 && response.data.code === 0) {
-          console.log(response.data, 'res');
-          Taro.showToast({
-            title: '你已成功上传活动！活动正在等待审核，审核通过后将公众可见。',
-            icon: 'none',
-            duration: 2000,
-          });
-          setTimeout(() => {
-            Taro.navigateBack();
-          }, 2000);
+    try {
+      const response = await Taro.request({
+        url: `https://api.eurostay.co/app/activity/addActivity`,
+        method: 'POST',
+        header: {
+          token: GlobalStore.userInfo.token,
+        },
+        data: {
+          title: formData.activityName,
+          description: formData.activityDesc,
+          location: fullAddress,
+          searchableLocation: formData.city.id,
+          price: Number(formData.price),
+          images: formData.activityImages,
+          tags: formData.activityTag,
+          capacity: formData.participantCount,
+          startTime: startDate + 'T' + formData.startTime + ':00',
         }
-      },
-      fail: function (err) {
+      });
+
+      if (response.statusCode === 200 && response.data.code === 0) {
         Taro.showToast({
-          title: '网络请求失败，请重试',
+          title: '你已成功上传活动！活动正在等待审核，审核通过后将公众可见。',
           icon: 'none',
           duration: 2000,
         });
-      },
-    });
+        setTimeout(() => {
+          Taro.navigateBack();
+        }, 2000);
+      } else {
+        throw new Error('上传失败');
+      }
+    } catch (error) {
+      Taro.showToast({
+        title: '网络请求失败，请重试',
+        icon: 'none',
+        duration: 2000,
+      });
+    }
   };
 
   return (
@@ -493,9 +551,10 @@ const ActivityPublish = () => {
               mode='time'
               value={formData.startTime}
               onChange={handleTimeChange}
-              className='time-picker'
             >
-              <View className='picker-value'>{formData.startTime}</View>
+              <View className='picker-item'>
+                <Text>{formData.startTime}</Text>
+              </View>
             </Picker>
           </View>
         </View>

@@ -270,6 +270,7 @@ const UserProfile = () => {
                   <HouseCard
                     key={item.id}
                     id={item.id}
+                    uid={Number(pageUid)}
                     type={item.type}
                     images={item.images}
                     title={item.title}
@@ -306,6 +307,7 @@ const UserProfile = () => {
                     key={item.id}
                     type={item.type}
                     id={item.id}
+                    uid={Number(pageUid)}
                     images={item.images}
                     title={item.title}
                     availableDate={item.type == 0? parseStartDate(item.startDate): item.startTime}
