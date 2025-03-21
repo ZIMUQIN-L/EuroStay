@@ -269,6 +269,7 @@ const UserProfile = () => {
                 {postedList.map(item => (
                   <HouseCard
                     key={item.id}
+                    id={item.id}
                     type={item.type}
                     images={item.images}
                     title={item.title}
@@ -304,6 +305,7 @@ const UserProfile = () => {
                   <HouseCard
                     key={item.id}
                     type={item.type}
+                    id={item.id}
                     images={item.images}
                     title={item.title}
                     availableDate={item.type == 0? parseStartDate(item.startDate): item.startTime}

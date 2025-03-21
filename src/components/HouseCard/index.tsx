@@ -1,10 +1,12 @@
 import { View, Image, Text } from '@tarojs/components';
 import { Swiper } from '@taroify/core';
 import './index.scss';
+import Taro from '@tarojs/taro';
 import { settingIcon, favoriteIcon } from '@utils/cloudIcons';
 
 interface HouseCardProps {
   type: number,
+  id: number,
   images: string[];
   title: string;
   availableDate: string;
@@ -18,6 +20,7 @@ interface HouseCardProps {
 
 const HouseCard: React.FC<HouseCardProps> = ({
   type,
+  id,
   images,
   title,
   availableDate,
@@ -34,7 +37,10 @@ const HouseCard: React.FC<HouseCardProps> = ({
         <Swiper className="swiper">
           {images.map((image, index) => (
             <Swiper.Item key={index}>
-              <Image className="house-image" src={image} mode="aspectFill" />
+              <Image className="house-image" src={image} mode="aspectFill" 
+              onClick={ () => {
+                Taro.navigateTo({ url: `/packageHouse/housing-detail/index?id=${id}&type=${type}` });
+              }}/>
             </Swiper.Item>
           ))}
         </Swiper>

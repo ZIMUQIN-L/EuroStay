@@ -53,7 +53,8 @@
       .title {
         font-size: 32px;
         font-weight: 500;
-        color: #7A63C7BB;
+        color: #7A63C7;
+        font-family: 'Alibaba PuHuiTi';
         flex: 1;
         margin-right: 16px;
       }
@@ -61,6 +62,7 @@
       .price {
         font-size: 32px;
         font-weight: 500;
+        font-family: 'Alibaba PuHuiTi';
         color: #333;
         white-space: nowrap;
       }
@@ -74,10 +76,12 @@
       .date {
         font-size: 26px;
         color: #666;
+        font-family: 'Alibaba PuHuiTi';
       }
 
       .location {
         font-size: 26px;
+        font-family: 'Alibaba PuHuiTi';
         color: #666;
       }
     }
