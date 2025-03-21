@@ -21,6 +21,8 @@ const Index = () => {
   const router = useRouter();
   const id = router?.params?.id;
   const type = router?.params?.type;
+  const startDate = router?.params?.startDate;
+  const endDate = router?.params?.endDate;
 
   const getGenderId = (g) => {
     switch(g) {
@@ -41,13 +43,6 @@ const Index = () => {
     setGender(selected)
   }
 
-  const handleDateSelect = () => {
-    Taro.showToast({
-      title: '选择日期功能开发中',
-      icon: 'none'
-    })
-  }
-
   const handleSubmit = () => {
     if (Number(type) === 0) {
       Taro.request({
@@ -58,8 +53,8 @@ const Index = () => {
         },
         data: {
           propertyId: Number(id),
-          startDate: '2025-03-20',
-          endDate: '2025-03-21',
+          startDate: startDate,
+          endDate: endDate,
           gender: getGenderId(gender),
           occupation: identity,
           contact: contact,
@@ -68,6 +63,7 @@ const Index = () => {
           selfIntro: introduction
         },
         success: (res) => {
+          // console.log(res)
           Taro.showToast({
             title: '申请已提交',
             icon: 'success',
@@ -100,22 +96,24 @@ const Index = () => {
           why: reason,
           selfIntro: introduction
         },
-        success: (res) => {
+        success: async (res) => {
           Taro.showToast({
             title: '申请已提交',
             icon: 'success',
             duration: 2000,
           })
+          Taro.navigateBack()
         },
-        fail: function (err) {
+        fail: async function (err) {
           Taro.showToast({
             title: '网络请求失败，请重试',
             icon: 'none',
             duration: 2000,
           });
+          Taro.navigateBack()
         },
         complete: function () {
-          Taro.navigateBack()
+          // Taro.navigateBack()
         }
       })
     }
@@ -202,6 +200,16 @@ const Index = () => {
           onInput={e => setReason(e.detail.value)}
         />
       {/* </View> */}
+      { Number(type) === 0 &&
+        <Text className='info-card-sec-title'>换宿时间*</Text>
+      }
+      { Number(type) === 0 &&
+        <Textarea
+          className='info-card-input'
+          value={`${startDate}至${endDate}`}
+          disabled={true}
+        />
+      }
     </View>
 
     {/* 提交按钮 */}
