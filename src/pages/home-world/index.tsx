@@ -1,9 +1,10 @@
 import { View } from '@tarojs/components';
 import HomepageCard from '@components/HomepageCard';
+import { observer } from 'mobx-react';
 import './index.scss';
 import HomepageSearch from '@components/HomepageSearch';
 import { useEffect, useMemo, useState } from 'react';
-import Taro from '@tarojs/taro';
+import Taro, { useReachBottom } from '@tarojs/taro';
 import GlobalStore from '@store/GlobalStore';
 import { getCurrentInstance } from '@tarojs/taro';
 import DateSelect from '@components/DateSelect';
@@ -13,12 +14,11 @@ import {
   homePropertyProps,
 } from '@utils/interfaces';
 import CitySelect from '@components/CitySelect';
+import TabBar from '@components/TabBar';
 
 const HomeWorld = () => {
-  const [activeTab, setActiveTab] = useState<'友友' | '房源' | '活动'>(null);
+  const [activeTab, setActiveTab] = useState<'友友' | '房源' | '活动'>('友友');
   const instance = getCurrentInstance();
-  // 输出当前页面的 URL 参数对象
-  console.log('router', instance?.router?.params);
   const [userList, setUserList] = useState<
     {
       user: homeUserProps;
@@ -64,19 +64,25 @@ const HomeWorld = () => {
   }>({ id: 0, cname: '选择城市', name: '' });
   const [startDate, setStartDate] = useState<string>('');
   const [endDate, setEndDate] = useState<string>('');
-  const [capacity, setCapacity] = useState<number>();
+  const [capacity, setCapacity] = useState<number>(1);
   const [isShowDateSelect, setIsShowDateSelect] = useState(false);
   const [isShowCitySelect, setIsShowCitySelect] = useState(false);
+  const [isShowPostModal, setIsShowPostModal] = useState(false);
+  const [scrollTop, setScrollTop] = useState(0);
 
-  useEffect(() => {
-    setStartDate('');
-    setEndDate('');
-    setCapacity(1);
-    setLocation({ id: 0, cname: '选择城市', name: '' });
-  }, [activeTab]);
-  useEffect(() => {
-    console.log(location.cname, 'location.cname ');
-  }, [location.cname]);
+  // 为每个tab创建独立的页码状态
+  const [userPage, setUserPage] = useState(1);
+  const [propertyPage, setPropertyPage] = useState(1);
+  const [activityPage, setActivityPage] = useState(1);
+
+  // 为每个tab创建独立的hasMore状态
+  const [hasMoreUser, setHasMoreUser] = useState(true);
+  const [hasMoreProperty, setHasMoreProperty] = useState(true);
+  const [hasMoreActivity, setHasMoreActivity] = useState(true);
+
+  // 添加页码和加载状态
+  const [loading, setLoading] = useState(false);
+
   useEffect(() => {
     setActiveTab('友友');
     getList('app/esuser/getUserList', setUserList);
@@ -86,26 +92,49 @@ const HomeWorld = () => {
       endDate: '',
       order: 'DES',
     });
-    getList('/app/property/getPropertyList', setPropertyList, {
+    getList('app/property/getPropertyList', setPropertyList, {
       searchableLocation: 0,
       startDate: '',
       endDate: '',
       order: 'DES_PRICE',
       capacity: 1,
     });
-    // post('/app/eslocation/topCities', setTopCityList, {});
   }, []);
 
-  const getList = (path, callback, params = {}) => {
-    let res = [];
-    console.log(
-      {
-        myUid: GlobalStore.userInfo.uid,
-        page: 1,
-        ...params,
-      },
-      'params',
-    );
+  // 修改 getList 函数以使用对应tab的页码
+  const getList = (path, callback, params = {}, isLoadMore = false) => {
+    if (loading) return;
+    
+    const getCurrentPage = () => {
+      switch (activeTab) {
+        case '友友':
+          return userPage;
+        case '房源':
+          return propertyPage;
+        case '活动':
+          return activityPage;
+        default:
+          return 1;
+      }
+    };
+
+    const getHasMore = () => {
+      switch (activeTab) {
+        case '友友':
+          return hasMoreUser;
+        case '房源':
+          return hasMoreProperty;
+        case '活动':
+          return hasMoreActivity;
+        default:
+          return true;
+      }
+    };
+
+    if (isLoadMore && !getHasMore()) return;
+    setLoading(true);
+    const currentPage = isLoadMore ? getCurrentPage() : 1;
+
     Taro.request({
       url: `https://api.eurostay.co/${path}`,
       method: 'POST',
@@ -113,16 +142,58 @@ const HomeWorld = () => {
         token: GlobalStore.userInfo.token,
       },
       data: {
-        myUid: GlobalStore.userInfo.uid,
-        page: 1,
+        myUid: 0,
+        page: currentPage,
         ...params,
       },
       success: function (response) {
         if (response.statusCode === 200 && response.data.code === 0) {
-          res = response.data.result.data;
-          callback && callback(res);
+          const newData = response.data.result.data;
+          if (isLoadMore) {
+            if (newData.length < response.data.result.per_page) {
+              switch (activeTab) {
+                case '友友':
+                  setHasMoreUser(false);
+                  break;
+                case '房源':
+                  setHasMoreProperty(false);
+                  break;
+                case '活动':
+                  setHasMoreActivity(false);
+                  break;
+              }
+            } else {
+              callback(prev => [...prev, ...newData]);
+              switch (activeTab) {
+                case '友友':
+                  setUserPage(currentPage + 1);
+                  break;
+                case '房源':
+                  setPropertyPage(currentPage + 1);
+                  break;
+                case '活动':
+                  setActivityPage(currentPage + 1);
+                  break;
+              }
+            }
+          } else {
+            callback(newData);
+            switch (path) {
+              case 'app/esuser/getUserList':
+                setUserPage(currentPage + 1);
+                setHasMoreUser(newData.length === response.data.result.per_page);
+                break;
+              case 'app/property/getPropertyList':
+                setPropertyPage(currentPage + 1);
+                setHasMoreProperty(newData.length === response.data.result.per_page);
+                break;
+              case 'app/activity/getActivityList':
+                setActivityPage(currentPage + 1);
+                setHasMoreActivity(newData.length === response.data.result.per_page);
+                break;
+            }
+          }
         }
-        console.log(path, '1111', response.data);
       },
       fail: function (err) {
         Taro.showToast({
@@ -131,8 +202,62 @@ const HomeWorld = () => {
           duration: 2000,
         });
       },
+      complete: function () {
+        setLoading(false);
+      },
     });
   };
+
+  // 处理触底加载
+  const handleLoadMore = () => {
+    if (!activeTab || loading) return;
+
+    if ((activeTab === '友友' && !hasMoreUser) ||
+        (activeTab === '房源' && !hasMoreProperty) ||
+        (activeTab === '活动' && !hasMoreActivity)) {
+        return
+    }
+
+    
+    if (activeTab === '友友') {
+      getList('app/esuser/getUserList', setUserList, {}, true);
+    } else if (activeTab === '房源') {
+      getList('/app/property/getPropertyList', setPropertyList, {
+        searchableLocation: location.id,
+        startDate: startDate,
+        endDate: endDate,
+        capacity: capacity,
+        order: 'DES_PRICE',
+      }, true);
+    } else if (activeTab === '活动') {
+      getList('app/activity/getActivityList', setActivityList, {
+        searchableLocation: location.id,
+        startDate: startDate,
+        endDate: endDate,
+        order: 'DES',
+      }, true);
+    }
+  };
+
+  // 使用 useReachBottom hook
+  useReachBottom(() => {
+    handleLoadMore();
+  });
+
+  // 在打开 modal 时保存当前滚动位置
+  const handlePostModalOpen = (show: boolean) => {
+    if (show) {
+      setScrollTop(document.documentElement.scrollTop || document.body.scrollTop);
+    }
+    setIsShowPostModal(show);
+  };
+
+  // 在关闭 modal 时恢复滚动位置
+  useEffect(() => {
+    if (!isShowPostModal && scrollTop > 0) {
+      window.scrollTo(0, scrollTop);
+    }
+  }, [isShowPostModal]);
 
   if (isShowDateSelect) {
     return (
@@ -159,7 +284,7 @@ const HomeWorld = () => {
 
   return (
     <>
-      <View className='home-search'>
+      <View className={`home-search ${isShowPostModal ? 'modal' : ''}`}>
         <View className='tab-container'>
           <View
             className={`tab-item ${activeTab === '友友' ? 'active' : ''}`}
@@ -198,7 +323,13 @@ const HomeWorld = () => {
               setCapacity(value);
             }}
             onSearch={() => {
-              console.log(activeTab, 'activeTab');
+              setUserPage(1);
+              setHasMoreUser(true);
+              setPropertyPage(1);
+              setHasMoreProperty(true);
+              setActivityPage(1);
+              setHasMoreActivity(true);
+              
               if (activeTab == '房源') {
                 getList('/app/property/getPropertyList', setPropertyList, {
                   searchableLocation: location.id,
@@ -248,10 +379,35 @@ const HomeWorld = () => {
                 />
               );
             })}
+          
+          {/* 添加加载状态提示 */}
+          {loading && (
+            <View className='loading-tips'>加载中...</View>
+          )}
+          {!hasMoreUser && activeTab === '友友' && curList.length > 0 && (
+            <View className='no-more-tips'>没有更多数据了</View>
+          )}
+          {!hasMoreProperty && activeTab === '房源' && curList.length > 0 && (
+            <View className='no-more-tips'>没有更多数据了</View>
+          )}
+          {!hasMoreActivity && activeTab === '活动' && curList.length > 0 && (
+            <View className='no-more-tips'>没有更多数据了</View>
+          )}
         </View>
       </View>
+      
+      <TabBar 
+        onWorldSelected={() => {
+          // 如果当前已经在世界tab，可以触发刷新或回到顶部等操作
+          if (activeTab === '友友') {
+            // 可以添加你的刷新逻辑
+          }
+        }}
+        setIsShowPostModal={handlePostModalOpen}
+        isShowPostModal={isShowPostModal}
+      />
     </>
   );
 };
 
-export default HomeWorld;
+export default observer(HomeWorld);

@@ -1,5 +1,6 @@
 import { View, Image } from '@tarojs/components';
 import { useEffect, useState } from 'react';
+import Taro from '@tarojs/taro';
 import './index.scss';
 import {
   homeUserProps,
@@ -44,7 +45,16 @@ const HomepageCard = (props: {
     <View className={`${getCardClass()} ${props.id}`}>
       {activeTab == '友友' && (
         <>
-          <Image src={props.user.backgroundPic} className='user-pic'></Image>
+          <Image 
+            src={props.user.backgroundPic} 
+            className='user-pic' 
+            onClick={() => {
+                console.log(props.user);
+              Taro.navigateTo({
+                url: `/pages/user/index?uid=${props.user.uid}`
+              })
+            }}
+          ></Image>
           {props.user.location && (
             <View className='user-location'>{props.user.location}</View>
           )}
@@ -71,7 +81,7 @@ const HomepageCard = (props: {
             )}
           </View>
           <View className='homepage-card-bottom'>
-            <Image src='' className='user-avatar' />
+            <Image src={props.user.avatar} className='user-avatar' />
             <View className='user-details'>
               <View className='user-name'>{props.user.username}</View>
               <View className='user-tags'>
@@ -87,7 +97,11 @@ const HomepageCard = (props: {
 
       {activeTab == '活动' && props.activity && (
         <>
-          <Image src={props.activity.images?.[0]} className='user-pic'></Image>
+          <Image src={props.activity.images?.[0]} className='user-pic' onClick={
+              () => {
+                Taro.navigateTo({ url: `/packageHouse/housing-detail/index?id=${props.activity.id}&type=1` });
+              }
+          }></Image>
           {props.activity.location && (
             <View className='user-location'>{props.activity.location}</View>
           )}
@@ -126,7 +140,11 @@ const HomepageCard = (props: {
       )}
       {activeTab == '房源' && props.property && (
         <>
-          <Image src={props.property.images?.[0]} className='user-pic'></Image>
+          <Image src={props.property.images?.[0]} className='user-pic' onClick={
+              () => {
+                Taro.navigateTo({ url: `/packageHouse/housing-detail/index?id=${props.property.id}&type=0` });
+              }
+          }></Image>
           {props.property.location && (
             <View className='user-location'>{props.property?.location}</View>
           )}

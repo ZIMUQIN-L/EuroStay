@@ -2,11 +2,20 @@ import { View, Text, Image, Button } from '@tarojs/components';
 import { observer } from 'mobx-react';
 import Taro from '@tarojs/taro';
 import { useState } from 'react';
+import TabBar from '@components/TabBar';
+
 const Index = () => {
+  const [isShowPostModal, setIsShowPostModal] = useState(false);
+
   return (
-    <>
-      <View className='home-messages'>222</View>
-    </>
+    <View className={`home-messages ${isShowPostModal ? 'modal' : ''}`}>
+      <View>222</View>
+      <TabBar 
+        onWorldSelected={() => {}}
+        setIsShowPostModal={setIsShowPostModal}
+        isShowPostModal={isShowPostModal}
+      />
+    </View>
   );
 };
 

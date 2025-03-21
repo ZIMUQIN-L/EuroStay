@@ -25,7 +25,6 @@ const Login = () => {
 
   useEffect(() => {
     checkLoginStatus();
-    console.log(GlobalStore.userInfo.token);
   }, []);
 
   const checkLoginStatus = () => {
@@ -42,8 +41,9 @@ const Login = () => {
                   GlobalStore.setUid(userInfo.uid);
                   GlobalStore.setAllInfo(userInfo);
                   GlobalStore.setToken(response.data.token);
+                  GlobalStore.currentTab = 'world';
                   Taro.reLaunch({
-                    url: '/pages/home/index',
+                    url: '/pages/home-world/index',
                   });
                 } else {
                   setIsChecking(false);
@@ -114,8 +114,9 @@ const Login = () => {
                 // 保存 token 和 uid
                 GlobalStore.setAllInfo(response.data.userInfo);
                 GlobalStore.setToken(response.data.token);
+                GlobalStore.currentTab = 'world';
                 Taro.reLaunch({
-                  url: '/pages/home/index',
+                  url: '/pages/home-world/index',
                   success: function () {
                     Taro.showToast({
                       title: '登录成功',
@@ -190,9 +191,7 @@ const Login = () => {
             <Text
               className='link'
               onClick={() => {
-                Taro.navigateTo({
-                  url: '/pages/common-setting/index?type=service', // 修改为common-setting
-                });
+                Taro.navigateTo({ url: '/pages/terms/index' });
               }}
             >
               《用户服务协议》
@@ -201,9 +200,7 @@ const Login = () => {
             <Text
               className='link'
               onClick={() => {
-                Taro.navigateTo({
-                  url: '/pages/common-setting/index?type=privacy', // 修改为common-setting
-                });
+                Taro.navigateTo({ url: '/pages/privacy/index' });
               }}
             >
               《隐私政策》

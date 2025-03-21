@@ -1,4 +1,4 @@
-import { View, Text, Input, Image, Picker } from '@tarojs/components';
+import { View, Text, Input, Image, Picker, Textarea } from '@tarojs/components';
 import { useEffect, useState } from 'react';
 import Taro from '@tarojs/taro';
 import './index.scss';
@@ -17,13 +17,37 @@ import GlobalStore from '@store/GlobalStore';
 enum Gender {
   Female = 0,
   Male = 1,
-  Other = 3,
   NoLimit = 2,
   Default = 999,
 }
 
+interface HouseFormData {
+  houseName: string;
+  houseTag: string[];
+  houseDesc: string;
+  country: {
+    id: number;
+    cname: string;
+    name: string;
+  };
+  city: {
+    id: number;
+    cname: string;
+    name: string;
+  };
+  detailAddress: string;
+  price: string;
+  tenantGender: number;
+  tenantCount: number;
+  otherRequirements: string[];
+  houseImages: string[];
+  paymentImages: string[];
+  story: string;
+  wechat: string;
+}
+
 const HousePublish = () => {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<HouseFormData>({
     houseName: '',
     houseTag: [],
     houseDesc: '',
@@ -32,7 +56,7 @@ const HousePublish = () => {
     detailAddress: '',
     price: '',
     tenantGender: Gender.Default,
-    tenantCount: 999,
+    tenantCount: 0,
     otherRequirements: [],
     houseImages: [],
     paymentImages: [],
@@ -143,7 +167,7 @@ const HousePublish = () => {
     { id: 3, name: '喜欢小狗' },
   ];
 
-  const handleTagSelect = tag => {
+  const handleTagSelect = (tag: string) => {
     const newTags = formData.houseTag.includes(tag)
       ? formData.houseTag.filter(t => t !== tag)
       : [...formData.houseTag, tag];
@@ -158,7 +182,7 @@ const HousePublish = () => {
     setFormData({ ...formData, tenantCount: count });
   };
 
-  const handleOtherReqSelect = req => {
+  const handleOtherReqSelect = (req: string) => {
     const newReqs = formData.otherRequirements.includes(req)
       ? formData.otherRequirements.filter(r => r !== req)
       : [...formData.otherRequirements, req];
@@ -245,66 +269,125 @@ const HousePublish = () => {
     setMarks(marksList);
   }, [multiDays.length]);
 
+  const validateForm = () => {
+    const errors: string[] = [];
+
+    // 检查必填字段
+    if (!formData.houseName.trim()) {
+      errors.push('请填写房源名称');
+    }
+
+    if (formData.houseTag.length === 0) {
+      errors.push('请至少选择一个房源标签');
+    }
+
+    if (!formData.houseDesc.trim()) {
+      errors.push('请填写房源描述');
+    }
+
+    if (formData.country.id === 0 || formData.city.id === 0) {
+      errors.push('请选择房源所在地区');
+    }
+
+    if (!formData.detailAddress.trim()) {
+      errors.push('请填写详细地址');
+    }
+
+    if (!formData.price || Number(formData.price) <= 0) {
+      errors.push('请填写有效的房源价格');
+    }
+
+    if (formData.tenantGender === Gender.Default) {
+      errors.push('请选择租客性别要求');
+    }
+
+    if (formData.tenantCount === 0) {
+      errors.push('请选择租客人数要求');
+    }
+
+    if (formData.houseImages.length === 0) {
+      errors.push('请至少上传一张房源照片');
+    }
+
+    if (multiDays.length === 0) {
+      errors.push('请选择可出租时间');
+    }
+
+    if (!formData.story.trim()) {
+      errors.push('请填写你的故事');
+    }
+
+    if (!formData.wechat.trim()) {
+      errors.push('请填写微信号');
+    }
+
+    if (formData.paymentImages.length === 0) {
+      errors.push('请上传微信收款二维码');
+    }
+
+    return errors;
+  };
+
   const handleSubmit = async () => {
-    console.log({
-      title: formData.houseName,
-      description: formData.houseDesc,
-      location: formData.detailAddress,
-      searchableLocation: formData.city.id,
-      price: Number(formData.price),
-      images: formData.houseImages,
-      tags: formData.houseTag,
-      gender: formData.tenantGender,
-      capacity: formData.tenantCount,
-      whyHost: formData.story,
-      wxId: formData.wechat,
-      qrCode: formData.paymentImages?.[0],
-      requirements: formData.otherRequirements,
-      availableDate: marks.map(mark => formatDate(new Date(mark.value))),
-    });
-    await Taro.request({
-      url: `https://api.eurostay.co/app/property/upload`,
-      method: 'POST',
-      header: {
-        token: GlobalStore.userInfo.token,
-      },
-      data: {
-        title: formData.houseName,
-        description: formData.houseDesc,
-        location: formData.detailAddress,
-        searchableLocation: formData.city.id,
-        price: Number(formData.price),
-        images: formData.houseImages,
-        tags: formData.houseTag,
-        gender: formData.tenantGender,
-        capacity: formData.tenantCount,
-        whyHost: formData.story,
-        wxId: formData.wechat,
-        qrCode: formData.paymentImages?.[0],
-        requirements: formData.otherRequirements,
-        availableDate: marks.map(mark => formatDate(new Date(mark.value))),
-      },
-      success: function (response) {
-        console.log(response);
-        if (response.statusCode === 200 && response.data.code === 0) {
-          Taro.showToast({
-            title: '你已成功上传房源！房源正在等待审核，审核通过后将公众可见。',
-            icon: 'none',
-            duration: 2000,
-          });
-          setTimeout(() => {
-            Taro.navigateBack();
-          }, 2000);
+    const errors = validateForm();
+    
+    if (errors.length > 0) {
+      // 如果有错误，显示第一个错误信息
+      Taro.showToast({
+        title: errors[0],
+        icon: 'none',
+        duration: 2000
+      });
+      return;
+    }
+
+    // 组合完整地址
+    const fullAddress = `${formData.country.cname}${formData.city.cname}||${formData.detailAddress}`;
+
+    try {
+      const response = await Taro.request({
+        url: `https://api.eurostay.co/app/property/upload`,
+        method: 'POST',
+        header: {
+          token: GlobalStore.userInfo.token,
+        },
+        data: {
+          title: formData.houseName,
+          description: formData.houseDesc,
+          location: fullAddress,
+          searchableLocation: formData.city.id,
+          price: Number(formData.price),
+          images: formData.houseImages,
+          tags: formData.houseTag,
+          gender: formData.tenantGender,
+          capacity: formData.tenantCount,
+          whyHost: formData.story,
+          wxId: formData.wechat,
+          qrCode: formData.paymentImages?.[0],
+          requirements: formData.otherRequirements,
+          availableDate: multiDays.flatMap(pair => pair).sort((a, b) => new Date(a).getTime() - new Date(b).getTime()),
         }
-      },
-      fail: function (err) {
+      });
+
+      if (response.statusCode === 200 && response.data.code === 0) {
         Taro.showToast({
-          title: '网络请求失败，请重试',
+          title: '你已成功上传房源！房源正在等待审核，审核通过后将公众可见。',
           icon: 'none',
           duration: 2000,
         });
-      },
-    });
+        setTimeout(() => {
+          Taro.navigateBack();
+        }, 2000);
+      } else {
+        throw new Error('上传失败');
+      }
+    } catch (error) {
+      Taro.showToast({
+        title: '网络请求失败，请重试',
+        icon: 'none',
+        duration: 2000,
+      });
+    }
   };
 
   return (
@@ -368,7 +451,7 @@ const HousePublish = () => {
         </View>
 
         <View className='input-item'>
-          <Text className='label'>房源名称</Text>
+          <Text className='label'>房源名称*</Text>
           <Input
             className='input'
             placeholder='请输入房源名称'
@@ -419,14 +502,15 @@ const HousePublish = () => {
 
         <View className='input-item'>
           <Text className='label'>房源描述*</Text>
-          <Input
-            className='input'
+          <Textarea
+            className='textarea'
             placeholder='请简短对此房源进行描述'
             placeholderClass='placeholder'
             value={formData.houseDesc}
             onInput={e =>
               setFormData({ ...formData, houseDesc: e.detail.value })
             }
+            autoHeight
           />
         </View>
 
@@ -463,20 +547,21 @@ const HousePublish = () => {
         </View>
 
         <View className='input-item'>
-          <Text className='label'>详细地址</Text>
-          <Input
-            className='input'
-            placeholder='请填写房源所在的地址：如门号、道路、区域、邮编'
+          <Text className='label'>详细地址*</Text>
+          <Textarea
+            className='textarea'
+            placeholder='请填写房源所在的地址：如门号、道路、区域、邮编，该信息会被展现给所有ES社群的uu哦~'
             placeholderClass='placeholder'
             value={formData.detailAddress}
             onInput={e =>
               setFormData({ ...formData, detailAddress: e.detail.value })
             }
+            autoHeight
           />
         </View>
 
         <View className='input-item'>
-          <Text className='label'>房源价格</Text>
+          <Text className='label'>房源价格*</Text>
           <View className='price-input'>
             <Text className='currency'>€</Text>
             <Input
@@ -507,12 +592,6 @@ const HousePublish = () => {
                 onClick={() => handleGenderSelect(Gender.Female)}
               >
                 女
-              </Text>
-              <Text
-                className={`option ${formData.tenantGender === Gender.Other ? 'active' : ''}`}
-                onClick={() => handleGenderSelect(Gender.Other)}
-              >
-                其他
               </Text>
               <Text
                 className={`option ${formData.tenantGender === Gender.NoLimit ? 'active' : ''}`}
@@ -577,6 +656,16 @@ const HousePublish = () => {
             {formData.houseImages.map((image, index) => (
               <View key={index} className='image-item'>
                 <Image src={image} mode='aspectFill' />
+                <View 
+                  className='delete-icon' 
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    const newImages = formData.houseImages.filter((_, i) => i !== index);
+                    setFormData({ ...formData, houseImages: newImages });
+                  }}
+                >
+                  ×
+                </View>
               </View>
             ))}
             {formData.houseImages.length < 6 && (
@@ -597,11 +686,16 @@ const HousePublish = () => {
                 <View
                   key={index}
                   className='multi-day active'
-                  onClick={() => {
-                    setMultiDays(multiDays.filter(d => d !== day));
-                  }}
                 >
-                  {day[0]} - {day[1]}
+                  <Text>{day[0]} - {day[1]}</Text>
+                  <View 
+                    className='delete-icon'
+                    onClick={() => {
+                      setMultiDays(multiDays.filter((_, i) => i !== index));
+                    }}
+                  >
+                    ×
+                  </View>
                 </View>
               ))}
             </View>
@@ -672,12 +766,13 @@ const HousePublish = () => {
           <Text className='label'>
             为什么成为了Eurostray的房东？最想和房客一起做的事？*
           </Text>
-          <Input
-            className='input'
+          <Textarea
+            className='textarea'
             placeholder='请简单分享你的故事'
             placeholderClass='placeholder'
             value={formData.story}
             onInput={e => setFormData({ ...formData, story: e.detail.value })}
+            autoHeight
           />
         </View>
       </View>

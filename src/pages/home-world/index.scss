@@ -1,7 +1,12 @@
 .home-search {
   padding: 20px 5%;
   background: #fff;
-  padding-bottom: 200px;
+  padding-bottom: 120px;
+  
+  &.modal {
+    overflow: hidden;
+  }
+
   .tab-container {
     display: flex;
     justify-content: space-between;
@@ -39,8 +44,20 @@
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
+    padding-bottom: 120px;
+    
     .homepage-card-wrapper {
       min-width: 48%;
+    }
+
+    .loading-tips,
+    .no-more-tips {
+      width: 100%;
+      text-align: center;
+      padding: 20px 0;
+      color: #999;
+      font-size: 24px;
+    //   margin-bottom: 40px;
     }
   }
 }

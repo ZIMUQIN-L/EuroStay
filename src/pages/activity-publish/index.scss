@@ -121,31 +121,27 @@
         color: black;
       }
       .time-select {
-        margin-top: -50px;
-        //   padding: 20px;
-        background: #fff;
-        border-radius: 12px;
         display: flex;
         align-items: center;
-        margin-bottom: 10px;
+        margin-top: 20px;
+        padding: 0 20px;
         justify-content: space-between;
-
+        
         .time-label {
+          color: #333;
           font-size: 28px;
-          //   color: #7a63c7;
         }
-
-        .time-picker {
-          // width: 100%;
-
-          .picker-value {
-            height: 60px;
-            line-height: 60px;
-            padding: 0;
-            font-size: 32px;
+        
+        .picker-item {
+          background: #F5F5F5;
+          padding: 10px 20px;
+          border-radius: 8px;
+          min-width: 120px;
+          text-align: center;
+          
+          Text {
             color: #333;
-            text-align: center;
-            border-bottom: 1px solid #eee;
+            font-size: 28px;
           }
         }
       }
@@ -221,6 +217,54 @@
         }
       }
 
+      .textarea {
+        width: 100%;
+        min-height: 60px;
+        background: #fff;
+        border: none;
+        border-bottom: 1px solid #eee;
+        border-radius: 0;
+        padding: 0;
+        font-size: 28px;
+        color: #333;
+        line-height: 1;
+        padding-top: 24px;
+        
+        &::placeholder {
+          color: #cecece;
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          line-height: normal;
+          height: auto;
+        }
+      }
+
+      .price-input {
+        display: flex;
+        align-items: center;
+        
+        .currency,
+        .unit {
+          font-size: 28px;
+          color: #333;
+        }
+
+        .input {
+          margin-top: 2px;
+          max-width: 100px;
+          background: transparent;
+          border: none;
+          border-bottom: 1px solid #eee;
+          padding: 0 10px;
+          color: #333;
+
+          &::placeholder {
+            color: #cecece;
+          }
+        }
+      }
+
       .tags,
       .gender-options,
       .count-options,
@@ -282,42 +326,6 @@
           }
         }
       }
-      .price-input,
-      .capacity-input {
-        display: flex;
-        align-items: center;
-        background: #fff;
-        border: none;
-        border-radius: 0;
-        padding: 0;
-
-        .currency,
-        .unit,
-        .capacity-label {
-          font-size: 28px;
-          color: #333;
-        }
-
-        .input {
-          height: 45px;
-        }
-
-        .input {
-          margin-top: 2px;
-          max-width: 100px;
-          margin-left: 5px;
-          margin-right: 5px;
-          background: transparent;
-          border: none;
-          padding: 0 10px;
-          color: #333;
-          border-bottom: 1px solid black;
-
-          &::placeholder {
-            color: #cecece;
-          }
-        }
-      }
     }
   }
 
@@ -342,11 +350,28 @@
       aspect-ratio: 1;
       border-radius: 8px;
       overflow: hidden;
+      position: relative;
 
       image {
         width: 100%;
         height: 100%;
         object-fit: cover;
+      }
+
+      .delete-icon {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        width: 40px;
+        height: 40px;
+        background: rgba(0, 0, 0, 0.5);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        font-size: 24px;
+        z-index: 1;
       }
     }
 

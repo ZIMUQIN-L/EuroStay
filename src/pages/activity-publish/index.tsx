@@ -1,4 +1,4 @@
-import { View, Text, Input, Image, Picker } from '@tarojs/components';
+import { View, Text, Input, Image, Picker, Textarea } from '@tarojs/components';
 import { useEffect, useState } from 'react';
 import Taro from '@tarojs/taro';
 import './index.scss';
@@ -7,8 +7,32 @@ import { formatToday } from '@utils/dateUtil';
 import GlobalStore from '@store/GlobalStore';
 import Popup from '../../components/Popup';
 import '../../components/Popup/index.scss';
+
+interface ActivityFormData {
+  activityName: string;
+  activityTag: string[];
+  activityDesc: string;
+  country: {
+    id: number;
+    cname: string;
+    name: string;
+  };
+  city: {
+    id: number;
+    cname: string;
+    name: string;
+  };
+  detailAddress: string;
+  price: string;
+  participantGender: string;
+  participantCount: string;
+  otherRequirements: string[];
+  activityImages: string[];
+  startTime: string;
+}
+
 const ActivityPublish = () => {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<ActivityFormData>({
     activityName: '',
     activityTag: [],
     activityDesc: '',
@@ -111,38 +135,64 @@ const ActivityPublish = () => {
     { id: 3, name: '有经验' },
   ];
 
-  const handleTagSelect = tag => {
+  const handleTagSelect = (tag: string) => {
     const newTags = formData.activityTag.includes(tag)
       ? formData.activityTag.filter(t => t !== tag)
       : [...formData.activityTag, tag];
     setFormData({ ...formData, activityTag: newTags });
   };
 
-  const handleGenderSelect = gender => {
+  const handleGenderSelect = (gender: string) => {
     setFormData({ ...formData, participantGender: gender });
   };
 
-  const handleParticipantCountSelect = count => {
+  const handleParticipantCountSelect = (count: string) => {
     setFormData({ ...formData, participantCount: count });
   };
 
-  const handleOtherReqSelect = req => {
+  const handleOtherReqSelect = (req: string) => {
     const newReqs = formData.otherRequirements.includes(req)
       ? formData.otherRequirements.filter(r => r !== req)
       : [...formData.otherRequirements, req];
     setFormData({ ...formData, otherRequirements: newReqs });
   };
 
-  const handleImageUpload = () => {
-    Taro.chooseImage({
-      count: 6 - formData.activityImages.length,
-      success: res => {
-        setFormData({
-          ...formData,
-          activityImages: [...formData.activityImages, ...res.tempFilePaths],
+  const handleImageUpload = async () => {
+    try {
+      const res = await Taro.chooseImage({
+        count: 6 - formData.activityImages.length,
+        sizeType: ['compressed'],
+        sourceType: ['album', 'camera'],
+      });
+
+      if (res.tempFilePaths && res.tempFilePaths[0]) {
+        const uploadRes = await Taro.uploadFile({
+          url: 'https://api.eurostay.co/app/common/upload',
+          filePath: res.tempFilePaths[0],
+          name: 'Image',
+          formData: {
+            prefix: 'test',
+          },
+          header: {
+            token: GlobalStore.userInfo.token,
+          },
+          success: function (result) {
+            const responseData = JSON.parse(result.data);
+            const imageUrl = responseData['result'];
+            setFormData({
+              ...formData,
+              activityImages: [...formData.activityImages, imageUrl],
+            });
+          }
         });
-      },
-    });
+      }
+    } catch (error) {
+      console.error('Upload failed:', error);
+      Taro.showToast({
+        title: '上传失败',
+        icon: 'none',
+      });
+    }
   };
 
   const handleCountryChange = e => {
@@ -169,57 +219,107 @@ const ActivityPublish = () => {
       startTime: e.detail.value,
     });
   };
+
+  // 添加验证函数
+  const validateForm = () => {
+    const errors: string[] = [];
+
+    // 检查必填字段
+    if (!formData.activityName.trim()) {
+      errors.push('请填写活动名称');
+    }
+
+    if (formData.activityTag.length === 0) {
+      errors.push('请至少选择一个活动标签');
+    }
+
+    if (!formData.activityDesc.trim()) {
+      errors.push('请填写活动描述');
+    }
+
+    if (formData.country.id === 0 || formData.city.id === 0) {
+      errors.push('请选择活动所在地区');
+    }
+
+    if (!formData.detailAddress.trim()) {
+      errors.push('请填写详细地址');
+    }
+
+    if (!formData.participantCount || Number(formData.participantCount) <= 0) {
+      errors.push('请填写有效的参与人数');
+    }
+
+    if (formData.activityImages.length === 0) {
+      errors.push('请至少上传一张活动照片');
+    }
+
+    if (!startDate) {
+      errors.push('请选择活动日期');
+    }
+
+    if (!formData.startTime) {
+      errors.push('请选择开始时间');
+    }
+
+    return errors;
+  };
+
+  // 修改提交函数
   const handleSubmit = async () => {
-    console.log({
-      title: formData.activityName,
-      description: formData.activityDesc,
-      location: formData.detailAddress,
-      searchableLocation: formData.city.id,
-      price: Number(formData.price),
-      images: formData.activityImages,
-      tags: formData.activityTag,
-      capacity: formData.participantCount,
-      startTime: startDate + 'T' + formData.startTime + ':00',
-    });
-    await Taro.request({
-      url: `https://api.eurostay.co/app/activity/addActivity`,
-      method: 'POST',
-      header: {
-        token: GlobalStore.userInfo.token,
-      },
-      data: {
-        title: formData.activityName,
-        description: formData.activityDesc,
-        location: formData.detailAddress,
-        searchableLocation: formData.city.id,
-        price: Number(formData.price),
-        images: formData.activityImages,
-        tags: formData.activityTag,
-        capacity: formData.participantCount,
-        startTime: startDate + 'T' + formData.startTime + ':00',
-      },
-      success: function (response) {
-        console.log(response);
-        if (response.statusCode === 200 && response.data.code === 0) {
-          console.log(response.data, 'res');
-          Taro.showToast({
-            title: '你已成功上传活动！活动正在等待审核，审核通过后将公众可见。',
-            icon: 'none',
-            duration: 2000,
-          });
-          setTimeout(() => {
-            Taro.navigateBack();
-          }, 2000);
+    const errors = validateForm();
+    
+    if (errors.length > 0) {
+      // 如果有错误，显示第一个错误信息
+      Taro.showToast({
+        title: errors[0],
+        icon: 'none',
+        duration: 2000
+      });
+      return;
+    }
+
+    // 组合完整地址
+    const fullAddress = `${formData.country.cname}${formData.city.cname}||${formData.detailAddress}`;
+
+    try {
+      const response = await Taro.request({
+        url: `https://api.eurostay.co/app/activity/addActivity`,
+        method: 'POST',
+        header: {
+          token: GlobalStore.userInfo.token,
+        },
+        data: {
+          title: formData.activityName,
+          description: formData.activityDesc,
+          location: fullAddress,
+          searchableLocation: formData.city.id,
+          price: Number(formData.price),
+          images: formData.activityImages,
+          tags: formData.activityTag,
+          capacity: formData.participantCount,
+          startTime: startDate + 'T' + formData.startTime + ':00',
         }
-      },
-      fail: function (err) {
+      });
+
+      if (response.statusCode === 200 && response.data.code === 0) {
         Taro.showToast({
-          title: '网络请求失败，请重试',
+          title: '你已成功上传活动！活动正在等待审核，审核通过后将公众可见。',
           icon: 'none',
           duration: 2000,
         });
-      },
-    });
+        setTimeout(() => {
+          Taro.navigateBack();
+        }, 2000);
+      } else {
+        throw new Error('上传失败');
+      }
+    } catch (error) {
+      Taro.showToast({
+        title: '网络请求失败，请重试',
+        icon: 'none',
+        duration: 2000,
+      });
+    }
   };
 
   return (
@@ -308,14 +408,15 @@ const ActivityPublish = () => {
 
         <View className='input-item'>
           <Text className='label'>活动描述*</Text>
-          <Input
-            className='input'
+          <Textarea
+            className='textarea'
             placeholder='请简短对此活动进行描述'
             placeholderClass='placeholder'
             value={formData.activityDesc}
             onInput={e =>
               setFormData({ ...formData, activityDesc: e.detail.value })
             }
+            autoHeight
           />
         </View>
 
@@ -353,14 +454,15 @@ const ActivityPublish = () => {
 
         <View className='input-item'>
           <Text className='label'>详细地址</Text>
-          <Input
-            className='input'
+          <Textarea
+            className='textarea'
             placeholder='请填写活动地点的详细地址'
             placeholderClass='placeholder'
             value={formData.detailAddress}
             onInput={e =>
               setFormData({ ...formData, detailAddress: e.detail.value })
             }
+            autoHeight
           />
         </View>
 
@@ -380,9 +482,8 @@ const ActivityPublish = () => {
           </View>
         </View>
         <View className='input-item'>
-          <Text className='label'>参赛者要求</Text>
-          <View className='capacity-input'>
-            <Text className='capacity-label'>人数</Text>
+          <Text className='label'>参与人数</Text>
+          <View className='price-input'>
             <Input
               className='input'
               type='number'
@@ -408,6 +509,16 @@ const ActivityPublish = () => {
             {formData.activityImages.map((image, index) => (
               <View key={index} className='image-item'>
                 <Image src={image} mode='aspectFill' />
+                <View 
+                  className='delete-icon' 
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    const newImages = formData.activityImages.filter((_, i) => i !== index);
+                    setFormData({ ...formData, activityImages: newImages });
+                  }}
+                >
+                  ×
+                </View>
               </View>
             ))}
             {formData.activityImages.length < 6 && (
@@ -440,9 +551,10 @@ const ActivityPublish = () => {
               mode='time'
               value={formData.startTime}
               onChange={handleTimeChange}
-              className='time-picker'
             >
-              <View className='picker-value'>{formData.startTime}</View>
+              <View className='picker-item'>
+                <Text>{formData.startTime}</Text>
+              </View>
             </Picker>
           </View>
         </View>
