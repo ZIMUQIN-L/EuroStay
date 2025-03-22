@@ -4,6 +4,8 @@ import Taro, { useRouter } from '@tarojs/taro'
 import { useState, useEffect } from 'react'
 import './index.scss'
 import GlobalStore from '@store/GlobalStore'
+// 移除自定义导航栏，与消息列表页保持一致
+// import CustomNavBarStranger from '@components/MessageComponents/message-detail-nav-bar-stranger'
 
 const StrangersPage = () => {
   const [strangers, setStrangers] = useState([])
@@ -14,6 +16,22 @@ const StrangersPage = () => {
       title: '陌生人打招呼'
     })
     
+    // 首先尝试从本地存储中获取陌生人消息
+    const localStrangers = Taro.getStorageSync('strangerMessages')
+    if (localStrangers) {
+      try {
+        const parsedStrangers = JSON.parse(localStrangers)
+        if (Array.isArray(parsedStrangers) && parsedStrangers.length > 0) {
+          setStrangers(parsedStrangers)
+          setLoading(false)
+          return
+        }
+      } catch (error) {
+        console.error('解析本地陌生人消息失败:', error)
+      }
+    }
+    
+    // 如果本地存储中没有有效数据，则通过API获取
     fetchStrangers()
   }, [])
 
@@ -55,6 +73,7 @@ const StrangersPage = () => {
           message: record.content || '你好，可以聊聊吗？',
           time: formatTime(record.createTime),
           fromUid: record.fromUid,
+          type: 'stranger'
         }))
         
         setStrangers(formattedStrangers)
@@ -111,7 +130,25 @@ const StrangersPage = () => {
     try {
       const token = GlobalStore.userInfo.token || Taro.getStorageSync('token')
       
-      // 创建会话或获取已有会话ID
+      // 如果已经有会话ID，直接跳转
+      if (stranger.id) {
+        Taro.navigateTo({
+          url: `/packageMessage/message-detail/index?id=${stranger.id}&name=${encodeURIComponent(stranger.name)}`
+        })
+        return
+      }
+      
+      // 否则创建会话或获取已有会话ID
+      const targetUid = stranger.fromUid || stranger.otherUid
+      
+      if (!targetUid) {
+        Taro.showToast({
+          title: '无效的用户ID',
+          icon: 'none'
+        })
+        return
+      }
+      
       const res = await Taro.request({
         url: 'https://api.eurostay.co/app/esmessages/createSession',
         method: 'POST',
@@ -120,7 +157,7 @@ const StrangersPage = () => {
           'content-type': 'application/json'
         },
         data: {
-          targetUid: stranger.fromUid  // 对方的用户ID
+          targetUid: targetUid  // 对方的用户ID
         }
       })
       
@@ -150,17 +187,18 @@ const StrangersPage = () => {
 
   return (
     <View className='strangers-page'>
+
+      
       <ScrollView 
         className='strangers-list' 
-        scrollY 
-        enableFlex
+        scrollY
       >
         {loading ? (
           <View className='loading'>加载中...</View>
         ) : strangers.length > 0 ? (
           strangers.map(stranger => (
             <View 
-              key={stranger.id} 
+              key={stranger.id || stranger.otherUid} 
               className='stranger-item'
               onClick={() => handleStrangerClick(stranger)}
             >

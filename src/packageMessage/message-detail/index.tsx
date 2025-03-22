@@ -1,5 +1,5 @@
 import { View, Button, Input, ScrollView } from '@tarojs/components'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 // 假设你已经有以下两个组件
 import SimpleMessageBox from '@components/MessageComponents/SimpleMessageBox'
 import RequestMessageBox from '@components/MessageComponents/RequestMessageBox'
@@ -16,7 +16,10 @@ import GlobalStore from '../../store/GlobalStore'
 
 const MessageDetail = () => {
   const router = Taro.getCurrentInstance().router
-  const { id, name } = router?.params || {}
+  const { id, name: encodedName } = router?.params || {}
+  const name = encodedName ? decodeURIComponent(encodedName) : '消息详情'
+  const [otherUserId, setOtherUserId] = useState(null);
+  const [subjectId, setSubjectId] = useState(null);
   
   const [inputValue, setInputValue] = useState('')
   const [scrollTop, setScrollTop] = useState(0)
@@ -146,7 +149,17 @@ const MessageDetail = () => {
     fetchMessageList();
   }, []); 
 
+  // 在每次messages更新后，滚动到底部
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
 
+  // 滚动到底部的函数
+  const scrollToBottom = () => {
+    Taro.nextTick(() => {
+      setScrollTop(999999);
+    });
+  };
 
   const createMessageObject = (msg, currentUid) => {
     // 判断消息方向
@@ -277,20 +290,29 @@ const MessageDetail = () => {
       console.log('messageList 响应:', res);
   
       if (res.statusCode === 200 && res.data.code === 0 && res.data.result.records) {
-        console.log('成功获取消息列表:', res.data.result);
+
+        if (res.data.result.records.length > 0) {
+          const firstMsg = res.data.result.records[0];
+          const otherUid = firstMsg.fromUid === currentUid ? firstMsg.toUid : firstMsg.fromUid;
+          setOtherUserId(otherUid);
+        }
         
         // 使用新函数处理每条消息
         const formattedMessages = res.data.result.records.map(msg => 
           createMessageObject(msg, currentUid)
         );
         
-        // 更新消息列表
-        // setMessages(formattedMessages);
-        
-        // 滚动到底部
-        Taro.nextTick(() => {
-          setScrollTop(999999);
+        // 按照时间逆序排列，确保旧消息在上，新消息在下
+        const sortedMessages = formattedMessages.sort((a, b) => {
+          // 如果有消息ID是数字，可以按ID排序
+          // 或者如果消息有时间戳，可以按时间戳排序
+          return a.id - b.id;
         });
+        
+        // 更新消息列表
+        setMessages(sortedMessages);
+        
+        // 滚动到底部会在useEffect中处理
       } else {
         console.error('获取消息列表失败:', res.data.msg);
       }
@@ -304,118 +326,209 @@ const MessageDetail = () => {
     setInputValue(e.detail.value)
   }
 
-  // 点击发送
+  // 点击发送普通消息 (mtype 0)
   const handleSend = async () => {
     if (!inputValue.trim()) {
       return
     }
     
-    // 格式化当前时间为时:分格式
-    const now = new Date();
-    const hours = String(now.getHours()).padStart(2, '0');
-    const minutes = String(now.getMinutes()).padStart(2, '0');
-    const formattedTime = `${hours}:${minutes}`;
-    
-    // 创建一个新的消息对象
-    const newMessage = {
-      id: now.getTime(), // 用时间戳来模拟一个唯一id
-      type: 'simple',
-      data: {
-        toUid: 68,
-        subjectId: 5,
-        content: inputValue,     // 这里就是你刚才输入的内容
-        time: formattedTime     // 使用当前格式化的时间
-      },
-      direction: 'right'
-    }
-    
-    try {
-      // 创建要发送到WebSocket的消息对象
-      const wsMessage = {
-        fromUid: GlobalStore.userInfo.uid, // 发送者ID
-        toUid: 68, // 接收者ID，应该从props或其他地方获取
-        sessionId: id, // 会话ID
-        content: inputValue,
-        mtype: 0, // 普通文本消息
-        subjectId: 5 // 应该从props或其他地方获取
-      };
-      
-      // 发送WebSocket消息
-      await GlobalStore.sendWebSocketMessage(wsMessage);
-      
-      // 更新本地消息列表
-      setMessages(prevMessages => {
-        const updatedMessages = [...prevMessages, newMessage];
-        
-        // 使用nextTick确保在下一个渲染循环
-        Taro.nextTick(() => {
-          setScrollTop(999999);
-        });
-        
-        return updatedMessages;
-      });
-      
-      // 发送后清空输入框
-      setInputValue('');
-      
-    } catch (error) {
-      console.error('发送消息失败:', error);
-      Taro.showToast({
-        title: '发送失败，请重试',
-        icon: 'none'
-      });
-    }
+    await sendMessage(0, inputValue);
   }
 
 
+    // 点击发送预订请求 (mtype 1)
+    const handleSendBookingRequest = async () => {
+      if (!subjectId) {
+        Taro.showToast({
+          title: '缺少房源ID',
+          icon: 'none'
+        });
+        return;
+      }
+      
+      await sendMessage(1, "我想预订这个房源", {
+        subjectId: subjectId,
+        hostUid: hostUid || otherUserId,
+        isProperty: true
+      });
+    }
+  
+    // 点击发送确认请求 (mtype 2)
+    const handleSendConfirmationRequest = async () => {
+      if (!subjectId) {
+        Taro.showToast({
+          title: '缺少房源ID',
+          icon: 'none'
+        });
+        return;
+      }
+      
+      await sendMessage(2, "请确认我的预订", {
+        subjectId: subjectId,
+        hostUid: hostUid || otherUserId,
+        isProperty: true
+      });
+    }
+  
+    // 房东批准 (mtype 3)
+    const handleApproveRequest = async (price) => {
+      if (!subjectId) {
+        Taro.showToast({
+          title: '缺少房源ID',
+          icon: 'none'
+        });
+        return;
+      }
+      
+      await sendMessage(3, price || "500", {
+        subjectId: subjectId,
+        hostUid: GlobalStore.userInfo.uid,
+        isProperty: true
+      });
+    }
+  
+    // 房东拒绝 (mtype 4)
+    const handleRejectFromHost = async (reason) => {
+      await sendMessage(4, reason || "对不起，档期不合适", {
+        subjectId: subjectId,
+        hostUid: GlobalStore.userInfo.uid,
+        isProperty: true
+      });
+    }
+  
+    // 显示联系信息 (mtype 5)
+    const handleShowContact = async () => {
+      await sendMessage(5, "已付款，请查看联系信息", {
+        subjectId: subjectId
+      });
+    }
+  
+    // 客人取消 (mtype 6)
+    const handleRejectFromGuest = async (reason) => {
+      await sendMessage(6, reason || "对不起，我只能取消预定", {
+        subjectId: subjectId
+      });
+    }
 
+
+    // 通用发送消息函数
+    const sendMessage = async (messageType, content, additionalData = {}) => {
+      // 格式化当前时间为时:分格式
+      const now = new Date();
+      const hours = String(now.getHours()).padStart(2, '0');
+      const minutes = String(now.getMinutes()).padStart(2, '0');
+      const formattedTime = `${hours}:${minutes}`;
+      
+      try {
+        // 创建要发送到WebSocket的消息对象
+        const wsMessage = {
+          type: messageType, // 消息类型
+          data: {
+            toUid: otherUserId, // 目标用户 ID
+            content: content, // 发送的文本内容
+            ...additionalData
+          }
+        };
+        
+        // 发送WebSocket消息
+        await GlobalStore.sendWebSocketMessage(wsMessage);
+        
+        // 创建一个新的本地消息对象，供界面显示
+        const currentUid = GlobalStore.userInfo.uid;
+        const messageObj = {
+          id: now.getTime(), // 用时间戳来模拟一个唯一id
+          type: getMessageTypeFromMtype(messageType),
+          direction: 'right',
+          data: {
+            time: formattedTime,
+            content: content,
+            mtype: messageType,
+            fromUid: currentUid,
+            toUid: otherUserId,
+            ...additionalData
+          }
+        };
+        
+        // 根据消息类型添加额外字段
+        switch(messageType) {
+          case 1: // 预订请求
+          case 2: // 确认请求
+            messageObj.data.name = '我';
+            messageObj.data.requestType = messageType === 1 ? 'booking' : 'confirmation';
+            break;
+            
+          case 3: // 房东批准
+            messageObj.data.hostname = '我';
+            messageObj.data.applicantname = `用户${otherUserId}`;
+            messageObj.data.price = content;
+            break;
+            
+          case 4: // 房东拒绝
+            messageObj.data.name = '我';
+            messageObj.data.reason = content;
+            break;
+            
+          case 6: // 客人取消
+            messageObj.data.name = '我';
+            messageObj.data.reason = content;
+            break;
+        }
+        
+        // 更新本地消息列表，添加到末尾（新消息在下方）
+        setMessages(prevMessages => [...prevMessages, messageObj]);
+        
+        // 如果是普通消息，发送后清空输入框
+        if (messageType === 0) {
+          setInputValue('');
+        }
+        
+      } catch (error) {
+        console.error('发送消息失败:', error);
+        Taro.showToast({
+          title: '发送失败，请重试',
+          icon: 'none'
+        });
+      }
+    }
+  
+    // 辅助函数，根据mtype获取消息类型
+    const getMessageTypeFromMtype = (mtype) => {
+      switch(mtype) {
+        case 0: return 'simple';
+        case 1: 
+        case 2: return 'request';
+        case 3: return 'offer';
+        case 4: return 'reject-fh';
+        case 5: return 'contact';
+        case 6: return 'reject-fg';
+        case 7: return 'simple';
+        default: return 'simple';
+      }
+    };
 
   const handlePaid = () => {
     // 在这里写你需要的逻辑
     console.log('用户点击了已付款');
     // 1. 构造一个新的消息对象
     const newMessage = {
-      id: '1', // 用时间戳做简单ID，或根据实际需求生成
+      id: Date.now(), // 用时间戳做简单ID
       type: 'contact',
       data: {
-        time: '13:02', // 你可以放真实的时间字符串
+        time: `${String(new Date().getHours()).padStart(2, '0')}:${String(new Date().getMinutes()).padStart(2, '0')}`, 
         // 其它需要给 ContactMessageBox 的字段
       },
       direction: 'right' // 或者 'left'，看你业务场景
     };
 
-    setMessages([...messages, newMessage])
-    Taro.nextTick(() => {
-      setScrollTop(999999);
-    });
-
-  }
-
-
-  const handleRejectFromGuest = () => {
-    const newMessage = {
-      id: '1', // 用时间戳做简单ID，或根据实际需求生成
-      type: 'reject-fg',
-      data: {
-        toUid: 68,
-        subjectId: 5,
-        name: 'xiaxia(applicant)',
-        reason: '对不起, 我只能取消预定',
-        time: '09:10'
-      },
-      direction: 'right' // 或者 'left'，看你业务场
-
-    };
-
-    setMessages([...messages, newMessage])
-    setScrollTop(9999999);
+    // 添加消息到末尾
+    setMessages(prevMessages => [...prevMessages, newMessage]);
+    // 滚动到底部会在useEffect中处理
   }
   
   const handleHostCheckSub = () => {
     console.log('handleHostCheckSub');
   }
   
-
   // 根据不同的 type 来渲染对应的组件
   const renderMessage = (msg) => {
     switch (msg.type) {
@@ -458,20 +571,23 @@ const MessageDetail = () => {
             direction={msg.direction}
           />
         )
-      case 'offer':
-        return (
-          <OfferMessageBox
-            avatar={Avatar}
-            hostname={msg.data.hostname}
-            applicantname={msg.data.applicantname}
-            time={msg.data.time}
-            price={msg.data.price}
-            direction={msg.direction}
-            onPaid={handlePaid}
-            onReject={handleRejectFromGuest}
-            onCheckSub = {handleHostCheckSub}
-          />
-        )
+        case 'offer':
+          return (
+            <OfferMessageBox
+              avatar={Avatar}
+              hostname={msg.data.hostname}
+              applicantname={msg.data.applicantname}
+              time={msg.data.time}
+              price={msg.data.price}
+              direction={msg.direction}
+              subjectId={msg.data.subjectId}  // 传递 subjectId
+              hostUid={msg.data.hostUid}      // 传递 hostUid
+              isProperty={msg.data.isProperty} // 传递 isProperty
+              onPaid={() => handleShowContact(msg.data.subjectId, msg.data.hostUid)} // 传递参数
+              onReject={(reason) => handleRejectFromGuest(reason, msg.data.subjectId)} // 传递参数
+              onCheckSub={() => handleHostCheckSub(msg.data.subjectId)}
+            />
+          )
       case 'contact':
         return (
           <ContactMessageBox
@@ -484,7 +600,7 @@ const MessageDetail = () => {
         return (
           <SimpleMessageBox
             avatar={Avatar}
-            content={msg.data.content}
+            content={msg.data.content || '未知消息类型'}
             time={msg.data.time}
             direction="left"
           />
@@ -497,10 +613,11 @@ const MessageDetail = () => {
       <CustomNavBar title={name} avatar='...' />
       {/* 消息列表区域 */}
       <ScrollView 
-          className='message-list'  
-          scrollY
-          scrollTop={scrollTop}
-          >
+        className='message-list'  
+        scrollY
+        scrollTop={scrollTop}
+        scrollWithAnimation
+      >
         {messages.map((msg, index) => (
           <View key={`${msg.id}-${index}`} className='message-wrapper'>
             {renderMessage(msg)}
@@ -508,8 +625,8 @@ const MessageDetail = () => {
         ))}
       </ScrollView>
 
-        {/* 底部输入框区域 */}
-        <View className='input-box'>
+      {/* 底部输入框区域 */}
+      <View className='input-box'>
         <Input
           className='input'
           value={inputValue}
@@ -517,7 +634,7 @@ const MessageDetail = () => {
           placeholder='请输入...'
         />
         <View className='send-btn' onClick={handleSend}>
-         ↑
+          ↑
         </View>
       </View>
     </View>
