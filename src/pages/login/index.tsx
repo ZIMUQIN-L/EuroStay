@@ -22,8 +22,7 @@ const Loading = () => {
 const Login = () => {
   const [hasUserAgreed, setHasUserAgreed] = useState(false);
   const [isChecking, setIsChecking] = useState(true);
-  const [socket, setSocket] = useState<Taro.SocketTask | null>(null)
-
+  const [socket, setSocket] = useState<Taro.SocketTask | null>(null);
 
   useEffect(() => {
     checkLoginStatus();
@@ -40,7 +39,7 @@ const Login = () => {
               if (response.statusCode === 200 && response.data.code === 0) {
                 const { exist, userInfo } = response.data;
                 if (exist) {
-                  GlobalStore.setUid(userInfo.uid);
+                  GlobalStore.setUid(6);
                   GlobalStore.setAllInfo(userInfo);
                   GlobalStore.setToken(response.data.token);
                   GlobalStore.currentTab = 'world';
@@ -91,46 +90,44 @@ const Login = () => {
     });
   };
 
-
-  const connectWebSocket = async (token) => {
+  const connectWebSocket = async token => {
     if (!token) {
-      console.error('缺少 token，无法连接 WebSocket')
-      return
+      console.error('缺少 token，无法连接 WebSocket');
+      return;
     }
-  
-    const wsUrl = `wss://api.eurostay.co/app/essocket/${token}`
-    console.log('正在连接 WebSocket:', wsUrl)
-  
+
+    const wsUrl = `wss://api.eurostay.co/app/essocket/${token}`;
+    console.log('正在连接 WebSocket:', wsUrl);
+
     try {
       const ws = await Taro.connectSocket({
         url: wsUrl,
         header: { 'content-type': 'application/json' },
-      })
-  
+      });
+
       // WebSocket 监听事件
       ws.onOpen(() => {
-        console.log('WebSocket 已连接')
-      })
-  
-      ws.onMessage((res) => {
-        console.log('收到 WebSocket 消息:', res.data)
-      })
-  
+        console.log('WebSocket 已连接');
+      });
+
+      ws.onMessage(res => {
+        console.log('收到 WebSocket 消息:', res.data);
+      });
+
       ws.onClose(() => {
-        console.log('WebSocket 连接关闭')
-        setTimeout(() => connectWebSocket(token), 3000) // 3秒后自动重连
-      })
-  
-      ws.onError((err) => {
-        console.error('WebSocket 发生错误:', err)
-      })
-  
-      setSocket(ws) // 存储 WebSocket 实例
+        console.log('WebSocket 连接关闭');
+        setTimeout(() => connectWebSocket(token), 3000); // 3秒后自动重连
+      });
+
+      ws.onError(err => {
+        console.error('WebSocket 发生错误:', err);
+      });
+
+      setSocket(ws); // 存储 WebSocket 实例
     } catch (error) {
-      console.error('WebSocket 连接失败:', error)
+      console.error('WebSocket 连接失败:', error);
     }
-  }
-  
+  };
 
   const handleCheckboxChange = () => {
     setHasUserAgreed(!hasUserAgreed);
