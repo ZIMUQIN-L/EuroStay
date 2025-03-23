@@ -46,6 +46,24 @@ interface HouseFormData {
   wechat: string;
 }
 
+interface PropertyBase {
+  id: number;
+  title: string;
+  description: string;
+  location: string;
+  searchableLocation: number;
+  price: number;
+  images: string[];
+  tags: string[];
+  gender: number;
+  capacity: number;
+  requirements: string[];
+  whyHost: string;
+  wxId: string;
+  qrCode: string;
+  availableDate: string[];
+}
+
 const HousePublish = () => {
   const [formData, setFormData] = useState<HouseFormData>({
     houseName: '',
@@ -81,15 +99,27 @@ const HousePublish = () => {
   const [cities, setCities] = useState<
     { id: number; cname: string; name: string }[]
   >([]);
+  const [pid, setPid] = useState<number | null>(null);
+
   useEffect(() => {
+    const params = Taro.getCurrentInstance().router?.params;
+    const routerPid = params?.pid;
+    
     Taro.setNavigationBarTitle({
-      title: '发布房源',
+      title: routerPid ? '修改房源' : '发布房源',
     });
+
+    if (routerPid) {
+      setPid(Number(routerPid));
+      fetchPropertyBase(Number(routerPid));
+    }
     getCountries();
   }, []);
+
   useEffect(() => {
     getCities();
   }, [formData.country.id]);
+
   const getCities = async () => {
     console.log(GlobalStore.userInfo.token);
     await Taro.request({
@@ -117,6 +147,7 @@ const HousePublish = () => {
       },
     });
   };
+
   const getCountries = async () => {
     console.log(GlobalStore.userInfo.token);
     await Taro.request({
@@ -140,6 +171,58 @@ const HousePublish = () => {
         });
       },
     });
+  };
+
+  const fetchPropertyBase = async (propertyId: number) => {
+    try {
+      const response = await Taro.request({
+        url: `https://api.eurostay.co/app/property/getPropertyBase`,
+        method: 'POST',
+        header: {
+          token: GlobalStore.userInfo.token,
+        },
+        data: { id: propertyId }
+      });
+
+      if (response.statusCode === 200 && response.data.code === 0) {
+        const detail = response.data.result;
+        
+        const availableDates: [string, string][] = [];
+        let currentStart = '';
+        
+        detail.availableDate.forEach((date, index) => {
+          const cleanDate = date.split(' ')[0];
+          if (index % 2 === 0) {
+            currentStart = cleanDate;
+          } else {
+            availableDates.push([currentStart, cleanDate]);
+          }
+        });
+
+        setFormData({
+          ...formData,
+          houseName: detail.title,
+          houseDesc: detail.description,
+          houseTag: detail.tags,
+          price: String(detail.price),
+          tenantGender: detail.gender,
+          tenantCount: detail.capacity,
+          otherRequirements: detail.requirements,
+          houseImages: detail.images,
+          story: detail.whyHost,
+          wechat: detail.wxId,
+          paymentImages: detail.qrCode ? [detail.qrCode] : [],
+        });
+
+        setMultiDays(availableDates);
+      }
+    } catch (error) {
+      Taro.showToast({
+        title: '获取房源信息失败',
+        icon: 'none',
+        duration: 2000,
+      });
+    }
   };
 
   const handleDateChange = (startValue, endValue) => {
@@ -211,7 +294,6 @@ const HousePublish = () => {
           success: function (result) {
             const responseData = JSON.parse(result.data);
             const imageUrl: string = responseData['result'];
-            // 根据类型更新不同的字段
             console.log(imageUrl);
             if (type === 'house') {
               setFormData({
@@ -243,7 +325,7 @@ const HousePublish = () => {
     setFormData({
       ...formData,
       country: selectedCountry,
-      city: { id: 0, cname: '选择城市', name: '' }, // 重置城市
+      city: { id: 0, cname: '选择城市', name: '' },
     });
   };
 
@@ -272,7 +354,6 @@ const HousePublish = () => {
   const validateForm = () => {
     const errors: string[] = [];
 
-    // 检查必填字段
     if (!formData.houseName.trim()) {
       errors.push('请填写房源名称');
     }
@@ -332,7 +413,6 @@ const HousePublish = () => {
     const errors = validateForm();
     
     if (errors.length > 0) {
-      // 如果有错误，显示第一个错误信息
       Taro.showToast({
         title: errors[0],
         icon: 'none',
@@ -341,45 +421,49 @@ const HousePublish = () => {
       return;
     }
 
-    // 组合完整地址
     const fullAddress = `${formData.country.cname}${formData.city.cname}||${formData.detailAddress}`;
 
     try {
+      const url = pid 
+        ? 'https://api.eurostay.co/app/property/modify'
+        : 'https://api.eurostay.co/app/property/upload';
+
+      const requestData = {
+        ...(pid && { pid }),
+        title: formData.houseName,
+        description: formData.houseDesc,
+        location: fullAddress,
+        searchableLocation: formData.city.id,
+        price: Number(formData.price),
+        images: formData.houseImages,
+        tags: formData.houseTag,
+        gender: formData.tenantGender,
+        capacity: formData.tenantCount,
+        whyHost: formData.story,
+        wxId: formData.wechat,
+        qrCode: formData.paymentImages?.[0],
+        requirements: formData.otherRequirements,
+        availableDate: multiDays.flatMap(pair => pair).sort((a, b) => new Date(a).getTime() - new Date(b).getTime()),
+      };
+
       const response = await Taro.request({
-        url: `https://api.eurostay.co/app/property/upload`,
+        url,
         method: 'POST',
         header: {
           token: GlobalStore.userInfo.token,
         },
-        data: {
-          title: formData.houseName,
-          description: formData.houseDesc,
-          location: fullAddress,
-          searchableLocation: formData.city.id,
-          price: Number(formData.price),
-          images: formData.houseImages,
-          tags: formData.houseTag,
-          gender: formData.tenantGender,
-          capacity: formData.tenantCount,
-          whyHost: formData.story,
-          wxId: formData.wechat,
-          qrCode: formData.paymentImages?.[0],
-          requirements: formData.otherRequirements,
-          availableDate: multiDays.flatMap(pair => pair).sort((a, b) => new Date(a).getTime() - new Date(b).getTime()),
-        }
+        data: requestData
       });
 
       if (response.statusCode === 200 && response.data.code === 0) {
         Taro.showToast({
-          title: '你已成功上传房源！房源正在等待审核，审核通过后将公众可见。',
+          title: pid ? '修改成功！' : '你已成功上传房源！房源正在等待审核，审核通过后将公众可见。',
           icon: 'none',
           duration: 2000,
         });
         setTimeout(() => {
           Taro.navigateBack();
         }, 2000);
-      } else {
-        throw new Error('上传失败');
       }
     } catch (error) {
       Taro.showToast({
@@ -706,7 +790,6 @@ const HousePublish = () => {
               multiple={true}
               marks={marks}
               currentDate={{ start: startDate, end: endDate }}
-              // validRange={{ start: today }} // 有效日期范围
               minDate={today}
               onDayClick={date => {
                 const selectedDate = date.value;
@@ -821,7 +904,7 @@ const HousePublish = () => {
         </View>
       </View>
       <View className='submit-post-house' onClick={handleSubmit}>
-        上传房源
+        {pid ? '保存修改' : '上传房源'}
       </View>
     </View>
   );
