@@ -1,0 +1,47 @@
+.custom-nav-bar {
+    display: flex;
+    align-items: center;
+    padding: 0 12px;
+    background-color: #fff;
+    box-sizing: border-box;
+  
+    .back-area {
+      width: 40px; 
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 60px; /* 让 back-area 底部留 20px */
+  
+      .back-icon {
+        width: 70px;
+        height: 70px;
+      }
+    }
+  
+    .title-area {
+      flex: 1; 
+      display: flex;
+      align-items: center;
+      margin-top: 60px;  /* 让 title-area 底部留 20px */
+  
+      .avatar {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%; 
+        margin-right: 8px; 
+      }
+  
+      text {
+        font-size: 30px;
+        color: #333;
+      }
+    }
+  
+    // .right-area {
+    //   width: 40px; 
+    //   display: flex;
+    //   align-items: center;
+    //   justify-content: flex-end;
+    // }
+  }
+  

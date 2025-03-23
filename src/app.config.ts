@@ -43,6 +43,10 @@ export default {
     //   root: 'packageActivity/',
     //   pages: [],
     // },
+    {
+      root: 'packageMessage',
+      pages: ['message-detail/index', 'strangers/index'],
+    },
   ],
   window: {
     backgroundTextStyle: 'light',
