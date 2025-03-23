@@ -1,3 +1,21 @@
+.page-container {
+  position: relative;
+  min-height: 100vh;
+
+  &.modal {
+    &::after {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(255, 255, 255, 0.95);
+      z-index: 99998;
+    }
+  }
+}
+
 .user-setting {
   min-height: 100vh;
   background: linear-gradient(180deg, #F8F0FF 0%, #FFFFFF 100%);
@@ -5,6 +23,7 @@
   box-sizing: border-box;
   position: relative;
   padding-bottom: 160px;
+  z-index: 1;
 
   .page-title {
     font-size: 36px;
@@ -185,7 +204,7 @@
     display: flex;
     justify-content: center;
     padding: 0 32px;
-    z-index: 100;
+    z-index: 2;
 
     .logout-btn {
       width: 500px;
@@ -199,6 +218,7 @@
       color: #8A70D6;
       border: 2px solid #8A70D6;
       box-shadow: 0 4px 12px rgba(138, 112, 214, 0.1);
+      margin-bottom: 160px;
 
       &:active {
         opacity: 0.8;

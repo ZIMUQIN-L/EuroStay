@@ -1,0 +1,78 @@
+.common-setting {
+  min-height: 100vh;
+  background: linear-gradient(180deg, #F8F0FF 0%, #FFFFFF 100%);
+  padding-bottom: 120px; // 为底部按钮留出空间
+
+  .content {
+    padding: 32px;
+
+    .section {
+      margin-bottom: 32px;
+      padding: 32px;
+      background: #FFFFFF;
+      border-radius: 24px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+
+      .section-header {
+        display: flex;
+        align-items: center;
+        height: 48px;
+        margin-bottom: 24px;
+
+        .label-bar {
+          width: 4px;
+          height: 32px;
+          background: #8A70D6;
+          border-radius: 2px;
+          margin-right: 12px;
+          flex-shrink: 0;
+        }
+
+        .section-title {
+          font-size: 32px;
+          line-height: 32px;
+          color: #333;
+          font-family: 'Alibaba PuHuiTi';
+          font-weight: 500;
+          display: flex;
+          align-items: center;
+        }
+      }
+
+      .section-content {
+        font-size: 28px;
+        color: #666;
+        line-height: 1.6;
+        font-family: 'Alibaba PuHuiTi';
+        padding-left: 16px;
+      }
+    }
+  }
+
+  .button-group {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 24px 64px;
+    background: #FFFFFF;
+    box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.05);
+
+    .back-button {
+      height: 64px;
+      background: #FFFFFF;
+      border: 2px solid rgba(138, 112, 214, 0.3);
+      border-radius: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #8A70D6;
+      font-size: 32px;
+      font-family: 'Alibaba PuHuiTi';
+
+      &:active {
+        opacity: 0.8;
+      }
+    }
+  }
+} 

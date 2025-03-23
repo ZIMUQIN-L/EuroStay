@@ -44,10 +44,9 @@ const Login = () => {
                   GlobalStore.setUid(userInfo.uid);
                   GlobalStore.setAllInfo(userInfo);
                   GlobalStore.setToken(response.data.token);
-
-
+                  GlobalStore.currentTab = 'world';
                   Taro.reLaunch({
-                    url: '/pages/home/index'
+                    url: '/pages/home-world/index'
                   });
                 } else {
                   setIsChecking(false);
@@ -159,8 +158,9 @@ const Login = () => {
                 // 保存 token 和 uid
                 GlobalStore.setAllInfo(response.data.userInfo);
                 GlobalStore.setToken(response.data.token);
+                GlobalStore.currentTab = 'world';
                 Taro.reLaunch({ 
-                  url: '/pages/home/index',
+                  url: '/pages/home-world/index',
                   success: function () {
                     Taro.showToast({
                       title: '登录成功',
