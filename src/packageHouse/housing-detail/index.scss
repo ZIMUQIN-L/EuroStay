@@ -47,6 +47,7 @@
     }
 
     .house-title {
+      font-family: 'Alibaba PuHuiTi';
         display: flex;
         position: fixed;
         width: 100%;
@@ -59,6 +60,7 @@
     }
 
     .fee {
+        font-family: 'Alibaba PuHuiTi';
         position: absolute;
         color: #FFFFFF;
         font-size: 32px;
@@ -134,6 +136,7 @@
         padding: 40px;
   
         .modal-title {
+          font-family: 'Alibaba PuHuiTi';
           font-size: 28px;
           color: #333;
           text-align: center;
@@ -141,6 +144,7 @@
         }
 
         .message-input {
+            font-family: 'Alibaba PuHuiTi'; 
             // position: relative;
             width: 100%;
             height: 40px;
@@ -190,6 +194,7 @@
         //   }
         // }
         .confirm-button {
+            font-family: 'Alibaba PuHuiTi';
             width: 75%;
             height: 71px;
             color: #333333;

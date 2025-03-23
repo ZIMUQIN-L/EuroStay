@@ -34,8 +34,10 @@ const Index = () => {
     switch (status) {
       case 0:
         if (activeRole === 'host') return "待审核";
+        else return "查看";
       case 1:
         if (activeRole === 'guest') return "待确认";
+        else return "查看";
       case 3:
         return "待评价";
       case 2:
@@ -69,8 +71,9 @@ const Index = () => {
   }
 
   const getDate = (date: string): string => {
-    const dateObj = new Date(date.replace('-', '/').replace('-', '/'));
-    return `${dateObj.getFullYear()}年${dateObj.getMonth() + 1}月${dateObj.getDay()}日`;
+    // const dateObj = new Date(date.replace('-', '/').replace('-', '/'));
+    // return `${dateObj.getFullYear()}年${dateObj.getMonth() + 1}月${dateObj.getDay()}日`;
+    return date.substring(0, 10);
   }
 
   const getOrderList = (callback, type: number, isLoadMore = false) => {
@@ -90,6 +93,7 @@ const Index = () => {
         page: currentPage,
       },
       success: function (response) {
+        console.log('getOrderList', response);
         if (response.statusCode === 200 && response.data.code === 0) {
           const newData = response.data.result.data;
           if (isLoadMore) {
@@ -191,7 +195,7 @@ const Index = () => {
                 title={order.title}
                 date={order.date}
                 price={`€${order.price}/晚`}
-                role={getRole(1)}
+                role={getRole(0)}
                 status={getStatus(order.status)}
                 type={order.type}
                 id={order.id}

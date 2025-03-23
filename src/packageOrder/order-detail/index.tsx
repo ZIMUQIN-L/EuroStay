@@ -1,6 +1,6 @@
 import { View, Input, Textarea, Text, Image } from '@tarojs/components'
 import { observer } from 'mobx-react';
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useRouter } from '@tarojs/taro';
 import Taro from '@tarojs/taro'
 import OrderInfo from '../../components/OrderInfo';
@@ -32,6 +32,7 @@ const Index: React.FC = () => {
 
     const [rejectMessage, setRejectMessage] = useState('');
     const [showRejectModal, setShowRejectModal] = useState(false)
+    const [orderStatus, setOrderStatus] = useState(0);
 
     const hostConfirm = () => {
         Taro.request({
@@ -44,11 +45,23 @@ const Index: React.FC = () => {
                 id: Number(id),
             },
             success: function (response) {
-                Taro.showToast({
-                    title: '已同意申请，等待 Guest 确认',
-                    icon: 'success',
-                    duration: 2000,
-                });
+                if (response.statusCode === 200 && response.data.code === 0) {
+                    Taro.showToast({
+                        title: '已同意申请，等待 Guest 确认',
+                        icon: 'none',
+                        duration: 2000,
+                    });
+                    setTimeout(() => {
+                        setLoadingComplete(false);
+                        Taro.navigateBack();
+                      }, 2000);
+                } else {
+                    Taro.showToast({
+                        title: response.data.msg + ' 同意申请失败，请稍后再试',
+                        icon: 'none',
+                        duration: 2000,
+                    })
+                }
             },
             fail: function (err) {
                 Taro.showToast({
@@ -56,14 +69,19 @@ const Index: React.FC = () => {
                     icon: 'none',
                     duration: 2000,
                 });
-            },
-            complete: function () {
-              Taro.navigateBack()
             }
         });
     }
 
     const handelReject = () => {
+        if (rejectMessage === '') {
+            Taro.showToast({
+                title: '请填写拒绝理由',
+                icon: 'none',
+                duration: 2000,
+            });
+            return;
+        }
         if (role === 'host') {
             hostReject();
         } else {
@@ -83,11 +101,28 @@ const Index: React.FC = () => {
                 reason: rejectMessage,
             },
             success: function (response) {
-                Taro.showToast({
-                    title: '已拒绝申请',
-                    icon: 'success',
-                    duration: 2000,
+                console.log('hostReject', {
+                    id: Number(id),
+                    reason: rejectMessage,
+                    url: Number(type) === 0 ? `https://api.eurostay.co/app/property/rejectPropertyApplication` : 'https://api.eurostay.co/app/activity/rejectActivityApplication',
                 });
+                if (response.statusCode === 200 && response.data.code === 0) {
+                    Taro.showToast({
+                        title: '已拒绝申请，等待 Guest 确认',
+                        icon: 'none',
+                        duration: 2000,
+                    });
+                    setTimeout(() => {
+                        setLoadingComplete(false);
+                        Taro.navigateBack();
+                      }, 2000);
+                } else {
+                    Taro.showToast({
+                        title: response.data.msg + ' 拒绝申请失败，请稍后再试',
+                        icon: 'none',
+                        duration: 2000,
+                    })
+                }
             },
             fail: function (err) {
                 Taro.showToast({
@@ -95,9 +130,6 @@ const Index: React.FC = () => {
                     icon: 'none',
                     duration: 2000,
                 });
-            },
-            complete: function () {
-              Taro.navigateBack()
             }
         });
     }
@@ -113,11 +145,23 @@ const Index: React.FC = () => {
                 id: Number(id),
             },
             success: function (response) {
-                Taro.showToast({
-                    title: '已确认订单',
-                    icon: 'success',
-                    duration: 2000,
-                });
+                if (response.statusCode === 200 && response.data.code === 0) {
+                    Taro.showToast({
+                        title: '已确认订单',
+                        icon: 'none',
+                        duration: 2000,
+                    });
+                    setTimeout(() => {
+                        setLoadingComplete(false);
+                        Taro.navigateBack();
+                      }, 2000);
+                } else {
+                    Taro.showToast({
+                        title: response.data.msg + ' 确认订单失败，请稍后再试',
+                        icon: 'none',
+                        duration: 2000,
+                    })
+                }
             },
             fail: function (err) {
                 Taro.showToast({
@@ -125,9 +169,6 @@ const Index: React.FC = () => {
                     icon: 'none',
                     duration: 2000,
                 });
-            },
-            complete: function () {
-              Taro.navigateBack()
             }
         });
     }
@@ -144,11 +185,23 @@ const Index: React.FC = () => {
                 reason: rejectMessage,
             },
             success: function (response) {
-                Taro.showToast({
-                    title: '已拒绝申请',
-                    icon: 'success',
-                    duration: 2000,
-                });
+                if (response.statusCode === 200 && response.data.code === 0) {
+                    Taro.showToast({
+                        title: '已拒绝订单',
+                        icon: 'none',
+                        duration: 2000,
+                    });
+                    setTimeout(() => {
+                        setLoadingComplete(false);
+                        Taro.navigateBack();
+                      }, 2000);
+                } else {
+                    Taro.showToast({
+                        title: response.data.msg + ' 拒绝订单失败，请稍后再试',
+                        icon: 'none',
+                        duration: 2000,
+                    })
+                }
             },
             fail: function (err) {
                 Taro.showToast({
@@ -156,9 +209,6 @@ const Index: React.FC = () => {
                     icon: 'none',
                     duration: 2000,
                 });
-            },
-            complete: function () {
-              Taro.navigateBack()
             }
         });
     }
@@ -195,8 +245,9 @@ const Index: React.FC = () => {
         if (date === '') {
             return '';
         }
-        const dateObj = new Date(date.replace('-', '/').replace('-', '/'));
-        return `${dateObj.getFullYear()}年${dateObj.getMonth() + 1}月${dateObj.getDay()}日`;
+        // const dateObj = new Date(date.replace('-', '/').replace('-', '/'));
+        // return `${dateObj.getFullYear()}年${dateObj.getMonth() + 1}月${dateObj.getDay()}日`;
+        return date.replace('-', '/').replace('-', '/').substring(0, 10);
     }
 
     const getGender = (gender: number): string => {
@@ -227,6 +278,7 @@ const Index: React.FC = () => {
                     id: Number(id),
                 },
                 success: function (response) {
+                    console.log('getOrderDetail', response.data.result);
                     setInfoGuest({
                         uid: response.data.result.guestInfo.uid,
                         avatar: response.data.result.guestInfo.avatar,
@@ -240,11 +292,12 @@ const Index: React.FC = () => {
                         orderStatus: getOrderStatus(response.data.result.status),
                         orderId: response.data.result.applicationId,
                         houseName: title,
-                        houseId: experienceId,
+                        houseId: Number(experienceId),
                         price: response.data.result.price,
-                        days: getDays(response.data.result.startDate, response.data.result.endDate),
                         time: `${getDate(response.data.result.startDate)} 至 ${getDate(response.data.result.endDate)}`,
+                        refuseReason: rejectMessage,
                     });
+                    setOrderStatus(response.data.result.status);
                     setInfoHost({
                         uid: response.data.result.hostInfo.uid,
                         avatar: response.data.result.hostInfo.avatar,
@@ -300,11 +353,12 @@ const Index: React.FC = () => {
                         orderStatus: getOrderStatus(response.data.result.status),
                         orderId: response.data.result.applicationId,
                         houseName: title,
-                        houseId: experienceId,
+                        houseId: Number(experienceId),
                         price: response.data.result.price,
-                        // days: getDays(response.data.result.startDate, response.data.result.endDate),
                         time: response.data.result.startDate,
+                        refuseReason: rejectMessage,
                     });
+                    setOrderStatus(response.data.result.status);
                     setInfoHost({
                         uid: response.data.result.hostInfo.uid,
                         avatar: response.data.result.hostInfo.avatar,
@@ -337,19 +391,24 @@ const Index: React.FC = () => {
             });
         }
     }
-
-    getOrderDetail();
+    
+    useEffect(() => {
+        getOrderDetail();
+    }, []);
 
     return (
         <>
             {/* {role === 'host' && <UserCardSmall {...mockDataApplicant}/>}
             <OrderInfo {...mockDataOrder}/>
             <ApplicantInfo {...mockDataUser}/> */}
-            {role === 'host' && <UserCardSmall {...infoGuest}/>}
+            {console.log('role', role)}
+            {console.log('orderStatus', orderStatus)}
+            {console.log('status', status)}
+            {loadingComplete && role === 'host' && <UserCardSmall {...infoGuest}/>}
             {/* {role === 'guest' && <UserCardSmall {...infoHost}/>} */}
-            <OrderInfo {...infoOrder}/>
-            <ApplicantInfo {...infoApplicant}/>
-            {role === 'host' && status === 'awaiting' && 
+            {loadingComplete && <OrderInfo {...infoOrder}/>}
+            {loadingComplete && <ApplicantInfo {...infoApplicant}/>}
+            {loadingComplete && role === 'host' && status === 'awaiting' && orderStatus === 0 && 
                 <>
                     <View 
                         className='purple-fill-button' 
@@ -365,7 +424,7 @@ const Index: React.FC = () => {
                     </View>
                 </>
             }
-            {role === 'host' && status === 'ongoing' && 
+            {loadingComplete && role === 'host' && status === 'ongoing' && 
                 <View 
                     className='purple-fill-button' 
                     // onClick={console.log('cofirm')}
@@ -373,7 +432,15 @@ const Index: React.FC = () => {
                     联系Guest
                 </View>
             }
-            {role === 'host' && status === 'expired' && 
+            {loadingComplete && role === 'host' && status === 'awaiting' && orderStatus === 1 && 
+                <View 
+                    className='purple-fill-button' 
+                    // onClick={console.log('cofirm')}
+                >
+                    联系Guest
+                </View>
+            }
+            {loadingComplete && role === 'host' && status === 'expired' && 
                 <View 
                     className='purple-fill-button' 
                     // onClick={console.log('cofirm')}
@@ -381,7 +448,7 @@ const Index: React.FC = () => {
                     和申请人聊聊
                 </View>
             }
-            {role === 'guest' && status === 'awaiting' && 
+            {loadingComplete && role === 'guest' && status === 'awaiting' && orderStatus === 1 && 
                 <>
                     <View 
                         className='yellow-fill-button' 
@@ -397,7 +464,7 @@ const Index: React.FC = () => {
                     </View>
                 </>
             }
-            {role === 'guest' && status === 'ongoing' && 
+            {loadingComplete && role === 'guest' && status === 'ongoing' && 
                 <View 
                     className='yellow-fill-button' 
                     // onClick={console.log('cofirm')}
@@ -405,7 +472,15 @@ const Index: React.FC = () => {
                     联系Host
                 </View>
             }
-            {role === 'guest' && status === 'expired' && 
+            {loadingComplete && role === 'guest' && status === 'awaiting' && orderStatus === 0 && 
+                <View 
+                    className='yellow-fill-button' 
+                    // onClick={console.log('cofirm')}
+                >
+                    联系Host
+                </View>
+            }
+            {loadingComplete && role === 'guest' && status === 'expired' && 
                 <View 
                     className='yellow-fill-button' 
                     // onClick={console.log('cofirm')}
