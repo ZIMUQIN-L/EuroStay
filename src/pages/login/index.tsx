@@ -39,7 +39,7 @@ const Login = () => {
               if (response.statusCode === 200 && response.data.code === 0) {
                 const { exist, userInfo } = response.data;
                 if (exist) {
-                  GlobalStore.setUid(6);
+                  GlobalStore.setUid(userInfo.uid);
                   GlobalStore.setAllInfo(userInfo);
                   GlobalStore.setToken(response.data.token);
                   GlobalStore.currentTab = 'world';
