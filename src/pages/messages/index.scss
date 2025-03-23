@@ -1,6 +1,7 @@
 .home-messages {
-  padding: 20rpx;
-  background-color: #fff;
+  min-height: 100vh;
+  padding-bottom: 120px;
+  background: #fff;
   
   .title {
     font-size: 32rpx;
@@ -10,43 +11,48 @@
   
   .message-item {
     display: flex;
-    flex-direction: row;
-    align-items: flex-start;
-    padding: 20rpx 0;
-    border-bottom: 1px solid #f0f0f0;
+    padding: 24rpx 32rpx;
+    border-bottom: 1px solid #f5f5f5;
     
     .avatar {
       width: 80rpx;
       height: 80rpx;
       border-radius: 50%;
-      margin-right: 20rpx;
+      margin-right: 24rpx;
     }
     
     .message-content {
       flex: 1;
+      padding-right: 32rpx;
       
       .message-header {
         display: flex;
-        flex-direction: row;
         justify-content: space-between;
+        align-items: center;
         margin-bottom: 8rpx;
         
         .name {
           font-size: 28rpx;
-          font-weight: bold;
           color: #333;
+          font-weight: 500;
         }
         
         .time {
           font-size: 24rpx;
           color: #999;
+          margin-left: 12rpx;
         }
       }
       
       .message-text {
         font-size: 26rpx;
         color: #666;
+        line-height: 36rpx;
       }
     }
+  }
+
+  .special-item {
+    background: #f8f8f8;
   }
 }

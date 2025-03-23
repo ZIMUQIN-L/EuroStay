@@ -4,17 +4,44 @@ import Taro from '@tarojs/taro'
 import { useState, useEffect } from 'react'
 import './index.scss' // 记得在这里引入自己的样式文件
 import GlobalStore from '@store/GlobalStore'
+import TabBar from '@components/TabBar'
+
+// 在文件开头添加接口定义
+interface MessageItem {
+  id: number;
+  avatar: string;
+  name: string;
+  message: string;
+  time: string;
+  otherUid: number;
+  type?: string;
+  rawData?: {
+    fromUid: number;
+    toUid: number;
+    content: string;
+    createTime: string;
+  };
+}
+
+interface SessionRecord {
+  id: number;
+  initUid: number;
+  replyUid: number;
+  topMessage: string;
+  updateTime: string;
+  stype: number;
+  initStranger: boolean;
+  replyStranger: boolean;
+}
 
 const Index = () => {
-  // 定义特殊消息的状态
-  const [systemMessages, setSystemMessages] = useState([]);
-  const [strangerMessages, setStrangerMessages] = useState([]);
+  // 修改 state 的类型定义
+  const [systemMessages, setSystemMessages] = useState<MessageItem[]>([]);
+  const [strangerMessages, setStrangerMessages] = useState<MessageItem[]>([]);
+  const [messages, setMessages] = useState<MessageItem[]>([]);
   
-  // 普通消息数据
-  const [messages, setMessages] = useState([]);
-
   // Mock 数据 - 用于测试
-  const mockNormalMessages = [
+  const mockNormalMessages: MessageItem[] = [
     {
       id: 101,
       avatar: 'https://example.com/avatar3.png',
@@ -41,7 +68,7 @@ const Index = () => {
     }
   ];
 
-  const mockSystemMessages = [
+  const mockSystemMessages: MessageItem[] = [
     {
       id: 201,
       avatar: 'https://example.com/system-avatar.png',
@@ -61,6 +88,9 @@ const Index = () => {
       otherUid: 0
     }
   ];
+
+  // 修改 TabBar 相关的 state
+  const [isShowPostModal, setIsShowPostModal] = useState(false);
 
   useEffect(() => {
     // 获取 token
@@ -109,12 +139,12 @@ const Index = () => {
       if (res.statusCode === 200 && res.data.code === 0) {
         const records = res.data.result.records || [];
         
-        // 用于存储不同类型的消息
-        const normalMsgs = [];
-        const systemMsgs = [];
-        const strangerMsgs = [];
+        // 添加类型定义
+        const normalMsgs: MessageItem[] = [];
+        const systemMsgs: MessageItem[] = [];
+        const strangerMsgs: MessageItem[] = [];
   
-        records.forEach((record) => {
+        records.forEach((record: SessionRecord) => {
           // 确定对方的UID
           const otherPersonUid = currentUid === record.initUid 
             ? record.replyUid 
@@ -128,7 +158,7 @@ const Index = () => {
             : record.initStranger;
             
           // 创建基本消息对象
-          const messageObj = {
+          const messageObj: MessageItem = {
             id: record.id,
             avatar: 'https://example.com/avatar4.png',
             name: displayName,
@@ -301,6 +331,13 @@ const Index = () => {
           </View>
         </View>
       ))}
+
+      {/* 添加 TabBar */}
+      <TabBar 
+        onWorldSelected={() => {}}
+        isShowPostModal={isShowPostModal}
+        setIsShowPostModal={setIsShowPostModal}
+      />
     </View>
   );
 };
