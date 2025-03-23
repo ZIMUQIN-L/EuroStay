@@ -75,7 +75,7 @@ const Index = () => {
 
   const getOrderList = (callback, type: number, isLoadMore = false) => {
     if (loading || (!hasMore && isLoadMore)) return;
-    console.log('GlobalStore.userInfo', GlobalStore.userInfo);
+    // console.log('GlobalStore.userInfo', GlobalStore.userInfo);
 
     setLoading(true);
     const currentPage = isLoadMore ? page : 1;
@@ -84,18 +84,17 @@ const Index = () => {
       url: `https://api.eurostay.co/app/order/getOrderList`,
       method: 'POST',
       header: {
-        token:
-          'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI2IiwiaWF0IjoxNzQyNzQzMzkzLCJleHAiOjE3NDMzNDgxOTN9.HGo_woXutCklGDo3yJv5siGiwhuNDOgnm9nrfBy_bivG5Q69YwPo3lnRFo9WKtZiKeI9BmmjAH4H5dPiXT4jmw',
+        token: GlobalStore.userInfo.token,
       },
       data: {
         type: type,
         page: currentPage,
       },
       success: function (response) {
-        console.log('response', response);
+        // console.log('response', response);
         if (response.statusCode === 200 && response.data.code === 0) {
           const newData = response.data.result.data;
-          console.log('newData', newData);
+          // console.log('newData', newData);
           if (isLoadMore) {
             if (newData.length === 0) {
               setHasMore(false);
@@ -131,9 +130,9 @@ const Index = () => {
   };
 
   // 使用 useReachBottom hook
-  // useReachBottom(() => {
-  //   handleLoadMore();
-  // });
+  useReachBottom(() => {
+    handleLoadMore();
+  });
 
   // 切换 tab 时重置分页状态
   useEffect(() => {
@@ -144,11 +143,6 @@ const Index = () => {
       1,
     );
   }, [activeRole, currentTab]);
-
-  // useEffect(() => {
-  //   console.log('orderListHost', orderListHost);
-  // }, []);
-  // getOrderList(setOrderListHost, 0, true);
 
   const renderContent = () => {
     console.log('renderContent');
