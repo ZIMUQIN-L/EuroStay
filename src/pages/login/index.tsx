@@ -23,6 +23,8 @@ const Loading = () => {
 const Login = () => {
   const [hasUserAgreed, setHasUserAgreed] = useState(false);
   const [isChecking, setIsChecking] = useState(true);
+  const [socket, setSocket] = useState<Taro.SocketTask | null>(null)
+
 
   useEffect(() => {
     checkLoginStatus();
@@ -89,6 +91,47 @@ const Login = () => {
       }
     });
   };
+
+
+  const connectWebSocket = async (token) => {
+    if (!token) {
+      console.error('缺少 token，无法连接 WebSocket')
+      return
+    }
+  
+    const wsUrl = `wss://api.eurostay.co/app/essocket/${token}`
+    console.log('正在连接 WebSocket:', wsUrl)
+  
+    try {
+      const ws = await Taro.connectSocket({
+        url: wsUrl,
+        header: { 'content-type': 'application/json' },
+      })
+  
+      // WebSocket 监听事件
+      ws.onOpen(() => {
+        console.log('WebSocket 已连接')
+      })
+  
+      ws.onMessage((res) => {
+        console.log('收到 WebSocket 消息:', res.data)
+      })
+  
+      ws.onClose(() => {
+        console.log('WebSocket 连接关闭')
+        setTimeout(() => connectWebSocket(token), 3000) // 3秒后自动重连
+      })
+  
+      ws.onError((err) => {
+        console.error('WebSocket 发生错误:', err)
+      })
+  
+      setSocket(ws) // 存储 WebSocket 实例
+    } catch (error) {
+      console.error('WebSocket 连接失败:', error)
+    }
+  }
+  
 
   const handleCheckboxChange = () => {
     setHasUserAgreed(!hasUserAgreed);

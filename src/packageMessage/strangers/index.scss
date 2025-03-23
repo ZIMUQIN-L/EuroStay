@@ -1,0 +1,88 @@
+/* strangers/index.scss */
+
+.strangers-page {
+  padding: 20rpx;
+  background-color: #fff;
+  min-height: 100vh;
+}
+
+.title {
+  font-size: 32rpx;
+  font-weight: bold;
+  margin-bottom: 20rpx;
+}
+
+.strangers-list {
+  /* 确保列表可以滚动且占满剩余高度 */
+  height: calc(100vh - 140rpx); /* 减去标题和padding的高度 */
+}
+
+.stranger-item {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  padding: 20rpx 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.avatar {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 50%;
+  margin-right: 20rpx;
+}
+
+.content {
+  flex: 1;
+}
+
+.header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 8rpx;
+}
+
+.name {
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+.time {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.message {
+  font-size: 26rpx;
+  color: #666;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+}
+
+.empty-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 150rpx 0;
+}
+
+.empty-text {
+  font-size: 28rpx;
+  color: #999;
+  text-align: center;
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200rpx;
+  font-size: 28rpx;
+  color: #999;
+}
