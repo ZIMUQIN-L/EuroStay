@@ -136,7 +136,7 @@ const TabBar: React.FC<TabBarProps> = ({ onWorldSelected, setIsShowPostModal, is
           </View>
         </View>
       )}
-      <View className='custom-tab-bar' style={{ height: tabBarHeight }}>
+      <View className='custom-tab-bar'>
         <View className='item' onClick={() => handleTabClick('world')}>
           <View className='tab-icon'>
             <Image src={currentTab === 'world' ? worldSelectedIcon : worldIcon} />

@@ -51,7 +51,7 @@ export interface homePropertyProps {
   images: string[];
   location: string;
   price: number;
-  startTime: string;
+  startDate: string;
   tags: string[];
   title: string;
 }

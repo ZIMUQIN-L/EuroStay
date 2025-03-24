@@ -7,6 +7,7 @@ import {
   homeActivityProps,
   homePropertyProps,
 } from '@utils/interfaces';
+import { parseLocation } from '@utils/addressUtil';
 import {
   uuIcon,
   uuSelectedIcon,
@@ -40,6 +41,15 @@ const HomepageCard = (props: {
   useEffect(() => {
     setActiveTab(activeTab);
   }, [props.activeTab]);
+
+  const parseStartDate = (startDate) => {
+    if (startDate == null) {
+        return null;
+    }
+    const date = new Date(startDate.replace(/-/g, "/"));
+    return `${date.getMonth() + 1}月${date.getDate()}日起可入住`;
+  };
+
 
   return (
     <View className={`${getCardClass()} ${props.id}`}>
@@ -103,7 +113,7 @@ const HomepageCard = (props: {
               }
           }></Image>
           {props.activity.location && (
-            <View className='user-location'>{props.activity.location}</View>
+            <View className='user-location'>{parseLocation(props.activity.location)}</View>
           )}
           <View className='button-wrapper'>
             {props.user && (
@@ -146,7 +156,7 @@ const HomepageCard = (props: {
               }
           }></Image>
           {props.property.location && (
-            <View className='user-location'>{props.property?.location}</View>
+            <View className='user-location'>{parseLocation(props.property?.location)}</View>
           )}
           <View className='button-wrapper'>
             {props.user && (
@@ -175,7 +185,7 @@ const HomepageCard = (props: {
           <View className='homepage-card-bottom activity'>
             <View className='bottom-left'>
               <View className='title'>{props.property?.title}</View>
-              <View className='startTime'>{props.property?.startTime}</View>
+              <View className='startTime'>{parseStartDate(props.property?.startDate)}</View>
             </View>
             <View className='bottom-right'>€{props.property?.price}/晚</View>
           </View>
