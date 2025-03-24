@@ -138,10 +138,10 @@ const Index = () => {
   useEffect(() => {
     setPage(1);
     setHasMore(true);
-    getOrderList(
-      activeRole === 'host' ? setOrderListHost : setOrderListGuest,
-      1,
-    );
+    // getOrderList(
+    //   activeRole === 'host' ? setOrderListHost : setOrderListGuest,
+    //   1,
+    // );
   }, [activeRole, currentTab]);
 
   const renderContent = () => {
