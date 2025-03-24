@@ -29,17 +29,11 @@ export default {
     },
     {
       root: 'packageHouse/',
-      pages: [
-        'housing-apply/index',
-        'housing-detail/index',
-      ],
+      pages: ['housing-apply/index', 'housing-detail/index'],
     },
     {
       root: 'packageOrder/',
-      pages: [
-        'order-detail/index',
-        'order-review/index',
-      ],
+      pages: ['order-detail/index', 'order-review/index'],
     },
     // {
     //   root: 'packageHouse/',
@@ -51,11 +45,8 @@ export default {
     // },
     {
       root: 'packageMessage',
-      pages: [
-        'message-detail/index',
-        'strangers/index'
-      ],
-    }
+      pages: ['message-detail/index', 'strangers/index'],
+    },
   ],
   window: {
     backgroundTextStyle: 'light',
