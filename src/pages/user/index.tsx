@@ -287,7 +287,12 @@ const UserProfile = () => {
                         if (item.type === 0) {
                             Taro.navigateTo({
                                 url: `/pages/house-publish/index?pid=${item.id}`
-                              });}
+                            });
+                        } else {
+                            Taro.navigateTo({
+                                url: `/pages/activity-publish/index?aid=${item.id}`
+                            });
+                        }
                         }
                     }
                   />

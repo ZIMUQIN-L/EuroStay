@@ -13,6 +13,7 @@ import {
 import '../../components/Popup/index.scss';
 import Popup from '../../components/Popup';
 import GlobalStore from '@store/GlobalStore';
+import { combineAddress, parseAddress } from '@utils/addressUtil';
 
 enum Gender {
   Female = 0,
@@ -108,7 +109,6 @@ const HousePublish = () => {
     Taro.setNavigationBarTitle({
       title: routerPid ? '修改房源' : '发布房源',
     });
-
     if (routerPid) {
       setPid(Number(routerPid));
       fetchPropertyBase(Number(routerPid));
@@ -121,7 +121,6 @@ const HousePublish = () => {
   }, [formData.country.id]);
 
   const getCities = async () => {
-    console.log(GlobalStore.userInfo.token);
     await Taro.request({
       url: `https://api.eurostay.co/app/eslocation/cityList`,
       method: 'GET',
@@ -149,7 +148,6 @@ const HousePublish = () => {
   };
 
   const getCountries = async () => {
-    console.log(GlobalStore.userInfo.token);
     await Taro.request({
       url: `https://api.eurostay.co/app/eslocation/countryList`,
       method: 'GET',
@@ -157,7 +155,6 @@ const HousePublish = () => {
         token: GlobalStore.userInfo.token,
       },
       success: function (response) {
-        console.log(response);
         if (response.statusCode === 200 && response.data.code === 0) {
           setCountries(response.data.result);
           console.log(response.data.result);
@@ -199,11 +196,17 @@ const HousePublish = () => {
           }
         });
 
+        // 解析地址
+        const addressComponents = parseAddress(detail.location);
+        console.log(addressComponents);
+        
         setFormData({
           ...formData,
           houseName: detail.title,
           houseDesc: detail.description,
           houseTag: detail.tags,
+          country: { id: 0, cname: addressComponents.country, name: '' },
+          city: { id: 0, cname: addressComponents.city, name: '' },
           price: String(detail.price),
           tenantGender: detail.gender,
           tenantCount: detail.capacity,
@@ -212,7 +215,10 @@ const HousePublish = () => {
           story: detail.whyHost,
           wechat: detail.wxId,
           paymentImages: detail.qrCode ? [detail.qrCode] : [],
+          detailAddress: addressComponents.detail, // 设置详细地址
         });
+
+        
 
         setMultiDays(availableDates);
       }
@@ -421,7 +427,11 @@ const HousePublish = () => {
       return;
     }
 
-    const fullAddress = `${formData.country.cname}${formData.city.cname}||${formData.detailAddress}`;
+    const fullAddress = combineAddress(
+      formData.country.cname,
+      formData.city.cname,
+      formData.detailAddress
+    );
 
     try {
       const url = pid 
