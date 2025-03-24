@@ -121,16 +121,16 @@ const HouseDetail: React.FC = () => {
         let end = new Date(dates[i + 1].replace('-', '/').replace('-', '/'));
         start.setDate(start.getDate() + 1)
         end.setDate(end.getDate() + 1)
-        console.log('getValidDates', start, end)
+        // console.log('getValidDates', start, end)
         for (let j = start; j <= end; j.setDate(j.getDate() + 1)) {
           valid.push({value: j.toISOString().substring(0, 10).replace('-', '/').replace('-', '/')});
-          console.log('adding date to valid date: ', j.toISOString().substring(0, 10).replace('-', '/').replace('-', '/'))
+          // console.log('adding date to valid date: ', j.toISOString().substring(0, 10).replace('-', '/').replace('-', '/'))
         }
       }
       // setValid(dates.map(date => {
       //   return {value: date.substring(0, 10).replace('-', '/').replace('-', '/')};
       // }))
-      console.log('valid dates: ', valid)
+      // console.log('valid dates: ', valid)
       setGotValidDates(true)
       return valid;
     }
@@ -153,7 +153,7 @@ const HouseDetail: React.FC = () => {
         id: id,
       },
       success: function (res) {
-        console.log(res)
+        // console.log(res)
         setHostDetail({
           avatar: res.data.result.hostInfo.avatar,
           role: 'Host',
@@ -179,7 +179,7 @@ const HouseDetail: React.FC = () => {
         if (res.data.result.reviews !== undefined) { 
           const reviews = res.data.result.reviews.filter(review => review.fromHost === false);
           setAllReviews(reviews);
-          console.log('all reviews: ', allReviews)
+          // console.log('all reviews: ', allReviews)
           if (reviews.length === 0) {
             sethasReview(false);
           } else {
@@ -298,9 +298,9 @@ const HouseDetail: React.FC = () => {
     startDate.setDate(startDate.getDate() + 1)
     endDate.setDate(endDate.getDate() + 1)
     const valid_dates = valids.map(date => date.value.replace('-', '/').replace('-', '/').substring(0, 10));
-    console.log('check date valid', start, end, valids, valid_dates)
+    // console.log('check date valid', start, end, valids, valid_dates)
     for (let i = startDate; i <= endDate; i.setDate(i.getDate() + 1)) {
-      console.log('checking date: ', i.toISOString().substring(0, 10).replace('-', '/').replace('-', '/'))
+      // console.log('checking date: ', i.toISOString().substring(0, 10).replace('-', '/').replace('-', '/'))
       if (!valid_dates.includes(i.toISOString().substring(0, 10).replace('-', '/').replace('-', '/'))) return false
     }
     return true

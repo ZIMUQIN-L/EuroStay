@@ -11,6 +11,7 @@ const HostAwaitingOrder = ({
     time,
     refuseReason
 }) => {
+    // console.log('refuseReason', refuseReason);
     return (
       <View className='info-card'>
         <View className='info-card-header'>
@@ -65,7 +66,7 @@ const HostAwaitingOrder = ({
           </View>
         </View>
 
-        { refuseReason !== '' &&
+        { refuseReason !== undefined && refuseReason !== '' &&
           <View className='info-card-table-row'>
             <View className='info-card-table-key'>
               拒绝原因

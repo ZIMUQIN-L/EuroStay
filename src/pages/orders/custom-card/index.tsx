@@ -21,9 +21,11 @@ const CustomCard = ({
 
   const handleClick = () => {
     if (status === 'awaiting' || status === 'ongoing' || status === 'expired') {
+      // console.log('navigate to, ' + `/packageOrder/order-detail/index?role=${role}&status=${status}&type=${type}&id=${id}&experienceId=${experienceId}&title=${title}`);
       Taro.navigateTo({ url: `/packageOrder/order-detail/index?role=${role}&status=${status}&type=${type}&id=${id}&experienceId=${experienceId}&title=${title}` });
     }
     else { // review
+      // console.log('navigate to, ' + `/packageOrder/order-review/index?role=${role}&type=${type}&id=${id}&experienceId=${experienceId}&title=${title}`);
       Taro.navigateTo({ url: `/packageOrder/order-review/index?role=${role}&type=${type}&id=${id}&experienceId=${experienceId}&title=${title}` });
     }
   }

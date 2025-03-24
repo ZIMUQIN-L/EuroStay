@@ -1,12 +1,13 @@
 import { View, Text, Image, Button } from '@tarojs/components';
 import { observer } from 'mobx-react';
-import Taro, { useReachBottom } from '@tarojs/taro';
+import Taro, { usePullDownRefresh, useReachBottom } from '@tarojs/taro';
 import { useEffect, useMemo, useState } from 'react';
 import './index.scss';
 import CustemCard from './custom-card/index';
 import GlobalStore from '@store/GlobalStore';
 import {OrderInfo} from '@utils/interfaces';
 import TabBar from '@components/TabBar';
+import { set } from 'mobx';
 
 const Index = () => {
   const [currentTab, setCurrentTab] = useState('all');
@@ -93,7 +94,10 @@ const Index = () => {
         page: currentPage,
       },
       success: function (response) {
-        console.log('getOrderList', response);
+        // console.log('data', {
+        //   type: type,
+        //   page: currentPage,
+        // }, 'getOrderList', response)
         if (response.statusCode === 200 && response.data.code === 0) {
           const newData = response.data.result.data;
           if (isLoadMore) {
@@ -126,20 +130,28 @@ const Index = () => {
   // 处理触底加载
   const handleLoadMore = () => {
     if (loading || !hasMore) return;
-    if (activeRole === 'host') getOrderList(setOrderListHost, 0, true);
-    else getOrderList(setOrderListGuest, 1, true);
+    else { 
+      if (activeRole === 'host') getOrderList(setOrderListHost, 0, true);
+      else getOrderList(setOrderListGuest, 1, true);
+    }
   }
 
   // 使用 useReachBottom hook
   useReachBottom(() => {
+    // console.log('useReachBottom');
     handleLoadMore();
   });
 
   // 切换 tab 时重置分页状态
+  // useEffect(() => {
+  //   setPage(1);
+  //   setHasMore(true);
+  // }, [activeRole, currentTab]);
+
   useEffect(() => {
-    setPage(1);
-    setHasMore(true);
-  }, [activeRole, currentTab]);
+    getOrderList(setOrderListHost, 0);
+    getOrderList(setOrderListGuest, 1);
+  }, []);
 
   const renderContent = () => {
     // console.log('renderContent');
@@ -152,7 +164,7 @@ const Index = () => {
 
   const renderGuestContent = () => {
     // console.log('renderGuestContent');
-    getOrderList(setOrderListGuest, 1);
+    // getOrderList(setOrderListGuest, 1);
     return (
       <>
         {
@@ -181,7 +193,7 @@ const Index = () => {
 
   const renderHostContent = () => {
     // console.log('renderHostContent');
-    getOrderList(setOrderListHost, 0);
+    // getOrderList(setOrderListHost, 0);
     return (
       <>
         {

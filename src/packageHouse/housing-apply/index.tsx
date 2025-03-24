@@ -81,7 +81,7 @@ const Index = () => {
         },
         success: (res) => {
           if (res.statusCode === 200 && res.data.code === 0) {
-            console.log(res)
+            // console.log(res)
             Taro.showToast({
               title: '申请已提交',
               icon: 'success',
@@ -123,7 +123,7 @@ const Index = () => {
         },
         success: async (res) => {
           if (res.statusCode === 200 && res.data.code === 0) {
-            console.log(res)
+            // console.log(res)
             Taro.showToast({
               title: '申请已提交',
               icon: 'success',

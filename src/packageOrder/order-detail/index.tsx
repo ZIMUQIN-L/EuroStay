@@ -20,6 +20,8 @@ const Index: React.FC = () => {
     const [infoOrder, setInfoOrder] = useState<OrderDetail>({});
     const [infoApplicant, setInfoApplicant] = useState<ApplicantDetail>({});
 
+    const [ifGotRejectReason, setIfGotRejectReason] = useState(false);
+
     const [loadingComplete, setLoadingComplete] = useState(false);
 
     const router = useRouter();
@@ -31,8 +33,9 @@ const Index: React.FC = () => {
     const title = router?.params?.title;
 
     const [rejectMessage, setRejectMessage] = useState('');
+    const [rejectReason, setRejectReason] = useState('');
     const [showRejectModal, setShowRejectModal] = useState(false)
-    const [orderStatus, setOrderStatus] = useState(0);
+    const [orderStatus, setOrderStatus] = useState();
 
     const hostConfirm = () => {
         Taro.request({
@@ -97,18 +100,13 @@ const Index: React.FC = () => {
                 token: GlobalStore.userInfo.token,
             },
             data: {
-                id: Number(id),
+                applicationId: Number(id),
                 reason: rejectMessage,
             },
             success: function (response) {
-                console.log('hostReject', {
-                    id: Number(id),
-                    reason: rejectMessage,
-                    url: Number(type) === 0 ? `https://api.eurostay.co/app/property/rejectPropertyApplication` : 'https://api.eurostay.co/app/activity/rejectActivityApplication',
-                });
                 if (response.statusCode === 200 && response.data.code === 0) {
                     Taro.showToast({
-                        title: '已拒绝申请，等待 Guest 确认',
+                        title: '已拒绝申请',
                         icon: 'none',
                         duration: 2000,
                     });
@@ -181,7 +179,7 @@ const Index: React.FC = () => {
                 token: GlobalStore.userInfo.token,
             },
             data: {
-                id: Number(id),
+                applicationId: Number(id),
                 reason: rejectMessage,
             },
             success: function (response) {
@@ -278,7 +276,49 @@ const Index: React.FC = () => {
                     id: Number(id),
                 },
                 success: function (response) {
-                    console.log('getOrderDetail', response.data.result);
+                    if (response.data.result.status === 4) { // 已失效
+                        Taro.request({
+                            url: `https://api.eurostay.co/app/property/showReservationInfo`,
+                            method: 'POST',
+                            header: {
+                                token: GlobalStore.userInfo.token,
+                            },
+                            data: {
+                                id: Number(id),
+                            },
+                            success: function (res) {
+                                // console.log('showReservationInfo', res)
+                                setRejectReason(res.data.result.result);
+                                setInfoOrder({
+                                    type: 0,
+                                    orderStatus: getOrderStatus(response.data.result.status),
+                                    orderId: response.data.result.applicationId,
+                                    houseName: title,
+                                    houseId: Number(experienceId),
+                                    price: response.data.result.price,
+                                    time: `${getDate(response.data.result.startDate)} 至 ${getDate(response.data.result.endDate)}`,
+                                    refuseReason: res.data.result.result,
+                                });
+                            },
+                            complete: function () {
+                                setIfGotRejectReason(true);
+                            }
+                        })
+                    } else {
+                        setRejectReason('');
+                        setInfoOrder({
+                            type: 0,
+                            orderStatus: getOrderStatus(response.data.result.status),
+                            orderId: response.data.result.applicationId,
+                            houseName: title,
+                            houseId: Number(experienceId),
+                            price: response.data.result.price,
+                            time: `${getDate(response.data.result.startDate)} 至 ${getDate(response.data.result.endDate)}`,
+                            refuseReason: '',
+                        });
+                        setIfGotRejectReason(true);
+                    }
+                    // console.log('getOrderDetail', response.data.result);
                     setInfoGuest({
                         uid: response.data.result.guestInfo.uid,
                         avatar: response.data.result.guestInfo.avatar,
@@ -286,16 +326,6 @@ const Index: React.FC = () => {
                         username: response.data.result.guestInfo.username,
                         tags: response.data.result.guestInfo.tags,
                         buttonText: '和ta聊聊',
-                    });
-                    setInfoOrder({
-                        type: 0,
-                        orderStatus: getOrderStatus(response.data.result.status),
-                        orderId: response.data.result.applicationId,
-                        houseName: title,
-                        houseId: Number(experienceId),
-                        price: response.data.result.price,
-                        time: `${getDate(response.data.result.startDate)} 至 ${getDate(response.data.result.endDate)}`,
-                        refuseReason: rejectMessage,
                     });
                     setOrderStatus(response.data.result.status);
                     setInfoHost({
@@ -340,6 +370,48 @@ const Index: React.FC = () => {
                     id: Number(id),
                 },
                 success: function (response) {
+                    if (response.data.result.status === 4) { // 已失效
+                        Taro.request({
+                            url: `https://api.eurostay.co/app/activity/showReservationInfo`,
+                            method: 'POST',
+                            header: {
+                                token: GlobalStore.userInfo.token,
+                            },
+                            data: {
+                                id: Number(id),
+                            },
+                            success: function (res) {
+                                // console.log('showReservationInfo', res)
+                                setRejectReason(res.data.result.result);
+                                setInfoOrder({
+                                    type: 1,
+                                    orderStatus: getOrderStatus(response.data.result.status),
+                                    orderId: response.data.result.applicationId,
+                                    houseName: title,
+                                    houseId: Number(experienceId),
+                                    price: response.data.result.price,
+                                    time: response.data.result.startDate,
+                                    refuseReason: res.data.result.result,
+                                });
+                            },
+                            complete: function () {
+                                setIfGotRejectReason(true);
+                                // console.log('rejectReason', rejectReason);
+                            }
+                        })
+                    } else {
+                        setIfGotRejectReason(true);
+                        setInfoOrder({
+                            type: 1,
+                            orderStatus: getOrderStatus(response.data.result.status),
+                            orderId: response.data.result.applicationId,
+                            houseName: title,
+                            houseId: Number(experienceId),
+                            price: response.data.result.price,
+                            time: response.data.result.startDate,
+                            refuseReason: '',
+                        });
+                    }
                     setInfoGuest({
                         uid: response.data.result.guestInfo.uid,
                         avatar: response.data.result.guestInfo.avatar,
@@ -347,16 +419,6 @@ const Index: React.FC = () => {
                         username: response.data.result.guestInfo.username,
                         tags: response.data.result.guestInfo.tags,
                         buttonText: '和ta聊聊',
-                    });
-                    setInfoOrder({
-                        type: 1,
-                        orderStatus: getOrderStatus(response.data.result.status),
-                        orderId: response.data.result.applicationId,
-                        houseName: title,
-                        houseId: Number(experienceId),
-                        price: response.data.result.price,
-                        time: response.data.result.startDate,
-                        refuseReason: rejectMessage,
                     });
                     setOrderStatus(response.data.result.status);
                     setInfoHost({
@@ -401,12 +463,12 @@ const Index: React.FC = () => {
             {/* {role === 'host' && <UserCardSmall {...mockDataApplicant}/>}
             <OrderInfo {...mockDataOrder}/>
             <ApplicantInfo {...mockDataUser}/> */}
-            {console.log('role', role)}
+            {/* {console.log('role', role)}
             {console.log('orderStatus', orderStatus)}
-            {console.log('status', status)}
+            {console.log('status', status)} */}
             {loadingComplete && role === 'host' && <UserCardSmall {...infoGuest}/>}
             {/* {role === 'guest' && <UserCardSmall {...infoHost}/>} */}
-            {loadingComplete && <OrderInfo {...infoOrder}/>}
+            {loadingComplete && ifGotRejectReason && <OrderInfo {...infoOrder}/>}
             {loadingComplete && <ApplicantInfo {...infoApplicant}/>}
             {loadingComplete && role === 'host' && status === 'awaiting' && orderStatus === 0 && 
                 <>
