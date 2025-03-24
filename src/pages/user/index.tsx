@@ -54,6 +54,9 @@ const UserProfile = () => {
   }, [activeTab, userInfo]);
 
   const parseStartDate = (startDate) => {
+    if (startDate == null) {
+        return null;
+    }
     const date = new Date(startDate.replace(/-/g, "/"));
     return `${date.getMonth() + 1}月${date.getDate()}日起可入住`;
   };
@@ -284,7 +287,12 @@ const UserProfile = () => {
                         if (item.type === 0) {
                             Taro.navigateTo({
                                 url: `/pages/house-publish/index?pid=${item.id}`
-                              });}
+                            });
+                        } else {
+                            Taro.navigateTo({
+                                url: `/pages/activity-publish/index?aid=${item.id}`
+                            });
+                        }
                         }
                     }
                   />

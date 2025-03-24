@@ -1,36 +1,36 @@
-import { View, Input, Textarea, Text, Image } from '@tarojs/components'
+import { View, Input, Textarea, Text, Image } from '@tarojs/components';
 import { observer } from 'mobx-react';
 import { useEffect, useState } from 'react'
 import { useRouter } from '@tarojs/taro';
-import Taro from '@tarojs/taro'
+import Taro from '@tarojs/taro';
 import OrderInfo from '../../components/OrderInfo';
 import ApplicantInfo from '../../components/ApplicantInfo';
 import UserCardSmall from '../../components/UserCardSmall';
-import './index.scss'
+import './index.scss';
 import GlobalStore from '@store/GlobalStore';
 import { UserShortInfo, OrderDetail, ApplicantDetail } from '@utils/interfaces';
 
 const Index: React.FC = () => {
-    Taro.setBackgroundColor({
-        backgroundColor: '#f5f5f5'
-    })
+  Taro.setBackgroundColor({
+    backgroundColor: '#f5f5f5',
+  });
 
-    const [infoHost, setInfoHost] = useState<UserShortInfo>({});
-    const [infoGuest, setInfoGuest] = useState<UserShortInfo>({});
-    const [infoOrder, setInfoOrder] = useState<OrderDetail>({});
-    const [infoApplicant, setInfoApplicant] = useState<ApplicantDetail>({});
+  const [infoHost, setInfoHost] = useState<UserShortInfo>({});
+  const [infoGuest, setInfoGuest] = useState<UserShortInfo>({});
+  const [infoOrder, setInfoOrder] = useState<OrderDetail>({});
+  const [infoApplicant, setInfoApplicant] = useState<ApplicantDetail>({});
 
-    const [ifGotRejectReason, setIfGotRejectReason] = useState(false);
+  const [ifGotRejectReason, setIfGotRejectReason] = useState(false);
 
-    const [loadingComplete, setLoadingComplete] = useState(false);
+  const [loadingComplete, setLoadingComplete] = useState(false);
 
-    const router = useRouter();
-    const role = router?.params?.role;
-    const status = router?.params?.status;
-    const type = router?.params?.type;
-    const id = router?.params?.id;
-    const experienceId = router?.params?.experienceId;
-    const title = router?.params?.title;
+  const router = useRouter();
+  const role = router?.params?.role;
+  const status = router?.params?.status;
+  const type = router?.params?.type;
+  const id = router?.params?.id;
+  const experienceId = router?.params?.experienceId;
+  const title = router?.params?.title;
 
     const [rejectMessage, setRejectMessage] = useState('');
     const [rejectReason, setRejectReason] = useState('');
@@ -74,7 +74,19 @@ const Index: React.FC = () => {
                 });
             }
         });
-    }
+      },
+      fail: function (err) {
+        Taro.showToast({
+          title: '网络请求失败，请重试',
+          icon: 'none',
+          duration: 2000,
+        });
+      },
+      complete: function () {
+        Taro.navigateBack();
+      },
+    });
+  };
 
     const handelReject = () => {
         if (rejectMessage === '') {
@@ -91,6 +103,7 @@ const Index: React.FC = () => {
             guestReject();
         }
     }
+  };
 
     const hostReject = () => {
         Taro.request({
@@ -130,7 +143,19 @@ const Index: React.FC = () => {
                 });
             }
         });
-    }
+      },
+      fail: function (err) {
+        Taro.showToast({
+          title: '网络请求失败，请重试',
+          icon: 'none',
+          duration: 2000,
+        });
+      },
+      complete: function () {
+        Taro.navigateBack();
+      },
+    });
+  };
 
     const guestConfirm = () => {
         Taro.request({
@@ -169,7 +194,19 @@ const Index: React.FC = () => {
                 });
             }
         });
-    }
+      },
+      fail: function (err) {
+        Taro.showToast({
+          title: '网络请求失败，请重试',
+          icon: 'none',
+          duration: 2000,
+        });
+      },
+      complete: function () {
+        Taro.navigateBack();
+      },
+    });
+  };
 
     const guestReject = () => {
         Taro.request({
@@ -209,35 +246,47 @@ const Index: React.FC = () => {
                 });
             }
         });
-    }
+      },
+      fail: function (err) {
+        Taro.showToast({
+          title: '网络请求失败，请重试',
+          icon: 'none',
+          duration: 2000,
+        });
+      },
+      complete: function () {
+        Taro.navigateBack();
+      },
+    });
+  };
 
-    const getOrderStatus = (status: number): string => {
-        switch (status) {
-            case 0:
-                return "申请中";
-            case 1:
-                return "申请通过待确认";
-            case 2:
-                return "进行中";
-            case 3:
-                return "待评价";
-            case 4:
-                return "已失效";
-            case 5:
-                return "已完成";
-            default:
-                return "";
-        }
+  const getOrderStatus = (status: number): string => {
+    switch (status) {
+      case 0:
+        return '申请中';
+      case 1:
+        return '申请通过待确认';
+      case 2:
+        return '进行中';
+      case 3:
+        return '待评价';
+      case 4:
+        return '已失效';
+      case 5:
+        return '已完成';
+      default:
+        return '';
     }
+  };
 
-    const getDays = (startDate: string, endDate: string): number => {
-        if (startDate === '' || endDate === '') {
-            return 0;
-        }
-        const start = new Date(startDate.replace('-', '/').replace('-', '/'));
-        const end = new Date(endDate.replace('-', '/').replace('-', '/'));
-        return (end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24) - 1;
+  const getDays = (startDate: string, endDate: string): number => {
+    if (startDate === '' || endDate === '') {
+      return 0;
     }
+    const start = new Date(startDate.replace('-', '/').replace('-', '/'));
+    const end = new Date(endDate.replace('-', '/').replace('-', '/'));
+    return (end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24) - 1;
+  };
 
     const getDate = (date: string): string => {
         if (date === '') {
@@ -247,19 +296,22 @@ const Index: React.FC = () => {
         // return `${dateObj.getFullYear()}年${dateObj.getMonth() + 1}月${dateObj.getDay()}日`;
         return date.replace('-', '/').replace('-', '/').substring(0, 10);
     }
+    const dateObj = new Date(date.replace('-', '/').replace('-', '/'));
+    return `${dateObj.getFullYear()}年${dateObj.getMonth() + 1}月${dateObj.getDay()}日`;
+  };
 
-    const getGender = (gender: number): string => {
-        switch (gender) {
-            case 0:
-                return "女";
-            case 1:
-                return "男";
-            case 2:
-                return "都有";
-            default:
-                return "";
-        }
+  const getGender = (gender: number): string => {
+    switch (gender) {
+      case 0:
+        return '女';
+      case 1:
+        return '男';
+      case 2:
+        return '都有';
+      default:
+        return '';
     }
+  };
 
     const getOrderDetail = () => {
         if (loadingComplete) {
@@ -458,9 +510,9 @@ const Index: React.FC = () => {
         getOrderDetail();
     }, []);
 
-    return (
-        <>
-            {/* {role === 'host' && <UserCardSmall {...mockDataApplicant}/>}
+  return (
+    <View className='order-detail-page background'>
+      {/* {role === 'host' && <UserCardSmall {...mockDataApplicant}/>}
             <OrderInfo {...mockDataOrder}/>
             <ApplicantInfo {...mockDataUser}/> */}
             {/* {console.log('role', role)}
@@ -571,7 +623,49 @@ const Index: React.FC = () => {
                 </View>
             )}
         </>
-    );
+      )}
+      {role === 'guest' && status === 'ongoing' && (
+        <View
+          className='yellow-fill-button'
+          // onClick={console.log('cofirm')}
+        >
+          联系Host
+        </View>
+      )}
+      {role === 'guest' && status === 'expired' && (
+        <View
+          className='yellow-fill-button'
+          // onClick={console.log('cofirm')}
+        >
+          和Host聊聊
+        </View>
+      )}
+      {/* 拒绝弹窗 */}
+      {showRejectModal && (
+        <View className='reject-modal-mask'>
+          <View className='reject-modal'>
+            <View className='modal-title'>确认拒绝？请简述拒绝理由</View>
+            <Input
+              className='message-input'
+              placeholder='请说明拒绝理由，此理由将发给对方'
+              value={rejectMessage}
+              onInput={e => setRejectMessage(e.detail.value)}
+            />
+            <View
+              className={
+                role === 'host'
+                  ? 'purple-confirm-button'
+                  : 'yellow-confirm-button'
+              }
+              onClick={handelReject}
+            >
+              发送
+            </View>
+          </View>
+        </View>
+      )}
+    </View>
+  );
 };
 
 export default observer(Index);

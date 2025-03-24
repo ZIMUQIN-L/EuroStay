@@ -1,16 +1,18 @@
 .background {
   background: #f5f5f5;
+  background-color: #f5f5f5;
   height: 100vh;
   width: 100vw;
+  padding-top: 10px;
 }
 
 .purple-fill-button {
   width: 75%;
   height: 71px;
-  color: #FFFFFF;
+  color: #ffffff;
   font-size: 32px;
-  background: #7A63C7;
-  border: 4px solid #7A63C7;
+  background: #7a63c7;
+  border: 4px solid #7a63c7;
   border-radius: 100px;
   display: flex;
   align-items: center;
@@ -23,10 +25,10 @@
 .yellow-fill-button {
   width: 75%;
   height: 71px;
-  color: #FFFFFF;
+  color: #ffffff;
   font-size: 32px;
-  background: #FFD35E;
-  border: 4px solid #FFD35E;
+  background: #ffd35e;
+  border: 4px solid #ffd35e;
   border-radius: 100px;
   display: flex;
   align-items: center;
@@ -41,8 +43,8 @@
   height: 71px;
   color: #333333;
   font-size: 32px;
-  background: #F5F5F5;
-  border: 4px solid #7A63C7;
+  background: #f5f5f5;
+  border: 4px solid #7a63c7;
   border-radius: 100px;
   display: flex;
   align-items: center;
@@ -56,7 +58,7 @@
   width: 75%;
   height: 71px;
   color: #333333;
-  border: 4px solid #FFD35E;
+  border: 4px solid #ffd35e;
   font-size: 32px;
   border-radius: 100px;
   display: flex;
@@ -93,48 +95,48 @@
     }
 
     .message-input {
-        // position: relative;
-        width: 100%;
-        height: 40px;
-        // padding: 0 24px;
-        font-size: 26px;
-        color: #333333;
-        box-sizing: border-box;
-        top: 0px;
-        left: 0px;
-        border-bottom: 2px solid #f5f5f5;
+      // position: relative;
+      width: 100%;
+      height: 40px;
+      // padding: 0 24px;
+      font-size: 26px;
+      color: #333333;
+      box-sizing: border-box;
+      top: 0px;
+      left: 0px;
+      border-bottom: 2px solid #f5f5f5;
     }
 
     .purple-confirm-button {
-        width: 75%;
-        height: 71px;
-        color: #333333;
-        font-size: 32px;
-        background: #F5F5F5;
-        border: 4px solid #7A63C7;
-        border-radius: 100px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-bottom: 40px;
-        margin-top: 96px;
-        margin: 10px auto;
-      }
+      width: 75%;
+      height: 71px;
+      color: #333333;
+      font-size: 32px;
+      background: #f5f5f5;
+      border: 4px solid #7a63c7;
+      border-radius: 100px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 40px;
+      margin-top: 96px;
+      margin: 10px auto;
+    }
 
-      .yellow-confirm-button {
-        width: 75%;
-        height: 71px;
-        color: #333333;
-        font-size: 32px;
-        background: #F5F5F5;
-        border: 4px solid #FFD35E;
-        border-radius: 100px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-bottom: 40px;
-        margin-top: 96px;
-        margin: 10px auto;
-      }
+    .yellow-confirm-button {
+      width: 75%;
+      height: 71px;
+      color: #333333;
+      font-size: 32px;
+      background: #f5f5f5;
+      border: 4px solid #ffd35e;
+      border-radius: 100px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 40px;
+      margin-top: 96px;
+      margin: 10px auto;
+    }
   }
 }

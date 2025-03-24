@@ -26,6 +26,11 @@
   display: flex;
   flex-direction: row;
   align-items: center;
+  .location-value {
+    &.empty {
+      color: #777777;
+    }
+  }
 }
 
 .input {
@@ -39,6 +44,9 @@
   display: flex;
   align-items: center;
   gap: 12px;
+  &.empty {
+    color: #777777;
+  }
 }
 
 .guestButtons {
