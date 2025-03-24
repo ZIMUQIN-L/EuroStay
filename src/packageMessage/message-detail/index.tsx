@@ -154,19 +154,73 @@ const MessageDetail = () => {
     scrollToBottom();
   }, [messages]);
 
+  useEffect(() => {
+    const handleIncomingMessage = (msg) => {
+      // 判断消息是否属于当前对话
+      if (msg.data?.sessionId == id) {
+        const currentUid = GlobalStore.userInfo.uid;
+        const newMessage = createMessageObject({
+          ...msg.data,
+          fromUid: currentUid === msg.data.toUid ? msg.data.fromUid : currentUid,
+          id: Date.now(), // 临时生成id
+          mtype: msg.type,
+          createTime: new Date().toISOString()
+        }, currentUid);
+  
+        setMessages(prev => [...prev, newMessage]);
+        scrollToBottom();
+      }
+    };
+  
+    // 注册监听
+    GlobalStore.addMessageListener(handleIncomingMessage);
+  
+    // 组件卸载时移除监听
+    return () => {
+      GlobalStore.removeMessageListener(handleIncomingMessage);
+    };
+  }, [id]);
+  
+
   // 滚动到底部的函数
   const scrollToBottom = () => {
     Taro.nextTick(() => {
-      setScrollTop(999999);
+      setScrollTop(Date.now());
     });
   };
+
+  const formatTime = (createTime) => {
+    try {
+      if (!createTime) return '';
+      if (typeof createTime === 'number') {
+        const date = new Date(createTime);
+        return `${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`;
+      }
+      if (typeof createTime === 'string') {
+        const parts = createTime.split(' ');
+        if (parts.length > 1 && parts[1]) {
+          return parts[1].substring(0, 5);
+        }
+      }
+    } catch (e) {
+      console.warn('时间格式化失败:', createTime, e);
+    }
+    return '';
+  };
+  
 
   const createMessageObject = (msg, currentUid) => {
     // 判断消息方向
     const direction = msg.fromUid === currentUid ? 'right' : 'left';
     
     // 格式化时间 (只保留小时:分钟)
-    const time = msg.createTime ? msg.createTime.split(' ')[1].substring(0, 5) : '';
+    let time = '';
+    try {
+      const time = formatTime(msg.createTime); // 抽离出安全的函数
+      // 其他处理...
+    } catch (e) {
+      console.error('createMessageObject 内部报错：', e, msg);
+    }
     
     // 根据 mtype 确定消息类型
     let messageType;
@@ -259,7 +313,7 @@ const MessageDetail = () => {
         };
         break;
     }
-    
+
     return messageObj;
   };
   
@@ -475,7 +529,8 @@ const MessageDetail = () => {
         }
         
         // 更新本地消息列表，添加到末尾（新消息在下方）
-        setMessages(prevMessages => [...prevMessages, messageObj]);
+        // setMessages(prevMessages => [...prevMessages, messageObj]);
+        scrollToBottom();
         
         // 如果是普通消息，发送后清空输入框
         if (messageType === 0) {

@@ -40,7 +40,7 @@ export default {
         'order-detail/index',
         'order-review/index',
       ],
-    }
+    },
     // {
     //   root: 'packageHouse/',
     //   pages: [],

@@ -79,55 +79,46 @@ const Index = () => {
     
     // 不管是否使用mock数据，都调用fetchMessages获取陌生人数据
     fetchMessages(useMockData);
-  }, []); // 空数组确保只在组件初次挂载时执行
+  }, [GlobalStore.wsMessageCounter]); // 空数组确保只在组件初次挂载时执行
 
-  const fetchMessages = async (useMock = false) => {
+
+  const fetchMessages = async () => {
     const token = GlobalStore.userInfo.token || Taro.getStorageSync('token');
     const currentUid = GlobalStore.userInfo.uid || Taro.getStorageSync('uid');
   
-    // 即使使用mock数据，也仍然从API获取陌生人数据
     if (!token) {
       console.error('缺少 token，无法获取消息列表');
       return;
     }
   
     try {
-      // 发送请求
       const res = await Taro.request({
         url: 'https://api.eurostay.co/app/esmessages/sessionList',
         method: 'GET',
-        header: {
-          token: token, // 传递 token 进行身份验证
-        },
-        data: {
-          pageNum: 1, // 分页参数
-        },
+        header: { token },
+        data: { pageNum: 1 },
       });
   
       console.log('sessionList 响应:', res);
   
       if (res.statusCode === 200 && res.data.code === 0) {
         const records = res.data.result.records || [];
-        
-        // 用于存储不同类型的消息
+  
         const normalMsgs = [];
         const systemMsgs = [];
         const strangerMsgs = [];
   
         records.forEach((record) => {
-          // 确定对方的UID
-          const otherPersonUid = currentUid === record.initUid 
-            ? record.replyUid 
-            : record.initUid;
-
+          const otherPersonUid =
+            currentUid === record.initUid ? record.replyUid : record.initUid;
+  
           const displayName = `User ${otherPersonUid}`;
-          
-          // 判断是否是陌生人
-          const isStranger = currentUid === record.initUid 
-            ? record.replyStranger 
-            : record.initStranger;
-            
-          // 创建基本消息对象
+  
+          const isStranger =
+            currentUid === record.initUid
+              ? record.initStranger
+              : record.replyStranger;
+  
           const messageObj = {
             id: record.id,
             avatar: 'https://example.com/avatar4.png',
@@ -135,44 +126,27 @@ const Index = () => {
             message: record.topMessage || '无消息内容',
             time: formatTime(record.updateTime),
             otherUid: otherPersonUid,
-            // 保存额外信息用于陌生人列表
             rawData: {
-              fromUid: record.initUid === currentUid ? currentUid : record.initUid,
-              toUid: record.replyUid === currentUid ? record.initUid : record.replyUid,
+              fromUid: record.initUid,
+              toUid: record.replyUid,
               content: record.topMessage || '无消息内容',
-              createTime: record.updateTime
-            }
+              createTime: record.updateTime,
+            },
           };
-          
-          // 根据 stype 和陌生人状态分类消息
+  
           if (record.stype === 7) {
-            // 系统消息
-            systemMsgs.push({
-              ...messageObj,
-              type: 'system'
-            });
+            systemMsgs.push({ ...messageObj, type: 'system' });
           } else if (isStranger) {
-            // 陌生人消息
-            strangerMsgs.push({
-              ...messageObj,
-              type: 'stranger'
-            });
+            strangerMsgs.push({ ...messageObj, type: 'stranger' });
           } else {
-            // 普通消息
             normalMsgs.push(messageObj);
           }
         });
   
-        // 如果不使用mock数据，则更新普通消息和系统消息
-        if (!useMock) {
-          setMessages(normalMsgs);
-          setSystemMessages(systemMsgs);
-        }
-        
-        // 无论如何，都更新陌生人消息
+        setMessages(normalMsgs);
+        setSystemMessages(systemMsgs);
         setStrangerMessages(strangerMsgs);
-
-        // 如果有陌生人消息，则将其保存到本地存储，以便陌生人列表页面可以访问
+  
         if (strangerMsgs.length > 0) {
           Taro.setStorageSync('strangerMessages', JSON.stringify(strangerMsgs));
         }
