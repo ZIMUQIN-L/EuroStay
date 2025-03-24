@@ -40,6 +40,7 @@
         }
     
         .host-name {
+            font-family: 'Alibaba PuHuiTi';
             position: absolute;
             font-size: 26px;
             color: #333333;
@@ -49,6 +50,7 @@
         }
 
         .host-detail {
+            font-family: 'Alibaba PuHuiTi';
             position: absolute;
             color: #979797;
             top: 72px;
@@ -58,6 +60,7 @@
         }
     
         .host-button {
+            font-family: 'Alibaba PuHuiTi';
             display: flex;
             // margin: 10px auto;
             position: absolute;
@@ -77,6 +80,7 @@
         }
     
         .host-tags {
+            font-family: 'Alibaba PuHuiTi';
             // margin-top: 24px;
             position: absolute;
             display: flex;
@@ -85,6 +89,7 @@
             justify-content: space-between;
 
             .host-tag {
+                font-family: 'Alibaba PuHuiTi';
                 display: flex;
                 text-align: center;
                 // margin: auto;

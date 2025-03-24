@@ -128,3 +128,14 @@ export interface ReviewCardProps {
   reviewDate: string;
   location: string;
 }
+
+export interface OrderDetail {
+    type: number;
+    orderStatus: string;
+    orderId: number;
+    houseName: string;
+    houseId: number;
+    price: number;
+    time: string;
+    refuseReason: string;
+}

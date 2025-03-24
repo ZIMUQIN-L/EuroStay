@@ -13,6 +13,7 @@
     position: relative;
 
     .info-card-header {
+        font-family: 'Alibaba PuHuiTi';
         font-weight: 540;
         height: 40px;
         // display: flex;
@@ -34,6 +35,7 @@
         }
 
         .status {
+            font-family: 'Alibaba PuHuiTi';
             font-weight: 500;
             position: absolute;
             color: #777777;
@@ -45,6 +47,7 @@
     }
 
         .info-card-sec-title {
+            font-family: 'Alibaba PuHuiTi';
             font-weight: 500;
             // position: relative;
             // padding-top: 36px;
@@ -57,6 +60,7 @@
             font-size: 26px;
         }
         .info-card-input {
+            font-family: 'Alibaba PuHuiTi';
             // position: relative;
             width: 100%;
             height: 40px;
@@ -76,6 +80,7 @@
             // }
         }
         .info-card-input-multilines {
+            font-family: 'Alibaba PuHuiTi';
             width: 100%;
             min-height: 40px;
             max-height: 120px;
@@ -91,6 +96,7 @@
             gap: 32px;
     
             .info-card-option {
+                font-family: 'Alibaba PuHuiTi';
                 width: 90px;
                 height: 40px;
                 border-radius: 30px;
@@ -129,6 +135,7 @@
 
 
   .purple-fill-button {
+    font-family: 'Alibaba PuHuiTi';
     width: 75%;
     height: 71px;
     color: #FFFFFF;
@@ -145,6 +152,7 @@
   }
   
   .purple-empty-button {
+    font-family: 'Alibaba PuHuiTi';
     width: 75%;
     height: 71px;
     color: #333333;

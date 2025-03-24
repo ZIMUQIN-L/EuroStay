@@ -60,7 +60,7 @@ const ApplicantInfo = ({
           <View className='info-card-table-key'>
             自我介绍
             <View className='info-card-table-value'>
-              {identity}
+              {selfIntroduction}
             </View>
             {/* <Textarea 
               className='info-card-table-value'

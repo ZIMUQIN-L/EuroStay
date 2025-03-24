@@ -10,6 +10,7 @@ import GlobalStore from '@store/GlobalStore';
 import { HostDetail, Order, ReviewCardProps } from '@utils/interfaces';
 import { formatToday } from '@utils/dateUtil';
 import ReviewCard from '@components/ReviewCard';
+import { get } from 'mobx';
 
 const HouseDetail: React.FC = () => {
   const [currentImage, setCurrentImage] = useState(0)
@@ -36,7 +37,7 @@ const HouseDetail: React.FC = () => {
 
   const [startDate, setStartDate] = useState(today);
   const [endDate, setEndDate] = useState(null);
-  const [valid, setValid] = useState([{}]);
+  const [valid, setValid] = useState([]);
 
   const [allReviews, setAllReviews] = useState([]);
 
@@ -54,11 +55,19 @@ const HouseDetail: React.FC = () => {
           id: id,
         },
         success: (res) => {
-          Taro.showToast({
-            title: '收藏成功',
-            icon: 'success'
-          })
-          setIsStarred(true)
+          if (res.data.code === 0 && res.statusCode === 200) {
+            Taro.showToast({
+              title: '收藏成功',
+              icon: 'success'
+            })
+            setIsStarred(true)
+          } else {
+            Taro.showToast({
+              title: res.data.msg + ' 收藏失败，请重试',
+              icon: 'none',
+              duration: 2000,
+            })
+          }
         },
         fail: function (err) {
           Taro.showToast({
@@ -79,11 +88,19 @@ const HouseDetail: React.FC = () => {
           id: id,
         },
         success: (res) => {
-          Taro.showToast({
-            title: '取消收藏成功',
-            icon: 'success'
-          })
-          setIsStarred(false)
+          if (res.data.code === 0 && res.statusCode === 200) {
+            Taro.showToast({
+              title: '取消收藏成功',
+              icon: 'success'
+            })
+            setIsStarred(false)
+          } else {
+            Taro.showToast({
+              title: res.data.msg + ' 取消收藏失败，请重试',
+              icon: 'none',
+              duration: 2000,
+            })
+          }
         },
         fail: function (err) {
           Taro.showToast({
@@ -96,13 +113,25 @@ const HouseDetail: React.FC = () => {
     }
   }
 
-  const getValidDates = (dates: string[]) => {
+  const getValidDates = (dates: Array<string>) => {
     if (gotValidDates) return valid;
     else {
+      for (let i = 0; i < dates.length; i+=2) {
+        let start = new Date(dates[i].replace('-', '/').replace('-', '/'));
+        let end = new Date(dates[i + 1].replace('-', '/').replace('-', '/'));
+        start.setDate(start.getDate() + 1)
+        end.setDate(end.getDate() + 1)
+        // console.log('getValidDates', start, end)
+        for (let j = start; j <= end; j.setDate(j.getDate() + 1)) {
+          valid.push({value: j.toISOString().substring(0, 10).replace('-', '/').replace('-', '/')});
+          // console.log('adding date to valid date: ', j.toISOString().substring(0, 10).replace('-', '/').replace('-', '/'))
+        }
+      }
+      // setValid(dates.map(date => {
+      //   return {value: date.substring(0, 10).replace('-', '/').replace('-', '/')};
+      // }))
+      // console.log('valid dates: ', valid)
       setGotValidDates(true)
-      setValid(dates.map(date => {
-        return {value: date.substring(0, 10).replace('-', '/').replace('-', '/')};
-      }))
       return valid;
     }
   }
@@ -150,6 +179,7 @@ const HouseDetail: React.FC = () => {
         if (res.data.result.reviews !== undefined) { 
           const reviews = res.data.result.reviews.filter(review => review.fromHost === false);
           setAllReviews(reviews);
+          // console.log('all reviews: ', allReviews)
           if (reviews.length === 0) {
             sethasReview(false);
           } else {
@@ -189,7 +219,21 @@ const HouseDetail: React.FC = () => {
 
   const handleShare = () => {
     Taro.showShareMenu({
-      withShareTicket: true
+      withShareTicket: true,
+      success: function (res) {
+        Taro.showToast({
+          title: '分享成功',
+          icon: 'success',
+          duration: 2000,
+        });
+      },
+      fail: function (err) {
+        Taro.showToast({
+          title: '分享失败，请重试',
+          icon: 'none',
+          duration: 2000,
+        });
+      }
     })
   }
 
@@ -207,10 +251,16 @@ const HouseDetail: React.FC = () => {
           token: GlobalStore.userInfo.token,
         },
         success: function (response) {
-          setUsername(response.data.result.username);
-        },
-        complete: function () {
-          setIsGotUser(true)
+          if (response.statusCode === 200 && response.data.code === 0) {
+            setUsername(response.data.result.username);
+            setIsGotUser(true)
+          } else {
+            Taro.showToast({
+              title: '获取用户信息失败，请重试',
+              icon: 'none',
+              duration: 2000,
+            });
+          }
         }
       })
     }
@@ -226,10 +276,18 @@ const HouseDetail: React.FC = () => {
         content: `${username}点赞了您的房源"${order.title}"，并发送了消息：${likeMessage}`,
       },
       success: function (response) {
-        Taro.showToast({
-          title: '点赞成功',
-          icon: 'success'
-        })
+        if (response.statusCode === 200 && response.data.code === 0) {
+          Taro.showToast({
+            title: '点赞成功',
+            icon: 'success'
+          })
+        } else {
+          Taro.showToast({
+            title: response.data.msg + ' 点赞失败，请重试',
+            icon: 'none',
+            duration: 2000,
+          })
+        }
       },
       fail: function (err) {
         Taro.showToast({
@@ -247,14 +305,16 @@ const HouseDetail: React.FC = () => {
     setCurrentImage(e.detail.current)
   }
 
-  const checkDateValid = (start: string, end: string, valids: string[]) => {
+  const checkDateValid = (start: string, end: string, valids: Array<{}>) => {
     if (valids.length === 0) return false
     const startDate = new Date(start.replace('-', '/').replace('-', '/'));
     const endDate = new Date(end.replace('-', '/').replace('-', '/'));
     startDate.setDate(startDate.getDate() + 1)
     endDate.setDate(endDate.getDate() + 1)
-    const valid_dates = valids.map(date => date.replace('-', '/').replace('-', '/').substring(0, 10));
+    const valid_dates = valids.map(date => date.value.replace('-', '/').replace('-', '/').substring(0, 10));
+    // console.log('check date valid', start, end, valids, valid_dates)
     for (let i = startDate; i <= endDate; i.setDate(i.getDate() + 1)) {
+      // console.log('checking date: ', i.toISOString().substring(0, 10).replace('-', '/').replace('-', '/'))
       if (!valid_dates.includes(i.toISOString().substring(0, 10).replace('-', '/').replace('-', '/'))) return false
     }
     return true
@@ -271,7 +331,7 @@ const HouseDetail: React.FC = () => {
         });
       } 
       // check if startDate to endDate are in the valid range (order.availableDate)
-      else if (checkDateValid(startDate, endDate, order.availableDate)) {
+      else if (checkDateValid(startDate, endDate, getValidDates(order.availableDate))) {
         Taro.navigateTo({
             'url': `/packageHouse/housing-apply/index?id=${id}&type=${type}&startDate=${startDate}&endDate=${endDate}`
         })
