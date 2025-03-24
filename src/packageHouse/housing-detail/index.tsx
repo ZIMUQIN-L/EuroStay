@@ -219,7 +219,21 @@ const HouseDetail: React.FC = () => {
 
   const handleShare = () => {
     Taro.showShareMenu({
-      withShareTicket: true
+      withShareTicket: true,
+      success: function (res) {
+        Taro.showToast({
+          title: '分享成功',
+          icon: 'success',
+          duration: 2000,
+        });
+      },
+      fail: function (err) {
+        Taro.showToast({
+          title: '分享失败，请重试',
+          icon: 'none',
+          duration: 2000,
+        });
+      }
     })
   }
 

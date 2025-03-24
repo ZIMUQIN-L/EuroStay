@@ -63,7 +63,7 @@ const CustomCard = ({
       >
           <Text>
             {type === 0 ? `€${price}/晚`: price === 0 ? `免费`: `€${price}`
-            }，开始{type === 0 ? '日期' : '时间'}：{date}
+            }，开始{type === 0 ? '日期' : '时间'}：{type === 0 ? date.substring(0, 10) : date}
           </Text>
       </View>
       </View>

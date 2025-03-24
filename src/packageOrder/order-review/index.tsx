@@ -89,11 +89,22 @@ const Index: React.FC = () => {
                         images: images,
                     },
                     success: function (res) {
-                        Taro.showToast({
-                            title: '你已成功评价！正在等待审核，审核通过后，待对方也完成评价或7天后评价内容将会显示。',
-                            icon: 'success',
-                            duration: 2000,
-                        })
+                        if (response.statusCode === 200 && response.data.code === 0) {
+                            Taro.showToast({
+                                title: '你已成功评价！正在等待审核，审核通过后，待对方也完成评价或7天后评价内容将会显示。',
+                                icon: 'none',
+                                duration: 2000,
+                            })
+                            setTimeout(() => {
+                                Taro.navigateBack();
+                              }, 2000);
+                        } else {
+                            Taro.showToast({
+                                title: response.data.msg + ' 评价失败，请稍后再试',
+                                icon: 'none',
+                                duration: 2000,
+                            })
+                        }
                     },
                     fail: function (err) {
                         Taro.showToast({
@@ -101,9 +112,6 @@ const Index: React.FC = () => {
                             icon: 'none',
                             duration: 2000,
                         });
-                    },
-                    complete: function () {
-                      Taro.navigateBack()
                     }
                 })
             },
