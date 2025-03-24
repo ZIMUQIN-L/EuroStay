@@ -57,6 +57,10 @@
         font-family: 'Alibaba PuHuiTi';
         flex: 1;
         margin-right: 16px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        max-width: 400px;
       }
 
       .price {

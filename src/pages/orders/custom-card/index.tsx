@@ -1,6 +1,7 @@
 import { View, Image, Text } from '@tarojs/components';
 import './index.scss';
 import Taro from '@tarojs/taro';
+import {parseLocation} from '@utils/addressUtil';
 
 /**
  * @description 我的供宿和我的求宿的共用组件
@@ -51,7 +52,7 @@ const CustomCard = ({
       <View
         className='card-right-top-text'
       >
-          <Text>{location}</Text>
+          <Text>{parseLocation(location)}</Text>
       </View>
       <View
         className='card-left-bottom-title'

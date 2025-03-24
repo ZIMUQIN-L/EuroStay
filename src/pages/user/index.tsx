@@ -1,4 +1,4 @@
-import { View, Image, Text } from '@tarojs/components';
+import { View, Image, Text, Textarea } from '@tarojs/components';
 import { useEffect, useState } from 'react';
 import Taro, { useRouter } from '@tarojs/taro';
 import GlobalStore from '../../store/GlobalStore';
@@ -15,7 +15,6 @@ import {
 } from '../../services/user';
 import './index.scss';
 import { settingIcon } from '@utils/cloudIcons';
-import TabBar from '@components/TabBar';
 import { observer } from 'mobx-react-lite';
 
 const UserProfile = () => {
@@ -37,7 +36,8 @@ const UserProfile = () => {
   const [hasMoreParticipated, setHasMoreParticipated] = useState(true);
   const [hasMoreReviews, setHasMoreReviews] = useState(true);
   const [isCurrentUser, setIsCurrentUser] = useState(false);
-  const [isShowPostModal, setIsShowPostModal] = useState(false);
+  const [showHelloModal, setShowHelloModal] = useState(false);
+  const [helloMessage, setHelloMessage] = useState('');
 
   useEffect(() => {
     fetchUserInfo();
@@ -170,24 +170,56 @@ const UserProfile = () => {
   };
 
   const handleSayHello = () => {
-    // TODO: 实现打招呼功能
+    setShowHelloModal(true);
+  };
+
+  const handleSendHello = () => {
+    Taro.request({
+      url: 'https://api.eurostay.co/app/esmessages/sendLikeMsg',
+      method: 'POST',
+      header: {
+        token: GlobalStore.userInfo.token,
+      },
+      data: {
+        toUid: Number(pageUid),
+        content: `${GlobalStore.userInfo.username}对你的主页很感兴趣并向您打了个招呼：${helloMessage}`,
+      },
+      success: function (response) {
+        if (response.statusCode === 200 && response.data.code === 0) {
+          Taro.showToast({
+            title: '发送成功',
+            icon: 'success'
+          });
+        } else {
+          Taro.showToast({
+            title: response.data.msg + ' 发送失败，请重试',
+            icon: 'none',
+            duration: 2000,
+          });
+        }
+      },
+      fail: function (err) {
+        Taro.showToast({
+          title: '网络请求失败，请重试',
+          icon: 'none',
+          duration: 2000,
+        });
+      }
+    });
+    setShowHelloModal(false);
+    setHelloMessage('');
   };
 
   if (loading) {
     return (
       <View className="user-profile">
         <View className="loading">加载中...</View>
-        <TabBar 
-          onWorldSelected={() => {}}
-          setIsShowPostModal={setIsShowPostModal}
-          isShowPostModal={isShowPostModal}
-        />
       </View>
     );
   }
 
   return (
-    <View className={`user-profile ${isShowPostModal ? 'modal' : ''}`}>
+    <View className="user-profile">
       <Image
         className="background-image"
         src={userInfo?.backgroundPic || ''}
@@ -224,7 +256,7 @@ const UserProfile = () => {
                   <View className="edit-profile" onClick={() => Taro.navigateTo({ url: '/packageUser/user-editing/index' })}>
                     编辑资料
                   </View>
-                  <View className="setting-btn" onClick={() => Taro.navigateTo({ url: '/packageUser/user-setting/index' })}>
+                  <View className="setting-btn" onClick={() => Taro.switchTab({ url: '/pages/user-setting/index' })}>
                     <Image className="setting-icon" src={settingIcon} />
                   </View>
                 </>
@@ -384,11 +416,34 @@ const UserProfile = () => {
         )}
       </View>
 
-      <TabBar 
-        onWorldSelected={() => {}}
-        setIsShowPostModal={setIsShowPostModal}
-        isShowPostModal={isShowPostModal}
-      />
+      {showHelloModal && (
+        <View 
+          className='hello-modal-mask'
+          onClick={() => setShowHelloModal(false)}
+        >
+          <View 
+            className='hello-modal'
+            onClick={(e) => {
+              e.stopPropagation();
+            }}
+          >
+            <View className='modal-title'>您将给"{userInfo?.username}"发送打招呼消息</View>
+            <Textarea
+              className='message-input'
+              placeholder='说点什么吧...'
+              value={helloMessage}
+              onInput={e => setHelloMessage(e.detail.value)}
+              maxlength={200}
+            />
+            <View 
+              className='confirm-button'
+              onClick={handleSendHello}
+            >
+              发送
+            </View>
+          </View>
+        </View>
+      )}
     </View>
   );
 };

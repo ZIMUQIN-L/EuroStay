@@ -1,16 +1,17 @@
-import { View, Image, Text, Swiper, SwiperItem, Input } from '@tarojs/components'
+import { View, Image, Text, Swiper, SwiperItem, Input, Textarea } from '@tarojs/components'
 import { AtCalendar } from 'taro-ui';
 import { useState, useEffect } from 'react'
 import Taro from '@tarojs/taro'
 import HostCardSmall from '../../components/HostCardSmall';
 import './index.scss'
-import {LikeOutlined, StarOutlined, ShareOutlined, HomeOutlined} from '@taroify/icons';
+import { HomeOutlined } from '@taroify/icons';
 import { useRouter } from '@tarojs/taro';
 import GlobalStore from '@store/GlobalStore';
 import { HostDetail, Order, ReviewCardProps } from '@utils/interfaces';
 import { formatToday } from '@utils/dateUtil';
 import ReviewCard from '@components/ReviewCard';
 import { get } from 'mobx';
+import {heartPurpleIcon, starPurpleIcon, starYellowIcon, sharePurpleIcon} from '@utils/cloudIcons';
 
 const HouseDetail: React.FC = () => {
   const [currentImage, setCurrentImage] = useState(0)
@@ -390,14 +391,14 @@ const HouseDetail: React.FC = () => {
 
       <View className='action-buttons'>
         <View className='action-button' onClick={handleShare}>
-          <ShareOutlined className='icon'/>
+          <Image src={sharePurpleIcon} className='icon' />
         </View>
         <View className='action-button' onClick={handleLike}>
-          <LikeOutlined className='icon'/>
+          <Image src={heartPurpleIcon} className='icon' />
         </View>
         {isComplete &&
         <View className='action-button' onClick={handelCollect}>
-         <StarOutlined className={`icon ${isStarred ? 'active' : ''}`}/>
+          <Image src={isStarred ? starYellowIcon : starPurpleIcon} className='icon' />
         </View>
         }
       </View>
@@ -514,20 +515,29 @@ const HouseDetail: React.FC = () => {
 
       {/* 点赞弹窗 */}
       {showLikeModal && (
-        <View className='like-modal-mask'>
-          <View className='like-modal'>
+        <View 
+          className='like-modal-mask'
+          onClick={() => setShowLikeModal(false)}
+        >
+          <View 
+            className='like-modal'
+            onClick={(e) => {
+              e.stopPropagation();
+            }}
+          >
             <View className='modal-title'>您将给"{order.title}"发送点赞消息</View>
-            <Input
+            <Textarea
               className='message-input'
               placeholder='说点什么吧...'
               value={likeMessage}
               onInput={e => setLikeMessage(e.detail.value)}
+              maxlength={200}
             />
             <View 
-            className='confirm-button'
-            onClick={handleSendLike}
+              className='confirm-button'
+              onClick={handleSendLike}
             >
-            发送
+              发送
             </View>
           </View>
         </View>

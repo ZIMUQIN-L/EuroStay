@@ -548,9 +548,10 @@ const HousePublish = () => {
           <Text className='label'>房源名称*</Text>
           <Input
             className='input'
-            placeholder='请输入房源名称'
+            placeholder='请输入房源名称（14个字以内哦）'
             placeholderClass='placeholder'
             value={formData.houseName}
+            maxlength={14}
             onInput={e =>
               setFormData({ ...formData, houseName: e.detail.value })
             }

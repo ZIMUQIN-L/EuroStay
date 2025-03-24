@@ -442,9 +442,10 @@ const ActivityPublish = () => {
           <Text className='label'>活动名称*</Text>
           <Input
             className='input'
-            placeholder='请输入活动名称'
+            placeholder='请输入活动名称（14个字以内哦）'
             placeholderClass='placeholder'
             value={formData.activityName}
+            maxlength={14}
             onInput={e =>
               setFormData({ ...formData, activityName: e.detail.value })
             }
