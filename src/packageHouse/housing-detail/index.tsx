@@ -32,7 +32,18 @@ const HouseDetail: React.FC = () => {
   const id = router?.params?.id;
   const type = router?.params?.type;
 
-  const [hostDetail, setHostDetail] = useState<HostDetail>({});
+  const [hostDetail, setHostDetail] = useState<HostDetail>({
+    uid: 0,
+    avatar: '',
+    role: 'Host',
+    username: '',
+    detail: '',
+    tags: [],
+    buttonText: '打个招呼',
+    buttonFunc: () => {
+      setShowLikeModal(true);
+    }
+  });
   const [order, setOrder] = useState<Order>({});
   const [topReview, setTopReview] = useState<ReviewCardProps>({});
 
@@ -164,7 +175,7 @@ const HouseDetail: React.FC = () => {
           tags: res.data.result.hostInfo.tags,
           buttonText: '打个招呼',
           buttonFunc: () => {
-            console.log('buttonFunc');
+            setShowLikeModal(true);
           }
         });
         setOrder({
@@ -277,8 +288,8 @@ const HouseDetail: React.FC = () => {
         token: GlobalStore.userInfo.token,
       },
       data: {
-        toUid: order.uid,
-        content: `${username}点赞了您的房源"${order.title}"，并发送了消息：${likeMessage}`,
+        toUid: hostDetail.uid,
+        content: `${username}点赞了您的${Number(type) === 0 ? '房源' : '活动'}${order.title}，并发送了消息：${likeMessage}`,
       },
       success: function (response) {
         if (response.statusCode === 200 && response.data.code === 0) {
@@ -529,7 +540,7 @@ const HouseDetail: React.FC = () => {
               e.stopPropagation(); // 阻止事件冒泡，防止点击modal内部时关闭
             }}
           >
-            <View className='modal-title'>您将给"{order.title}"发送点赞消息</View>
+            <View className='modal-title'>您将给{hostDetail.username}的"{order.title}"发送点赞消息</View>
             <Input
               className='message-input'
               placeholder='说点什么吧...'
