@@ -76,7 +76,7 @@ const UserSetting = () => {
     {
         icon: starIcon,
         text: '我的收藏',
-        path: '/packageUser/user-setting/index'
+        path: '/packageUser/user-collection/index'
       },
     {
       icon: infoIcon,
