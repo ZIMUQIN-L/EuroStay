@@ -198,7 +198,7 @@
 
   .logout-container {
     position: fixed;
-    bottom: 100px;
+    bottom: 64px;
     left: 0;
     right: 0;
     display: flex;
@@ -218,7 +218,7 @@
       color: #8A70D6;
       border: 2px solid #8A70D6;
       box-shadow: 0 4px 12px rgba(138, 112, 214, 0.1);
-      margin-bottom: 160px;
+      margin-bottom: 120px;
 
       &:active {
         opacity: 0.8;

@@ -7,7 +7,7 @@ import { useRouter } from '@tarojs/taro';
 import GlobalStore from '@store/GlobalStore';
 
 const Index = () => {
-  const [gender, setGender] = useState<'male' | 'female' | 'both'>('female')
+  const [gender, setGender] = useState('')
   const [identity, setIdentity] = useState('')
   const [introduction, setIntroduction] = useState('')
   const [contact, setContact] = useState('')
@@ -44,6 +44,23 @@ const Index = () => {
   }
 
   const handleSubmit = () => {
+    if (!identity || !introduction || !contact || !reason || !gender || !guestCount) {
+      Taro.showToast({
+        title: '请填写完整信息',
+        icon: 'none',
+        duration: 2000,
+      })
+      return
+    }
+    // check if guestCount is a number, and it is a integer that is greater than 0
+    if (!/^\d+$/.test(guestCount) || Number(guestCount) <= 0) {
+      Taro.showToast({
+        title: '请填写正确的人数',
+        icon: 'none',
+        duration: 2000,
+      })
+      return
+    }
     if (Number(type) === 0) {
       Taro.request({
         url: 'https://api.eurostay.co/app/property/applyProperty',
@@ -63,12 +80,23 @@ const Index = () => {
           selfIntro: introduction
         },
         success: (res) => {
-          // console.log(res)
-          Taro.showToast({
-            title: '申请已提交',
-            icon: 'success',
-            duration: 2000,
-          })
+          if (res.statusCode === 200 && res.data.code === 0) {
+            // console.log(res)
+            Taro.showToast({
+              title: '申请已提交',
+              icon: 'success',
+              duration: 2000,
+            })
+            setTimeout(() => {
+              Taro.navigateBack();
+            }, 2000);
+          } else {
+            Taro.showToast({
+              title: res.data.msg + ' 申请提交失败，请重试',
+              icon: 'none',
+              duration: 2000,
+            })
+          }
         },
         fail: function (err) {
           Taro.showToast({
@@ -76,9 +104,6 @@ const Index = () => {
             icon: 'none',
             duration: 2000,
           });
-        },
-        complete: function () {
-          Taro.navigateBack()
         }
       })
     } else {
@@ -97,12 +122,23 @@ const Index = () => {
           selfIntro: introduction
         },
         success: async (res) => {
-          Taro.showToast({
-            title: '申请已提交',
-            icon: 'success',
-            duration: 2000,
-          })
-          Taro.navigateBack()
+          if (res.statusCode === 200 && res.data.code === 0) {
+            // console.log(res)
+            Taro.showToast({
+              title: '申请已提交',
+              icon: 'success',
+              duration: 2000,
+            })
+            setTimeout(() => {
+              Taro.navigateBack();
+            }, 2000);
+          } else {
+            Taro.showToast({
+              title: res.data.msg + ' 申请提交失败，请重试',
+              icon: 'none',
+              duration: 2000,
+            })
+          }
         },
         fail: async function (err) {
           Taro.showToast({
@@ -110,10 +146,6 @@ const Index = () => {
             icon: 'none',
             duration: 2000,
           });
-          Taro.navigateBack()
-        },
-        complete: function () {
-          // Taro.navigateBack()
         }
       })
     }

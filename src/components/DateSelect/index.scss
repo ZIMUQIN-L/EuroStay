@@ -26,6 +26,47 @@
     }
   }
 }
+.date-select {
+  // margin-bottom: -80px;
+  margin-top: 20px;
+
+  .calendar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .date-text {
+    font-size: 32px;
+    color: #333;
+    margin-right: 10px;
+  }
+  .at-calendar__list.flex .flex__item--selected {
+    color: black;
+    background-color: #ffd35e;
+  }
+  .activity-publish .section .input-item .date-select .container-text {
+    color: black !important;
+  }
+
+  .at-calendar__list.flex
+    .flex__item--selected-head.flex__item--selected-tail
+    .flex__item-container {
+    background-color: #ffd35e;
+  }
+  .flex__item--selected {
+    color: #000000;
+    background-color: #ffd35e;
+  }
+  .at-calendar__list.flex .flex__item--today {
+    color: #000000;
+    font-weight: bolder;
+  }
+  .at-calendar__list.flex .flex__item-container {
+    width: 60rpx;
+    height: 60rpx;
+  }
+}
 @import '~taro-ui/dist/style/components/calendar.scss';
 @import '~taro-ui/dist/style/components/toast.scss';
 @import '~taro-ui/dist/style/components/icon.scss';

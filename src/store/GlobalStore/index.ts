@@ -5,6 +5,7 @@ import Taro from '@tarojs/taro';
 class GlobalStore {
   _currentTab: string = 'home';
   _userInfo: ESUserLoginInfoProps;
+  _socket: Taro.SocketTask | null = null;
 
   constructor() {
     makeAutoObservable(this, {}, { autoBind: true });
@@ -54,6 +55,7 @@ class GlobalStore {
   setToken(newToken: string) {
     this._userInfo.token = newToken;
     Taro.setStorageSync('userInfo', this._userInfo); // 持久化
+    this.connectWebSocket();
   }
 
   setAboutMe(newAboutMe: string) {
@@ -98,6 +100,82 @@ class GlobalStore {
   set currentTab(tab: string) {
     this._currentTab = tab;
   }
+
+
+    /**
+   * 连接 WebSocket
+   */
+    async connectWebSocket(token?: string) {
+      const wsToken = token || this._userInfo.token;
+      if (!wsToken) {
+        console.error('WebSocket 连接失败，缺少 token');
+        return;
+      }
+    
+      if (this._socket) {
+        console.log('WebSocket 已经连接，无需重新连接');
+        return;
+      }
+    
+      const wsUrl = `wss://api.eurostay.co/app/essocket/${wsToken}`;
+      console.log('正在连接 WebSocket:', wsUrl);
+    
+      try {
+        this._socket = await Taro.connectSocket({
+          url: wsUrl,
+          header: { 'content-type': 'application/json' },
+        });
+    
+        // 监听 WebSocket 事件
+        this._socket.onOpen(() => {
+          console.log('WebSocket 连接成功');
+        });
+    
+        this._socket.onMessage((res) => {
+          console.log('收到 WebSocket 消息:', res.data);
+        });
+    
+        this._socket.onClose(() => {
+          console.log('WebSocket 连接关闭，3 秒后尝试重连...');
+          this._socket = null;
+          setTimeout(() => this.connectWebSocket(wsToken), 3000);
+        });
+    
+        this._socket.onError((err) => {
+          console.error('WebSocket 发生错误:', err);
+        });
+      } catch (error) {
+        console.error('WebSocket 连接失败:', error);
+      }
+    }
+    
+  
+    /**
+     * 发送 WebSocket 消息
+     */
+    async sendWebSocketMessage(data: any) {
+      if (!this._socket) {
+        console.warn('WebSocket 未连接，尝试重新连接并发送消息...');
+        // await this.reconnectAndSend(data);
+        return;
+      }
+    
+      try {
+        this._socket.send({
+          data: JSON.stringify(data),
+          success: () => console.log('消息发送成功:', data),
+          fail: (err) => {
+            console.error('WebSocket 发送消息失败:', err);
+            // this.reconnectAndSend(data);
+          },
+        });
+      } catch (error) {
+        console.error('WebSocket 发送消息异常:', error);
+        // await this.reconnectAndSend(data);
+      }
+    }
+    
+    
 }
 const globalStoreInstance = new GlobalStore();
 export default globalStoreInstance;

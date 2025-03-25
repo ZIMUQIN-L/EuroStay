@@ -7,6 +7,7 @@ import { formatToday } from '@utils/dateUtil';
 import GlobalStore from '@store/GlobalStore';
 import Popup from '../../components/Popup';
 import '../../components/Popup/index.scss';
+import { combineAddress, parseAddress } from '@utils/addressUtil';
 
 interface ActivityFormData {
   activityName: string;
@@ -29,6 +30,19 @@ interface ActivityFormData {
   otherRequirements: string[];
   activityImages: string[];
   startTime: string;
+}
+
+interface ActivityBase {
+  id: number;
+  title: string;
+  description: string;
+  tags: string;  // 注意这里是字符串，需要解析
+  location: string;
+  searchableLocation: number;
+  price: number;
+  startTime: string;
+  images: string;  // 注意这里是字符串，需要解析
+  capacity: number;
 }
 
 const ActivityPublish = () => {
@@ -57,12 +71,27 @@ const ActivityPublish = () => {
   const [cities, setCities] = useState<
     { id: number; cname: string; name: string }[]
   >([]);
+  const [aid, setAid] = useState<number | null>(null);
+
   useEffect(() => {
+    const params = Taro.getCurrentInstance().router?.params;
+    const routerAid = params?.aid;
+    
+    Taro.setNavigationBarTitle({
+      title: routerAid ? '修改活动' : '发布活动',
+    });
+
+    if (routerAid) {
+      setAid(Number(routerAid));
+      fetchActivityBase(Number(routerAid));
+    }
     getCountries();
   }, []);
+
   useEffect(() => {
     getCities();
   }, [formData.country.id]);
+
   const getCities = async () => {
     console.log(GlobalStore.userInfo.token);
     await Taro.request({
@@ -90,6 +119,7 @@ const ActivityPublish = () => {
       },
     });
   };
+
   const getCountries = async () => {
     console.log(GlobalStore.userInfo.token);
     await Taro.request({
@@ -99,7 +129,6 @@ const ActivityPublish = () => {
         token: GlobalStore.userInfo.token,
       },
       success: function (response) {
-        console.log(response);
         if (response.statusCode === 200 && response.data.code === 0) {
           setCountries(response.data.result);
           console.log(response.data.result);
@@ -113,6 +142,55 @@ const ActivityPublish = () => {
         });
       },
     });
+  };
+
+  const fetchActivityBase = async (activityId: number) => {
+    try {
+      const response = await Taro.request({
+        url: `https://api.eurostay.co/app/activity/getActivityBase`,
+        method: 'POST',
+        header: {
+          token: GlobalStore.userInfo.token,
+        },
+        data: { id: activityId }
+      });
+      console.log(response);
+
+      if (response.statusCode === 200 && response.data.code === 0) {
+        const detail = response.data.result;
+        
+        const tags = JSON.parse(detail.tags || '[]');
+        const images = JSON.parse(detail.images || '[]');
+        
+        const dateTime = detail.startTime.split(' ');
+        const date = dateTime[0];
+        const time = dateTime[1].substring(0, 5);
+        
+        const { country, city, detail: detailAddress } = parseAddress(detail.location);
+
+        setFormData({
+          ...formData,
+          activityName: detail.title,
+          activityDesc: detail.description,
+          activityTag: tags,
+          country: { id: 0, cname: country, name: '' },
+          city: { id: 0, cname: city, name: '' },
+          price: String(detail.price),
+          participantCount: String(detail.capacity),
+          activityImages: images,
+          detailAddress: detailAddress,
+          startTime: time
+        });
+
+        setStartDate(date);
+      }
+    } catch (error) {
+      Taro.showToast({
+        title: '获取活动信息失败',
+        icon: 'none',
+        duration: 2000,
+      });
+    }
   };
 
   const tags = [
@@ -220,11 +298,9 @@ const ActivityPublish = () => {
     });
   };
 
-  // 添加验证函数
   const validateForm = () => {
     const errors: string[] = [];
 
-    // 检查必填字段
     if (!formData.activityName.trim()) {
       errors.push('请填写活动名称');
     }
@@ -264,12 +340,10 @@ const ActivityPublish = () => {
     return errors;
   };
 
-  // 修改提交函数
   const handleSubmit = async () => {
     const errors = validateForm();
     
     if (errors.length > 0) {
-      // 如果有错误，显示第一个错误信息
       Taro.showToast({
         title: errors[0],
         icon: 'none',
@@ -278,40 +352,48 @@ const ActivityPublish = () => {
       return;
     }
 
-    // 组合完整地址
-    const fullAddress = `${formData.country.cname}${formData.city.cname}||${formData.detailAddress}`;
+    const fullAddress = combineAddress(
+      formData.country.cname,
+      formData.city.cname,
+      formData.detailAddress
+    );
 
     try {
+      const url = aid 
+        ? 'https://api.eurostay.co/app/activity/modify'
+        : 'https://api.eurostay.co/app/activity/addActivity';
+
+      const requestData = {
+        ...(aid && { aid }),
+        title: formData.activityName,
+        description: formData.activityDesc,
+        location: fullAddress,
+        searchableLocation: formData.city.id,
+        price: Number(formData.price),
+        images: formData.activityImages,
+        tags: formData.activityTag,
+        capacity: formData.participantCount,
+        startTime: startDate + 'T' + formData.startTime + ':00',
+      };
+
       const response = await Taro.request({
-        url: `https://api.eurostay.co/app/activity/addActivity`,
+        url,
         method: 'POST',
         header: {
           token: GlobalStore.userInfo.token,
         },
-        data: {
-          title: formData.activityName,
-          description: formData.activityDesc,
-          location: fullAddress,
-          searchableLocation: formData.city.id,
-          price: Number(formData.price),
-          images: formData.activityImages,
-          tags: formData.activityTag,
-          capacity: formData.participantCount,
-          startTime: startDate + 'T' + formData.startTime + ':00',
-        }
+        data: requestData
       });
 
       if (response.statusCode === 200 && response.data.code === 0) {
         Taro.showToast({
-          title: '你已成功上传活动！活动正在等待审核，审核通过后将公众可见。',
+          title: aid ? '修改成功！' : '你已成功上传活动！活动正在等待审核，审核通过后将公众可见。',
           icon: 'none',
           duration: 2000,
         });
         setTimeout(() => {
           Taro.navigateBack();
         }, 2000);
-      } else {
-        throw new Error('上传失败');
       }
     } catch (error) {
       Taro.showToast({
@@ -360,9 +442,10 @@ const ActivityPublish = () => {
           <Text className='label'>活动名称*</Text>
           <Input
             className='input'
-            placeholder='请输入活动名称'
+            placeholder='请输入活动名称（14个字以内哦）'
             placeholderClass='placeholder'
             value={formData.activityName}
+            maxlength={14}
             onInput={e =>
               setFormData({ ...formData, activityName: e.detail.value })
             }
@@ -561,7 +644,7 @@ const ActivityPublish = () => {
       </View>
 
       <View className='submit-post-activity' onClick={handleSubmit}>
-        发布活动
+        {aid ? '保存修改' : '发布活动'}
       </View>
     </View>
   );

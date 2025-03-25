@@ -2,6 +2,7 @@
   background: #fff;
   overflow: hidden;
   margin-bottom: 20px;
+  border-radius: 20px;
 
   .image-container {
     position: relative;
@@ -42,7 +43,7 @@
   }
 
   .info-container {
-    padding: 16px 0px;
+    padding: 16px 8px;
 
     .title-row {
       display: flex;
@@ -57,6 +58,10 @@
         font-family: 'Alibaba PuHuiTi';
         flex: 1;
         margin-right: 16px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        max-width: 400px;
       }
 
       .price {

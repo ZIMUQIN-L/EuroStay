@@ -17,6 +17,7 @@ export default {
       pages: [
         'user-editing/index',
         'user-vip/index',
+        'user-collection/index',
         'about-es/index',
         'user-contact/index',
         'edit-nickname/index',
@@ -29,18 +30,12 @@ export default {
     },
     {
       root: 'packageHouse/',
-      pages: [
-        'housing-apply/index',
-        'housing-detail/index',
-      ],
+      pages: ['housing-apply/index', 'housing-detail/index'],
     },
     {
       root: 'packageOrder/',
-      pages: [
-        'order-detail/index',
-        'order-review/index',
-      ],
-    }
+      pages: ['order-detail/index', 'order-review/index'],
+    },
     // {
     //   root: 'packageHouse/',
     //   pages: [],
@@ -49,6 +44,10 @@ export default {
     //   root: 'packageActivity/',
     //   pages: [],
     // },
+    {
+      root: 'packageMessage',
+      pages: ['message-detail/index', 'strangers/index'],
+    },
   ],
   window: {
     backgroundTextStyle: 'light',

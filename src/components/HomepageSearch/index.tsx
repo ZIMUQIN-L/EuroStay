@@ -44,7 +44,11 @@ const HomepageSearch: React.FC<HomepageSearchProps> = ({
           }}
         >
           <Text>地区</Text>
-          <View className='location-value'>{location}</View>
+          <View
+            className={`location-value ${location == '选择城市' ? 'empty' : ''}`}
+          >
+            {location}
+          </View>
         </View>
 
         <View
@@ -54,10 +58,16 @@ const HomepageSearch: React.FC<HomepageSearchProps> = ({
           }}
         >
           <Text>日期</Text>
-          <View className='dateRange'>
-            {startDate}
-            <Text>至</Text>
-            {endDate}
+          <View className={`dateRange ${startDate == '' ? 'empty' : ''}`}>
+            {startDate == '' ? (
+              '选择日期'
+            ) : (
+              <>
+                {startDate}
+                <Text>至</Text>
+                {endDate}
+              </>
+            )}
           </View>
         </View>
         {activeTab == '房源' && (
@@ -96,11 +106,7 @@ const HomepageSearch: React.FC<HomepageSearchProps> = ({
         )}
       </View>
 
-      <View
-        className='searchButton'
-        onClick={onSearch}
-        style={{ backgroundColor: '#6b4eff' }}
-      >
+      <View className='searchButton' onClick={onSearch}>
         查询{activeTab}
       </View>
     </View>

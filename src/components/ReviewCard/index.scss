@@ -47,7 +47,7 @@
 
     .recommend-tag {
       padding: 5px 12px;
-      background: #FFB800;
+      background: #ffb800;
       border-radius: 7px;
       font-size: 22px;
       color: #333;
@@ -84,9 +84,10 @@
     align-items: center;
     gap: 16px;
 
-    .date, .location {
+    .date,
+    .location {
       font-size: 24px;
       color: #999;
     }
   }
-} 
+}
