@@ -17,6 +17,7 @@ export default {
       pages: [
         'user-editing/index',
         'user-vip/index',
+        'user-collection/index',
         'about-es/index',
         'user-contact/index',
         'edit-nickname/index',

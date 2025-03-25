@@ -4,10 +4,27 @@ import { useEffect, useState } from 'react';
 import './index.scss';
 
 // 定义内容类型
-type ContentType = 'privacy' | 'service' | 'about' | 'contact';
+type ContentType = 'privacy' | 'service' | 'about' | 'contact' | 'vip';
+
+// 定义内容结构类型
+interface ContentSection {
+  title: string;
+  content?: string;
+  sections?: {
+    subtitle: string;
+    content: string;
+    list?: string[];
+  }[];
+  list?: string[];
+}
+
+interface ContentItem {
+  title: string;
+  content: ContentSection[];
+}
 
 // 内容映射
-const contentMap = {
+const contentMap: Record<ContentType, ContentItem> = {
   privacy: {
     title: '隐私政策',
     content: [
@@ -102,21 +119,189 @@ const contentMap = {
       },
       {
         title: '7. 联系我们',
-        content: '如果您对本数据隐私协议有任何疑问或需要进一步的信息，请通过以下方式联系我们：'
+        content: '如果您对本数据隐私协议有任何疑问或需要进一步的信息，请通过以下方式联系我们：EuroStay@163.com'
       }
     ]
   },
   service: {
     title: '服务协议',
-    content: `服务协议内容...`
+    content: [
+      {
+        title: '一、借换宿行为的定义',
+        content: '借换宿指平台用户以非商业性质的方式，通过协商互相提供或借用短期住宅的行为。本行为旨在促进用户间的互助交流，并非以盈利为目的的商业行为。',
+        sections: [
+          {
+            subtitle: '1.1 定义说明',
+            content: '借换宿指平台用户以非商业性质的方式，通过协商互相提供或借用短期住宅的行为。本行为旨在促进用户间的互助交流，并非以盈利为目的的商业行为。'
+          }
+        ]
+      },
+      {
+        title: '二、非短租、转租行为声明',
+        content: '借换宿不同于短租或转租行为，借换宿中的任何交易行为均不构成商业性质的合同关系。',
+        sections: [
+          {
+            subtitle: '2.1 性质说明',
+            content: '本平台的借换宿行为与商业性质的短租、转租有本质区别，不以营利为目的。'
+          },
+          {
+            subtitle: '2.2 费用说明',
+            content: '双方之间的费用支付仅为成本分摊性费用，以用于覆盖住宅期间可能产生的基本成本（如水电费、清洁费等）。'
+          }
+        ]
+      },
+      {
+        title: '三、对房源发布的约束',
+        sections: [
+          {
+            subtitle: '3.1 费用限制',
+            content: 'Host 在平台上发布的房源价格必须基于实际成本，而非以盈利为目的。任何以商业为目的的价格设置均违反平台规则，Host 将自行承担由此产生的后果，包括但不限于账号限制或房源下架。EuroStay 平台保留对房源价格进行审查和调整的权利，以确保价格合理，符合平台的非商业化原则。'
+          },
+          {
+            subtitle: '3.2 房源合法性',
+            content: 'Host 必须对所发布的房源拥有合法的使用权。若房源涉及租赁、共有等特殊情况，Host 需确保其行为符合相关法律法规。若 Host 发布的房源不合法或存在纠纷，Host 将自行承担由此导致的所有法律责任和损失。'
+          },
+          {
+            subtitle: '3.3 房源信息真实性',
+            content: 'Host 承诺所发布的房源信息真实、出于自愿，包括但不限于房屋位置、设施状况、图片等。任何虚假信息都可能导致房源下架或账号限制。'
+          }
+        ]
+      },
+      {
+        title: '四、借换宿用户须知',
+        sections: [
+          {
+            subtitle: '4.1 参与资格',
+            content: '用户必须年满 18 周岁，具备完全民事行为能力。用户需提供真实、有效的身份信息进行注册，并确保信息的真实性。'
+          },
+          {
+            subtitle: '4.2 借换宿行为规范',
+            content: '用户需尊重房源提供者的规定，合理使用房屋设施。借换宿过程中，用户需保持房屋整洁，并在结束后归还至原始状态。若因用户个人原因造成房屋损坏，用户需承担相应赔偿责任。'
+          },
+          {
+            subtitle: '4.3 费用及支付',
+            content: '借换宿仅涉及合理的成本分摊费用，不得以盈利为目的。用户需按约定支付相关费用，并确保支付信息的安全性。'
+          }
+        ]
+      },
+      {
+        title: '五、责任说明',
+        sections: [
+          {
+            subtitle: '5.1 平台免责声明',
+            content: 'EuroStay 平台不对任何房源的财产安全和人身安全承担责任。Host 需自行确保房屋的安全性，并建议用户自行购买相关保险，以降低可能的风险。'
+          },
+          {
+            subtitle: '5.2 争议处理',
+            content: '若借换宿过程中发生纠纷，建议双方协商解决。若协商未果，可通过 EuroStay 平台申诉，平台将根据实际情况进行调解，但不对最终结果负责。'
+          }
+        ]
+      },
+      {
+        title: '六、其他说明',
+        content: '本协议最终解释权归 EuroStay 平台所有，用户在使用平台服务前应充分理解并接受上述条款。'
+      },
+      {
+        title: '七、联系我们',
+        content: '如果您对本数据隐私协议有任何疑问或需要进一步的信息，请通过以下方式联系我们：EuroStay@163.com'
+      }
+    ]
   },
   about: {
     title: '关于我们',
-    content: `关于我们的内容...`
+    content: [
+      {
+        title: '关于我们',
+        content: '关于我们的内容...'
+      }
+    ]
   },
   contact: {
     title: '联系我们',
-    content: `联系方式...`
+    content: [
+      {
+        title: '联系我们',
+        content: '联系方式...'
+      }
+    ]
+  },
+  vip: {
+    title: 'EuroStay 会员协议',
+    content: [
+        {
+        title: '一、会员权益',
+        content: '成为 EuroStay 会员，您将享有以下权益：',
+        sections: [
+        {
+        subtitle: '1.1 联系 Host',
+        content: '会员可优先获取房源信息，并可直接与 Host 交流，促成借换宿。'
+        },
+        {
+        subtitle: '1.2 平台通知',
+        content: '会员可及时获取最新房源推荐、社区活动、政策更新等重要信息。'
+        },
+        {
+        subtitle: '1.3 社区互动',
+        content: '会员可参与平台组织的线上线下交流活动，与其他旅行者和 Host 建立联系。'
+        },
+        {
+        subtitle: '1.4 专属服务',
+        content: '会员可享受平台提供的个性化推荐及优先客服支持。'
+        }
+        ]
+        },
+        {
+        title: '二、会员义务',
+        sections: [
+        {
+        subtitle: '2.1 真实信息',
+        content: '会员应确保其提供的个人资料真实、有效，任何虚假信息可能导致账户限制。'
+        },
+        {
+        subtitle: '2.2 遵守规则',
+        content: '会员应遵守 EuroStay 的使用规则，不得进行任何商业性质的活动，如倒卖房源信息等。'
+        },
+        {
+        subtitle: '2.3 文明交流',
+        content: '在与 Host 和其他会员交流时，保持尊重、礼貌，不得发布骚扰或不当言论。'
+        }
+        ]
+        },
+        {
+        title: '三、会员资格与有效期',
+        sections: [
+        {
+        subtitle: '3.1 付费与有效期',
+        content: '会员资格按月度或年度订阅模式收费，具体费用及支付方式以平台公告为准。会员资格将在当前订阅周期结束前自动续费，除非会员在续费前手动取消订阅。'
+        },
+        {
+        subtitle: '3.2 取消与退款',
+        content: '会员资格在订阅周期内不可提前终止或退款，会员在支付后可持续享受服务至订阅周期结束。若因违反平台规则导致账户被暂停或取消，已支付费用不予退还。'
+        }
+        ]
+        },
+        {
+        title: '四、责任说明',
+        sections: [
+        {
+        subtitle: '4.1 平台免责声明',
+        content: 'EuroStay 平台仅提供信息对接服务，不对会员与 Host 之间的具体交易行为负责。'
+        },
+        {
+        subtitle: '4.2 争议处理',
+        content: '若会员权益受到侵害，可通过 EuroStay 平台申诉，平台将根据实际情况进行调解，但不对最终结果负责。'
+        }
+        ]
+        },
+        {
+        title: '五、其他说明',
+        content: '本协议最终解释权归 EuroStay 平台所有，用户在使用平台服务前应充分理解并接受上述条款。'
+        },
+        {
+        title: '六、联系我们',
+        content: '如果您对本会员协议有任何疑问或需要进一步的信息，请通过以下方式联系我们：EuroStay@163.com'
+        }
+    ]
   }
 };
 
@@ -145,6 +330,9 @@ const CommonSetting = () => {
         <View key={index} className='content-section'>
           {section.title && (
             <Text className='content-title'>{section.title}</Text>
+          )}
+          {section.content && (
+            <Text className='content-text'>{section.content}</Text>
           )}
           {section.sections && section.sections.map((subsection, subIndex) => (
             <View key={subIndex} className='content-subsection'>

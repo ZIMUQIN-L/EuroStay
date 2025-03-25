@@ -55,6 +55,7 @@ const HouseCard: React.FC<HouseCardProps> = ({
             <Image className="settings-icon" src={settingIcon} />
           </View>
         ) : (
+            isCurrentUser?<View/>:
           <View className="settings-button" onClick={onFavoriteClick}>
             <Image className="settings-icon" src={favoriteIcon} />
           </View>

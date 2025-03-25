@@ -143,7 +143,6 @@ const Index = () => {
         const normalMsgs: MessageItem[] = [];
         const systemMsgs: MessageItem[] = [];
         const strangerMsgs: MessageItem[] = [];
-  
         records.forEach((record: SessionRecord) => {
           // 确定对方的UID
           const otherPersonUid = currentUid === record.initUid 

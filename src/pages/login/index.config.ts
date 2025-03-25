@@ -1,6 +1,6 @@
 export default {
     navigationBarTitleText: 'EuroStay登录',
-    navigationBarBackgroundColor: '#ffffff',
+    navigationBarBackgroundColor: '#FFF0CF',
     navigationBarTextStyle: 'black',
     enableShareAppMessage: true,
     enableShareTimeline: true,

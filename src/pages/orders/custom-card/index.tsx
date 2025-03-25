@@ -1,6 +1,7 @@
 import { View, Image, Text } from '@tarojs/components';
 import './index.scss';
 import Taro from '@tarojs/taro';
+import {parseLocation} from '@utils/addressUtil';
 
 /**
  * @description 我的供宿和我的求宿的共用组件
@@ -21,9 +22,11 @@ const CustomCard = ({
 
   const handleClick = () => {
     if (status === 'awaiting' || status === 'ongoing' || status === 'expired') {
+      // console.log('navigate to, ' + `/packageOrder/order-detail/index?role=${role}&status=${status}&type=${type}&id=${id}&experienceId=${experienceId}&title=${title}`);
       Taro.navigateTo({ url: `/packageOrder/order-detail/index?role=${role}&status=${status}&type=${type}&id=${id}&experienceId=${experienceId}&title=${title}` });
     }
     else { // review
+      // console.log('navigate to, ' + `/packageOrder/order-review/index?role=${role}&type=${type}&id=${id}&experienceId=${experienceId}&title=${title}`);
       Taro.navigateTo({ url: `/packageOrder/order-review/index?role=${role}&type=${type}&id=${id}&experienceId=${experienceId}&title=${title}` });
     }
   }
@@ -49,7 +52,7 @@ const CustomCard = ({
       <View
         className='card-right-top-text'
       >
-          <Text>{location}</Text>
+          <Text>{parseLocation(location)}</Text>
       </View>
       <View
         className='card-left-bottom-title'
@@ -61,7 +64,7 @@ const CustomCard = ({
       >
           <Text>
             {type === 0 ? `€${price}/晚`: price === 0 ? `免费`: `€${price}`
-            }，开始{type === 0 ? '日期' : '时间'}：{date}
+            }，开始{type === 0 ? '日期' : '时间'}：{type === 0 ? date.substring(0, 10) : date}
           </Text>
       </View>
       </View>

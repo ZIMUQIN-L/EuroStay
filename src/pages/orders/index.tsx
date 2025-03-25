@@ -1,12 +1,13 @@
 import { View, Text, Image, Button } from '@tarojs/components';
 import { observer } from 'mobx-react';
-import Taro, { useReachBottom } from '@tarojs/taro';
+import Taro, { usePullDownRefresh, useReachBottom } from '@tarojs/taro';
 import { useEffect, useMemo, useState } from 'react';
 import './index.scss';
 import CustemCard from './custom-card/index';
 import GlobalStore from '@store/GlobalStore';
 import { OrderInfo } from '@utils/interfaces';
 import TabBar from '@components/TabBar';
+import { set } from 'mobx';
 
 const Index = () => {
   const [currentTab, setCurrentTab] = useState('all');
@@ -33,9 +34,11 @@ const Index = () => {
   const getButtonText = (status: number): string => {
     switch (status) {
       case 0:
-        if (activeRole === 'host') return '待审核';
+        if (activeRole === 'host') return "待审核";
+        else return "查看";
       case 1:
-        if (activeRole === 'guest') return '待确认';
+        if (activeRole === 'guest') return "待确认";
+        else return "查看";
       case 3:
         return '待评价';
       case 2:
@@ -69,9 +72,10 @@ const Index = () => {
   };
 
   const getDate = (date: string): string => {
-    const dateObj = new Date(date.replace('-', '/').replace('-', '/'));
-    return `${dateObj.getFullYear()}年${dateObj.getMonth() + 1}月${dateObj.getDay()}日`;
-  };
+    // const dateObj = new Date(date.replace('-', '/').replace('-', '/'));
+    // return `${dateObj.getFullYear()}年${dateObj.getMonth() + 1}月${dateObj.getDay()}日`;
+    return date.substring(0, 10);
+  }
 
   const getOrderList = (callback, type: number, isLoadMore = false) => {
     if (loading || (!hasMore && isLoadMore)) return;
@@ -91,7 +95,6 @@ const Index = () => {
         page: currentPage,
       },
       success: function (response) {
-        // console.log('response', response);
         if (response.statusCode === 200 && response.data.code === 0) {
           const newData = response.data.result.data;
           // console.log('newData', newData);
@@ -125,24 +128,29 @@ const Index = () => {
   // 处理触底加载
   const handleLoadMore = () => {
     if (loading || !hasMore) return;
-    if (activeRole === 'host') getOrderList(setOrderListHost, 0, true);
-    else getOrderList(setOrderListGuest, 1, true);
-  };
+    else { 
+      if (activeRole === 'host') getOrderList(setOrderListHost, 0, true);
+      else getOrderList(setOrderListGuest, 1, true);
+    }
+  }
 
   // 使用 useReachBottom hook
   useReachBottom(() => {
+    // console.log('useReachBottom');
     handleLoadMore();
   });
 
   // 切换 tab 时重置分页状态
+  // useEffect(() => {
+  //   setPage(1);
+  //   setHasMore(true);
+  // }, [activeRole, currentTab]);
+
   useEffect(() => {
-    setPage(1);
-    setHasMore(true);
-    getOrderList(
-      activeRole === 'host' ? setOrderListHost : setOrderListGuest,
-      1,
-    );
-  }, [activeRole, currentTab]);
+    getOrderList(setOrderListHost, 0);
+    getOrderList(setOrderListGuest, 1);
+  }, []);
+
 
   const renderContent = () => {
     console.log('renderContent');
@@ -198,9 +206,9 @@ const Index = () => {
                 location={order.location}
                 buttonText={getButtonText(order.status)}
                 title={order.title}
-                date={order.date}
-                price={`€${order.price}/晚`}
-                role={getRole(1)}
+                date={order.type === 0 ? getDate(order.date) : order.date}
+                price={`${order.price}`}
+                role={getRole(0)}
                 status={getStatus(order.status)}
                 type={order.type}
                 id={order.id}
