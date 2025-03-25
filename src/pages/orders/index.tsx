@@ -206,8 +206,8 @@ const Index = () => {
                 location={order.location}
                 buttonText={getButtonText(order.status)}
                 title={order.title}
-                date={order.date}
-                price={`€${order.price}/晚`}
+                date={order.type === 0 ? getDate(order.date) : order.date}
+                price={`${order.price}`}
                 role={getRole(0)}
                 status={getStatus(order.status)}
                 type={order.type}
