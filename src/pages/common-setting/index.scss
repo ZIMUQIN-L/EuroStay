@@ -1,50 +1,90 @@
 .common-setting {
   min-height: 100vh;
-  background: linear-gradient(180deg, #F8F0FF 0%, #FFFFFF 100%);
-  padding-bottom: 120px; // 为底部按钮留出空间
+  background: #F8F8F8;
+  padding-bottom: 120px;
+  position: relative;
 
   .content {
     padding: 32px;
 
     .section {
-      margin-bottom: 32px;
-      padding: 32px;
       background: #FFFFFF;
       border-radius: 24px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      padding: 32px;
 
-      .section-header {
+      &-header {
         display: flex;
         align-items: center;
-        height: 48px;
-        margin-bottom: 24px;
+        margin-bottom: 40px;
 
         .label-bar {
-          width: 4px;
+          width: 8px;
           height: 32px;
           background: #8A70D6;
-          border-radius: 2px;
-          margin-right: 12px;
-          flex-shrink: 0;
+          border-radius: 4px;
+          margin-right: 16px;
         }
 
         .section-title {
           font-size: 32px;
-          line-height: 32px;
-          color: #333;
-          font-family: 'Alibaba PuHuiTi';
-          font-weight: 500;
-          display: flex;
-          align-items: center;
+          font-weight: 600;
+          color: #333333;
         }
       }
 
-      .section-content {
-        font-size: 28px;
-        color: #666;
-        line-height: 1.6;
-        font-family: 'Alibaba PuHuiTi';
-        padding-left: 16px;
+      &-content {
+        .content-section {
+          margin-bottom: 40px;
+
+          .content-title {
+            font-size: 28px;
+            font-weight: 500;
+            color: #333333;
+            margin-bottom: 24px;
+            display: block;
+          }
+
+          .content-text {
+            font-size: 26px;
+            color: #666666;
+            line-height: 1.6;
+            margin-bottom: 24px;
+            display: block;
+          }
+
+          .content-subsection {
+            margin-bottom: 32px;
+            padding-left: 24px;
+
+            .content-subtitle {
+              font-size: 26px;
+              font-weight: 500;
+              color: #333333;
+              margin-bottom: 16px;
+              display: block;
+            }
+
+            .content-text {
+              font-size: 26px;
+              color: #666666;
+              line-height: 1.6;
+              margin-bottom: 16px;
+              display: block;
+            }
+
+            .content-list {
+              padding-left: 24px;
+
+              .list-item {
+                font-size: 26px;
+                color: #666666;
+                line-height: 1.6;
+                margin-bottom: 12px;
+                display: block;
+              }
+            }
+          }
+        }
       }
     }
   }
@@ -54,24 +94,29 @@
     bottom: 0;
     left: 0;
     right: 0;
-    padding: 24px 64px;
+    padding: 24px 32px;
     background: #FFFFFF;
     box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.05);
+    display: flex;
+    justify-content: center;
+    z-index: 100;
 
     .back-button {
-      height: 64px;
+      width: 500px;
+      height: 80px;
       background: #FFFFFF;
-      border: 2px solid rgba(138, 112, 214, 0.3);
       border-radius: 44px;
       display: flex;
       align-items: center;
       justify-content: center;
-      color: #8A70D6;
       font-size: 32px;
-      font-family: 'Alibaba PuHuiTi';
+      color: #8A70D6;
+      border: 2px solid #8A70D6;
+      box-shadow: 0 4px 12px rgba(138, 112, 214, 0.1);
 
       &:active {
         opacity: 0.8;
+        transform: translateY(2px);
       }
     }
   }

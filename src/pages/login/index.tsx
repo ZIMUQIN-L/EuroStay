@@ -231,7 +231,7 @@ const Login = () => {
             <Text
               className='link'
               onClick={() => {
-                Taro.navigateTo({ url: '/pages/terms/index' });
+                Taro.navigateTo({ url: '/pages/common-setting/index?type=service' });
               }}
             >
               《用户服务协议》
@@ -240,7 +240,7 @@ const Login = () => {
             <Text
               className='link'
               onClick={() => {
-                Taro.navigateTo({ url: '/pages/privacy/index' });
+                Taro.navigateTo({ url: '/pages/common-setting/index?type=vip' });
               }}
             >
               《隐私政策》

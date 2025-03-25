@@ -167,7 +167,10 @@ const UserVip = () => {
           <View className={`checkbox ${agreed ? 'checked' : ''}`} />
           <Text className='agreement-text'>
             我已阅读并同意Eurostay
-            <Text className='link'>《会员协议》</Text>
+            <Text className='link' 
+                          onClick={() => {
+                            Taro.navigateTo({ url: '/pages/common-setting/index?type=vip' });
+                          }}>《会员协议》</Text>
           </Text>
         </View>
 
