@@ -104,7 +104,7 @@ const HomeWorld = () => {
   // 修改 getList 函数以使用对应tab的页码
   const getList = (path, callback, params = {}, isLoadMore = false) => {
     if (loading) return;
-    
+
     const getCurrentPage = () => {
       switch (activeTab) {
         case '友友':
@@ -181,15 +181,21 @@ const HomeWorld = () => {
             switch (path) {
               case 'app/esuser/getUserList':
                 setUserPage(currentPage + 1);
-                setHasMoreUser(newData.length === response.data.result.per_page);
+                setHasMoreUser(
+                  newData.length === response.data.result.per_page,
+                );
                 break;
               case 'app/property/getPropertyList':
                 setPropertyPage(currentPage + 1);
-                setHasMoreProperty(newData.length === response.data.result.per_page);
+                setHasMoreProperty(
+                  newData.length === response.data.result.per_page,
+                );
                 break;
               case 'app/activity/getActivityList':
                 setActivityPage(currentPage + 1);
-                setHasMoreActivity(newData.length === response.data.result.per_page);
+                setHasMoreActivity(
+                  newData.length === response.data.result.per_page,
+                );
                 break;
             }
           }
@@ -212,30 +218,41 @@ const HomeWorld = () => {
   const handleLoadMore = () => {
     if (!activeTab || loading) return;
 
-    if ((activeTab === '友友' && !hasMoreUser) ||
-        (activeTab === '房源' && !hasMoreProperty) ||
-        (activeTab === '活动' && !hasMoreActivity)) {
-        return
+    if (
+      (activeTab === '友友' && !hasMoreUser) ||
+      (activeTab === '房源' && !hasMoreProperty) ||
+      (activeTab === '活动' && !hasMoreActivity)
+    ) {
+      return;
     }
 
-    
     if (activeTab === '友友') {
       getList('app/esuser/getUserList', setUserList, {}, true);
     } else if (activeTab === '房源') {
-      getList('/app/property/getPropertyList', setPropertyList, {
-        searchableLocation: location.id,
-        startDate: startDate,
-        endDate: endDate,
-        capacity: capacity,
-        order: 'DES_PRICE',
-      }, true);
+      getList(
+        '/app/property/getPropertyList',
+        setPropertyList,
+        {
+          searchableLocation: location.id,
+          startDate: startDate,
+          endDate: endDate,
+          capacity: capacity,
+          order: 'DES_PRICE',
+        },
+        true,
+      );
     } else if (activeTab === '活动') {
-      getList('app/activity/getActivityList', setActivityList, {
-        searchableLocation: location.id,
-        startDate: startDate,
-        endDate: endDate,
-        order: 'DES',
-      }, true);
+      getList(
+        'app/activity/getActivityList',
+        setActivityList,
+        {
+          searchableLocation: location.id,
+          startDate: startDate,
+          endDate: endDate,
+          order: 'DES',
+        },
+        true,
+      );
     }
   };
 
@@ -247,11 +264,20 @@ const HomeWorld = () => {
   // 在打开 modal 时保存当前滚动位置
   const handlePostModalOpen = (show: boolean) => {
     if (show) {
-      setScrollTop(document.documentElement.scrollTop || document.body.scrollTop);
+      setScrollTop(
+        document.documentElement.scrollTop || document.body.scrollTop,
+      );
     }
     setIsShowPostModal(show);
   };
 
+  useEffect(() => {
+    console.log('activeTab', activeTab);
+    setLocation({ id: 0, cname: '选择城市', name: '' });
+    setStartDate('');
+    setEndDate('');
+    setCapacity(1);
+  }, [activeTab]);
   // 在关闭 modal 时恢复滚动位置
   useEffect(() => {
     if (!isShowPostModal && scrollTop > 0) {
@@ -329,7 +355,7 @@ const HomeWorld = () => {
               setHasMoreProperty(true);
               setActivityPage(1);
               setHasMoreActivity(true);
-              
+
               if (activeTab == '房源') {
                 getList('/app/property/getPropertyList', setPropertyList, {
                   searchableLocation: location.id,
@@ -379,11 +405,9 @@ const HomeWorld = () => {
                 />
               );
             })}
-          
+
           {/* 添加加载状态提示 */}
-          {loading && (
-            <View className='loading-tips'>加载中...</View>
-          )}
+          {loading && <View className='loading-tips'>加载中...</View>}
           {!hasMoreUser && activeTab === '友友' && curList.length > 0 && (
             <View className='no-more-tips'>没有更多数据了</View>
           )}
@@ -395,8 +419,8 @@ const HomeWorld = () => {
           )}
         </View>
       </View>
-      
-      <TabBar 
+
+      <TabBar
         onWorldSelected={() => {
           // 如果当前已经在世界tab，可以触发刷新或回到顶部等操作
           if (activeTab === '友友') {
