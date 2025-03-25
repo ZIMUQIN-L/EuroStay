@@ -1,4 +1,4 @@
-import { View, Image, Text, Swiper, SwiperItem, Input, Textarea } from '@tarojs/components'
+import { View, Image, Text, Swiper, SwiperItem, Input } from '@tarojs/components'
 import { AtCalendar } from 'taro-ui';
 import { useState, useEffect } from 'react'
 import Taro from '@tarojs/taro'
@@ -156,12 +156,16 @@ const HouseDetail: React.FC = () => {
       success: function (res) {
         // console.log(res)
         setHostDetail({
+          uid: res.data.result.hostInfo.uid,
           avatar: res.data.result.hostInfo.avatar,
           role: 'Host',
           username: res.data.result.hostInfo.username,
           detail: res.data.result.hostInfo.aboutMe,
           tags: res.data.result.hostInfo.tags,
           buttonText: '打个招呼',
+          buttonFunc: () => {
+            console.log('buttonFunc');
+          }
         });
         setOrder({
           title: res.data.result.title,
@@ -522,16 +526,15 @@ const HouseDetail: React.FC = () => {
           <View 
             className='like-modal'
             onClick={(e) => {
-              e.stopPropagation();
+              e.stopPropagation(); // 阻止事件冒泡，防止点击modal内部时关闭
             }}
           >
             <View className='modal-title'>您将给"{order.title}"发送点赞消息</View>
-            <Textarea
+            <Input
               className='message-input'
               placeholder='说点什么吧...'
               value={likeMessage}
               onInput={e => setLikeMessage(e.detail.value)}
-              maxlength={200}
             />
             <View 
               className='confirm-button'

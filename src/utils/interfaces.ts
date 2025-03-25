@@ -82,6 +82,7 @@ export interface ApplicantDetail {
 }
 
 export interface HostDetail {
+    uid: number;
     avatar: string;
     role: string;
     username: string;
