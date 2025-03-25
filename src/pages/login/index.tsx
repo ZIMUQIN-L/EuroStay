@@ -247,6 +247,15 @@ const Login = () => {
             </Text>
           </Text>
         </View>
+        <View className='direct-entry-btn' onClick={() => {
+          GlobalStore.currentTab = 'world';
+          Taro.reLaunch({
+            url: '/pages/home-world/index'
+          });
+        }}>
+          <Text>直接进入</Text>
+        </View>
+
       </View>
     </View>
   );
