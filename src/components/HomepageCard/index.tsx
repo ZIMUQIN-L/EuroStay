@@ -95,8 +95,9 @@ const HomepageCard = (props: {
             <View className='user-details'>
               <View className='user-name'>{props.user.username}</View>
               <View className='user-tags'>
-                {props.user.tags.map(item => {
-                  return <View className='tag-item'>{item}</View>;
+                {props.user.tags.map((item, index) => {
+                  const truncatedTag = item.length > 5 ? item.slice(0, 5) + '...' : item;
+                  return <View key={index} className='tag-item'>{truncatedTag}</View>;
                 })}
               </View>
             </View>

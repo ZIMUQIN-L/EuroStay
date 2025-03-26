@@ -59,16 +59,21 @@
       .user-tags {
         margin-top: 8px;
         display: flex;
+        flex-wrap: wrap;
+        gap: 5px;
         color: #7a63c7;
+        max-width: 300px;
 
         .tag-item {
           background-color: white;
-          margin-right: 5px;
           border-radius: 20px;
           padding: 5px 8px;
-          // border: 1px solid black;
+          font-size: 18px;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          max-width: 120px;
         }
-        font-size: 18px;
       }
     }
   }

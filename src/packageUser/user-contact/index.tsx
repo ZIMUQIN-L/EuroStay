@@ -35,9 +35,9 @@ const UserContact = () => {
           </View>
           <Text 
             className='item-value'
-            onClick={() => handleCopy('Eurostay@163.com')}
+            onClick={() => handleCopy('EuroStay@163.com')}
           >
-            Eurostay@163.com
+            EuroStay@163.com
           </Text>
         </View>
 
@@ -48,9 +48,9 @@ const UserContact = () => {
           </View>
           <Text 
             className='item-value'
-            onClick={() => handleCopy('Eurostay')}
+            onClick={() => handleCopy('EuroStay')}
           >
-            微信号：Eurostay
+            微信号：EuroStay
           </Text>
           <Image 
             className='qr-code'

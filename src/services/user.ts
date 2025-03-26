@@ -79,8 +79,8 @@ export interface ReviewItem {
   content: string;
   recommend: boolean;
   create_time: string;
-  from_host: boolean;
-  reviewer_info: ReviewerInfo;
+  fromHost: boolean;
+  reviewerInfo: ReviewerInfo;
   images: string[];
 }
 

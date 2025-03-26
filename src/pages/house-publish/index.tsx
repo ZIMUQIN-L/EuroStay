@@ -239,9 +239,14 @@ const HousePublish = () => {
   const tags = [
     { id: 1, name: '离市中心近' },
     { id: 2, name: '公共交通方便' },
-    { id: 3, name: '北欧风' },
     { id: 4, name: '干净整洁' },
     { id: 5, name: '女性友好' },
+    { id: 6, name: '采光好' },
+    { id: 11, name: '安静舒适' },
+    { id: 14, name: '绿植环绕' },
+    { id: 15, name: '有小阳台' },
+    { id: 18, name: '宠物友好' },
+    { id: 20, name: '独立卫浴' }
   ];
 
   const tenantCounts = [
@@ -361,7 +366,7 @@ const HousePublish = () => {
     const errors: string[] = [];
 
     if (!formData.houseName.trim()) {
-      errors.push('请填写房源名称');
+      errors.push('别忘了房源名称哦~');
     }
 
     if (formData.houseTag.length === 0) {
@@ -541,14 +546,14 @@ const HousePublish = () => {
       <View className='section'>
         <View className='section-title'>
           <View className='section-title-icon' />
-          <Text>房源基本信息</Text>
+          <Text>基本信息</Text>
         </View>
 
         <View className='input-item'>
-          <Text className='label'>房源名称*</Text>
+          <Text className='label'>怎么称呼我的家（14字以内）*</Text>
           <Input
             className='input'
-            placeholder='请输入房源名称（14个字以内哦）'
+            placeholder='取一个有温度的名字吧~（比如尼斯阳光沙滩大别墅）'
             placeholderClass='placeholder'
             value={formData.houseName}
             maxlength={14}
@@ -559,7 +564,7 @@ const HousePublish = () => {
         </View>
 
         <View className='input-item'>
-          <Text className='label with-margin'>房源标签*</Text>
+          <Text className='label with-margin'>房源个性标签*</Text>
           <View className='tags'>
             {tags.map(tag => (
               <Text
@@ -596,10 +601,10 @@ const HousePublish = () => {
         </View>
 
         <View className='input-item'>
-          <Text className='label'>房源描述*</Text>
+          <Text className='label'>关于我家*</Text>
           <Textarea
             className='textarea'
-            placeholder='请简短对此房源进行描述'
+            placeholder='请描述一些您房源的基本信息和入住须知，减少前期的沟通成本哦'
             placeholderClass='placeholder'
             value={formData.houseDesc}
             onInput={e =>
@@ -645,7 +650,7 @@ const HousePublish = () => {
           <Text className='label'>详细地址*</Text>
           <Textarea
             className='textarea'
-            placeholder='请填写房源所在的地址：如门号、道路、区域、邮编，该信息会被展现给所有ES社群的uu哦~'
+            placeholder='请填写更详细的地址和位置信息吧，比如在凡尔赛宫旁5分钟路程，精确到街道就可以啦~'
             placeholderClass='placeholder'
             value={formData.detailAddress}
             onInput={e =>
@@ -656,7 +661,7 @@ const HousePublish = () => {
         </View>
 
         <View className='input-item'>
-          <Text className='label'>房源价格*</Text>
+          <Text className='label'>房源成本价*</Text>
           <View className='price-input'>
             <Text className='currency'>€</Text>
             <Input
@@ -673,20 +678,20 @@ const HousePublish = () => {
 
         <View className='input-item'>
           <>
-            <Text className='label with-margin'>租客要求*</Text>
+            <Text className='label with-margin'>我期望的Guest*</Text>
             <View className='gender-options'>
               <Text className='label'>性别</Text>
-              <Text
-                className={`option ${formData.tenantGender === Gender.Male ? 'active' : ''}`}
-                onClick={() => handleGenderSelect(Gender.Male)}
-              >
-                男
-              </Text>
               <Text
                 className={`option ${formData.tenantGender === Gender.Female ? 'active' : ''}`}
                 onClick={() => handleGenderSelect(Gender.Female)}
               >
                 女
+              </Text>
+              <Text
+                className={`option ${formData.tenantGender === Gender.Male ? 'active' : ''}`}
+                onClick={() => handleGenderSelect(Gender.Male)}
+              >
+                男
               </Text>
               <Text
                 className={`option ${formData.tenantGender === Gender.NoLimit ? 'active' : ''}`}
@@ -742,11 +747,12 @@ const HousePublish = () => {
         </View>
         <View className='input-item'>
           <View className='label label-flex with-margin'>
-            <Text>房源照片*</Text>
+            <Text>我家的照片*</Text>
             <Text className='image-count'>
               {formData.houseImages.length}/6张
             </Text>
           </View>
+          <Text className='description'>(请上传一些您的房子的美照，让Guest更方便的了解您的房源, 建议可以分别上传【厨房】、【卧室】、【公共区域】和【卫生间】的照片，全方位展示您的房源~)</Text>
           <View className='image-upload'>
             {formData.houseImages.map((image, index) => (
               <View key={index} className='image-item'>
@@ -775,7 +781,7 @@ const HousePublish = () => {
         </View>
         <View className='input-item'>
           <View className='label'>
-            <Text>可出租时间*</Text>
+            <Text>我家什么时候有空~*</Text>
             <View className='multi-days'>
               {multiDays.map((day, index) => (
                 <View
@@ -795,6 +801,7 @@ const HousePublish = () => {
               ))}
             </View>
           </View>
+          <Text className='description'>请选择所有您方便的Host时间段吧，请注意可以选择多个时间段！（也可以更改）越多越方便大家匹配哦~</Text>
           <View className='date-select '>
             <AtCalendar
               isMultiSelect
@@ -854,15 +861,15 @@ const HousePublish = () => {
       <View className='section'>
         <View className='section-title'>
           <View className='section-title-icon' />
-          <Text>你的故事</Text>
+          <Text>了解更多</Text>
         </View>
         <View className='input-item'>
           <Text className='label'>
-            为什么成为了Eurostray的房东？最想和房客一起做的事？*
+            想和Guest一起做的事？*
           </Text>
           <Textarea
             className='textarea'
-            placeholder='请简单分享你的故事'
+            placeholder='说说你为什么想当Host?你期待和Guest一起做一些什么事情呢？相信你可以在ES找到同频的朋友~'
             placeholderClass='placeholder'
             value={formData.story}
             onInput={e => setFormData({ ...formData, story: e.detail.value })}
@@ -879,7 +886,7 @@ const HousePublish = () => {
           <Text className='label'>微信号*</Text>
           <Input
             className='input'
-            placeholder='请输入你的微信号（房客不可见）'
+            placeholder='请输入微信号方便以后联系，首页不会展示哦~'
             placeholderClass='placeholder'
             value={formData.wechat}
             onInput={e => setFormData({ ...formData, wechat: e.detail.value })}
@@ -887,7 +894,7 @@ const HousePublish = () => {
         </View>
         <View className='input-item'>
           <View className='label label-flex with-margin'>
-            <Text>微信收款二维码*</Text>
+            <Text>收款码*</Text>
             <Text className='image-count'>
               {formData.paymentImages.length}/1张
             </Text>
@@ -910,7 +917,7 @@ const HousePublish = () => {
             )}
           </View>
           <View className='qrcode-tips'>
-            注意：此二维码将会用于后期收款，请上传正确二维码
+            注意：当你通过Guest的换宿申请后，该收款码会被自动发给Guest哦~
           </View>
         </View>
       </View>

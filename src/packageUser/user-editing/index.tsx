@@ -194,21 +194,21 @@ const UserEditing = () => {
 
   const accountItems = [
     {
-      label: '账号',
+      label: 'ES code',
       value: userInfo?.uid?.toString().padStart(16, '0') || '',
       readOnly: true
     },
     {
       label: '邮箱',
       value: userInfo?.email || '',
-      placeholder: '输入你的邮箱',
+      placeholder: '大家怎么能联系到你呢？',
       path: '/packageUser/edit-email/index',
       params: { currentValue: userInfo?.email }
     },
     {
       label: '手机号',
       value: formatPhoneNumber(userInfo?.mobile),  // 使用格式化函数处理手机号
-      placeholder: '输入你的手机号',
+      placeholder: '写一下你的手机号嘛~',
       path: '/packageUser/edit-phone/index',
       params: { currentValue: userInfo?.mobile }
     }
@@ -259,27 +259,27 @@ const UserEditing = () => {
     {
       label: '地区',
       value: userInfo?.location || '',
-      placeholder: '输入你的地区',
+      placeholder: '你目前居住在？',
       path: '/packageUser/edit-location/index',
       params: { currentValue: userInfo?.location }
     },
     {
       label: '自我介绍',
       value: userInfo?.aboutMe || '',
-      placeholder: '简单介绍一下你自己',
+      placeholder: '你是谁？你有什么故事？',
       path: '/packageUser/edit-about/index',
       params: { currentValue: userInfo?.aboutMe }
     },
     {
-      label: '个人标签',
+      label: '个性标签',
       value: userInfo?.tags?.join('、') || '',
-      placeholder: '选择个人标签',
+      placeholder: '选择个性标签',
       path: '/packageUser/edit-tags/index',
       params: { currentValue: JSON.stringify(userInfo?.tags) }
     },
     {
-      label: '个人照片',
-      subLabel: '（将展示在世界板块）',
+      label: '个性照片',
+      subLabel: '（选一张你的人生高光瞬间吧，这将是你在【世界】的出场照~）',
       customContent: (
         <View className='photo-upload' onClick={() => handleUpload('background')}>
           {userInfo?.backgroundPic ? (

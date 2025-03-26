@@ -18,6 +18,11 @@ const UserCardSmall = ({
                 src={avatar}
                 className='user-avatar'
                 mode="aspectFill"
+                onClick={() => {
+                    Taro.navigateTo({
+                        url: `/pages/user/index?uid=${uid}`
+                    });
+                }}
             />
             <View className='user-name'>{role}：{username}</View>
             <View className='user-button'

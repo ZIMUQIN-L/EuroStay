@@ -104,7 +104,7 @@ const UserSetting = () => {
             />
             <View className='info-text'>
               <Text className='username'>{GlobalStore.userInfo.username || '未设置昵称'}</Text>
-              <Text className='user-id'>账号：{formatUid(GlobalStore.userInfo.uid || 0)}</Text>
+              <Text className='user-id'>ES code：{formatUid(GlobalStore.userInfo.uid || 0)}</Text>
             </View>
             <View className='edit-btn' onClick={() => Taro.navigateTo({ url: '/packageUser/user-editing/index' })}>
               <Image className='edit-icon' src={editIcon} mode='aspectFit' />

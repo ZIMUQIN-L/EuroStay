@@ -1,6 +1,6 @@
 import { View, Input, Textarea, Text, Image } from '@tarojs/components'
 import { observer } from 'mobx-react';
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Taro from '@tarojs/taro'
 import './index.scss'
 import { useRouter } from '@tarojs/taro';
@@ -24,6 +24,17 @@ const Index = () => {
   const startDate = router?.params?.startDate;
   const endDate = router?.params?.endDate;
 
+  useEffect(() => {
+    // Initialize gender and self-intro from GlobalStore
+    if (GlobalStore.userInfo.gender !== undefined) {
+      setGender(GlobalStore.userInfo.gender === 0 ? 'female' : 
+                GlobalStore.userInfo.gender === 1 ? 'male' : 'both');
+    }
+    if (GlobalStore.userInfo.aboutMe) {
+      setIntroduction(GlobalStore.userInfo.aboutMe);
+    }
+  }, []);
+
   const getGenderId = (g) => {
     switch(g) {
       case 'female': return 0
@@ -31,6 +42,13 @@ const Index = () => {
       case 'both': return 2
       default: return -1
     }
+  }
+
+  const handleGuestCountInput = (e) => {
+    const value = e.detail.value;
+    // Only allow numbers and remove any non-numeric characters
+    const numericValue = value.replace(/[^0-9]/g, '');
+    setGuestCount(numericValue);
   }
 
   Taro.useShareAppMessage(res => {
@@ -156,22 +174,22 @@ const Index = () => {
     <View className='info-card'>
       <View className='info-card-header'>
         <View className='purple-badge'/>
-        基本信息
+        入住基本信息
       </View>
 
-      <Text className='info-card-sec-title'>性别*</Text>
+      <Text className='info-card-sec-title'>旅客生理性别*</Text>
       <View className='info-card-options'>
+      <View 
+          className={`info-card-option ${gender === 'female' ? 'active' : ''}`}
+          onClick={() => handleGenderSelect('female')}
+        >
+          女
+        </View>
         <View 
           className={`info-card-option ${gender === 'male' ? 'active' : ''}`}
           onClick={() => handleGenderSelect('male')}
         >
           男
-        </View>
-        <View 
-          className={`info-card-option ${gender === 'female' ? 'active' : ''}`}
-          onClick={() => handleGenderSelect('female')}
-        >
-          女
         </View>
         <View 
           className={`info-card-option ${gender === 'both' ? 'active' : ''}`}
@@ -180,25 +198,47 @@ const Index = () => {
           都有
         </View>
       </View>
+
+        {/* <View className='info-card-context'> */}
+        { Number(type) === 0 &&
+        <Text className='info-card-sec-title'>旅客人数*</Text>
+      }
+      { Number(type) === 0 &&
+        <Input 
+          className='info-card-input'
+          type='number'
+          value={guestCount}
+          onInput={handleGuestCountInput}
+          placeholder='请输入换宿人数'
+          maxlength={2}
+        />
+      }
       
-      <Text className='info-card-sec-title'>身份*</Text>
+      <Text className='info-card-sec-title'>旅客身份*</Text>
       <Input 
         className='info-card-input'
         value={identity}
+        placeholder="请向Host简单说明一下自己的身份吧~"
         onInput={e => setIdentity(e.detail.value)}
       />
 
-      <Text className='info-card-sec-title'>自我介绍*</Text>
-      <Input 
-        className='info-card-input-multilines'
-        value={introduction}
-        onInput={e => setIntroduction(e.detail.value)}
-      />
+        {/* </View> */}
+        { Number(type) === 0 &&
+        <Text className='info-card-sec-title'>入住时间*</Text>
+      }
+      { Number(type) === 0 &&
+        <Textarea
+          className='info-card-input'
+          value={`${startDate} 至 ${endDate}`}
+          disabled={true}
+        />
+      }
 
       <Text className='info-card-sec-title'>联系方式*</Text>
       <Input 
         className='info-card-input'
         value={contact}
+        placeholder="请填写一下自己的联系方式方便Host后续联系哦~"
         onInput={e => setContact(e.detail.value)}
       />
     </View>
@@ -206,42 +246,29 @@ const Index = () => {
     <View className='info-card'>
       <View className='info-card-header'>
         <View className='purple-badge'/>
-        {Number(type) === 0 ? '换宿信息' : '申请信息'}
+        {Number(type) === 0 ? '其他信息' : '申请信息'}
       </View>
 
-      {/* <View className='info-card-context'> */}
-      { Number(type) === 0 &&
-        <Text className='info-card-sec-title'>换宿人数*</Text>
-      }
-      { Number(type) === 0 &&
-        <Input 
-          className='info-card-input'
-          type='number'
-          value={guestCount}
-          onInput={e => setGuestCount(e.detail.value)}
-        />
-      }
-      {/* </View> */}
+      <Text className='info-card-sec-title'>自我介绍*</Text>
+      <Textarea 
+        className='info-card-input-multilines'
+        value={introduction}
+        onInput={e => setIntroduction(e.detail.value)}
+        placeholder='可以填写一个简单的自我介绍，讲讲自己的兴趣爱好，或者一些能为Host做的事情吧~'
+        autoHeight
+        showConfirmBar={false}
+      />
       
       {/* <View className='info-card-context'> */}
-        <Text className='info-card-sec-title'>{Number(type) === 0 ? '换宿原因' : '申请原因'}*</Text>
+        <Text className='info-card-sec-title'>{Number(type) === 0 ? '申请原因' : '申请原因'}*</Text>
         <Textarea
-          className='info-card-input'
-          // placeholder='请说明换宿原因'
+          className='info-card-input-multilines'
           value={reason}
           onInput={e => setReason(e.detail.value)}
+          placeholder={Number(type) === 0 ? '您为什么想要去申请住宿呢？您这次旅行的原因是？' : '请说明申请原因'}
+          autoHeight
+          showConfirmBar={false}
         />
-      {/* </View> */}
-      { Number(type) === 0 &&
-        <Text className='info-card-sec-title'>换宿时间*</Text>
-      }
-      { Number(type) === 0 &&
-        <Textarea
-          className='info-card-input'
-          value={`${startDate}至${endDate}`}
-          disabled={true}
-        />
-      }
     </View>
 
     {/* 提交按钮 */}

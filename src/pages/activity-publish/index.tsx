@@ -435,7 +435,7 @@ const ActivityPublish = () => {
       <View className='section'>
         <View className='section-title'>
           <View className='section-title-icon' />
-          <Text>活动基本信息</Text>
+          <Text>基本信息</Text>
         </View>
 
         <View className='input-item'>

@@ -145,7 +145,7 @@ const UserProfile = () => {
         setHasMoreReviews(current_page < last_page);
       }
     } catch (error) {
-      console.error('获取评价列表错误:', error);
+      console.error('获取评价列表错误啦:', error);
     } finally {
       setReviewsLoading(false);
     }
@@ -283,7 +283,7 @@ const UserProfile = () => {
               <Text className="username">{userInfo?.username}</Text>
               {userInfo?.isVip && <Text className="vip-badge">VIP</Text>}
             </View>
-            <Text className="user-id">账号: {userInfo?.uid? formatUid(userInfo?.uid): formatUid(0)}</Text>
+            <Text className="user-id">ES code: {userInfo?.uid? formatUid(userInfo?.uid): formatUid(0)}</Text>
             <Text className="location">地区: {userInfo?.location || '未知'}</Text>
           </View>
         </View>
@@ -343,7 +343,7 @@ const UserProfile = () => {
           className={`tab-item ${activeTab === 'reviews' ? 'active' : ''}`}
           onClick={() => setActiveTab('reviews')}
         >
-          <Text>我的评价</Text>
+          <Text>收到的评价</Text>
           {activeTab === 'reviews' && <View className="tab-line" />}
         </View>
 
@@ -441,14 +441,14 @@ const UserProfile = () => {
                 {reviewList.map(review => (
                   <ReviewCard
                     key={review.id}
-                    userAvatar={review.reviewer_info?.avatar || 'https://eurostay-1330475057.cos.eu-frankfurt.myqcloud.com/sys/loading.png'} // 使用默认头像
-                    userName={review.reviewer_info?.username || '用户'} // 使用默认用户名
-                    userType={review.from_host ? '房东' : '房客'}
+                    userAvatar={review.reviewerInfo?.avatar || 'https://eurostay-1330475057.cos.eu-frankfurt.myqcloud.com/sys/loading.png'} // 使用默认头像
+                    userName={review.reviewerInfo?.username || '用户'} // 使用默认用户名
+                    userType={review.fromHost ? '房东' : '房客'}
                     isRecommended={review.recommend}
                     reviewContent={review.content}
                     images={review.images || []}
                     reviewDate={review.create_time}
-                    location={review.reviewer_info?.location || '未知'}
+                    location={review.reviewerInfo?.location || '未知'}
                   />
                 ))}
                 {hasMoreReviews && !reviewsLoading && (
@@ -462,7 +462,7 @@ const UserProfile = () => {
               </>
             ) : (
               <View className="content-placeholder">
-                {reviewsLoading ? '加载中...' : '暂无评价内容'}
+                {reviewsLoading ? '加载中...' : '暂无收到的评价内容哦~'}
               </View>
             )}
           </View>

@@ -13,6 +13,7 @@ const EditEmail = () => {
   const [showVerifyPage, setShowVerifyPage] = useState(false);
   const [countdown, setCountdown] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [isReauthMode, setIsReauthMode] = useState(false);
 
   useEffect(() => {
     if (countdown > 0) {
@@ -87,21 +88,22 @@ const EditEmail = () => {
     try {
       // 验证邮箱的API调用
       const response = await Taro.request({
-        url: 'https://api.eurostay.co/app/esuser/verifyEmail',
+        url: 'https://api.eurostay.co/app/esuser/emailVerify',
         method: 'POST',
         data: {
           email: email.trim(),
           code: verifyCode.trim()
         },
         header: {
-          'Content-Type': 'application/json'
+          'content-type': 'application/x-www-form-urlencoded',
+          token: GlobalStore.userInfo.token,
         }
       });
 
       if (response.data.code === 0) {
         // 更新上一页的数据
         const pages = Taro.getCurrentPages();
-        const prevPage = pages[pages.length - 2];
+        const prevPage = pages[pages.length - 1];
         const eventChannel = prevPage.getOpenerEventChannel();
         eventChannel.emit('updateData', {
           email: email.trim()
@@ -196,20 +198,91 @@ const EditEmail = () => {
           )
         ) : (
           // 已有邮箱的页面
-          <>
-            <View className='input-section'>
-              <Text className='label'>邮箱地址</Text>
-              <Text className='email-display'>{currentEmail}</Text>
-            </View>
-            <View className='button-group'>
-              <View className='confirm-button' onClick={handleSendCode}>
-                重新认证
+          isReauthMode ? (
+            showVerifyPage ? (
+              // 验证码输入界面
+              <>
+                <View className='input-section'>
+                  <Text className='label'>新邮箱地址</Text>
+                  <Text className='email-display'>{email}</Text>
+                </View>
+                <View className='input-section'>
+                  <Text className='label'>验证码</Text>
+                  <View className='verify-input-container'>
+                    <Input
+                      className='verify-input'
+                      value={verifyCode}
+                      onInput={e => setVerifyCode(e.detail.value)}
+                      placeholder='请输入验证码'
+                      type='number'
+                      maxlength={6}
+                    />
+                    <View 
+                      className={`resend-button ${countdown > 0 ? 'disabled' : ''} ${loading ? 'loading' : ''}`}
+                      onClick={countdown === 0 && !loading ? handleSendCode : undefined}
+                    >
+                      {loading ? '发送中...' : countdown > 0 ? `${countdown}s` : '重新发送'}
+                    </View>
+                  </View>
+                  <Text className='resend-tip'>
+                    未收到验证码？点击右侧按钮重新发送
+                  </Text>
+                </View>
+                <View className='button-group'>
+                  <View className='confirm-button' onClick={handleVerify}>
+                    验证邮箱
+                  </View>
+                  <View className='cancel-button' onClick={() => {
+                    setShowVerifyPage(false);
+                    setVerifyCode('');
+                  }}>
+                    取消
+                  </View>
+                </View>
+              </>
+            ) : (
+              // 重新认证模式：输入新邮箱
+              <>
+                <View className='input-section'>
+                  <Text className='label'>新邮箱地址</Text>
+                  <Input
+                    className='input'
+                    value={email}
+                    onInput={e => setEmail(e.detail.value)}
+                    placeholder='请输入新的邮箱地址'
+                    type='text'
+                  />
+                </View>
+                <View className='button-group'>
+                  <View 
+                    className={`confirm-button ${loading ? 'loading' : ''}`} 
+                    onClick={!loading ? handleSendCode : undefined}
+                  >
+                    {loading ? '发送中...' : '发送验证码'}
+                  </View>
+                  <View className='cancel-button' onClick={() => setIsReauthMode(false)}>
+                    取消
+                  </View>
+                </View>
+              </>
+            )
+          ) : (
+            // 显示当前邮箱的页面
+            <>
+              <View className='input-section'>
+                <Text className='label'>邮箱地址</Text>
+                <Text className='email-display'>{currentEmail}</Text>
               </View>
-              <View className='cancel-button' onClick={handleCancel}>
-                取消返回
+              <View className='button-group'>
+                <View className='confirm-button' onClick={() => setIsReauthMode(true)}>
+                  重新认证
+                </View>
+                <View className='cancel-button' onClick={handleCancel}>
+                  取消返回
+                </View>
               </View>
-            </View>
-          </>
+            </>
+          )
         )}
       </View>
     </View>
