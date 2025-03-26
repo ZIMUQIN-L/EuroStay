@@ -64,6 +64,13 @@
       border: none;
     }
   }
+
+  .action-button.disabled {
+    background-color: #ddd;
+    color: #999;
+    pointer-events: none;
+    border: none;
+  }
   
   .single-btn {
     padding: 0 80rpx;

@@ -34,7 +34,10 @@ export default {
     },
     {
       root: 'packageOrder/',
-      pages: ['order-detail/index', 'order-review/index'],
+      pages: [
+        'order-detail/index',
+        'order-review/index',
+      ],
     },
     // {
     //   root: 'packageHouse/',

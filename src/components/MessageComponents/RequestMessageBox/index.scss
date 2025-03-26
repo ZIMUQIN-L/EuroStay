@@ -2,7 +2,11 @@
   display: flex;
   margin-bottom: 20rpx;
   align-items: flex-start;
-  
+  &.right {
+    .bubble {
+      background-color: #DECBFF; // 右边消息颜色
+    }
+  }
   .avatar {
     width: 80rpx;
     height: 80rpx;

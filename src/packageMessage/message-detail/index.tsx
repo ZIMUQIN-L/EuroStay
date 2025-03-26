@@ -7,7 +7,6 @@ import RejectMessageFromHostBox from '@components/MessageComponents/RejectMessag
 import RejectMessageFromGuestBox from '@components/MessageComponents/RejectMessageFromGuestBox'
 import OfferMessageBox from '@components/MessageComponents/OfferMessageBox'
 import './index.scss'
-import Avatar from '@assets/images/accommodation.svg'
 import CustomNavBar from '@components/MessageComponents/message-detail-nav-bar'
 import Taro from '@tarojs/taro'
 import ContactMessageBox from '@components/MessageComponents/ContactMessageBox'
@@ -23,127 +22,13 @@ const MessageDetail = () => {
   
   const [inputValue, setInputValue] = useState('')
   const [scrollTop, setScrollTop] = useState(0)
-  // 模拟消息数据
-  const [messages, setMessages] = useState([
-    {
-      id: 1,
-      type: 'request',
-      data: {
-        toUid: 68,
-        subjectId: 5,
-        name: 'xiaxia(applicant)',
-        time: '09:10'
-      },
-      direction: "left"
-    },
-    {
-      id: 1,
-      type: 'request',
-      data: {
-        toUid: 68,
-        subjectId: 5,
-        name: 'xiaxia(applicant)',
-        time: '09:10'
-      },
-      direction: "right"
-    },
-    {
-      id: 2,
-      type: 'simple',
-      data: {
-        toUid: 68,
-        subjectId: 5,
-        content: 'hello你可以直接在样式文件（例如 index.scss）中调大头像尺寸，并增加头像与消息气泡之间的 margin 间距。下面给你一个示例，可根据需要再做微调。',
-        time: '09:10'
-      },
-      direction: "left"
-    },
-    {
-      id: 3,
-      type: 'simple',
-      data: {
-        toUid: 68,
-        subjectId: 5,
-        content: 'hello2你可以直接在样式文件（例如 index.scss）中调大头像尺寸，并增加头像与消息气泡之间的 margin 间距。下面给你一个示例，可根据需要再做微调。',
-        time: '09:10'
-      },
-      direction: "right"
-    },
-    {
-      id: 3,
-      type: 'reject-fh',
-      data: {
-        toUid: 68,
-        subjectId: 5,
-        name: 'fish(host)',
-        reason: '档期不合适',
-        time: '09:10'
-      },
-      direction: "left"
-    },
-    {
-      id: 3,
-      type: 'reject-fh',
-      data: {
-        toUid: 68,
-        subjectId: 5,
-        name: 'fish(host)',
-        reason: '档期不合适',
-        time: '09:10'
-      },
-      direction: "right"
-    },
-    {
-      id: 3,
-      type: 'reject-fg',
-      data: {
-        toUid: 68,
-        subjectId: 5,
-        name: 'xiaxia(applicant)',
-        reason: '对不起, 我只能取消预定',
-        time: '09:10'
-      },
-      direction: "left"
-    },
-    {
-      id: 3,
-      type: 'reject-fg',
-      data: {
-        toUid: 68,
-        subjectId: 5,
-        name: 'xiaxia(applicant)',
-        reason: '对不起, 我只能取消预定',
-        time: '09:10'
-      },
-      direction: "right"
-    },
-    {
-      id: 3,
-      type: 'offer',
-      data: {
-        toUid: 68,
-        subjectId: 5,
-        hostname: 'fish(host)',
-        applicantname: 'xiaxia(applicant)',
-        price: '$456.22',
-        time: '09:10'
-      },
-      direction: "left"
-    },
-    {
-      id: 3,
-      type: 'offer',
-      data: {
-        toUid: 68,
-        subjectId: 5,
-        hostname: 'fish(host)',
-        applicantname: 'xiaxia(applicant)',
-        price: '$456.22',
-        time: '09:10'
-      },
-      direction: "right"
-    },
-  ])
+  const [pageNum, setPageNum] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
+  const scrollViewRef = useRef(null);
+  const [messages, setMessages] = useState([]);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [shouldScrollBottom, setShouldScrollBottom] = useState(false);
+
 
   useEffect(() => {
     fetchMessageList();
@@ -151,22 +36,80 @@ const MessageDetail = () => {
 
   // 在每次messages更新后，滚动到底部
   useEffect(() => {
-    scrollToBottom();
+    if (shouldScrollBottom) {
+      scrollToBottom();
+      setShouldScrollBottom(false); // 重置
+    }
   }, [messages]);
+
+  useEffect(() => {
+    const handleIncomingMessage = (msg) => {
+      // 判断消息是否属于当前对话
+      if (msg.data?.sessionId == id) {
+        const currentUid = GlobalStore.userInfo.uid;
+        const newMessage = createMessageObject({
+          ...msg.data,
+          fromUid: currentUid === msg.data.toUid ? msg.data.fromUid : currentUid,
+          id: Date.now(), // 临时生成id
+          mtype: msg.type,
+          createTime: new Date().toISOString()
+        }, currentUid);
+  
+        setMessages(prev => [...prev, newMessage]);
+        setShouldScrollBottom(true);
+      }
+    };
+  
+    // 注册监听
+    GlobalStore.addMessageListener(handleIncomingMessage);
+  
+    // 组件卸载时移除监听
+    return () => {
+      GlobalStore.removeMessageListener(handleIncomingMessage);
+    };
+  }, [id]);
+  
 
   // 滚动到底部的函数
   const scrollToBottom = () => {
     Taro.nextTick(() => {
-      setScrollTop(999999);
+      setScrollTop(Date.now());
     });
   };
+  
+
+  const formatTime = (createTime) => {
+    try {
+      if (!createTime) return '';
+      if (typeof createTime === 'number') {
+        const date = new Date(createTime);
+        return `${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`;
+      }
+      if (typeof createTime === 'string') {
+        const parts = createTime.split(' ');
+        if (parts.length > 1 && parts[1]) {
+          return parts[1].substring(0, 5);
+        }
+      }
+    } catch (e) {
+      console.warn('时间格式化失败:', createTime, e);
+    }
+    return '';
+  };
+  
 
   const createMessageObject = (msg, currentUid) => {
     // 判断消息方向
     const direction = msg.fromUid === currentUid ? 'right' : 'left';
     
     // 格式化时间 (只保留小时:分钟)
-    const time = msg.createTime ? msg.createTime.split(' ')[1].substring(0, 5) : '';
+    let time = '';
+    try {
+      const time = formatTime(msg.createTime); // 抽离出安全的函数
+      // 其他处理...
+    } catch (e) {
+      console.error('createMessageObject 内部报错：', e, msg);
+    }
     
     // 根据 mtype 确定消息类型
     let messageType;
@@ -259,14 +202,14 @@ const MessageDetail = () => {
         };
         break;
     }
-    
+
     return messageObj;
   };
   
   // 使用方法
-  const fetchMessageList = async () => {
+  const fetchMessageList = async (page = 1, appendToTop = false) => {
+    console.log("fresh message, page: ", page);
     const token = GlobalStore.userInfo.token || Taro.getStorageSync('token');
-    // 获取当前用户的 UID
     const currentUid = GlobalStore.userInfo.uid || Taro.getStorageSync('uid');
   
     if (!token) {
@@ -278,41 +221,34 @@ const MessageDetail = () => {
       const res = await Taro.request({
         url: 'https://api.eurostay.co/app/esmessages/messageList',
         method: 'GET',
-        header: {
-          token: token, // 传递 token 进行身份验证
-        },
+        header: { token },
         data: {
           requestId: id,
-          pageNum: 1,
-        }
+          pageNum: page,
+        },
       });
   
-      console.log('messageList 响应:', res);
-  
       if (res.statusCode === 200 && res.data.code === 0 && res.data.result.records) {
-
-        if (res.data.result.records.length > 0) {
-          const firstMsg = res.data.result.records[0];
+        const records = res.data.result.records;
+        if (records.length === 0) {
+          setHasMore(false); // 没有更多数据
+          return;
+        }
+  
+        if (records.length > 0 && page === 1) {
+          const firstMsg = records[0];
           const otherUid = firstMsg.fromUid === currentUid ? firstMsg.toUid : firstMsg.fromUid;
           setOtherUserId(otherUid);
         }
-        
-        // 使用新函数处理每条消息
-        const formattedMessages = res.data.result.records.map(msg => 
+  
+        const formattedMessages = records.map(msg =>
           createMessageObject(msg, currentUid)
         );
-        
-        // 按照时间逆序排列，确保旧消息在上，新消息在下
-        const sortedMessages = formattedMessages.sort((a, b) => {
-          // 如果有消息ID是数字，可以按ID排序
-          // 或者如果消息有时间戳，可以按时间戳排序
-          return a.id - b.id;
-        });
-        
-        // 更新消息列表
-        setMessages(sortedMessages);
-        
-        // 滚动到底部会在useEffect中处理
+  
+        const sortedMessages = formattedMessages.sort((a, b) => a.id - b.id);
+        setMessages(prev =>
+          appendToTop ? [...sortedMessages, ...prev] : sortedMessages
+        );
       } else {
         console.error('获取消息列表失败:', res.data.msg);
       }
@@ -320,6 +256,7 @@ const MessageDetail = () => {
       console.error('网络请求失败:', error);
     }
   };
+  
 
   const handleInput = (e) => {
     // Taro / 小程序里通常是 e.detail.value
@@ -475,7 +412,8 @@ const MessageDetail = () => {
         }
         
         // 更新本地消息列表，添加到末尾（新消息在下方）
-        setMessages(prevMessages => [...prevMessages, messageObj]);
+        // setMessages(prevMessages => [...prevMessages, messageObj]);
+        scrollToBottom();
         
         // 如果是普通消息，发送后清空输入框
         if (messageType === 0) {
@@ -528,15 +466,23 @@ const MessageDetail = () => {
   const handleHostCheckSub = () => {
     console.log('handleHostCheckSub');
   }
+
+  const getAvatar = (msg) => {
+    const myUid = GlobalStore.userInfo.uid || Taro.getStorageSync('uid')
+    const url = msg.otherUid === myUid ? msg.otherAvatar : msg.selfAvatar
+    return url || "https://eurostay-1330475057.cos.eu-frankfurt.myqcloud.com/sys/loading.png"
+  }
   
   // 根据不同的 type 来渲染对应的组件
   const renderMessage = (msg) => {
+    const avatar = getAvatar(msg)
+
     switch (msg.type) {
       case 'request':
         return (
           <RequestMessageBox
             // 这里把 data 内的字段作为 props 传给 RequestMessageBox
-            avatar={Avatar}
+            avatar={avatar}
             name={msg.data.name}
             time={msg.data.time}
             direction={msg.direction}
@@ -545,7 +491,7 @@ const MessageDetail = () => {
       case 'simple':
         return (
           <SimpleMessageBox
-            avatar={Avatar}
+            avatar={avatar}
             content={msg.data.content}
             time={msg.data.time}
             direction={msg.direction}
@@ -554,7 +500,7 @@ const MessageDetail = () => {
       case 'reject-fh':
         return (
           <RejectMessageFromHostBox
-            avatar={Avatar}
+            avatar={avatar}
             name={msg.data.name}
             time={msg.data.time}
             reason={msg.data.reason}
@@ -564,7 +510,7 @@ const MessageDetail = () => {
       case 'reject-fg':
         return (
           <RejectMessageFromGuestBox
-            avatar={Avatar}
+            avatar={avatar}
             name={msg.data.name}
             time={msg.data.time}
             reason={msg.data.reason}
@@ -574,7 +520,7 @@ const MessageDetail = () => {
         case 'offer':
           return (
             <OfferMessageBox
-              avatar={Avatar}
+              avatar={avatar}
               hostname={msg.data.hostname}
               applicantname={msg.data.applicantname}
               time={msg.data.time}
@@ -583,6 +529,7 @@ const MessageDetail = () => {
               subjectId={msg.data.subjectId}  // 传递 subjectId
               hostUid={msg.data.hostUid}      // 传递 hostUid
               isProperty={msg.data.isProperty} // 传递 isProperty
+              active={msg.active}
               onPaid={() => handleShowContact(msg.data.subjectId, msg.data.hostUid)} // 传递参数
               onReject={(reason) => handleRejectFromGuest(reason, msg.data.subjectId)} // 传递参数
               onCheckSub={() => handleHostCheckSub(msg.data.subjectId)}
@@ -591,7 +538,7 @@ const MessageDetail = () => {
       case 'contact':
         return (
           <ContactMessageBox
-            avatar={Avatar}
+            avatar={avatar}
             time={msg.data.time}
             direction={msg.direction}
           />
@@ -599,7 +546,7 @@ const MessageDetail = () => {
       default:
         return (
           <SimpleMessageBox
-            avatar={Avatar}
+            avatar={avatar}
             content={msg.data.content || '未知消息类型'}
             time={msg.data.time}
             direction="left"
@@ -617,6 +564,15 @@ const MessageDetail = () => {
         scrollY
         scrollTop={scrollTop}
         scrollWithAnimation
+        onScrollToUpper={() => {
+          if (loadingMore || !hasMore) return;
+      
+          setLoadingMore(true);
+          fetchMessageList(pageNum + 1, true).finally(() => {
+            setPageNum(prev => prev + 1);
+            setLoadingMore(false);
+          });
+        }}
       >
         {messages.map((msg, index) => (
           <View key={`${msg.id}-${index}`} className='message-wrapper'>

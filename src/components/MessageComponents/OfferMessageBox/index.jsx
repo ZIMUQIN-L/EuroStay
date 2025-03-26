@@ -4,7 +4,7 @@ import './index.scss'
 import extraImg from '@assets/images/test-paycode.jpg'
 
 const OfferMessageBox = (props) => {
-  const { avatar, time, direction = 'left', hostname, applicantname, price, onPaid, onReject, onCheckSub } = props
+  const { avatar, time, direction = 'left', hostname, applicantname, price, onPaid, onReject, onCheckSub, active = true } = props
   
   // 根据 direction 动态设置文案和按钮文字
   let content = ''
@@ -65,26 +65,37 @@ const OfferMessageBox = (props) => {
         
         {/* 不同 direction，输出不同的按钮区域 */}
         {direction === 'right' ? (
-          /* 右侧时，仅一个按钮 */
-          <Button className='action-button single-btn' onClick={handleSingleButtonClick}>
+          // ✅ 右侧时，仅一个按钮，带 active 控制
+          <Button
+            className={`action-button single-btn ${!active ? 'disabled' : ''}`}
+            onClick={handleSingleButtonClick}
+            disabled={!active}
+          >
             {singleButtonText}
           </Button>
         ) : (
-          /* 左侧时，两个按钮 */
+          // ✅ 左侧时，两个按钮，带 active 控制
           <View className='button-group'>
-            <Button className='action-button group-btn' onClick={handleLeftButtonClick}>
+            <Button
+              className={`action-button group-btn ${!active ? 'disabled' : ''}`}
+              onClick={handleLeftButtonClick}
+              disabled={!active}
+            >
               {leftButtonText}
             </Button>
-            <Button className='action-button group-btn' onClick={handleRightButtonClick}>
+            <Button
+              className={`action-button group-btn ${!active ? 'disabled' : ''}`}
+              onClick={handleRightButtonClick}
+              disabled={!active}
+            >
               {rightButtonText}
             </Button>
           </View>
         )}
-        
-        {/* {time && <Text className='time'>{time}</Text>} */}
       </View>
     </View>
   )
+  
 }
 
 export default OfferMessageBox
