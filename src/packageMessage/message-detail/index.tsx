@@ -145,6 +145,7 @@ const MessageDetail = () => {
         messageObj.data = {
           ...messageObj.data,
           toUid: msg.toUid,
+          isProperty: msg.isProperty,
           subjectId: msg.subjectId,
           content: msg.content || ''
         };
@@ -155,6 +156,7 @@ const MessageDetail = () => {
         messageObj.data = {
           ...messageObj.data,
           toUid: msg.toUid,
+          isProperty: msg.isProperty,
           subjectId: msg.subjectId,
           name: msg.guestName || msg.fromName || '申请人'
         };
@@ -166,6 +168,7 @@ const MessageDetail = () => {
           ...messageObj.data,
           toUid: msg.toUid,
           subjectId: msg.subjectId,
+          isProperty: msg.isProperty,
           hostname: msg.hostName || '房东',
           applicantname: msg.guestName || '申请人',
           price: msg.price || '$0'
@@ -177,6 +180,7 @@ const MessageDetail = () => {
         messageObj.data = {
           ...messageObj.data,
           toUid: msg.toUid,
+          isProperty: msg.isProperty,
           subjectId: msg.subjectId,
           name: msg.hostName || '房东',
           reason: msg.reason || msg.content || '未提供原因'
@@ -188,6 +192,7 @@ const MessageDetail = () => {
         messageObj.data = {
           ...messageObj.data,
           toUid: msg.toUid,
+          isProperty: msg.isProperty,
           subjectId: msg.subjectId,
           name: msg.guestName || '申请人',
           reason: msg.reason || msg.content || '申请人取消了预订'
@@ -199,6 +204,7 @@ const MessageDetail = () => {
         messageObj.data = {
           ...messageObj.data,
           toUid: msg.toUid,
+          isProperty: msg.isProperty,
           subjectId: msg.subjectId
           // 联系信息消息可能不需要其他特殊字段
         };
@@ -248,6 +254,7 @@ const MessageDetail = () => {
         );
   
         const sortedMessages = formattedMessages.sort((a, b) => a.id - b.id);
+        console.log("sortedMessage", sortedMessages);
         setMessages(prev =>
           appendToTop ? [...sortedMessages, ...prev] : sortedMessages
         );
@@ -481,7 +488,7 @@ const MessageDetail = () => {
   // 根据不同的 type 来渲染对应的组件
   const renderMessage = (msg) => {
     const avatar = getAvatar(msg)
-
+    console.log("avatar484", msg);
     switch (msg.type) {
       case 'request':
         return (
