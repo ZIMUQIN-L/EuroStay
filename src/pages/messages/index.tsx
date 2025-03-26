@@ -76,7 +76,6 @@ const Index = () => {
     // 获取 token
     const token = GlobalStore.userInfo.token;
     const uid = GlobalStore.userInfo.uid;
-    console.log('拿到的 token:', token, "uid", uid);
     
     // 判断是否在开发环境中使用mock数据
     const useMockData = process.env.NODE_ENV === 'development' || !token;
@@ -109,7 +108,6 @@ const Index = () => {
         data: { pageNum: 1 },
       });
   
-      console.log('sessionList 响应:', res, res.statusCode, res.data.code);
   
       if (res.statusCode === 200 && res.data.code === 0) {
         const records = res.data.result.records || [];
@@ -132,7 +130,6 @@ const Index = () => {
           }
 
           const isCurrentInit = Number(currentUid) === Number(record.esSession.initUid);// I am init
-          console.log(isCurrentInit, "ini");
           const selfAvatar = isCurrentInit
             ? record.initAvatar
             : record.replyAvatar;
@@ -159,7 +156,6 @@ const Index = () => {
               createTime: record.esSession.updateTime,
             },
           };
-          // console.log("114", messageObj);
           if (record.esSession.stype === 0) {
             systemMsgs.push({ ...messageObj, type: 'system' });
           } else if (isStranger) {
@@ -172,9 +168,6 @@ const Index = () => {
         setMessages(normalMsgs);
         setSystemMessages(systemMsgs);
         setStrangerMessages(strangerMsgs);
-        console.log("143system", systemMsgs);
-        console.log("144messages", messages, normalMsgs);
-        console.log("145stanger", strangerMsgs);
 
         const sessionDict = {};
 
@@ -212,7 +205,6 @@ const Index = () => {
   };
 
   const handleItemClick = (id, name) => {
-    console.log("id from session list", id);
     // 这里把消息的 id 传给详情页
     Taro.navigateTo({
       url: `/packageMessage/message-detail/index?id=${id}&name=${encodeURIComponent(name)}`,
@@ -227,7 +219,6 @@ const Index = () => {
         url: `/packageMessage/strangers/index`,
       });
     } else {
-      console.log("188", item.id, item.name);
       // 系统消息，导航到消息详情页
       Taro.navigateTo({
         url: `/packageMessage/message-detail/index?id=${item.id}&name=${encodeURIComponent(item.name)}`,
@@ -244,7 +235,6 @@ const Index = () => {
     time: strangerMessages.length > 0 ? strangerMessages[0].time : '',
     type: 'stranger'
   } : null;
-  console.log("susystemEntrys", systemMessages);
   // 创建系统消息入口
   const systemEntry = systemMessages.length > 0 ? {
     id: systemMessages[0].id, // 使用第一条系统消息的ID
