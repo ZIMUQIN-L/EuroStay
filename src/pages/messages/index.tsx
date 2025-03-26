@@ -124,12 +124,14 @@ const Index = () => {
   
           const displayName = `User ${otherPersonUid}`;
   
-          const isStranger =
-            currentUid === record.initUid
-              ? record.esSession.initStranger
-              : record.esSession.replyStranger;
+          let isStranger = false;
+          if (currentUid === record.initUid) {
+            isStranger = record.esSession.initStranger;
+          } else if (currentUid === record.replyUid) {
+            isStranger = record.esSession.replyStranger;
+          }
 
-          const isCurrentInit = currentUid === record.initUid;
+          const isCurrentInit = currentUid === record.initUid;// I am init
           const selfAvatar = isCurrentInit
             ? record.initAvatar
             : record.replyAvatar;
@@ -139,8 +141,8 @@ const Index = () => {
             : record.initAvatar;
 
           const otherName = isCurrentInit
-              ? record.replyName
-              : record.initName;
+              ? record.initName
+              : record.replyName;
 
           const messageObj = {
             id: record.esSession.id,
@@ -157,7 +159,7 @@ const Index = () => {
               createTime: record.esSession.updateTime,
             },
           };
-          console.log("114", messageObj);
+          // console.log("114", messageObj);
           if (record.esSession.stype === 0) {
             systemMsgs.push({ ...messageObj, type: 'system' });
           } else if (isStranger) {
@@ -170,9 +172,9 @@ const Index = () => {
         setMessages(normalMsgs);
         setSystemMessages(systemMsgs);
         setStrangerMessages(strangerMsgs);
-        console.log("143", systemMsgs);
+        console.log("143system", systemMsgs);
         console.log("144messages", messages, normalMsgs);
-        console.log("145", strangerMsgs);
+        console.log("145stanger", strangerMsgs);
 
         const sessionDict = {};
 

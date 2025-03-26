@@ -126,6 +126,7 @@ const MessageDetail = () => {
       case 5: messageType = 'contact'; break;
       case 6: messageType = 'reject-fg'; break;
       case 7: messageType = 'simple'; break;
+      case 8: messageType = 'pic'; break
       default: messageType = 'simple';
     }
     
@@ -208,6 +209,15 @@ const MessageDetail = () => {
           isProperty: msg.isProperty,
           subjectId: msg.subjectId
           // 联系信息消息可能不需要其他特殊字段
+        };
+        break;
+
+      case 'pic':
+        // 图片信息
+        messageObj.data = {
+          ...messageObj.data,
+          toUid: msg.toUid,
+          content: msg.content || ''
         };
         break;
     }
