@@ -2,6 +2,7 @@ import { View, Text, Button, Image } from '@tarojs/components'
 import Taro from '@tarojs/taro'
 import './index.scss'
 import extraImg from '@assets/images/test-paycode.jpg'
+import GlobalStore from '@store/GlobalStore'; 
 
 const OfferMessageBox = (props) => {
   const { avatar, time, direction = 'left', hostname, applicantname, price, onPaid, onReject, onCheckSub, active = true } = props
@@ -52,7 +53,7 @@ const OfferMessageBox = (props) => {
   return (
     <View className={`message-box ${direction}`}>
       {/* 头像 */}
-      <Image className='avatar' src={avatar} />
+      <Image className='avatar' src={direction === 'left' ? avatar : GlobalStore.userInfo.avatar} />
       
       {/* 气泡内容 */}
       <View className='bubble'>

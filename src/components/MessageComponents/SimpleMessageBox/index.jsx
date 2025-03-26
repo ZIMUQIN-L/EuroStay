@@ -1,5 +1,6 @@
 import { View, Text, Image } from '@tarojs/components'
 import './index.scss'
+import GlobalStore from '@store/GlobalStore'; 
 
 const SimpleMessageBox = (props) => {
   const { avatar, content, time, direction = 'left' } = props
@@ -7,7 +8,7 @@ const SimpleMessageBox = (props) => {
   return (
     <View className={`message-box ${direction}`}>
       {/* 头像 */}
-      <Image className='avatar' src={avatar} />
+      <Image className='avatar' src={direction === 'left' ? avatar : GlobalStore.userInfo.avatar} />
 
       {/* 气泡内容 */}
       <View className='bubble'>
