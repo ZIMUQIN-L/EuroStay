@@ -157,9 +157,9 @@ class GlobalStore {
           this.incrementWsMessageCounter();
           try {
             const msg = JSON.parse(res.data);
-            console.log(`共有 ${this._messageListeners.length} 个监听者将被通知：`);
+            // console.log(`共有 ${this._messageListeners.length} 个监听者将被通知：`);
             this._messageListeners.forEach((fn, index) => {
-              console.log(`通知第 ${index + 1} 个监听者`, fn.name || '(匿名函数)');
+              // console.log(`通知第 ${index + 1} 个监听者`, fn.name || '(匿名函数)');
               fn(msg);
             });
           } catch (e) {
