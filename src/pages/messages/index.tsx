@@ -14,53 +14,33 @@ const Index = () => {
   const [messages, setMessages] = useState([]);
 
   // Mock 数据 - 用于测试
-  const mockNormalMessages = [
-    {
-      id: 101,
-      avatar: 'https://example.com/avatar3.png',
-      name: '下单子想当一棵草',
-      message: '谢谢你的喜欢',
-      time: '11:20',
-      otherUid: 101
-    },
-    {
-      id: 102,
-      avatar: 'https://example.com/avatar4.png',
-      name: 'Andre Zeng',
-      message: '这房子可以住几个人呀？',
-      time: '11:30',
-      otherUid: 102
-    },
-    {
-      id: 103,
-      avatar: 'https://example.com/avatar5.png',
-      name: 'Jackie Li',
-      message: '我们几点可以入住？',
-      time: '11:40',
-      otherUid: 103
-    }
-  ];
+  // const mockNormalMessages = [
+  //   {
+  //     id: 101,
+  //     avatar: 'https://example.com/avatar3.png',
+  //     name: '下单子想当一棵草',
+  //     message: '谢谢你的喜欢',
+  //     time: '11:20',
+  //     otherUid: 101
+  //   },
+  //   {
+  //     id: 102,
+  //     avatar: 'https://example.com/avatar4.png',
+  //     name: 'Andre Zeng',
+  //     message: '这房子可以住几个人呀？',
+  //     time: '11:30',
+  //     otherUid: 102
+  //   },
+  //   {
+  //     id: 103,
+  //     avatar: 'https://example.com/avatar5.png',
+  //     name: 'Jackie Li',
+  //     message: '我们几点可以入住？',
+  //     time: '11:40',
+  //     otherUid: 103
+  //   }
+  // ];
 
-  const mockSystemMessages = [
-    {
-      id: 201,
-      avatar: 'https://example.com/system-avatar.png',
-      name: '系统消息',
-      message: '你有一个待评价的订单，需要评价完成后才可以接下新的订单',
-      time: '10:15',
-      type: 'system',
-      otherUid: 0
-    },
-    {
-      id: 202,
-      avatar: 'https://example.com/system-avatar.png',
-      name: '系统消息',
-      message: '您好，房源已上架，如需更多推广，请联系客服',
-      time: '09:30',
-      type: 'system',
-      otherUid: 0
-    }
-  ];
 
   useEffect(() => {
     // 获取 token
@@ -73,8 +53,8 @@ const Index = () => {
     
     if (useMockData) {
       // 使用mock数据
-      setMessages(mockNormalMessages);
-      setSystemMessages(mockSystemMessages);
+      // setMessages(mockNormalMessages);
+      // setSystemMessages(mockSystemMessages);
     }
     
     // 不管是否使用mock数据，都调用fetchMessages获取陌生人数据
@@ -99,7 +79,7 @@ const Index = () => {
         data: { pageNum: 1 },
       });
   
-      console.log('sessionList 响应:', res);
+      console.log('sessionList 响应:', res, res.statusCode, res.data.code);
   
       if (res.statusCode === 200 && res.data.code === 0) {
         const records = res.data.result.records || [];
@@ -110,43 +90,60 @@ const Index = () => {
   
         records.forEach((record) => {
           const otherPersonUid =
-            currentUid === record.initUid ? record.replyUid : record.initUid;
+            currentUid === record.esSession.initUid ? record.esSession.replyUid : record.esSession.initUid;
   
           const displayName = `User ${otherPersonUid}`;
   
           const isStranger =
             currentUid === record.initUid
-              ? record.initStranger
-              : record.replyStranger;
-  
+              ? record.esSession.initStranger
+              : record.esSession.replyStranger;
+
+          const isCurrentInit = currentUid === record.initUid;
+          const selfAvatar = isCurrentInit
+            ? record.initAvatar
+            : record.replyAvatar;
+      
+          const otherAvatar = isCurrentInit
+            ? record.replyAvatar
+            : record.initAvatar;
+
+          const otherName = isCurrentInit
+              ? record.replyName
+              : record.initName;
+
           const messageObj = {
-            id: record.id,
-            avatar: 'https://example.com/avatar4.png',
-            name: displayName,
+            id: record.esSession.id,
+            selfAvatar: selfAvatar || 'https://eurostay-1330475057.cos.eu-frankfurt.myqcloud.com/sys/loading.png',
+            otherAvatar: otherAvatar || 'https://eurostay-1330475057.cos.eu-frankfurt.myqcloud.com/sys/loading.png',
+            name: otherName || `User ${otherPersonUid}`,
             message: record.topMessage || '无消息内容',
             time: formatTime(record.updateTime),
             otherUid: otherPersonUid,
             rawData: {
-              fromUid: record.initUid,
-              toUid: record.replyUid,
-              content: record.topMessage || '无消息内容',
-              createTime: record.updateTime,
+              fromUid: record.esSession.initUid,
+              toUid: record.esSession.replyUid,
+              content: record.esSession.topMessage || '无消息内容',
+              createTime: record.esSession.updateTime,
             },
           };
-  
-          if (record.stype === 7) {
+          console.log("114", messageObj);
+          if (record.esSession.stype === 0) {
             systemMsgs.push({ ...messageObj, type: 'system' });
           } else if (isStranger) {
             strangerMsgs.push({ ...messageObj, type: 'stranger' });
           } else {
-            normalMsgs.push(messageObj);
+            normalMsgs.push({ ...messageObj, type: 'normal' });
           }
         });
   
         setMessages(normalMsgs);
         setSystemMessages(systemMsgs);
         setStrangerMessages(strangerMsgs);
-  
+        console.log("143", systemMsgs);
+        console.log("144", normalMsgs);
+        console.log("145", strangerMsgs);
+
         if (strangerMsgs.length > 0) {
           Taro.setStorageSync('strangerMessages', JSON.stringify(strangerMsgs));
         }
@@ -188,6 +185,7 @@ const Index = () => {
         url: `/packageMessage/strangers/index`,
       });
     } else {
+      console.log("188", item.id, item.name);
       // 系统消息，导航到消息详情页
       Taro.navigateTo({
         url: `/packageMessage/message-detail/index?id=${item.id}&name=${encodeURIComponent(item.name)}`,
@@ -198,20 +196,20 @@ const Index = () => {
   // 创建陌生人入口项
   const strangerEntry = strangerMessages.length > 0 ? {
     id: 'stranger-group',
-    avatar: 'https://example.com/avatar1.png', 
+    avatar: 'https://eurostay-1330475057.cos.eu-frankfurt.myqcloud.com/sys/loading.png', 
     name: '陌生人打招呼',
     message: `${strangerMessages.length}个陌生人向你打招呼`,
     time: strangerMessages.length > 0 ? strangerMessages[0].time : '',
     type: 'stranger'
   } : null;
-
+  console.log("susystemEntrys", systemMessages);
   // 创建系统消息入口
   const systemEntry = systemMessages.length > 0 ? {
     id: systemMessages[0].id, // 使用第一条系统消息的ID
-    avatar: 'https://example.com/avatar2.png',
+    avatar: 'https://eurostay-1330475057.cos.eu-frankfurt.myqcloud.com/sys/loading.png',
     name: '系统消息',
-    message: systemMessages[0].message,
-    time: systemMessages[0].time,
+    message: systemMessages[0].rawData.content,
+    time: systemMessages[0].rawData.createTime,
     type: 'system'
   } : null;
 
@@ -237,7 +235,7 @@ const Index = () => {
           </View>
         </View>
       )}
-      
+
       {/* 系统消息入口 */}
       {systemEntry && (
         <View

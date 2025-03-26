@@ -10,6 +10,8 @@ import GlobalStore from '@store/GlobalStore'
 const StrangersPage = () => {
   const [strangers, setStrangers] = useState([])
   const [loading, setLoading] = useState(true)
+  const myUid = GlobalStore.userInfo.uid || Taro.getStorageSync('uid')
+
 
   useEffect(() => {
     Taro.setNavigationBarTitle({
@@ -24,76 +26,16 @@ const StrangersPage = () => {
         if (Array.isArray(parsedStrangers) && parsedStrangers.length > 0) {
           setStrangers(parsedStrangers)
           setLoading(false)
+          console.log("27", parsedStrangers);
           return
         }
       } catch (error) {
         console.error('解析本地陌生人消息失败:', error)
       }
     }
-    
-    // 如果本地存储中没有有效数据，则通过API获取
-    fetchStrangers()
   }, [])
 
-  // 获取陌生人打招呼列表
-  const fetchStrangers = async () => {
-    setLoading(true)
-    
-    const token = GlobalStore.userInfo.token || Taro.getStorageSync('token')
-    
-    if (!token) {
-      console.error('缺少 token，无法获取陌生人列表')
-      setLoading(false)
-      return
-    }
-    
-    try {
-      // 发送请求获取陌生人列表
-      const res = await Taro.request({
-        url: 'https://api.eurostay.co/app/esmessages/strangerList',
-        method: 'GET',
-        header: {
-          token: token,
-        },
-        data: {
-          pageNum: 1,
-        },
-      })
-      
-      console.log('陌生人列表响应:', res)
-      
-      if (res.statusCode === 200 && res.data.code === 0) {
-        const records = res.data.result.records || []
-        
-        // 格式化数据
-        const formattedStrangers = records.map(record => ({
-          id: record.id,
-          avatar: record.avatar || 'https://example.com/default-avatar.png',
-          name: record.username || `用户${record.fromUid}`,
-          message: record.content || '你好，可以聊聊吗？',
-          time: formatTime(record.createTime),
-          fromUid: record.fromUid,
-          type: 'stranger'
-        }))
-        
-        setStrangers(formattedStrangers)
-      } else {
-        console.error('获取陌生人列表失败:', res.data.msg)
-        Taro.showToast({
-          title: '获取列表失败',
-          icon: 'none',
-        })
-      }
-    } catch (error) {
-      console.error('网络请求失败:', error)
-      Taro.showToast({
-        title: '网络请求失败',
-        icon: 'none',
-      })
-    } finally {
-      setLoading(false)
-    }
-  }
+
 
   // 格式化时间
   const formatTime = (dateString) => {
@@ -202,15 +144,15 @@ const StrangersPage = () => {
               className='stranger-item'
               onClick={() => handleStrangerClick(stranger)}
             >
-              <Image className='avatar' src={stranger.avatar} />
+              <Image className='avatar' src={stranger.otherUid === myUid ? stranger.otherAvatar : stranger.selfAvatar} />
               
               <View className='content'>
                 <View className='header'>
                   <Text className='name'>{stranger.name}</Text>
-                  <Text className='time'>{stranger.time}</Text>
+                  <Text className='time'>{stranger.rawData.createTime}</Text>
                 </View>
                 
-                <Text className='message'>{stranger.message}</Text>
+                <Text className='message'>{stranger.rawData.content}</Text>
               </View>
             </View>
           ))

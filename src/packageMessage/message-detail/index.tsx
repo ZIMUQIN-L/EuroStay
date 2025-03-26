@@ -7,7 +7,6 @@ import RejectMessageFromHostBox from '@components/MessageComponents/RejectMessag
 import RejectMessageFromGuestBox from '@components/MessageComponents/RejectMessageFromGuestBox'
 import OfferMessageBox from '@components/MessageComponents/OfferMessageBox'
 import './index.scss'
-import Avatar from '@assets/images/accommodation.svg'
 import CustomNavBar from '@components/MessageComponents/message-detail-nav-bar'
 import Taro from '@tarojs/taro'
 import ContactMessageBox from '@components/MessageComponents/ContactMessageBox'
@@ -247,7 +246,6 @@ const MessageDetail = () => {
         );
   
         const sortedMessages = formattedMessages.sort((a, b) => a.id - b.id);
-  
         setMessages(prev =>
           appendToTop ? [...sortedMessages, ...prev] : sortedMessages
         );
@@ -468,15 +466,23 @@ const MessageDetail = () => {
   const handleHostCheckSub = () => {
     console.log('handleHostCheckSub');
   }
+
+  const getAvatar = (msg) => {
+    const myUid = GlobalStore.userInfo.uid || Taro.getStorageSync('uid')
+    const url = msg.otherUid === myUid ? msg.otherAvatar : msg.selfAvatar
+    return url || "https://eurostay-1330475057.cos.eu-frankfurt.myqcloud.com/sys/loading.png"
+  }
   
   // 根据不同的 type 来渲染对应的组件
   const renderMessage = (msg) => {
+    const avatar = getAvatar(msg)
+
     switch (msg.type) {
       case 'request':
         return (
           <RequestMessageBox
             // 这里把 data 内的字段作为 props 传给 RequestMessageBox
-            avatar={Avatar}
+            avatar={avatar}
             name={msg.data.name}
             time={msg.data.time}
             direction={msg.direction}
@@ -485,7 +491,7 @@ const MessageDetail = () => {
       case 'simple':
         return (
           <SimpleMessageBox
-            avatar={Avatar}
+            avatar={avatar}
             content={msg.data.content}
             time={msg.data.time}
             direction={msg.direction}
@@ -494,7 +500,7 @@ const MessageDetail = () => {
       case 'reject-fh':
         return (
           <RejectMessageFromHostBox
-            avatar={Avatar}
+            avatar={avatar}
             name={msg.data.name}
             time={msg.data.time}
             reason={msg.data.reason}
@@ -504,7 +510,7 @@ const MessageDetail = () => {
       case 'reject-fg':
         return (
           <RejectMessageFromGuestBox
-            avatar={Avatar}
+            avatar={avatar}
             name={msg.data.name}
             time={msg.data.time}
             reason={msg.data.reason}
@@ -514,7 +520,7 @@ const MessageDetail = () => {
         case 'offer':
           return (
             <OfferMessageBox
-              avatar={Avatar}
+              avatar={avatar}
               hostname={msg.data.hostname}
               applicantname={msg.data.applicantname}
               time={msg.data.time}
@@ -523,6 +529,7 @@ const MessageDetail = () => {
               subjectId={msg.data.subjectId}  // 传递 subjectId
               hostUid={msg.data.hostUid}      // 传递 hostUid
               isProperty={msg.data.isProperty} // 传递 isProperty
+              active={msg.active}
               onPaid={() => handleShowContact(msg.data.subjectId, msg.data.hostUid)} // 传递参数
               onReject={(reason) => handleRejectFromGuest(reason, msg.data.subjectId)} // 传递参数
               onCheckSub={() => handleHostCheckSub(msg.data.subjectId)}
@@ -531,7 +538,7 @@ const MessageDetail = () => {
       case 'contact':
         return (
           <ContactMessageBox
-            avatar={Avatar}
+            avatar={avatar}
             time={msg.data.time}
             direction={msg.direction}
           />
@@ -539,7 +546,7 @@ const MessageDetail = () => {
       default:
         return (
           <SimpleMessageBox
-            avatar={Avatar}
+            avatar={avatar}
             content={msg.data.content || '未知消息类型'}
             time={msg.data.time}
             direction="left"
