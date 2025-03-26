@@ -51,7 +51,7 @@ export interface homePropertyProps {
   images: string[];
   location: string;
   price: number;
-  startTime: string;
+  startDate: string;
   tags: string[];
   title: string;
 }
@@ -82,6 +82,7 @@ export interface ApplicantDetail {
 }
 
 export interface HostDetail {
+    uid: number;
     avatar: string;
     role: string;
     username: string;
@@ -127,4 +128,15 @@ export interface ReviewCardProps {
   images?: string[];
   reviewDate: string;
   location: string;
+}
+
+export interface OrderDetail {
+    type: number;
+    orderStatus: string;
+    orderId: number;
+    houseName: string;
+    houseId: number;
+    price: number;
+    time: string;
+    refuseReason: string;
 }

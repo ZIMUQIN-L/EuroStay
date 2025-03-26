@@ -1,0 +1,33 @@
+.collection-container {
+  padding: 24px;
+  min-height: 100vh;
+//   background-color: #F5EDFF;
+  background: linear-gradient(180deg, #FFF5DA 0%, #F5EDFF 100%);
+  box-sizing: border-box;
+
+  .card-wrapper {
+    margin-bottom: 24px;
+    border-radius: 200px;;
+  }
+
+  .loading {
+    text-align: center;
+    color: #8A70D6;
+    font-size: 28px;
+    padding: 20px 0;
+  }
+
+  .empty-state {
+    text-align: center;
+    color: #999;
+    font-size: 28px;
+    padding: 40px 0;
+  }
+
+  .no-more {
+    text-align: center;
+    color: #999;
+    font-size: 24px;
+    padding: 20px 0 40px;
+  }
+} 

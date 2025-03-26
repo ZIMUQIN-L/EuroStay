@@ -34,6 +34,7 @@ import Taro from '@tarojs/taro';
 // };
 
 const HostCardSmall = ({
+    uid,
     avatar,
     role,
     username,
@@ -49,6 +50,11 @@ const HostCardSmall = ({
                 src={avatar}
                 className='host-avatar'
                 mode="aspectFill"
+                onClick={() => {
+                    Taro.navigateTo({
+                        url: `/pages/user/index?uid=${uid}`
+                    });
+                }}
             />
             <View className='host-name'>{role}：{username}</View>
             <View className='host-detail'>{detail}</View>

@@ -9,7 +9,8 @@ import {
   starIcon,
   infoIcon,
   contactIcon,
-  editIcon
+  editIcon,
+  mineUser,
 } from '@utils/cloudIcons';
 import './index.scss';
 
@@ -68,10 +69,15 @@ const UserSetting = () => {
 
   const menuItems = [
     {
-      icon: starIcon,
-      text: '我的收藏',
-      path: '/packageUser/user-setting/index'
+      icon: mineUser,
+      text: '我的主页',
+      path: '/pages/user/index'
     },
+    {
+        icon: starIcon,
+        text: '我的收藏',
+        path: '/packageUser/user-collection/index'
+      },
     {
       icon: infoIcon,
       text: '关于ES',
