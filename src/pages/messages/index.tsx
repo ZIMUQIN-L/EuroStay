@@ -174,6 +174,16 @@ const Index = () => {
         console.log("144", normalMsgs);
         console.log("145", strangerMsgs);
 
+        const sessionDict = {};
+
+        // 把三种类型都合并进去，以 session.id 为 key 存储
+        [...systemMsgs, ...strangerMsgs, ...normalMsgs].forEach((msg) => {
+          sessionDict[msg.id] = msg
+        })
+        
+        // 存入本地缓存
+        Taro.setStorageSync('allSessionDict', sessionDict)
+
         if (strangerMsgs.length > 0) {
           Taro.setStorageSync('strangerMessages', JSON.stringify(strangerMsgs));
         }

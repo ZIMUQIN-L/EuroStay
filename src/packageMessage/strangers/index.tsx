@@ -144,7 +144,7 @@ const StrangersPage = () => {
               className='stranger-item'
               onClick={() => handleStrangerClick(stranger)}
             >
-              <Image className='avatar' src={stranger.otherUid === myUid ? stranger.otherAvatar : stranger.selfAvatar} />
+              <Image className='avatar' src={stranger.otherAvatar} />
               
               <View className='content'>
                 <View className='header'>

@@ -29,6 +29,7 @@ const MessageDetail = () => {
   const [messages, setMessages] = useState([]);
   const [loadingMore, setLoadingMore] = useState(false);
   const [shouldScrollBottom, setShouldScrollBottom] = useState(false);
+  const sessionDict = Taro.getStorageSync('allSessionDict') || {}
 
 
   useEffect(() => {
@@ -470,8 +471,11 @@ const MessageDetail = () => {
 
   const getAvatar = (msg) => {
     const myUid = GlobalStore.userInfo.uid || Taro.getStorageSync('uid')
-    const url = msg.otherUid === myUid ? msg.otherAvatar : msg.selfAvatar
-    return url || "https://eurostay-1330475057.cos.eu-frankfurt.myqcloud.com/sys/loading.png"
+    const sessionInfo = sessionDict[id];
+    const avatar = sessionInfo
+      ? (sessionInfo.otherUid == myUid ? sessionInfo.selfAvatar : sessionInfo.otherAvatar)
+      : 'https://eurostay-1330475057.cos.eu-frankfurt.myqcloud.com/sys/loading.png'
+    return avatar;
   }
   
   // 根据不同的 type 来渲染对应的组件
