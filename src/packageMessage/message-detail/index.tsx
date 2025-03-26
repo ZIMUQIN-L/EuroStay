@@ -17,6 +17,7 @@ const MessageDetail = () => {
   const router = Taro.getCurrentInstance().router
   const { id, name: encodedName } = router?.params || {}
   const name = encodedName ? decodeURIComponent(encodedName) : '消息详情'
+  const isSystemMessage = name === '系统消息'
   const [otherUserId, setOtherUserId] = useState(null);
   const [subjectId, setSubjectId] = useState(null);
   
@@ -28,6 +29,7 @@ const MessageDetail = () => {
   const [messages, setMessages] = useState([]);
   const [loadingMore, setLoadingMore] = useState(false);
   const [shouldScrollBottom, setShouldScrollBottom] = useState(false);
+  const sessionDict = Taro.getStorageSync('allSessionDict') || {}
 
 
   useEffect(() => {
@@ -469,8 +471,11 @@ const MessageDetail = () => {
 
   const getAvatar = (msg) => {
     const myUid = GlobalStore.userInfo.uid || Taro.getStorageSync('uid')
-    const url = msg.otherUid === myUid ? msg.otherAvatar : msg.selfAvatar
-    return url || "https://eurostay-1330475057.cos.eu-frankfurt.myqcloud.com/sys/loading.png"
+    const sessionInfo = sessionDict[id];
+    const avatar = sessionInfo
+      ? (sessionInfo.otherUid == myUid ? sessionInfo.selfAvatar : sessionInfo.otherAvatar)
+      : 'https://eurostay-1330475057.cos.eu-frankfurt.myqcloud.com/sys/loading.png'
+    return avatar;
   }
   
   // 根据不同的 type 来渲染对应的组件
@@ -582,17 +587,19 @@ const MessageDetail = () => {
       </ScrollView>
 
       {/* 底部输入框区域 */}
-      <View className='input-box'>
-        <Input
-          className='input'
-          value={inputValue}
-          onInput={handleInput}
-          placeholder='请输入...'
-        />
-        <View className='send-btn' onClick={handleSend}>
-          ↑
+      {!isSystemMessage && (
+        <View className='input-box'>
+          <Input
+            className='input'
+            value={inputValue}
+            onInput={handleInput}
+            placeholder='请输入...'
+          />
+          <View className='send-btn' onClick={handleSend}>
+            ↑
+          </View>
         </View>
-      </View>
+      )}
     </View>
   )
 }
