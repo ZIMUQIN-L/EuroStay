@@ -213,12 +213,12 @@ class GlobalStore {
     _messageListeners = [];
 
     addMessageListener(callback) {
-      console.log('添加 WebSocket 消息监听器:', callback.name || '(匿名函数)');
+      // console.log('添加 WebSocket 消息监听器:', callback.name || '(匿名函数)');
       this._messageListeners.push(callback);
     }
     
     removeMessageListener(callback) {
-      console.log('移除监听器:', callback.name || '(匿名函数)');
+      // console.log('移除监听器:', callback.name || '(匿名函数)');
       this._messageListeners = this._messageListeners.filter(fn => fn !== callback);
     }
 

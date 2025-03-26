@@ -23,127 +23,13 @@ const MessageDetail = () => {
   
   const [inputValue, setInputValue] = useState('')
   const [scrollTop, setScrollTop] = useState(0)
-  // 模拟消息数据
-  const [messages, setMessages] = useState([
-    {
-      id: 1,
-      type: 'request',
-      data: {
-        toUid: 68,
-        subjectId: 5,
-        name: 'xiaxia(applicant)',
-        time: '09:10'
-      },
-      direction: "left"
-    },
-    {
-      id: 1,
-      type: 'request',
-      data: {
-        toUid: 68,
-        subjectId: 5,
-        name: 'xiaxia(applicant)',
-        time: '09:10'
-      },
-      direction: "right"
-    },
-    {
-      id: 2,
-      type: 'simple',
-      data: {
-        toUid: 68,
-        subjectId: 5,
-        content: 'hello你可以直接在样式文件（例如 index.scss）中调大头像尺寸，并增加头像与消息气泡之间的 margin 间距。下面给你一个示例，可根据需要再做微调。',
-        time: '09:10'
-      },
-      direction: "left"
-    },
-    {
-      id: 3,
-      type: 'simple',
-      data: {
-        toUid: 68,
-        subjectId: 5,
-        content: 'hello2你可以直接在样式文件（例如 index.scss）中调大头像尺寸，并增加头像与消息气泡之间的 margin 间距。下面给你一个示例，可根据需要再做微调。',
-        time: '09:10'
-      },
-      direction: "right"
-    },
-    {
-      id: 3,
-      type: 'reject-fh',
-      data: {
-        toUid: 68,
-        subjectId: 5,
-        name: 'fish(host)',
-        reason: '档期不合适',
-        time: '09:10'
-      },
-      direction: "left"
-    },
-    {
-      id: 3,
-      type: 'reject-fh',
-      data: {
-        toUid: 68,
-        subjectId: 5,
-        name: 'fish(host)',
-        reason: '档期不合适',
-        time: '09:10'
-      },
-      direction: "right"
-    },
-    {
-      id: 3,
-      type: 'reject-fg',
-      data: {
-        toUid: 68,
-        subjectId: 5,
-        name: 'xiaxia(applicant)',
-        reason: '对不起, 我只能取消预定',
-        time: '09:10'
-      },
-      direction: "left"
-    },
-    {
-      id: 3,
-      type: 'reject-fg',
-      data: {
-        toUid: 68,
-        subjectId: 5,
-        name: 'xiaxia(applicant)',
-        reason: '对不起, 我只能取消预定',
-        time: '09:10'
-      },
-      direction: "right"
-    },
-    {
-      id: 3,
-      type: 'offer',
-      data: {
-        toUid: 68,
-        subjectId: 5,
-        hostname: 'fish(host)',
-        applicantname: 'xiaxia(applicant)',
-        price: '$456.22',
-        time: '09:10'
-      },
-      direction: "left"
-    },
-    {
-      id: 3,
-      type: 'offer',
-      data: {
-        toUid: 68,
-        subjectId: 5,
-        hostname: 'fish(host)',
-        applicantname: 'xiaxia(applicant)',
-        price: '$456.22',
-        time: '09:10'
-      },
-      direction: "right"
-    },
-  ])
+  const [pageNum, setPageNum] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
+  const scrollViewRef = useRef(null);
+  const [messages, setMessages] = useState([]);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [shouldScrollBottom, setShouldScrollBottom] = useState(false);
+
 
   useEffect(() => {
     fetchMessageList();
@@ -151,7 +37,10 @@ const MessageDetail = () => {
 
   // 在每次messages更新后，滚动到底部
   useEffect(() => {
-    scrollToBottom();
+    if (shouldScrollBottom) {
+      scrollToBottom();
+      setShouldScrollBottom(false); // 重置
+    }
   }, [messages]);
 
   useEffect(() => {
@@ -168,7 +57,7 @@ const MessageDetail = () => {
         }, currentUid);
   
         setMessages(prev => [...prev, newMessage]);
-        scrollToBottom();
+        setShouldScrollBottom(true);
       }
     };
   
@@ -188,6 +77,7 @@ const MessageDetail = () => {
       setScrollTop(Date.now());
     });
   };
+  
 
   const formatTime = (createTime) => {
     try {
@@ -318,9 +208,9 @@ const MessageDetail = () => {
   };
   
   // 使用方法
-  const fetchMessageList = async () => {
+  const fetchMessageList = async (page = 1, appendToTop = false) => {
+    console.log("fresh message, page: ", page);
     const token = GlobalStore.userInfo.token || Taro.getStorageSync('token');
-    // 获取当前用户的 UID
     const currentUid = GlobalStore.userInfo.uid || Taro.getStorageSync('uid');
   
     if (!token) {
@@ -332,41 +222,35 @@ const MessageDetail = () => {
       const res = await Taro.request({
         url: 'https://api.eurostay.co/app/esmessages/messageList',
         method: 'GET',
-        header: {
-          token: token, // 传递 token 进行身份验证
-        },
+        header: { token },
         data: {
           requestId: id,
-          pageNum: 1,
-        }
+          pageNum: page,
+        },
       });
   
-      console.log('messageList 响应:', res);
-  
       if (res.statusCode === 200 && res.data.code === 0 && res.data.result.records) {
-
-        if (res.data.result.records.length > 0) {
-          const firstMsg = res.data.result.records[0];
+        const records = res.data.result.records;
+        if (records.length === 0) {
+          setHasMore(false); // 没有更多数据
+          return;
+        }
+  
+        if (records.length > 0 && page === 1) {
+          const firstMsg = records[0];
           const otherUid = firstMsg.fromUid === currentUid ? firstMsg.toUid : firstMsg.fromUid;
           setOtherUserId(otherUid);
         }
-        
-        // 使用新函数处理每条消息
-        const formattedMessages = res.data.result.records.map(msg => 
+  
+        const formattedMessages = records.map(msg =>
           createMessageObject(msg, currentUid)
         );
-        
-        // 按照时间逆序排列，确保旧消息在上，新消息在下
-        const sortedMessages = formattedMessages.sort((a, b) => {
-          // 如果有消息ID是数字，可以按ID排序
-          // 或者如果消息有时间戳，可以按时间戳排序
-          return a.id - b.id;
-        });
-        
-        // 更新消息列表
-        setMessages(sortedMessages);
-        
-        // 滚动到底部会在useEffect中处理
+  
+        const sortedMessages = formattedMessages.sort((a, b) => a.id - b.id);
+  
+        setMessages(prev =>
+          appendToTop ? [...sortedMessages, ...prev] : sortedMessages
+        );
       } else {
         console.error('获取消息列表失败:', res.data.msg);
       }
@@ -374,6 +258,7 @@ const MessageDetail = () => {
       console.error('网络请求失败:', error);
     }
   };
+  
 
   const handleInput = (e) => {
     // Taro / 小程序里通常是 e.detail.value
@@ -672,6 +557,15 @@ const MessageDetail = () => {
         scrollY
         scrollTop={scrollTop}
         scrollWithAnimation
+        onScrollToUpper={() => {
+          if (loadingMore || !hasMore) return;
+      
+          setLoadingMore(true);
+          fetchMessageList(pageNum + 1, true).finally(() => {
+            setPageNum(prev => prev + 1);
+            setLoadingMore(false);
+          });
+        }}
       >
         {messages.map((msg, index) => (
           <View key={`${msg.id}-${index}`} className='message-wrapper'>
