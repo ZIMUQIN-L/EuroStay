@@ -93,8 +93,8 @@ const Index = () => {
 
 
   const fetchMessages = async () => {
-    const token = GlobalStore.userInfo.token || Taro.getStorageSync('token');
-    const currentUid = GlobalStore.userInfo.uid || Taro.getStorageSync('uid');
+    const token = GlobalStore.userInfo.token;
+    const currentUid = GlobalStore.userInfo.uid;
   
     if (!token) {
       console.error('缺少 token，无法获取消息列表');
@@ -125,13 +125,14 @@ const Index = () => {
           const displayName = `User ${otherPersonUid}`;
   
           let isStranger = false;
-          if (currentUid === record.initUid) {
+          if (currentUid === record.esSession.initUid) {
             isStranger = record.esSession.initStranger;
-          } else if (currentUid === record.replyUid) {
+          } else if (currentUid === record.esSession.replyUid) {
             isStranger = record.esSession.replyStranger;
           }
 
-          const isCurrentInit = currentUid === record.initUid;// I am init
+          const isCurrentInit = Number(currentUid) === Number(record.esSession.initUid);// I am init
+          console.log(isCurrentInit, "ini");
           const selfAvatar = isCurrentInit
             ? record.initAvatar
             : record.replyAvatar;
@@ -143,7 +144,6 @@ const Index = () => {
           const otherName = isCurrentInit
               ? record.replyName
               : record.initName;
-
           const messageObj = {
             id: record.esSession.id,
             selfAvatar: selfAvatar || 'https://eurostay-1330475057.cos.eu-frankfurt.myqcloud.com/sys/loading.png',
