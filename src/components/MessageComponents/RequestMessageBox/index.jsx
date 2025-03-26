@@ -1,6 +1,7 @@
 import { View, Text, Button, Image } from '@tarojs/components'
 import Taro from '@tarojs/taro'
 import './index.scss'
+import GlobalStore from '@store/GlobalStore'; 
 
 const RequestMessageBox = (props) => {
   const { avatar, time, direction = 'left', name, toUid, subjectId } = props
@@ -43,7 +44,7 @@ const RequestMessageBox = (props) => {
   return (
     <View className={`message-box ${direction}`}>
       {/* 头像 */}
-      <Image className='avatar' src={avatar} />
+      <Image className='avatar' src={direction === 'left' ? avatar : GlobalStore.userInfo.avatar} />
       
       {/* 气泡内容 */}
       <View className='bubble'>
