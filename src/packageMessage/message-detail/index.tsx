@@ -46,6 +46,7 @@ const MessageDetail = () => {
 
   useEffect(() => {
     const handleIncomingMessage = (msg) => {
+      console.log("handleIncomingMessage", msg);
       // 判断消息是否属于当前对话
       if (msg.data?.sessionId == id) {
         const currentUid = GlobalStore.userInfo.uid;
@@ -488,7 +489,7 @@ const MessageDetail = () => {
   // 根据不同的 type 来渲染对应的组件
   const renderMessage = (msg) => {
     const avatar = getAvatar(msg)
-    console.log("avatar484", msg);
+    // console.log("avatar484", msg);
     switch (msg.type) {
       case 'request':
         return (
