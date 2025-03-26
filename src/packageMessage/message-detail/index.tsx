@@ -17,6 +17,7 @@ const MessageDetail = () => {
   const router = Taro.getCurrentInstance().router
   const { id, name: encodedName } = router?.params || {}
   const name = encodedName ? decodeURIComponent(encodedName) : '消息详情'
+  const isSystemMessage = name === '系统消息'
   const [otherUserId, setOtherUserId] = useState(null);
   const [subjectId, setSubjectId] = useState(null);
   
@@ -582,17 +583,19 @@ const MessageDetail = () => {
       </ScrollView>
 
       {/* 底部输入框区域 */}
-      <View className='input-box'>
-        <Input
-          className='input'
-          value={inputValue}
-          onInput={handleInput}
-          placeholder='请输入...'
-        />
-        <View className='send-btn' onClick={handleSend}>
-          ↑
+      {!isSystemMessage && (
+        <View className='input-box'>
+          <Input
+            className='input'
+            value={inputValue}
+            onInput={handleInput}
+            placeholder='请输入...'
+          />
+          <View className='send-btn' onClick={handleSend}>
+            ↑
+          </View>
         </View>
-      </View>
+      )}
     </View>
   )
 }
