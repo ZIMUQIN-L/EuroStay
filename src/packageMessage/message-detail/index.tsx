@@ -488,7 +488,6 @@ const MessageDetail = () => {
   // 根据不同的 type 来渲染对应的组件
   const renderMessage = (msg) => {
     const avatar = getAvatar(msg)
-    console.log("avatar484", msg);
     switch (msg.type) {
       case 'request':
         return (
@@ -536,6 +535,8 @@ const MessageDetail = () => {
           return (
             <OfferMessageBox
               avatar={avatar}
+              isProperty={msg.data.isProperty}
+              content={msg.data.content}
               hostname={msg.data.hostname}
               applicantname={msg.data.applicantname}
               time={msg.data.time}
@@ -543,11 +544,7 @@ const MessageDetail = () => {
               direction={msg.direction}
               subjectId={msg.data.subjectId}  // 传递 subjectId
               hostUid={msg.data.hostUid}      // 传递 hostUid
-              isProperty={msg.data.isProperty} // 传递 isProperty
               active={msg.active}
-              onPaid={() => handleShowContact(msg.data.subjectId, msg.data.hostUid)} // 传递参数
-              onReject={(reason) => handleRejectFromGuest(reason, msg.data.subjectId)} // 传递参数
-              onCheckSub={() => handleHostCheckSub(msg.data.subjectId)}
             />
           )
       case 'contact':
