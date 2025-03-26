@@ -171,7 +171,7 @@ const Index = () => {
         setSystemMessages(systemMsgs);
         setStrangerMessages(strangerMsgs);
         console.log("143", systemMsgs);
-        console.log("144", normalMsgs);
+        console.log("144messages", messages, normalMsgs);
         console.log("145", strangerMsgs);
 
         const sessionDict = {};
@@ -303,13 +303,13 @@ const Index = () => {
           key={item.id}
           onClick={() => handleItemClick(item.id, item.name)}
         >
-          <Image className='avatar' src={item.avatar} />
+          <Image className='avatar' src={item.otherAvatar} />
           <View className='message-content'>
             <View className='message-header'>
               <Text className='name'>{item.name}</Text>
               <Text className='time'>{item.time}</Text>
             </View>
-            <Text className='message-text'>{item.message}</Text>
+            <Text className='message-text'>{item.rawData.content}</Text>
           </View>
         </View>
       ))}
