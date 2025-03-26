@@ -53,7 +53,8 @@ const UserSetting = () => {
             aboutMe: '',
             location: '',
             gender: 0,
-            isVip: false
+            isVip: false,
+            backgroundPic: '',
           });
           Taro.reLaunch({
             url: '/pages/login/index'

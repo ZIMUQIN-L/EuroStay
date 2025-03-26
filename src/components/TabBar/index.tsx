@@ -51,7 +51,21 @@ const TabBar: React.FC<TabBarProps> = ({ onWorldSelected, setIsShowPostModal, is
 
   const handleTabClick = (page) => {
     if (page === 'post') {
-      setIsShowPostModal(true);
+      if (GlobalStore.userInfo?.uid === 0) {
+        Taro.showModal({
+          title: '转至登录页面',
+          content: '请登录后进行上传~',
+          success: function (res) {
+            if (res.confirm) {
+              Taro.reLaunch({
+                url: `/pages/login/index`,
+              });
+            }
+          }
+        });
+      } else {
+        setIsShowPostModal(true);
+      }
       return;
     }
 
@@ -88,9 +102,23 @@ const TabBar: React.FC<TabBarProps> = ({ onWorldSelected, setIsShowPostModal, is
           });
       }
       else {
-        Taro.switchTab({
+        if (GlobalStore.userInfo?.uid === 0) {
+          Taro.showModal({
+            title: '转至登录页面',
+            content: '请登录后查看~',
+            success: function (res) {
+              if (res.confirm) {
+                Taro.reLaunch({
+                  url: `/pages/login/index`,
+                });
+              }
+            }
+          });
+        } else {
+          Taro.switchTab({
             url: `/pages/${page}/index`,
           });
+        }
       }
     }
   };

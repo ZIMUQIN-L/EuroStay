@@ -96,7 +96,7 @@ const UserEditing = () => {
             GlobalStore.setGender(userInfo ? userInfo.gender: GlobalStore._userInfo.gender);
             GlobalStore.setLocation(userInfo ? userInfo.location: GlobalStore._userInfo.location);
             GlobalStore.setAboutMe(userInfo ? userInfo.aboutMe: GlobalStore._userInfo.aboutMe);
-
+            GlobalStore.setBackgroundPic(userInfo ? userInfo.backgroundPic: GlobalStore._userInfo.backgroundPic);
             Taro.navigateBack({
                 delta:1
             });

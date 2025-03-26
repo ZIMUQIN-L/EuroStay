@@ -36,6 +36,9 @@ const Index: React.FC = () => {
     const [rejectReason, setRejectReason] = useState('');
     const [showRejectModal, setShowRejectModal] = useState(false)
     const [orderStatus, setOrderStatus] = useState();
+    const [showChatModal, setShowChatModal] = useState(false)
+    const [chatMessage, setChatMessage] = useState('')
+    const [username, setUsername] = useState('')
 
     const hostConfirm = () => {
         Taro.request({
@@ -326,6 +329,7 @@ const Index: React.FC = () => {
                         username: response.data.result.guestInfo.username,
                         tags: response.data.result.guestInfo.tags,
                         buttonText: '和ta聊聊',
+                        buttonFunc: handleChat,
                     });
                     setOrderStatus(response.data.result.status);
                     setInfoHost({
@@ -335,6 +339,7 @@ const Index: React.FC = () => {
                         username: response.data.result.hostInfo.username,
                         tags: response.data.result.hostInfo.tags,
                         buttonText: '和ta聊聊',
+                        buttonFunc: handleChat,
                     });
                     setInfoApplicant({
                         type: 0,
@@ -419,6 +424,7 @@ const Index: React.FC = () => {
                         username: response.data.result.guestInfo.username,
                         tags: response.data.result.guestInfo.tags,
                         buttonText: '和ta聊聊',
+                        buttonFunc: handleChat,
                     });
                     setOrderStatus(response.data.result.status);
                     setInfoHost({
@@ -428,6 +434,7 @@ const Index: React.FC = () => {
                         username: response.data.result.hostInfo.username,
                         tags: response.data.result.hostInfo.tags,
                         buttonText: '和ta聊聊',
+                        buttonFunc: handleChat,
                     });
                     setInfoApplicant({
                         type: 1,
@@ -457,6 +464,48 @@ const Index: React.FC = () => {
     useEffect(() => {
         getOrderDetail();
     }, []);
+
+    const handleChat = () => {
+        setShowChatModal(true)
+    }
+
+    const handleSendChat = () => {
+        // 发送聊天消息
+        Taro.request({
+            url: 'https://api.eurostay.co/app/esmessages/sendLikeMsg',
+            method: 'POST',
+            header: {
+                token: GlobalStore.userInfo.token,
+            },
+            data: {
+                toUid: role === 'host' ? infoGuest.uid : infoHost.uid,
+                content: `订单${title}的${role === 'host' ? 'Host': 'Guest'}${role === 'host' ? infoHost.username : infoGuest.username}向您发送了消息：${chatMessage}`,
+            },
+            success: function (response) {
+                if (response.statusCode === 200 && response.data.code === 0) {
+                    Taro.showToast({
+                        title: '消息已发送',
+                        icon: 'success'
+                    })
+                } else {
+                    Taro.showToast({
+                        title: response.data.msg + ' 发送失败，请重试',
+                        icon: 'none',
+                        duration: 2000,
+                    })
+                }
+            },
+            fail: function (err) {
+                Taro.showToast({
+                    title: '网络请求失败，请重试',
+                    icon: 'none',
+                    duration: 2000,
+                });
+            }
+        })
+        setShowChatModal(false)
+        setChatMessage('')
+    }
 
     return (
         <>
@@ -489,7 +538,7 @@ const Index: React.FC = () => {
             {loadingComplete && role === 'host' && status === 'ongoing' && 
                 <View 
                     className='purple-fill-button' 
-                    // onClick={console.log('cofirm')}
+                    onClick={handleChat}
                 >
                     联系Guest
                 </View>
@@ -497,7 +546,7 @@ const Index: React.FC = () => {
             {loadingComplete && role === 'host' && status === 'awaiting' && orderStatus === 1 && 
                 <View 
                     className='purple-fill-button' 
-                    // onClick={console.log('cofirm')}
+                    onClick={handleChat}
                 >
                     联系Guest
                 </View>
@@ -505,7 +554,7 @@ const Index: React.FC = () => {
             {loadingComplete && role === 'host' && status === 'expired' && 
                 <View 
                     className='purple-fill-button' 
-                    // onClick={console.log('cofirm')}
+                    onClick={handleChat}
                 >
                     和申请人聊聊
                 </View>
@@ -529,7 +578,7 @@ const Index: React.FC = () => {
             {loadingComplete && role === 'guest' && status === 'ongoing' && 
                 <View 
                     className='yellow-fill-button' 
-                    // onClick={console.log('cofirm')}
+                    onClick={handleChat}
                 >
                     联系Host
                 </View>
@@ -537,7 +586,7 @@ const Index: React.FC = () => {
             {loadingComplete && role === 'guest' && status === 'awaiting' && orderStatus === 0 && 
                 <View 
                     className='yellow-fill-button' 
-                    // onClick={console.log('cofirm')}
+                    onClick={handleChat}
                 >
                     联系Host
                 </View>
@@ -545,29 +594,65 @@ const Index: React.FC = () => {
             {loadingComplete && role === 'guest' && status === 'expired' && 
                 <View 
                     className='yellow-fill-button' 
-                    // onClick={console.log('cofirm')}
+                    onClick={handleChat}
                 >
                     和Host聊聊
                 </View>
             }
-            {/* 拒绝弹窗 */}
-            {showRejectModal && (
-                <View className='reject-modal-mask'>
-                <View className='reject-modal'>
-                    <View className='modal-title'>确认拒绝？请简述拒绝理由</View>
-                    <Input
-                    className='message-input'
-                    placeholder='请说明拒绝理由，此理由将发给对方'
-                    value={rejectMessage}
-                    onInput={e => setRejectMessage(e.detail.value)}
-                    />
+            {/* 聊天弹窗 */}
+            {showChatModal && (
+                <View 
+                    className='like-modal-mask'
+                    onClick={() => setShowChatModal(false)}
+                >
                     <View 
-                    className={role === 'host' ? 'purple-confirm-button' : 'yellow-confirm-button'}
-                    onClick={handelReject}
+                        className='like-modal'
+                        onClick={(e) => {
+                            e.stopPropagation(); // 阻止事件冒泡，防止点击modal内部时关闭
+                        }}
                     >
-                    发送
+                        <View className='modal-title'>您将给{role === 'host' ? infoGuest.username : infoHost.username}发送消息</View>
+                        <Input
+                            className='message-input'
+                            placeholder='说点什么吧...'
+                            value={chatMessage}
+                            onInput={e => setChatMessage(e.detail.value)}
+                        />
+                        <View 
+                            className={role === 'host' ? 'purple-confirm-button' : 'yellow-confirm-button'}
+                            onClick={handleSendChat}
+                        >
+                            发送
+                        </View>
                     </View>
                 </View>
+            )}
+            {/* 拒绝弹窗 */}
+            {showRejectModal && (
+                <View 
+                    className='reject-modal-mask'
+                    onClick={() => setShowRejectModal(false)}
+                >
+                    <View 
+                        className='reject-modal'
+                        onClick={(e) => {
+                            e.stopPropagation(); // 阻止事件冒泡，防止点击modal内部时关闭
+                        }}
+                    >
+                        <View className='modal-title'>确认拒绝？请简述拒绝理由</View>
+                        <Input
+                            className='message-input'
+                            placeholder='请说明拒绝理由，此理由将发给对方'
+                            value={rejectMessage}
+                            onInput={e => setRejectMessage(e.detail.value)}
+                        />
+                        <View 
+                            className={role === 'host' ? 'purple-confirm-button' : 'yellow-confirm-button'}
+                            onClick={handelReject}
+                        >
+                            发送
+                        </View>
+                    </View>
                 </View>
             )}
         </>
