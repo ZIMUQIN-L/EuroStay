@@ -495,10 +495,13 @@ const MessageDetail = () => {
         return (
           <RequestMessageBox
             // 这里把 data 内的字段作为 props 传给 RequestMessageBox
+            isProperty={msg.data.isProperty}
+            content={msg.data.content}
             avatar={avatar}
             name={msg.data.name}
             time={msg.data.time}
             direction={msg.direction}
+            subjectId={msg.data.subjectId}
           />
         )
       case 'simple':

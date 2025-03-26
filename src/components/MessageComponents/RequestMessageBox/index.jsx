@@ -4,7 +4,7 @@ import './index.scss'
 import GlobalStore from '@store/GlobalStore'; 
 
 const RequestMessageBox = (props) => {
-  const { avatar, time, direction = 'left', name, toUid, subjectId } = props
+  const { isProperty, content, avatar, time, direction = 'left', name, toUid, subjectId } = props
   
   // 根据 direction 动态设置文案和按钮文字
   let message = '';
@@ -38,7 +38,21 @@ const RequestMessageBox = (props) => {
   }
   
   const handleClick = () => {
-    Taro.showToast({ title: `处理申请，toUid=${toUid}, subjectId=${subjectId}`, icon: 'none' })
+    Taro.request({
+      url: isProperty ? `https://api.eurostay.co/app/property/showReservationInfo` : 'https://api.eurostay.co/app/activity/showReservationInfo',
+      method: 'POST',
+      header: {
+          token: GlobalStore.userInfo.token,
+      },
+      data: {
+          id: Number(subjectId),
+      },
+      success: (res) => {
+        console.log(subjectId);
+        console.log(res);
+        Taro.navigateTo({ url: `/packageOrder/order-detail/index?role=${direction === 'right'?'guest':'host'}&status=awaiting&type=${isProperty?0:1}&id=${subjectId}&experienceId=${res.data.result.experienceId}&title=${res.data.result.title}` });
+      }
+    })
   }
   
   return (

@@ -24,6 +24,7 @@ class GlobalStore {
         gender: 0,
         uid: 0,
         isVip: false,
+        backgroundPic: '',
       };
     }
   }
@@ -38,6 +39,7 @@ class GlobalStore {
       gender: this._userInfo.gender,
       uid: this._userInfo.uid,
       isVip: this._userInfo.isVip,
+      backgroundPic: this._userInfo.backgroundPic,
     };
     return globalUserInfo;
   }
@@ -74,6 +76,7 @@ class GlobalStore {
         gender: 0,
         uid: newUid,
         isVip: false,
+        backgroundPic: '',
       };
     } else {
       this._userInfo.uid = newUid;
@@ -103,6 +106,11 @@ class GlobalStore {
 
   setIsVip(newIsVip: boolean) {
     this._userInfo.isVip = newIsVip;
+    Taro.setStorageSync('userInfo', this._userInfo);
+  }
+
+  setBackgroundPic(newBackgroundPic: string) {
+    this._userInfo.backgroundPic = newBackgroundPic;
     Taro.setStorageSync('userInfo', this._userInfo);
   }
 

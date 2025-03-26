@@ -338,6 +338,19 @@ const HouseDetail: React.FC = () => {
 
   const handleSubmit = () => {
     // check if startDate and endDate are selected
+    if (GlobalStore.userInfo?.aboutMe === '' || GlobalStore.userInfo?.backgroundPic === '') {
+      Taro.showModal({
+        title: '请先完善个人资料',
+        content: '请先完善个人介绍，背景图和邮箱后，再进行申请~',
+        success: function (res) {
+          if (res.confirm) {
+            Taro.navigateTo({
+              url: '/pages/user-setting/index',
+            });
+          }
+        }
+      });
+    }
     if (Number(type) === 0) {
       if (startDate === null || endDate === null) {
         Taro.showToast({
