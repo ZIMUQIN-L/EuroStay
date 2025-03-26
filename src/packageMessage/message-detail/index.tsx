@@ -46,6 +46,7 @@ const MessageDetail = () => {
 
   useEffect(() => {
     const handleIncomingMessage = (msg) => {
+      console.log("handleIncomingMessage", msg);
       // 判断消息是否属于当前对话
       if (msg.data?.sessionId == id) {
         const currentUid = GlobalStore.userInfo.uid;
