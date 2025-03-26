@@ -141,8 +141,8 @@ const Index = () => {
             : record.initAvatar;
 
           const otherName = isCurrentInit
-              ? record.initName
-              : record.replyName;
+              ? record.replyName
+              : record.initName;
 
           const messageObj = {
             id: record.esSession.id,
