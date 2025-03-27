@@ -31,6 +31,8 @@ const MessageDetail = () => {
   const [shouldScrollBottom, setShouldScrollBottom] = useState(false);
   const sessionDict = Taro.getStorageSync('allSessionDict') || {}
 
+  const [debugMsg, setDebugMsg] = useState(null);
+
 
   useEffect(() => {
     fetchMessageList();
@@ -47,6 +49,7 @@ const MessageDetail = () => {
   useEffect(() => {
     const handleIncomingMessage = (msg) => {
       console.log("handleIncomingMessage", msg);
+      setDebugMsg(msg);
       // 判断消息是否属于当前对话
       if (msg.data?.sessionId == id) {
         const currentUid = GlobalStore.userInfo.uid;
@@ -620,6 +623,13 @@ const MessageDetail = () => {
           </View>
         </View>
       )}
+
+{debugMsg && (
+  <View className="debug-box" style={{ padding: '20px', backgroundColor: '#fce4ec', fontSize: '14px' }}>
+    <View>📦 Debug Msg:</View>
+    <View>{JSON.stringify(debugMsg, null, 2)}</View>
+  </View>
+)}
     </View>
   )
 }
