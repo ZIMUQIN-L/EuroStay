@@ -420,9 +420,9 @@ const HouseDetail: React.FC = () => {
       }}/>
 
       <View className='action-buttons'>
-        <View className='action-button' onClick={handleShare}>
+        {/* <View className='action-button' onClick={handleShare}>
           <Image src={sharePurpleIcon} className='icon' />
-        </View>
+        </View> */}
         <View className='action-button' onClick={handleLike}>
           <Image src={heartPurpleIcon} className='icon' />
         </View>
