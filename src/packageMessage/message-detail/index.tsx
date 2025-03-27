@@ -612,6 +612,8 @@ const MessageDetail = () => {
             value={inputValue}
             onInput={handleInput}
             placeholder='请输入...'
+            confirmType='send'
+            onConfirm={handleSend}
           />
           <View className='send-btn' onClick={handleSend}>
             ↑

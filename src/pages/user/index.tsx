@@ -1,6 +1,6 @@
 import { View, Image, Text, Textarea } from '@tarojs/components';
 import { useEffect, useState } from 'react';
-import Taro, { useRouter } from '@tarojs/taro';
+import Taro, { useRouter, useDidShow } from '@tarojs/taro';
 import GlobalStore from '../../store/GlobalStore';
 import HouseCard from '../../components/HouseCard';
 import ReviewCard from '../../components/ReviewCard';
@@ -46,6 +46,10 @@ const UserProfile = () => {
   useEffect(() => {
     fetchUserInfo();
   }, [pageUid]);
+
+  useDidShow(() => {
+    fetchUserInfo();
+  });
 
   useEffect(() => {
     if (activeTab === 'posts' && userInfo?.uid) {
@@ -178,6 +182,19 @@ const UserProfile = () => {
   };
 
   const handleSendHello = () => {
+    if (!GlobalStore.userInfo.isVip) {
+        Taro.showModal({
+            title: '请先充值会员',
+            content: '请先充值会员后，再打招呼~',
+            success: function (res) {
+              if (res.confirm) {
+                Taro.navigateTo({
+                  url: '/pages/user-setting/index',
+                });
+              }
+            }
+          });
+    }
     Taro.request({
       url: 'https://api.eurostay.co/app/esmessages/sendLikeMsg',
       method: 'POST',
@@ -222,6 +239,19 @@ const UserProfile = () => {
 
   const handleSendLike = () => {
     if (!currentItem) return;
+    if (!GlobalStore.userInfo.isVip) {
+        Taro.showModal({
+            title: '请先充值会员',
+            content: '请先充值会员后，再打招呼~',
+            success: function (res) {
+              if (res.confirm) {
+                Taro.navigateTo({
+                  url: '/pages/user-setting/index',
+                });
+              }
+            }
+          });
+    }
 
     Taro.request({
       url: 'https://api.eurostay.co/app/esmessages/sendLikeMsg',

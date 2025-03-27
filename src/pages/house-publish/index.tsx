@@ -206,7 +206,7 @@ const HousePublish = () => {
           houseDesc: detail.description,
           houseTag: detail.tags,
           country: { id: 0, cname: addressComponents.country, name: '' },
-          city: { id: 0, cname: addressComponents.city, name: '' },
+          city: { id: detail.searchableLocation, cname: addressComponents.city, name: '' },
           price: String(detail.price),
           tenantGender: detail.gender,
           tenantCount: detail.capacity,
@@ -377,7 +377,7 @@ const HousePublish = () => {
       errors.push('请填写房源描述');
     }
 
-    if (formData.country.id === 0 || formData.city.id === 0) {
+    if (formData.city.id === 0) {
       errors.push('请选择房源所在地区');
     }
 

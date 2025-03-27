@@ -72,7 +72,7 @@ const UserSetting = () => {
     {
       icon: mineUser,
       text: '我的主页',
-      path: '/pages/user/index'
+      path: `/pages/user/index?uid=${GlobalStore.userInfo.uid}`
     },
     {
         icon: starIcon,

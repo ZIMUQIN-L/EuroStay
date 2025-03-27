@@ -1,5 +1,5 @@
 export default {
-    navigationBarTitleText: '房源申请',
+    navigationBarTitleText: '申请体验',
     navigationBarBackgroundColor: '#f5f5f5',
     navigationBarTextStyle: 'black',
     enableShareAppMessage: true,

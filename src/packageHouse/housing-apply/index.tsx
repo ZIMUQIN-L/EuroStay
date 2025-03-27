@@ -62,22 +62,34 @@ const Index = () => {
   }
 
   const handleSubmit = () => {
-    if (!identity || !introduction || !contact || !reason || !gender || !guestCount) {
-      Taro.showToast({
-        title: '请填写完整信息',
+    if (Number(type) === 0) {   
+      if (!identity || !introduction || !contact || !reason || !gender || !guestCount) {
+        Taro.showToast({
+          title: '请填写完整信息',
         icon: 'none',
         duration: 2000,
       })
       return
+      }
+      // check if guestCount is a number, and it is a integer that is greater than 0
+      if (!/^\d+$/.test(guestCount) || Number(guestCount) <= 0) {
+        Taro.showToast({
+          title: '请填写正确的人数',
+          icon: 'none',
+          duration: 2000,
+        })
+        return
+        }
     }
-    // check if guestCount is a number, and it is a integer that is greater than 0
-    if (!/^\d+$/.test(guestCount) || Number(guestCount) <= 0) {
-      Taro.showToast({
-        title: '请填写正确的人数',
-        icon: 'none',
-        duration: 2000,
-      })
-      return
+    else {
+      if (!identity || !introduction || !contact || !reason || !gender) {
+        Taro.showToast({
+          title: '请填写完整信息',
+          icon: 'none',
+          duration: 2000,
+        })
+        return
+      }
     }
     if (Number(type) === 0) {
       Taro.request({

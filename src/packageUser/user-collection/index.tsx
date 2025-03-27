@@ -1,5 +1,6 @@
 import { View } from '@tarojs/components'
 import { useState, useEffect } from 'react'
+import { useDidShow } from '@tarojs/taro';
 import Taro from '@tarojs/taro'
 import HouseCard from '@components/HouseCard'
 import GlobalStore from '@store/GlobalStore'
@@ -30,6 +31,10 @@ const UserCollection: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1)
   const [hasMorePage, setHasMorePage] = useState(true);
   const [loading, setLoading] = useState(false)
+
+  useDidShow(() => {
+    fetchCollections(1);
+  });
 
   const fetchCollections = (page: number) => {
     setLoading(true)
