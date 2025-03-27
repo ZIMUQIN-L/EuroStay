@@ -146,8 +146,8 @@ const Index = () => {
             selfAvatar: selfAvatar || 'https://eurostay-1330475057.cos.eu-frankfurt.myqcloud.com/sys/loading.png',
             otherAvatar: otherAvatar || 'https://eurostay-1330475057.cos.eu-frankfurt.myqcloud.com/sys/loading.png',
             name: otherName || `User ${otherPersonUid}`,
-            message: record.topMessage || '无消息内容',
-            time: formatTime(record.updateTime),
+            message: record.esSession.topMessage || '无消息内容',
+            time: formatTime(record.esSession.updateTime),
             otherUid: otherPersonUid,
             rawData: {
               fromUid: record.esSession.initUid,
