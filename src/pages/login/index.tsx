@@ -1,4 +1,4 @@
-import { View, Text, Image } from '@tarojs/components';
+import { View, Text, Image, Button } from '@tarojs/components';
 import { useState, useEffect } from 'react';
 import Taro from '@tarojs/taro';
 import './index.scss';
@@ -14,7 +14,7 @@ const Loading = () => {
           <Image src={LoginLoadingIcon} className='loading-logo' />
         </View>
       </View>
-      <Text className='loading-text'>EuroStay</Text>
+      <Text className='loading-text'>正在加载你的冒险~</Text>
     </View>
   );
 };
@@ -133,6 +133,96 @@ const Login = () => {
     setHasUserAgreed(!hasUserAgreed);
   };
 
+  const handleGetPhoneNumber = async (e) => {
+    if (!hasUserAgreed) {
+        Taro.showToast({
+          title: '请先阅读并同意用户服务协议和隐私政策',
+          icon: 'none',
+          duration: 2000,
+        });
+        return;
+      }
+
+    const { errMsg, encryptedData, iv } = e.detail;
+    setIsChecking(true);
+    
+    if (errMsg === 'getPhoneNumber:ok') {
+      try {
+        // 获取登录凭证
+        const loginRes = await Taro.login();
+        if (loginRes.code) {
+          // 调用绑定手机号接口
+          const res = await Taro.request({
+            url: 'https://api.eurostay.co/app/esuser/bindWxPhone',
+            method: 'POST',
+            header: {
+              'Content-Type': 'application/json',
+              'token': GlobalStore._userInfo.token
+            },
+            data: {
+              encryptedData: encryptedData,
+              iv: iv,
+              sessionKey: loginRes.code, // 使用登录凭证作为sessionKey
+              code: loginRes.code
+            }
+          });
+          console.log(res);
+
+          if (res.statusCode === 200 && res.data.code === 0) {
+            GlobalStore.setAllInfo(res.data.userInfo);
+            GlobalStore.setToken(res.data.token);
+            GlobalStore.currentTab = 'world';
+            setIsChecking(false);
+            Taro.reLaunch({
+              url: '/pages/home-world/index',
+              success: function () {
+                Taro.showToast({
+                  title: '登录成功',
+                  icon: 'success',
+                  duration: 2000,
+                });
+              },
+            });
+          }
+          else {
+            setIsChecking(false);
+            Taro.showToast({
+                title: res.data.msg || '登录失败',
+                icon: 'none',
+                duration: 2000,
+              });
+          }
+        }
+      } catch (error) {
+        setIsChecking(false);
+        console.error('绑定手机号失败', error);
+        Taro.showToast({
+          title: '登录失败',
+          icon: 'none',
+          duration: 2000,
+        });
+      }
+    } else {
+        setIsChecking(false);
+        Taro.showToast({
+            title: '登录失败',
+            icon: 'none',
+            duration: 2000,
+          });
+    }
+  };
+
+  const handleAgreement = () => {
+    if (!hasUserAgreed) {
+        Taro.showToast({
+          title: '请先阅读并同意用户服务协议和隐私政策',
+          icon: 'none',
+          duration: 2000,
+        });
+        return;
+      }
+  }
+
   const handleWechatLogin = () => {
     if (!hasUserAgreed) {
       Taro.showToast({
@@ -217,9 +307,20 @@ const Login = () => {
       </View>
 
       <View className='login-section'>
-        <View className='wechat-login-btn' onClick={handleWechatLogin}>
+        {/* <View className='wechat-login-btn' onClick={handleWechatLogin}>
           <Text>微信登录</Text>
-        </View>
+        </View> */}
+        {!hasUserAgreed?(<View className='wechat-login-btn' onClick={handleAgreement}>
+          <Text>微信登录</Text>
+        </View>):
+        (<Button 
+            className='wechat-login-btn'
+            openType='getPhoneNumber'
+            disabled={!hasUserAgreed}
+            onGetPhoneNumber={handleGetPhoneNumber}
+          >
+            微信登录
+          </Button>)}
 
         <View className='agreement-section'>
           <View

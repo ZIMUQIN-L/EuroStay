@@ -13,7 +13,7 @@ const EditAbout = () => {
   const handleConfirm = () => {
     if (!about.trim()) {
       Taro.showToast({
-        title: '自我介绍不能为空',
+        title: '自我介绍一下嘛~',
         icon: 'none'
       });
       return;
@@ -43,13 +43,13 @@ const EditAbout = () => {
     <View className='edit-about'>
       <View className='content-container'>
         <View className='input-section'>
-          <Text className='hint'>请简单介绍一下自己～</Text>
+          <Text className='hint'>你是谁？你有什么故事？</Text>
           <View className='textarea-container'>
             <Textarea
               className='textarea'
               value={about}
               onInput={e => setAbout(e.detail.value)}
-              placeholder='请输入自我介绍'
+              placeholder='介绍一下你自己，可以是兴趣、经历、或者任何你想分享的~'
               maxlength={maxLength}
               autoHeight
             />

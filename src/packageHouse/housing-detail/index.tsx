@@ -18,8 +18,6 @@ const HouseDetail: React.FC = () => {
   const [isStarred, setIsStarred] = useState(false); 
   const [showLikeModal, setShowLikeModal] = useState(false)
   const [likeMessage, setLikeMessage] = useState('')
-  const [username, setUsername] = useState('')
-  const [isGotUser, setIsGotUser] = useState(false)
   const [hasReview, sethasReview] = useState(false)
   const [isComplete, setIsComplete] = useState(false)
   const [isCollapsed, setIsCollapsed] = useState(true)
@@ -258,29 +256,20 @@ const HouseDetail: React.FC = () => {
   }
 
   const handleSendLike = () => {
-    if (!isGotUser) {
-      // 获取用户自身信息
-      Taro.request({
-        url: 'https://api.eurostay.co/app/esuser/getUserCompleteInfo',
-        method: 'POST',
-        header: {
-          token: GlobalStore.userInfo.token,
-        },
-        success: function (response) {
-          if (response.statusCode === 200 && response.data.code === 0) {
-            setUsername(response.data.result.username);
-            setIsGotUser(true)
-          } else {
-            Taro.showToast({
-              title: '获取用户信息失败，请重试',
-              icon: 'none',
-              duration: 2000,
-            });
-          }
-        }
-      })
-    }
     // 这里添加发送点赞消息的逻辑
+    if (!GlobalStore.userInfo.isVip) {
+        Taro.showModal({
+            title: '请先充值会员',
+            content: '请先充值会员后，再打招呼~',
+            success: function (res) {
+              if (res.confirm) {
+                Taro.navigateTo({
+                  url: '/packageUser/user-vip/index',
+                });
+              }
+            }
+          });
+    }
     Taro.request({
       url: 'https://api.eurostay.co/app/esmessages/sendLikeMsg',
       method: 'POST',
@@ -289,7 +278,7 @@ const HouseDetail: React.FC = () => {
       },
       data: {
         toUid: hostDetail.uid,
-        content: `${username}点赞了您的${Number(type) === 0 ? '房源' : '活动'}${order.title}，并发送了消息：${likeMessage}`,
+        content: `${GlobalStore.userInfo.username}点赞了您的${Number(type) === 0 ? '房源' : '活动'}${order.title}，并发送了消息：${likeMessage}`,
       },
       success: function (response) {
         if (response.statusCode === 200 && response.data.code === 0) {
@@ -338,6 +327,34 @@ const HouseDetail: React.FC = () => {
 
   const handleSubmit = () => {
     // check if startDate and endDate are selected
+    if (GlobalStore.userInfo?.aboutMe === '' || GlobalStore.userInfo?.backgroundPic === '') {
+      Taro.showModal({
+        title: '请先完善个人资料',
+        content: '请先完善个人介绍，背景图和邮箱后，再进行申请~',
+        success: function (res) {
+          if (res.confirm) {
+            Taro.navigateTo({
+              url: '/packageUser/user-editing/index',
+            });
+          }
+        }
+      });
+      return;
+    }
+    if (!GlobalStore.userInfo.isVip) {
+        Taro.showModal({
+            title: '请先充值会员',
+            content: '请先充值会员后，再进行申请~',
+            success: function (res) {
+              if (res.confirm) {
+                Taro.navigateTo({
+                  url: '/packageUser/user-editing/index',
+                });
+              }
+            }
+          });
+          return;
+    }
     if (Number(type) === 0) {
       if (startDate === null || endDate === null) {
         Taro.showToast({
@@ -405,9 +422,9 @@ const HouseDetail: React.FC = () => {
       }}/>
 
       <View className='action-buttons'>
-        <View className='action-button' onClick={handleShare}>
+        {/* <View className='action-button' onClick={handleShare}>
           <Image src={sharePurpleIcon} className='icon' />
-        </View>
+        </View> */}
         <View className='action-button' onClick={handleLike}>
           <Image src={heartPurpleIcon} className='icon' />
         </View>

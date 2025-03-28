@@ -53,7 +53,8 @@ const UserSetting = () => {
             aboutMe: '',
             location: '',
             gender: 0,
-            isVip: false
+            isVip: false,
+            backgroundPic: '',
           });
           Taro.reLaunch({
             url: '/pages/login/index'
@@ -71,7 +72,7 @@ const UserSetting = () => {
     {
       icon: mineUser,
       text: '我的主页',
-      path: '/pages/user/index'
+      path: `/pages/user/index?uid=${GlobalStore.userInfo.uid}`
     },
     {
         icon: starIcon,
@@ -104,7 +105,7 @@ const UserSetting = () => {
             />
             <View className='info-text'>
               <Text className='username'>{GlobalStore.userInfo.username || '未设置昵称'}</Text>
-              <Text className='user-id'>账号：{formatUid(GlobalStore.userInfo.uid || 0)}</Text>
+              <Text className='user-id'>ES code：{formatUid(GlobalStore.userInfo.uid || 0)}</Text>
             </View>
             <View className='edit-btn' onClick={() => Taro.navigateTo({ url: '/packageUser/user-editing/index' })}>
               <Image className='edit-icon' src={editIcon} mode='aspectFit' />

@@ -24,6 +24,7 @@ class GlobalStore {
         gender: 0,
         uid: 0,
         isVip: false,
+        backgroundPic: '',
       };
     }
   }
@@ -38,6 +39,7 @@ class GlobalStore {
       gender: this._userInfo.gender,
       uid: this._userInfo.uid,
       isVip: this._userInfo.isVip,
+      backgroundPic: this._userInfo.backgroundPic,
     };
     return globalUserInfo;
   }
@@ -64,7 +66,21 @@ class GlobalStore {
   }
 
   setUid(newUid: number) {
-    this._userInfo.uid = newUid;
+    if (!this._userInfo) {
+      this._userInfo = {
+        avatar: '',
+        username: '',
+        aboutMe: '',
+        location: '',
+        token: '',
+        gender: 0,
+        uid: newUid,
+        isVip: false,
+        backgroundPic: '',
+      };
+    } else {
+      this._userInfo.uid = newUid;
+    }
     Taro.setStorageSync('userInfo', this._userInfo);
   }
 
@@ -90,6 +106,11 @@ class GlobalStore {
 
   setIsVip(newIsVip: boolean) {
     this._userInfo.isVip = newIsVip;
+    Taro.setStorageSync('userInfo', this._userInfo);
+  }
+
+  setBackgroundPic(newBackgroundPic: string) {
+    this._userInfo.backgroundPic = newBackgroundPic;
     Taro.setStorageSync('userInfo', this._userInfo);
   }
 
@@ -132,7 +153,18 @@ class GlobalStore {
         });
     
         this._socket.onMessage((res) => {
-          console.log('收到 WebSocket 消息:', res.data);
+          console.log('收到 WebSocket 新消息:', res.data);
+          this.incrementWsMessageCounter();
+          try {
+            const msg = JSON.parse(res.data);
+            // console.log(`共有 ${this._messageListeners.length} 个监听者将被通知：`);
+            this._messageListeners.forEach((fn, index) => {
+              // console.log(`通知第 ${index + 1} 个监听者`, fn.name || '(匿名函数)');
+              fn(msg);
+            });
+          } catch (e) {
+            console.error('解析消息失败:', e);
+          }
         });
     
         this._socket.onClose(() => {
@@ -174,6 +206,30 @@ class GlobalStore {
         // await this.reconnectAndSend(data);
       }
     }
+
+
+    _wsMessageCounter = 0;
+
+    get wsMessageCounter() {
+      return this._wsMessageCounter;
+    }
+
+    incrementWsMessageCounter() {
+      this._wsMessageCounter++;
+    }
+
+    _messageListeners = [];
+
+    addMessageListener(callback) {
+      // console.log('添加 WebSocket 消息监听器:', callback.name || '(匿名函数)');
+      this._messageListeners.push(callback);
+    }
+    
+    removeMessageListener(callback) {
+      // console.log('移除监听器:', callback.name || '(匿名函数)');
+      this._messageListeners = this._messageListeners.filter(fn => fn !== callback);
+    }
+
     
     
 }

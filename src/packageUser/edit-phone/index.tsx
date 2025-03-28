@@ -53,6 +53,25 @@ const EditPhone = () => {
               icon: 'success'
             });
             setTimeout(() => {
+            const pages = Taro.getCurrentPages();
+            const prevPage = pages[pages.length - 1];
+            const eventChannel = prevPage.getOpenerEventChannel();
+            const response = Taro.request({
+                url: 'https://api.eurostay.co/app/esuser/getUserCompleteInfo',
+                method: 'POST',
+                header: {
+                  'token': GlobalStore.userInfo.token,
+                  'Content-Type': 'application/json'
+                },
+                success: (res) => {
+                  if (res.statusCode === 200 && res.data.code === 0) {
+                    eventChannel.emit('updateData', {
+                      mobile: res.data.result.mobile
+                  });
+                  }
+                }
+              });
+        
               Taro.navigateBack();
             }, 1500);
           } else {

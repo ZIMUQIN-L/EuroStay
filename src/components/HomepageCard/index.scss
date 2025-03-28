@@ -20,6 +20,7 @@
     justify-content: flex-start;
     &.activity {
       margin-top: 10px;
+      padding-top: 12px;
       justify-content: space-between;
       align-items: flex-start;
       .bottom-left {
@@ -56,26 +57,35 @@
       .user-name {
         font-size: 24px;
         color: white;
+        font-weight: 440;
+        font-family: 'Alibaba PuHuiTi';
       }
       .user-tags {
-        margin-top: 8px;
+        margin-top: 4px;
         display: flex;
+        flex-wrap: wrap;
+        font-family: 'Alibaba PuHuiTi';
+        gap: 5px;
         color: #7a63c7;
         flex-wrap: wrap;
         overflow: wrap;
         // overflow: scroll;
         // text-overflow: ellipsis;
         // padding-right: 10px;
+        max-width: 280px;
 
         .tag-item {
           background-color: white;
-          margin-right: 5px;
           border-radius: 20px;
           padding: 5px 8px;
           margin-bottom: 10px;
           // border: 1px solid black;
+          font-size: 18px;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          max-width: 120px;
         }
-        font-size: 18px;
       }
     }
   }

@@ -1,6 +1,6 @@
 import { View, Text, Image, Button } from '@tarojs/components';
 import { observer } from 'mobx-react';
-import Taro, { usePullDownRefresh, useReachBottom } from '@tarojs/taro';
+import Taro, { useReachBottom, useDidShow } from '@tarojs/taro';
 import { useEffect, useMemo, useState } from 'react';
 import './index.scss';
 import CustemCard from './custom-card/index';
@@ -149,7 +149,13 @@ const Index = () => {
   useEffect(() => {
     getOrderList(setOrderListHost, 0);
     getOrderList(setOrderListGuest, 1);
+    Taro.stopPullDownRefresh()
   }, []);
+
+  useDidShow(() => {
+    getOrderList(setOrderListHost, 0);
+    getOrderList(setOrderListGuest, 1);
+  });
 
 
   const renderContent = () => {

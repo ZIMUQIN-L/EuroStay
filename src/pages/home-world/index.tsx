@@ -4,7 +4,11 @@ import { observer } from 'mobx-react';
 import './index.scss';
 import HomepageSearch from '@components/HomepageSearch';
 import { useEffect, useMemo, useState } from 'react';
-import Taro, { useReachBottom, usePullDownRefresh } from '@tarojs/taro';
+import Taro, {
+  useReachBottom,
+  useDidShow,
+  usePullDownRefresh,
+} from '@tarojs/taro';
 import GlobalStore from '@store/GlobalStore';
 import { getCurrentInstance } from '@tarojs/taro';
 import DateSelect from '@components/DateSelect';
@@ -94,6 +98,24 @@ const HomeWorld = () => {
     setStartDate('');
     setEndDate('');
     setCapacity(1);
+  });
+
+  useDidShow(() => {
+    setActiveTab('友友');
+    getList('app/esuser/getUserList', setUserList);
+    getList('app/activity/getActivityList', setActivityList, {
+      searchableLocation: 0,
+      startDate: '',
+      endDate: '',
+      order: 'DES',
+    });
+    getList('app/property/getPropertyList', setPropertyList, {
+      searchableLocation: 0,
+      startDate: '',
+      endDate: '',
+      order: 'DES_PRICE',
+      capacity: 1,
+    });
   });
 
   useEffect(() => {

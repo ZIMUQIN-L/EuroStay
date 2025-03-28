@@ -174,7 +174,7 @@ const ActivityPublish = () => {
           activityDesc: detail.description,
           activityTag: tags,
           country: { id: 0, cname: country, name: '' },
-          city: { id: 0, cname: city, name: '' },
+          city: { id: detail.searchableLocation, cname: city, name: '' },
           price: String(detail.price),
           participantCount: String(detail.capacity),
           activityImages: images,
@@ -313,7 +313,7 @@ const ActivityPublish = () => {
       errors.push('请填写活动描述');
     }
 
-    if (formData.country.id === 0 || formData.city.id === 0) {
+    if (formData.city.id === 0) {
       errors.push('请选择活动所在地区');
     }
 
@@ -435,7 +435,7 @@ const ActivityPublish = () => {
       <View className='section'>
         <View className='section-title'>
           <View className='section-title-icon' />
-          <Text>活动基本信息</Text>
+          <Text>基本信息</Text>
         </View>
 
         <View className='input-item'>

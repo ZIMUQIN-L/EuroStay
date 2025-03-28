@@ -16,6 +16,7 @@ import {
   activityIcon,
   activitySelectedIcon,
 } from '@utils/cloudIcons';
+import GlobalStore from '@store/GlobalStore';
 const HomepageCard = (props: {
   user: homeUserProps;
   activity: homeActivityProps;
@@ -60,9 +61,23 @@ const HomepageCard = (props: {
             className='user-pic' 
             onClick={() => {
                 console.log(props.user);
-              Taro.navigateTo({
-                url: `/pages/user/index?uid=${props.user.uid}`
-              })
+                if (GlobalStore.userInfo?.uid === 0) {
+                  Taro.showModal({
+                    title: '转至登录页面',
+                    content: '请登录后查看~',
+                    success: function (res) {
+                      if (res.confirm) {
+                        Taro.reLaunch({
+                          url: `/pages/login/index`,
+                        });
+                      }
+                    } 
+                  });
+                } else {
+                  Taro.navigateTo({
+                    url: `/pages/user/index?uid=${props.user.uid}`
+                  })
+                }
             }}
           ></Image>
           {props.user.location && (
@@ -95,8 +110,9 @@ const HomepageCard = (props: {
             <View className='user-details'>
               <View className='user-name'>{props.user.username}</View>
               <View className='user-tags'>
-                {props.user.tags.map(item => {
-                  return <View className='tag-item'>{item}</View>;
+                {props.user.tags.map((item, index) => {
+                  const truncatedTag = item.length > 5 ? item.slice(0, 5) + '...' : item;
+                  return <View key={index} className='tag-item'>{truncatedTag}</View>;
                 })}
               </View>
             </View>
@@ -109,7 +125,21 @@ const HomepageCard = (props: {
         <>
           <Image src={props.activity.images?.[0]} className='user-pic' onClick={
               () => {
-                Taro.navigateTo({ url: `/packageHouse/housing-detail/index?id=${props.activity.id}&type=1` });
+                if (GlobalStore.userInfo?.uid === 0) {
+                  Taro.showModal({
+                    title: '转至登录页面',
+                    content: '请登录后查看~',
+                    success: function (res) {
+                      if (res.confirm) {
+                        Taro.reLaunch({
+                          url: `/pages/login/index`,
+                        });
+                      }
+                    }
+                  });
+                } else {
+                  Taro.navigateTo({ url: `/packageHouse/housing-detail/index?id=${props.activity.id}&type=1` });
+                }
               }
           }></Image>
           {props.activity.location && (
@@ -152,7 +182,21 @@ const HomepageCard = (props: {
         <>
           <Image src={props.property.images?.[0]} className='user-pic' onClick={
               () => {
-                Taro.navigateTo({ url: `/packageHouse/housing-detail/index?id=${props.property.id}&type=0` });
+                if (GlobalStore.userInfo?.uid === 0) {
+                  Taro.showModal({
+                    title: '转至登录页面',
+                    content: '请登录后查看~',
+                    success: function (res) {
+                      if (res.confirm) {
+                        Taro.reLaunch({ 
+                          url: `/pages/login/index`,
+                        });
+                      }
+                    }
+                  });
+                } else {
+                  Taro.navigateTo({ url: `/packageHouse/housing-detail/index?id=${props.property.id}&type=0` });
+                }
               }
           }></Image>
           {props.property.location && (

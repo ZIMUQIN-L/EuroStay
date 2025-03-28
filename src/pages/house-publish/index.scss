@@ -223,9 +223,11 @@
       }
 
       .label {
-        font-size: 28px;
-        color: #7a63c7;
+        font-size: 29px;
+        color: #7a63c7CC;
+        font-family: 'Alibaba PuHuiTi';
         display: block;
+        font-weight: 500;
         &.with-margin {
           margin-bottom: 16px;
         }
@@ -234,6 +236,15 @@
           justify-content: space-between;
           align-items: center;
         }
+      }
+
+      .description {
+        width: 100%;
+        height: 60px;
+        background: #fff;
+        border: none;
+        font-size: 26px;
+        color: #cecece;
       }
 
       .input {
@@ -254,7 +265,7 @@
 
       .textarea {
         width: 100%;
-        min-height: 60px;
+        min-height: 80px;
         background: #fff;
         border: none;
         border-bottom: 1px solid #eee;
@@ -382,6 +393,7 @@
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 16px;
+    padding-top: 12px;
 
     .image-item {
       aspect-ratio: 1;

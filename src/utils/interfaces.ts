@@ -9,6 +9,7 @@ export interface ESUserLoginInfoProps {
     gender: number;
     location: string;
     token: string;
+    backgroundPic: string;
 }
 
 export interface UserShortInfo {

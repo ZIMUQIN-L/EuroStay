@@ -2,9 +2,10 @@ import { View, Text, Button, Image } from '@tarojs/components'
 import Taro from '@tarojs/taro'
 import './index.scss'
 import extraImg from '@assets/images/test-paycode.jpg'
+import GlobalStore from '@store/GlobalStore'; 
 
 const OfferMessageBox = (props) => {
-  const { avatar, time, direction = 'left', hostname, applicantname, price, onPaid, onReject, onCheckSub } = props
+  const { avatar, time, direction = 'left', hostname, applicantname, price, active = true, isProperty, subjectId } = props
   
   // 根据 direction 动态设置文案和按钮文字
   let content = ''
@@ -19,40 +20,67 @@ const OfferMessageBox = (props) => {
   } else {
     // 左侧消息（通常表示"对方"或"房主"）
     content = `${hostname}已通过你的换宿申请，请点击下方按钮确认你将入住此房屋，并扫下方二维码支付此次换宿费用${price}`
-    leftButtonText = '已付款'
-    rightButtonText = '取消申请'
+    leftButtonText = '前往付款'
+    rightButtonText = '前往拒绝'
   }
   
   const handleSingleButtonClick = () => {
-    if (onCheckSub) {
-      onCheckSub() // 把订单ID等必要信息也可以从props传入再回传
-    } else {
-      Taro.showToast({ title: '点onCheckSub', icon: 'none' })
-    }
+    Taro.request({
+        url: isProperty ? `https://api.eurostay.co/app/property/showReservationInfo` : 'https://api.eurostay.co/app/activity/showReservationInfo',
+        method: 'POST',
+        header: {
+            token: GlobalStore.userInfo.token,
+        },
+        data: {
+            id: Number(subjectId),
+        },
+        success: (res) => {
+          console.log(subjectId);
+          console.log(res);
+          Taro.navigateTo({ url: `/packageOrder/order-detail/index?role=host&status=awaiting&type=${isProperty?0:1}&id=${subjectId}&experienceId=${res.data.result.experienceId}&title=${res.data.result.title}` });
+        }
+      })
   }
   
   // 当点击"已付款"按钮时，调用 onPaid 回调
   const handleLeftButtonClick = () => {
-    if (onPaid) {
-      onPaid() // 把订单ID等必要信息也可以从props传入再回传
-    } else {
-      Taro.showToast({ title: '点击了已付款按钮，但未传回调', icon: 'none' })
-    }
+    Taro.request({
+        url: isProperty ? `https://api.eurostay.co/app/property/showReservationInfo` : 'https://api.eurostay.co/app/activity/showReservationInfo',
+        method: 'POST',
+        header: {
+            token: GlobalStore.userInfo.token,
+        },
+        data: {
+            id: Number(subjectId),
+        },
+        success: (res) => {
+          Taro.navigateTo({ url: `/packageOrder/order-detail/index?role=guest&status=awaiting&type=${isProperty?0:1}&id=${subjectId}&experienceId=${res.data.result.experienceId}&title=${res.data.result.title}` });
+        }
+      })
   }
   
   const handleRightButtonClick = () => {
-    // Taro.showToast({ title: '点击了取消申请按钮', icon: 'none' })
-    if (onReject) {
-      onReject() // 把订单ID等必要信息也可以从props传入再回传
-    } else {
-      Taro.showToast({ title: '点onReject，但未传回调', icon: 'none' })
-    }
+    Taro.request({
+        url: isProperty ? `https://api.eurostay.co/app/property/showReservationInfo` : 'https://api.eurostay.co/app/activity/showReservationInfo',
+        method: 'POST',
+        header: {
+            token: GlobalStore.userInfo.token,
+        },
+        data: {
+            id: Number(subjectId),
+        },
+        success: (res) => {
+          console.log(subjectId);
+          console.log(res);
+          Taro.navigateTo({ url: `/packageOrder/order-detail/index?role=guest&status=awaiting&type=${isProperty?0:1}&id=${subjectId}&experienceId=${res.data.result.experienceId}&title=${res.data.result.title}` });
+        }
+      })
   }
   
   return (
     <View className={`message-box ${direction}`}>
       {/* 头像 */}
-      <Image className='avatar' src={avatar} />
+      <Image className='avatar' src={direction === 'left' ? avatar : GlobalStore.userInfo.avatar} />
       
       {/* 气泡内容 */}
       <View className='bubble'>
@@ -65,26 +93,37 @@ const OfferMessageBox = (props) => {
         
         {/* 不同 direction，输出不同的按钮区域 */}
         {direction === 'right' ? (
-          /* 右侧时，仅一个按钮 */
-          <Button className='action-button single-btn' onClick={handleSingleButtonClick}>
+          // ✅ 右侧时，仅一个按钮，带 active 控制
+          <Button
+            className={`action-button single-btn ${!active ? 'disabled' : ''}`}
+            onClick={handleSingleButtonClick}
+            disabled={!active}
+          >
             {singleButtonText}
           </Button>
         ) : (
-          /* 左侧时，两个按钮 */
+          // ✅ 左侧时，两个按钮，带 active 控制
           <View className='button-group'>
-            <Button className='action-button group-btn' onClick={handleLeftButtonClick}>
+            <Button
+              className={`action-button group-btn ${!active ? 'disabled' : ''}`}
+              onClick={handleLeftButtonClick}
+              disabled={!active}
+            >
               {leftButtonText}
             </Button>
-            <Button className='action-button group-btn' onClick={handleRightButtonClick}>
+            <Button
+              className={`action-button group-btn ${!active ? 'disabled' : ''}`}
+              onClick={handleRightButtonClick}
+              disabled={!active}
+            >
               {rightButtonText}
             </Button>
           </View>
         )}
-        
-        {/* {time && <Text className='time'>{time}</Text>} */}
       </View>
     </View>
   )
+  
 }
 
 export default OfferMessageBox

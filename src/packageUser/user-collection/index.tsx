@@ -1,5 +1,6 @@
 import { View } from '@tarojs/components'
 import { useState, useEffect } from 'react'
+import { useDidShow } from '@tarojs/taro';
 import Taro from '@tarojs/taro'
 import HouseCard from '@components/HouseCard'
 import GlobalStore from '@store/GlobalStore'
@@ -30,6 +31,10 @@ const UserCollection: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1)
   const [hasMorePage, setHasMorePage] = useState(true);
   const [loading, setLoading] = useState(false)
+
+  useDidShow(() => {
+    fetchCollections(1);
+  });
 
   const fetchCollections = (page: number) => {
     setLoading(true)
@@ -120,10 +125,10 @@ const UserCollection: React.FC = () => {
       ))}
       {loading && <View className='loading'>加载中...</View>}
       {!loading && collections.length === 0 && (
-        <View className='empty-state'>暂无收藏</View>
+        <View className='empty-state'>快去探索一下吧~</View>
       )}
       {!loading && !hasMorePage && collections.length > 0 && (
-        <View className='no-more'>没有更多收藏了</View>
+        <View className='no-more'>再去探索一下吧~</View>
       )}
     </View>
   )
