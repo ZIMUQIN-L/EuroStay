@@ -32,10 +32,12 @@ const MessageDetail = () => {
   const sessionDict = Taro.getStorageSync('allSessionDict') || {}
 
   const [debugMsg, setDebugMsg] = useState(null);
+  const [scrollAnchorId, setScrollAnchorId] = useState('');
 
 
   useEffect(() => {
     fetchMessageList();
+    setShouldScrollBottom(true);
   }, []); 
 
   // 在每次messages更新后，滚动到底部
@@ -78,9 +80,13 @@ const MessageDetail = () => {
 
   // 滚动到底部的函数
   const scrollToBottom = () => {
-    Taro.nextTick(() => {
-      setScrollTop(Date.now());
-    });
+    setScrollAnchorId(''); 
+    setTimeout(() => {
+      setScrollAnchorId('bottom-anchor');
+    }, 50);
+    // Taro.nextTick(() => {
+    //   setScrollTop(Date.now());
+    // });
   };
   
 
@@ -590,6 +596,7 @@ const MessageDetail = () => {
         scrollY
         scrollTop={scrollTop}
         scrollWithAnimation
+        scrollIntoView={scrollAnchorId}
         onScrollToUpper={() => {
           if (loadingMore || !hasMore) return;
       
@@ -605,6 +612,9 @@ const MessageDetail = () => {
             {renderMessage(msg)}
           </View>
         ))}
+
+        {/* 滚动锚点 */}
+        <View id='bottom-anchor' style={{ height: '40px' }} />
       </ScrollView>
 
       {/* 底部输入框区域 */}
@@ -624,12 +634,6 @@ const MessageDetail = () => {
         </View>
       )}
 
-{debugMsg && (
-  <View className="debug-box" style={{ padding: '20px', backgroundColor: '#fce4ec', fontSize: '14px' }}>
-    <View>📦 Debug Msg:</View>
-    <View>{JSON.stringify(debugMsg, null, 2)}</View>
-  </View>
-)}
     </View>
   )
 }

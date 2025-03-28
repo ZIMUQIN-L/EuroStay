@@ -45,6 +45,7 @@
   flex-direction: row;   // 默认从左到右
   .avatar {
     margin-right: 10rpx; // 增大头像与气泡的间距
+    margin-left: 10rpx;
   }
 }
 
@@ -52,6 +53,7 @@
 .message-box.right {
   flex-direction: row-reverse; // 头像在右，气泡在左
   .avatar {
-    margin-left: 10rpx;        // 增大头像与气泡的间距
+    margin-right: 10rpx; // 增大头像与气泡的间距
+    margin-left: 10rpx;
   }
 }
