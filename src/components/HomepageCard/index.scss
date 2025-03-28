@@ -8,18 +8,19 @@
   overflow: hidden;
   position: relative;
   margin-bottom: 30px;
+  display: flex;
+  flex-direction: column;
   &-bottom {
     color: white;
-    margin-top: -3%;
     display: flex;
     padding: 0 5%;
     // padding-top: -1%;
     background-color: #7a63c7dd;
     align-items: center;
-    min-height: 25%;
+    min-height: 125px;
+    max-height: 125px;
     justify-content: flex-start;
     &.activity {
-      margin-top: 10px;
       padding-top: 12px;
       justify-content: space-between;
       align-items: flex-start;
@@ -92,7 +93,8 @@
   .user-pic {
     max-width: 100%;
     min-width: 100%;
-    height: 75%;
+    min-height: 375px;
+    max-height: 375px;
     // background-color: aqua;
   }
   .button-wrapper {

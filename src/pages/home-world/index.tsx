@@ -101,7 +101,6 @@ const HomeWorld = () => {
   });
 
   useDidShow(() => {
-    setActiveTab('友友');
     getList('app/esuser/getUserList', setUserList);
     getList('app/activity/getActivityList', setActivityList, {
       searchableLocation: 0,
