@@ -264,7 +264,7 @@ const HouseDetail: React.FC = () => {
             success: function (res) {
               if (res.confirm) {
                 Taro.navigateTo({
-                  url: '/pages/user-setting/index',
+                  url: '/packageUser/user-vip/index',
                 });
               }
             }
@@ -334,11 +334,12 @@ const HouseDetail: React.FC = () => {
         success: function (res) {
           if (res.confirm) {
             Taro.navigateTo({
-              url: '/pages/user-setting/index',
+              url: '/packageUser/user-editing/index',
             });
           }
         }
       });
+      return;
     }
     if (!GlobalStore.userInfo.isVip) {
         Taro.showModal({
@@ -347,11 +348,12 @@ const HouseDetail: React.FC = () => {
             success: function (res) {
               if (res.confirm) {
                 Taro.navigateTo({
-                  url: '/pages/user-setting/index',
+                  url: '/packageUser/user-editing/index',
                 });
               }
             }
           });
+          return;
     }
     if (Number(type) === 0) {
       if (startDate === null || endDate === null) {
