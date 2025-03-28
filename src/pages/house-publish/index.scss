@@ -1,6 +1,7 @@
 .house-publish {
   padding-bottom: 20px;
   // padding: 20px;
+  padding-top: 20px;
   background: #f5f5f5;
   min-height: 100vh;
   .popup-wrapper {
@@ -82,6 +83,7 @@
 
   .section {
     margin: 20px;
+    margin-top: 0px;
     background: #fff;
     border-radius: 40px;
     padding: 40px;
@@ -224,7 +226,7 @@
 
       .label {
         font-size: 29px;
-        color: #7a63c7CC;
+        color: #7a63c7cc;
         font-family: 'Alibaba PuHuiTi';
         display: block;
         font-weight: 500;
@@ -275,11 +277,11 @@
         line-height: 1;
         height: auto;
         padding-top: 24px;
-        
+
         &::placeholder {
           padding-top: 80px;
           color: #cecece;
-          line-height: normal; 
+          line-height: normal;
         }
       }
 
