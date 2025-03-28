@@ -301,7 +301,11 @@ const Index = () => {
               <Text className='name'>{item.name}</Text>
               <Text className='time'>{item.time}</Text>
             </View>
-            <Text className='message-text'>{item.rawData.content}</Text>
+            <Text className='message-text'>
+              {item.rawData.content.length > 20
+                ? `${item.rawData.content.slice(0, 20)}...`
+                : item.rawData.content}
+            </Text>
           </View>
         </View>
       ))}
