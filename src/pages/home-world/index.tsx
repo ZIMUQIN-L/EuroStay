@@ -4,7 +4,7 @@ import { observer } from 'mobx-react';
 import './index.scss';
 import HomepageSearch from '@components/HomepageSearch';
 import { useEffect, useMemo, useState } from 'react';
-import Taro, { useReachBottom } from '@tarojs/taro';
+import Taro, { useReachBottom, usePullDownRefresh } from '@tarojs/taro';
 import GlobalStore from '@store/GlobalStore';
 import { getCurrentInstance } from '@tarojs/taro';
 import DateSelect from '@components/DateSelect';
@@ -82,6 +82,19 @@ const HomeWorld = () => {
 
   // 添加页码和加载状态
   const [loading, setLoading] = useState(false);
+
+  usePullDownRefresh(() => {
+    setUserPage(1);
+    setHasMoreUser(true);
+    setPropertyPage(1);
+    setHasMoreProperty(true);
+    setActivityPage(1);
+    setHasMoreActivity(true);
+    setLocation({ id: 0, cname: '选择城市', name: '' });
+    setStartDate('');
+    setEndDate('');
+    setCapacity(1);
+  });
 
   useEffect(() => {
     setActiveTab('友友');
@@ -272,7 +285,6 @@ const HomeWorld = () => {
   };
 
   useEffect(() => {
-    console.log('activeTab', activeTab);
     setLocation({ id: 0, cname: '选择城市', name: '' });
     setStartDate('');
     setEndDate('');
@@ -291,6 +303,9 @@ const HomeWorld = () => {
         onDateChanged={(startDate, endDate) => {
           setStartDate(startDate);
           setEndDate(endDate);
+          setIsShowDateSelect(false);
+        }}
+        onCancel={() => {
           setIsShowDateSelect(false);
         }}
       />
