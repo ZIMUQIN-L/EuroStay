@@ -4,7 +4,7 @@ import { observer } from 'mobx-react';
 import './index.scss';
 import HomepageSearch from '@components/HomepageSearch';
 import { useEffect, useMemo, useState } from 'react';
-import Taro, { useReachBottom } from '@tarojs/taro';
+import Taro, { useReachBottom, useDidShow } from '@tarojs/taro';
 import GlobalStore from '@store/GlobalStore';
 import { getCurrentInstance } from '@tarojs/taro';
 import DateSelect from '@components/DateSelect';
@@ -82,6 +82,24 @@ const HomeWorld = () => {
 
   // 添加页码和加载状态
   const [loading, setLoading] = useState(false);
+
+  useDidShow(() => {
+    setActiveTab('友友');
+    getList('app/esuser/getUserList', setUserList);
+    getList('app/activity/getActivityList', setActivityList, {
+      searchableLocation: 0,
+      startDate: '',
+      endDate: '',
+      order: 'DES',
+    });
+    getList('app/property/getPropertyList', setPropertyList, {
+      searchableLocation: 0,
+      startDate: '',
+      endDate: '',
+      order: 'DES_PRICE',
+      capacity: 1,
+    });
+  });
 
   useEffect(() => {
     setActiveTab('友友');

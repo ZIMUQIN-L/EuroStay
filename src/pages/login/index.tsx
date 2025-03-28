@@ -14,7 +14,7 @@ const Loading = () => {
           <Image src={LoginLoadingIcon} className='loading-logo' />
         </View>
       </View>
-      <Text className='loading-text'>EuroStay</Text>
+      <Text className='loading-text'>正在加载你的冒险~</Text>
     </View>
   );
 };
