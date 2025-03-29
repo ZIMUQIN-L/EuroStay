@@ -84,7 +84,7 @@ const HomeWorld = () => {
   const [loading, setLoading] = useState(false);
 
   useDidShow(() => {
-    setActiveTab('友友');
+    // setActiveTab('友友');
     getList('app/esuser/getUserList', setUserList);
     getList('app/activity/getActivityList', setActivityList, {
       searchableLocation: 0,
