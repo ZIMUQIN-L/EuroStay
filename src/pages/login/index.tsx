@@ -311,7 +311,7 @@ const Login = () => {
           <Text>微信登录</Text>
         </View> */}
         {!hasUserAgreed?(<View className='wechat-login-btn' onClick={handleAgreement}>
-          <Text>微信登录</Text>
+          <Text>手机号快捷登录</Text>
         </View>):
         (<Button 
             className='wechat-login-btn'
@@ -319,7 +319,7 @@ const Login = () => {
             disabled={!hasUserAgreed}
             onGetPhoneNumber={handleGetPhoneNumber}
           >
-            微信登录
+            手机号快捷登录
           </Button>)}
 
         <View className='agreement-section'>

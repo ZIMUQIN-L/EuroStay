@@ -185,6 +185,7 @@ const HomeWorld = () => {
           const newData = response.data.result.data;
           if (isLoadMore) {
             if (newData.length < response.data.result.per_page) {
+              callback(prev => [...prev, ...newData]);
               switch (activeTab) {
                 case '友友':
                   setHasMoreUser(false);
@@ -311,7 +312,7 @@ const HomeWorld = () => {
     setEndDate('');
     setCapacity(1);
   }, [activeTab]);
-  // 在关闭 modal 时恢复滚动位置
+//   在关闭 modal 时恢复滚动位置
   useEffect(() => {
     if (!isShowPostModal && scrollTop > 0) {
       window.scrollTo(0, scrollTop);

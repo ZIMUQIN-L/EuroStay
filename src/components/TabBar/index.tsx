@@ -63,7 +63,34 @@ const TabBar: React.FC<TabBarProps> = ({ onWorldSelected, setIsShowPostModal, is
             }
           }
         });
-      } else {
+      } else if (GlobalStore.userInfo?.aboutMe === '' || GlobalStore.userInfo?.backgroundPic === '') {
+        Taro.showModal({
+          title: '请先完善个人资料',
+          content: '请先完善个人介绍，背景图和邮箱后，再进行上传~',
+          success: function (res) {
+            if (res.confirm) {
+              Taro.navigateTo({
+                url: '/packageUser/user-editing/index',
+              });
+            }
+          }
+        });
+        return;
+      } else if (!GlobalStore.userInfo.isVip) {
+        Taro.showModal({
+            title: '请先充值会员',
+            content: '请先充值会员后，再进行上传~',
+            success: function (res) {
+              if (res.confirm) {
+                Taro.navigateTo({
+                  url: '/packageUser/user-vip/index',
+                });
+              }
+            }
+          });
+          return;
+    }
+      else {
         setIsShowPostModal(true);
       }
       return;

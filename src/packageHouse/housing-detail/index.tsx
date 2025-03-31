@@ -348,7 +348,7 @@ const HouseDetail: React.FC = () => {
             success: function (res) {
               if (res.confirm) {
                 Taro.navigateTo({
-                  url: '/packageUser/user-editing/index',
+                  url: '/packageUser/user-vip/index',
                 });
               }
             }
