@@ -43,43 +43,18 @@ const HomepageCard = (props: {
     setActiveTab(activeTab);
   }, [props.activeTab]);
 
-  const parseStartDate = (startDate) => {
+  const parseStartDate = startDate => {
     if (startDate == null) {
-        return null;
+      return null;
     }
-    const date = new Date(startDate.replace(/-/g, "/"));
+    const date = new Date(startDate.replace(/-/g, '/'));
     return `${date.getMonth() + 1}月${date.getDate()}日起可入住`;
   };
-
 
   return (
     <View className={`${getCardClass()} ${props.id}`}>
       {activeTab == '友友' && (
         <>
-          <Image 
-            src={props.user.backgroundPic} 
-            className='user-pic' 
-            onClick={() => {
-                console.log(props.user);
-                if (GlobalStore.userInfo?.uid === 0) {
-                  Taro.showModal({
-                    title: '转至登录页面',
-                    content: '请登录后查看~',
-                    success: function (res) {
-                      if (res.confirm) {
-                        Taro.reLaunch({
-                          url: `/pages/login/index`,
-                        });
-                      }
-                    } 
-                  });
-                } else {
-                  Taro.navigateTo({
-                    url: `/pages/user/index?uid=${props.user.uid}`
-                  })
-                }
-            }}
-          ></Image>
           {props.user.location && (
             <View className='user-location'>{props.user.location}</View>
           )}
@@ -105,14 +80,43 @@ const HomepageCard = (props: {
               />
             )}
           </View>
+          <Image
+            src={props.user.backgroundPic}
+            className='user-pic'
+            onClick={() => {
+              console.log(props.user);
+              if (GlobalStore.userInfo?.uid === 0) {
+                Taro.showModal({
+                  title: '转至登录页面',
+                  content: '请登录后查看~',
+                  success: function (res) {
+                    if (res.confirm) {
+                      Taro.reLaunch({
+                        url: `/pages/login/index`,
+                      });
+                    }
+                  },
+                });
+              } else {
+                Taro.navigateTo({
+                  url: `/pages/user/index?uid=${props.user.uid}`,
+                });
+              }
+            }}
+          ></Image>
           <View className='homepage-card-bottom'>
             <Image src={props.user.avatar} className='user-avatar' />
             <View className='user-details'>
               <View className='user-name'>{props.user.username}</View>
               <View className='user-tags'>
                 {props.user.tags.map((item, index) => {
-                  const truncatedTag = item.length > 5 ? item.slice(0, 5) + '...' : item;
-                  return <View key={index} className='tag-item'>{truncatedTag}</View>;
+                  const truncatedTag =
+                    item.length > 5 ? item.slice(0, 5) + '...' : item;
+                  return (
+                    <View key={index} className='tag-item'>
+                      {truncatedTag}
+                    </View>
+                  );
                 })}
               </View>
             </View>
@@ -123,27 +127,33 @@ const HomepageCard = (props: {
 
       {activeTab == '活动' && props.activity && (
         <>
-          <Image src={props.activity.images?.[0]} className='user-pic' onClick={
-              () => {
-                if (GlobalStore.userInfo?.uid === 0) {
-                  Taro.showModal({
-                    title: '转至登录页面',
-                    content: '请登录后查看~',
-                    success: function (res) {
-                      if (res.confirm) {
-                        Taro.reLaunch({
-                          url: `/pages/login/index`,
-                        });
-                      }
+          <Image
+            src={props.activity.images?.[0]}
+            className='user-pic'
+            onClick={() => {
+              if (GlobalStore.userInfo?.uid === 0) {
+                Taro.showModal({
+                  title: '转至登录页面',
+                  content: '请登录后查看~',
+                  success: function (res) {
+                    if (res.confirm) {
+                      Taro.reLaunch({
+                        url: `/pages/login/index`,
+                      });
                     }
-                  });
-                } else {
-                  Taro.navigateTo({ url: `/packageHouse/housing-detail/index?id=${props.activity.id}&type=1` });
-                }
+                  },
+                });
+              } else {
+                Taro.navigateTo({
+                  url: `/packageHouse/housing-detail/index?id=${props.activity.id}&type=1`,
+                });
               }
-          }></Image>
+            }}
+          ></Image>
           {props.activity.location && (
-            <View className='user-location'>{parseLocation(props.activity.location)}</View>
+            <View className='user-location'>
+              {parseLocation(props.activity.location)}
+            </View>
           )}
           <View className='button-wrapper'>
             {props.user && (
@@ -180,27 +190,33 @@ const HomepageCard = (props: {
       )}
       {activeTab == '房源' && props.property && (
         <>
-          <Image src={props.property.images?.[0]} className='user-pic' onClick={
-              () => {
-                if (GlobalStore.userInfo?.uid === 0) {
-                  Taro.showModal({
-                    title: '转至登录页面',
-                    content: '请登录后查看~',
-                    success: function (res) {
-                      if (res.confirm) {
-                        Taro.reLaunch({ 
-                          url: `/pages/login/index`,
-                        });
-                      }
+          <Image
+            src={props.property.images?.[0]}
+            className='user-pic'
+            onClick={() => {
+              if (GlobalStore.userInfo?.uid === 0) {
+                Taro.showModal({
+                  title: '转至登录页面',
+                  content: '请登录后查看~',
+                  success: function (res) {
+                    if (res.confirm) {
+                      Taro.reLaunch({
+                        url: `/pages/login/index`,
+                      });
                     }
-                  });
-                } else {
-                  Taro.navigateTo({ url: `/packageHouse/housing-detail/index?id=${props.property.id}&type=0` });
-                }
+                  },
+                });
+              } else {
+                Taro.navigateTo({
+                  url: `/packageHouse/housing-detail/index?id=${props.property.id}&type=0`,
+                });
               }
-          }></Image>
+            }}
+          ></Image>
           {props.property.location && (
-            <View className='user-location'>{parseLocation(props.property?.location)}</View>
+            <View className='user-location'>
+              {parseLocation(props.property?.location)}
+            </View>
           )}
           <View className='button-wrapper'>
             {props.user && (
@@ -229,7 +245,9 @@ const HomepageCard = (props: {
           <View className='homepage-card-bottom activity'>
             <View className='bottom-left'>
               <View className='title'>{props.property?.title}</View>
-              <View className='startTime'>{parseStartDate(props.property?.startDate)}</View>
+              <View className='startTime'>
+                {parseStartDate(props.property?.startDate)}
+              </View>
             </View>
             <View className='bottom-right'>€{props.property?.price}/晚</View>
           </View>

@@ -1,5 +1,5 @@
 import { View, Text, Input, Image, Picker, Textarea } from '@tarojs/components';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Taro from '@tarojs/taro';
 import './index.scss';
 import { AtCalendar } from 'taro-ui';
@@ -36,12 +36,12 @@ interface ActivityBase {
   id: number;
   title: string;
   description: string;
-  tags: string;  // 注意这里是字符串，需要解析
+  tags: string; // 注意这里是字符串，需要解析
   location: string;
   searchableLocation: number;
   price: number;
   startTime: string;
-  images: string;  // 注意这里是字符串，需要解析
+  images: string; // 注意这里是字符串，需要解析
   capacity: number;
 }
 
@@ -72,11 +72,11 @@ const ActivityPublish = () => {
     { id: number; cname: string; name: string }[]
   >([]);
   const [aid, setAid] = useState<number | null>(null);
-
+  const uploadRes = useRef<string[]>([]);
   useEffect(() => {
     const params = Taro.getCurrentInstance().router?.params;
     const routerAid = params?.aid;
-    
+
     Taro.setNavigationBarTitle({
       title: routerAid ? '修改活动' : '发布活动',
     });
@@ -152,21 +152,25 @@ const ActivityPublish = () => {
         header: {
           token: GlobalStore.userInfo.token,
         },
-        data: { id: activityId }
+        data: { id: activityId },
       });
       console.log(response);
 
       if (response.statusCode === 200 && response.data.code === 0) {
         const detail = response.data.result;
-        
+
         const tags = JSON.parse(detail.tags || '[]');
         const images = JSON.parse(detail.images || '[]');
-        
+
         const dateTime = detail.startTime.split(' ');
         const date = dateTime[0];
         const time = dateTime[1].substring(0, 5);
-        
-        const { country, city, detail: detailAddress } = parseAddress(detail.location);
+
+        const {
+          country,
+          city,
+          detail: detailAddress,
+        } = parseAddress(detail.location);
 
         setFormData({
           ...formData,
@@ -179,7 +183,7 @@ const ActivityPublish = () => {
           participantCount: String(detail.capacity),
           activityImages: images,
           detailAddress: detailAddress,
-          startTime: time
+          startTime: time,
         });
 
         setStartDate(date);
@@ -201,38 +205,11 @@ const ActivityPublish = () => {
     { id: 5, name: '行业交流' },
   ];
 
-  const participantCounts = [
-    { id: 1, name: '1-5人' },
-    { id: 2, name: '5-10人' },
-    { id: 3, name: '10人以上' },
-  ];
-
-  const otherReqs = [
-    { id: 1, name: '准时' },
-    { id: 2, name: '友好' },
-    { id: 3, name: '有经验' },
-  ];
-
   const handleTagSelect = (tag: string) => {
     const newTags = formData.activityTag.includes(tag)
       ? formData.activityTag.filter(t => t !== tag)
       : [...formData.activityTag, tag];
     setFormData({ ...formData, activityTag: newTags });
-  };
-
-  const handleGenderSelect = (gender: string) => {
-    setFormData({ ...formData, participantGender: gender });
-  };
-
-  const handleParticipantCountSelect = (count: string) => {
-    setFormData({ ...formData, participantCount: count });
-  };
-
-  const handleOtherReqSelect = (req: string) => {
-    const newReqs = formData.otherRequirements.includes(req)
-      ? formData.otherRequirements.filter(r => r !== req)
-      : [...formData.otherRequirements, req];
-    setFormData({ ...formData, otherRequirements: newReqs });
   };
 
   const handleImageUpload = async () => {
@@ -242,28 +219,46 @@ const ActivityPublish = () => {
         sizeType: ['compressed'],
         sourceType: ['album', 'camera'],
       });
-
-      if (res.tempFilePaths && res.tempFilePaths[0]) {
-        const uploadRes = await Taro.uploadFile({
-          url: 'https://api.eurostay.co/app/common/upload',
-          filePath: res.tempFilePaths[0],
-          name: 'Image',
-          formData: {
-            prefix: 'test',
-          },
-          header: {
-            token: GlobalStore.userInfo.token,
-          },
-          success: function (result) {
-            const responseData = JSON.parse(result.data);
-            const imageUrl = responseData['result'];
-            setFormData({
-              ...formData,
-              activityImages: [...formData.activityImages, imageUrl],
-            });
+      uploadRes.current = [];
+      await Promise.all(
+        res.tempFilePaths.map(async file => {
+          console.log('file', file);
+          if (!file) {
+            return '';
           }
-        });
-      }
+          await Taro.uploadFile({
+            url: 'https://api.eurostay.co/app/common/upload',
+            filePath: file,
+            name: 'Image',
+            formData: {
+              prefix: 'test',
+            },
+            header: {
+              token: GlobalStore.userInfo.token,
+            },
+            fail: function (err) {
+              console.error('Upload failed:', err);
+              Taro.showToast({
+                title: '上传失败',
+                icon: 'none',
+              });
+              return '';
+            },
+            success: function (result) {
+              console.log('result', result);
+              const responseData = JSON.parse(result.data);
+              const imageUrl: string = responseData['result'];
+              console.log(imageUrl);
+              uploadRes.current.push(imageUrl);
+            },
+          });
+        }),
+      );
+      console.log('uploadImages', uploadRes.current);
+      setFormData({
+        ...formData,
+        activityImages: [...formData.activityImages, ...uploadRes.current],
+      });
     } catch (error) {
       console.error('Upload failed:', error);
       Taro.showToast({
@@ -342,12 +337,12 @@ const ActivityPublish = () => {
 
   const handleSubmit = async () => {
     const errors = validateForm();
-    
+
     if (errors.length > 0) {
       Taro.showToast({
         title: errors[0],
         icon: 'none',
-        duration: 2000
+        duration: 2000,
       });
       return;
     }
@@ -355,11 +350,11 @@ const ActivityPublish = () => {
     const fullAddress = combineAddress(
       formData.country.cname,
       formData.city.cname,
-      formData.detailAddress
+      formData.detailAddress,
     );
 
     try {
-      const url = aid 
+      const url = aid
         ? 'https://api.eurostay.co/app/activity/modify'
         : 'https://api.eurostay.co/app/activity/addActivity';
 
@@ -382,12 +377,14 @@ const ActivityPublish = () => {
         header: {
           token: GlobalStore.userInfo.token,
         },
-        data: requestData
+        data: requestData,
       });
 
       if (response.statusCode === 200 && response.data.code === 0) {
         Taro.showToast({
-          title: aid ? '修改成功！' : '你已成功上传活动！活动正在等待审核，审核通过后将公众可见。',
+          title: aid
+            ? '修改成功！'
+            : '你已成功上传活动！活动正在等待审核，审核通过后将公众可见。',
           icon: 'none',
           duration: 2000,
         });
@@ -592,11 +589,13 @@ const ActivityPublish = () => {
             {formData.activityImages.map((image, index) => (
               <View key={index} className='image-item'>
                 <Image src={image} mode='aspectFill' />
-                <View 
-                  className='delete-icon' 
-                  onClick={(e) => {
+                <View
+                  className='delete-icon'
+                  onClick={e => {
                     e.stopPropagation();
-                    const newImages = formData.activityImages.filter((_, i) => i !== index);
+                    const newImages = formData.activityImages.filter(
+                      (_, i) => i !== index,
+                    );
                     setFormData({ ...formData, activityImages: newImages });
                   }}
                 >

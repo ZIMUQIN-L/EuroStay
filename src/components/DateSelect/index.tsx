@@ -1,11 +1,12 @@
-import { View, Text } from '@tarojs/components';
+import { View } from '@tarojs/components';
 import { useState } from 'react';
 import './index.scss';
 import { AtCalendar } from 'taro-ui';
 import { formatToday } from '@utils/dateUtil';
-
+import Taro from '@tarojs/taro';
 interface IProps {
   onDateChanged: (value1: string, value2: string) => void;
+  onCancel: () => void;
 }
 
 const DateSelect = (props: IProps) => {
@@ -33,7 +34,6 @@ const DateSelect = (props: IProps) => {
             if (isSelected) {
               setEndDate(selectedDate);
               setIsSelected(false);
-              props.onDateChanged(startDate, selectedDate);
               return;
             }
             setStartDate(selectedDate);
@@ -42,6 +42,31 @@ const DateSelect = (props: IProps) => {
           }}
           style={{ width: '100%' }}
         />
+      </View>
+      <View className='date-select-button'>
+        <View
+          className='date-select-button-confirm'
+          onClick={() => {
+            if (!startDate || !endDate) {
+              Taro.showToast({
+                title: '请选择日期',
+                icon: 'none',
+              });
+              return;
+            }
+            props.onDateChanged(startDate, endDate);
+          }}
+        >
+          确定
+        </View>
+        <View
+          className='date-select-button-cancel'
+          onClick={() => {
+            props.onCancel();
+          }}
+        >
+          取消
+        </View>
       </View>
     </View>
   );

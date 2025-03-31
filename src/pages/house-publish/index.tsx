@@ -1,5 +1,5 @@
 import { View, Text, Input, Image, Picker, Textarea } from '@tarojs/components';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Taro from '@tarojs/taro';
 import './index.scss';
 import { AtCalendar } from 'taro-ui';
@@ -101,11 +101,12 @@ const HousePublish = () => {
     { id: number; cname: string; name: string }[]
   >([]);
   const [pid, setPid] = useState<number | null>(null);
+  const uploadRes = useRef<string[]>([]);
 
   useEffect(() => {
     const params = Taro.getCurrentInstance().router?.params;
     const routerPid = params?.pid;
-    
+
     Taro.setNavigationBarTitle({
       title: routerPid ? '修改房源' : '发布房源',
     });
@@ -178,15 +179,15 @@ const HousePublish = () => {
         header: {
           token: GlobalStore.userInfo.token,
         },
-        data: { id: propertyId }
+        data: { id: propertyId },
       });
 
       if (response.statusCode === 200 && response.data.code === 0) {
         const detail = response.data.result;
-        
+
         const availableDates: [string, string][] = [];
         let currentStart = '';
-        
+
         detail.availableDate.forEach((date, index) => {
           const cleanDate = date.split(' ')[0];
           if (index % 2 === 0) {
@@ -199,14 +200,18 @@ const HousePublish = () => {
         // 解析地址
         const addressComponents = parseAddress(detail.location);
         console.log(addressComponents);
-        
+
         setFormData({
           ...formData,
           houseName: detail.title,
           houseDesc: detail.description,
           houseTag: detail.tags,
           country: { id: 0, cname: addressComponents.country, name: '' },
-          city: { id: detail.searchableLocation, cname: addressComponents.city, name: '' },
+          city: {
+            id: detail.searchableLocation,
+            cname: addressComponents.city,
+            name: '',
+          },
           price: String(detail.price),
           tenantGender: detail.gender,
           tenantCount: detail.capacity,
@@ -217,8 +222,6 @@ const HousePublish = () => {
           paymentImages: detail.qrCode ? [detail.qrCode] : [],
           detailAddress: addressComponents.detail, // 设置详细地址
         });
-
-        
 
         setMultiDays(availableDates);
       }
@@ -246,7 +249,7 @@ const HousePublish = () => {
     { id: 14, name: '绿植环绕' },
     { id: 15, name: '有小阳台' },
     { id: 18, name: '宠物友好' },
-    { id: 20, name: '独立卫浴' }
+    { id: 20, name: '独立卫浴' },
   ];
 
   const tenantCounts = [
@@ -286,39 +289,55 @@ const HousePublish = () => {
   const handleUpload = async (type: string) => {
     try {
       const res = await Taro.chooseImage({
-        count: 1,
+        count: type === 'house' ? 6 - formData.houseImages.length : 1,
         sizeType: ['compressed'],
         sourceType: ['album', 'camera'],
       });
-
-      if (res.tempFilePaths && res.tempFilePaths[0]) {
-        const uploadRes = await Taro.uploadFile({
-          url: 'https://api.eurostay.co/app/common/upload',
-          filePath: res.tempFilePaths[0],
-          name: 'Image',
-          formData: {
-            prefix: 'test',
-          },
-          header: {
-            token: GlobalStore.userInfo.token,
-          },
-          success: function (result) {
-            const responseData = JSON.parse(result.data);
-            const imageUrl: string = responseData['result'];
-            console.log(imageUrl);
-            if (type === 'house') {
-              setFormData({
-                ...formData,
-                houseImages: [...formData.houseImages, imageUrl],
+      uploadRes.current = [];
+      await Promise.all(
+        res.tempFilePaths.map(async file => {
+          console.log('file', file);
+          if (!file) {
+            return '';
+          }
+          await Taro.uploadFile({
+            url: 'https://api.eurostay.co/app/common/upload',
+            filePath: file,
+            name: 'Image',
+            formData: {
+              prefix: 'test',
+            },
+            header: {
+              token: GlobalStore.userInfo.token,
+            },
+            fail: function (err) {
+              console.error('Upload failed:', err);
+              Taro.showToast({
+                title: '上传失败',
+                icon: 'none',
               });
-            } else {
-              setFormData({
-                ...formData,
-                paymentImages: [...formData.paymentImages, imageUrl],
-              });
-            }
-            return imageUrl;
-          },
+              return '';
+            },
+            success: function (result) {
+              console.log('result', result);
+              const responseData = JSON.parse(result.data);
+              const imageUrl: string = responseData['result'];
+              console.log(imageUrl);
+              uploadRes.current.push(imageUrl);
+            },
+          });
+        }),
+      );
+      console.log('uploadImages', uploadRes.current);
+      if (type === 'house') {
+        setFormData({
+          ...formData,
+          houseImages: [...formData.houseImages, ...uploadRes.current],
+        });
+      } else {
+        setFormData({
+          ...formData,
+          paymentImages: [...formData.paymentImages, ...uploadRes.current],
         });
       }
     } catch (error) {
@@ -422,12 +441,12 @@ const HousePublish = () => {
 
   const handleSubmit = async () => {
     const errors = validateForm();
-    
+
     if (errors.length > 0) {
       Taro.showToast({
         title: errors[0],
         icon: 'none',
-        duration: 2000
+        duration: 2000,
       });
       return;
     }
@@ -435,11 +454,11 @@ const HousePublish = () => {
     const fullAddress = combineAddress(
       formData.country.cname,
       formData.city.cname,
-      formData.detailAddress
+      formData.detailAddress,
     );
 
     try {
-      const url = pid 
+      const url = pid
         ? 'https://api.eurostay.co/app/property/modify'
         : 'https://api.eurostay.co/app/property/upload';
 
@@ -458,7 +477,9 @@ const HousePublish = () => {
         wxId: formData.wechat,
         qrCode: formData.paymentImages?.[0],
         requirements: formData.otherRequirements,
-        availableDate: multiDays.flatMap(pair => pair).sort((a, b) => new Date(a).getTime() - new Date(b).getTime()),
+        availableDate: multiDays
+          .flatMap(pair => pair)
+          .sort((a, b) => new Date(a).getTime() - new Date(b).getTime()),
       };
 
       const response = await Taro.request({
@@ -467,12 +488,14 @@ const HousePublish = () => {
         header: {
           token: GlobalStore.userInfo.token,
         },
-        data: requestData
+        data: requestData,
       });
 
       if (response.statusCode === 200 && response.data.code === 0) {
         Taro.showToast({
-          title: pid ? '修改成功！' : '你已成功上传房源！房源正在等待审核，审核通过后将公众可见。',
+          title: pid
+            ? '修改成功！'
+            : '你已成功上传房源！房源正在等待审核，审核通过后将公众可见。',
           icon: 'none',
           duration: 2000,
         });
@@ -752,16 +775,21 @@ const HousePublish = () => {
               {formData.houseImages.length}/6张
             </Text>
           </View>
-          <Text className='description'>(请上传一些您的房子的美照，让Guest更方便的了解您的房源, 建议可以分别上传【厨房】、【卧室】、【公共区域】和【卫生间】的照片，全方位展示您的房源~)</Text>
+          <Text className='description'>
+            (请上传一些您的房子的美照，让Guest更方便的了解您的房源,
+            建议可以分别上传【厨房】、【卧室】、【公共区域】和【卫生间】的照片，全方位展示您的房源~)
+          </Text>
           <View className='image-upload'>
             {formData.houseImages.map((image, index) => (
               <View key={index} className='image-item'>
                 <Image src={image} mode='aspectFill' />
-                <View 
-                  className='delete-icon' 
-                  onClick={(e) => {
+                <View
+                  className='delete-icon'
+                  onClick={e => {
                     e.stopPropagation();
-                    const newImages = formData.houseImages.filter((_, i) => i !== index);
+                    const newImages = formData.houseImages.filter(
+                      (_, i) => i !== index,
+                    );
                     setFormData({ ...formData, houseImages: newImages });
                   }}
                 >
@@ -784,12 +812,11 @@ const HousePublish = () => {
             <Text>我家什么时候有空~*</Text>
             <View className='multi-days'>
               {multiDays.map((day, index) => (
-                <View
-                  key={index}
-                  className='multi-day active'
-                >
-                  <Text>{day[0]} - {day[1]}</Text>
-                  <View 
+                <View key={index} className='multi-day active'>
+                  <Text>
+                    {day[0]} - {day[1]}
+                  </Text>
+                  <View
                     className='delete-icon'
                     onClick={() => {
                       setMultiDays(multiDays.filter((_, i) => i !== index));
@@ -801,7 +828,9 @@ const HousePublish = () => {
               ))}
             </View>
           </View>
-          <Text className='description'>请选择所有您方便的Host时间段吧，请注意可以选择多个时间段！（也可以更改）越多越方便大家匹配哦~</Text>
+          <Text className='description'>
+            请选择所有您方便的Host时间段吧，请注意可以选择多个时间段！（也可以更改）越多越方便大家匹配哦~
+          </Text>
           <View className='date-select '>
             <AtCalendar
               isMultiSelect
@@ -864,9 +893,7 @@ const HousePublish = () => {
           <Text>了解更多</Text>
         </View>
         <View className='input-item'>
-          <Text className='label'>
-            想和Guest一起做的事？*
-          </Text>
+          <Text className='label'>想和Guest一起做的事？*</Text>
           <Textarea
             className='textarea'
             placeholder='说说你为什么想当Host?你期待和Guest一起做一些什么事情呢？相信你可以在ES找到同频的朋友~'
