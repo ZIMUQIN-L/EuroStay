@@ -4,5 +4,6 @@ export default {
     navigationBarTextStyle: 'black',
     enableShareAppMessage: true,
     enableShareTimeline: true,
+    enablePullDownRefresh: false,
   };
   
