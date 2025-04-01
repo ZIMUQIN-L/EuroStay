@@ -91,7 +91,33 @@ const TabBar: React.FC<TabBarProps> = ({ onWorldSelected, setIsShowPostModal, is
           return;
     }
       else {
-        setIsShowPostModal(true);
+        const response = Taro.request({
+            url: 'https://api.eurostay.co/app/esuser/getUserCompleteInfo',
+            method: 'POST',
+            header: {
+              'token': GlobalStore.userInfo.token,
+              'Content-Type': 'application/json'
+            },
+            success: (res) => {
+              if (res.data.result.email != "" && res.data.result.email != null) {
+                setIsShowPostModal(true);
+              }
+              else {
+                Taro.showModal({
+                    title: '请先认证邮箱哦~',
+                    content: '请先认证邮箱方便guest联系您时进行提醒呀~',
+                    success: function (res) {
+                      if (res.confirm) {
+                        Taro.navigateTo({
+                          url: '/packageUser/user-editing/index',
+                        });
+                      }
+                    }
+                  });
+              }
+            }
+          });
+        // setIsShowPostModal(true);
       }
       return;
     }
