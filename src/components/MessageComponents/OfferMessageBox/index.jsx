@@ -1,7 +1,7 @@
 import { View, Text, Button, Image } from '@tarojs/components'
 import Taro from '@tarojs/taro'
 import './index.scss'
-import extraImg from '@assets/images/test-paycode.jpg'
+// import extraImg from '@assets/images/test-paycode.jpg'
 import GlobalStore from '@store/GlobalStore'; 
 
 const OfferMessageBox = (props) => {
@@ -87,9 +87,9 @@ const OfferMessageBox = (props) => {
         <Text className='content'>{content}</Text>
         
         {/* 如果是左侧消息，则在按钮上方显示额外图片 */}
-        {direction === 'left' && (
+        {/* {direction === 'left' && (
           <Image className='extra-image' src={extraImg} />
-        )}
+        )} */}
         
         {/* 不同 direction，输出不同的按钮区域 */}
         {direction === 'right' ? (
