@@ -1,11 +1,11 @@
 export default {
   lazyCodeLoading: 'requiredComponents',
   pages: [
+    'pages/home-world/index',
     'pages/login/index',
     'pages/messages/index',
     'pages/user/index',
     'pages/orders/index',
-    'pages/home-world/index',
     'pages/house-publish/index',
     'pages/activity-publish/index',
     'pages/common-setting/index',

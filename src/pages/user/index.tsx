@@ -178,6 +178,20 @@ const UserProfile = () => {
   };
 
   const handleSayHello = () => {
+    if (GlobalStore.userInfo?.uid === 0) {
+        Taro.showModal({
+          title: '转至登录页面',
+          content: '请登录后联系别人~',
+          success: function (res) {
+            if (res.confirm) {
+              Taro.reLaunch({
+                url: `/pages/login/index`,
+              });
+            }
+          },
+        });
+        return;
+      }
     setShowHelloModal(true);
   };
 
@@ -232,6 +246,20 @@ const UserProfile = () => {
   };
 
   const handleLike = (item: PostedItem, type: number) => {
+    if (GlobalStore.userInfo?.uid === 0) {
+        Taro.showModal({
+          title: '转至登录页面',
+          content: '请登录后发送Like消息~',
+          success: function (res) {
+            if (res.confirm) {
+              Taro.reLaunch({
+                url: `/pages/login/index`,
+              });
+            }
+          },
+        });
+        return;
+      }
     setCurrentItem(item);
     setShowLikeModal(true);
     setCurrentType(type === 0 ? '发布的' : '参与的');
