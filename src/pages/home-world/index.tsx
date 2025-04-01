@@ -376,11 +376,41 @@ const HomeWorld = () => {
             activeTab={activeTab}
             isShowDateSelectProps={isShowDateSelect}
             onDateSelectChange={value => {
-              setIsShowDateSelect(value);
+                if (GlobalStore.userInfo?.uid === 0) {
+                    Taro.showModal({
+                      title: '转至登录页面',
+                      content: '请登录后选择~',
+                      success: function (res) {
+                        if (res.confirm) {
+                          Taro.reLaunch({
+                            url: `/pages/login/index`,
+                          });
+                        }
+                      },
+                    });
+                  }
+                  else {
+                    setIsShowDateSelect(value);
+                  }
             }}
             location_={location}
             onCitySelectChange={value => {
-              setIsShowCitySelect(value);
+                if (GlobalStore.userInfo?.uid === 0) {
+                    Taro.showModal({
+                      title: '转至登录页面',
+                      content: '请登录后选择~',
+                      success: function (res) {
+                        if (res.confirm) {
+                          Taro.reLaunch({
+                            url: `/pages/login/index`,
+                          });
+                        }
+                      },
+                    });
+                  }
+                  else {
+                    setIsShowCitySelect(value);
+                  }
             }}
             onCapacityChanged={value => {
               setCapacity(value);

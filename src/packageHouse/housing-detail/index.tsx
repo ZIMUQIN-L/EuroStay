@@ -54,6 +54,20 @@ const HouseDetail: React.FC = () => {
   Taro.setNavigationBarTitle({ title: Number(type) === 0 ? '房源详情' : '活动详情' });
 
   const handelCollect = () => {
+    if (GlobalStore.userInfo?.uid === 0) {
+        Taro.showModal({
+          title: '转至登录页面',
+          content: '请登录后收藏~',
+          success: function (res) {
+            if (res.confirm) {
+              Taro.reLaunch({
+                url: `/pages/login/index`,
+              });
+            }
+          },
+        });
+        return;
+      }
     if (!isStarred) { // 收藏
       Taro.request({
         url: Number(type) === 0 ? 'https://api.eurostay.co/app/property/addPropertyCollection' : 'https://api.eurostay.co/app/activity/addActivityCollection',
@@ -154,7 +168,13 @@ const HouseDetail: React.FC = () => {
     if (isComplete) return
     // 这里添加获取房源详情的逻辑
     Taro.request({
-      url: type === 0 ? 'https://api.eurostay.co/app/property/getPropertyDetail' : 'https://api.eurostay.co/app/activity/getActivityDetail',
+    url: GlobalStore.userInfo?.uid === 0 
+    ? (type === 0 
+        ? 'https://api.eurostay.co/app/property/getDefaultPropertyDetail' 
+        : 'https://api.eurostay.co/app/activity/getDefaultActivityDetail')
+    : (type === 0 
+        ? 'https://api.eurostay.co/app/property/getPropertyDetail' 
+        : 'https://api.eurostay.co/app/activity/getActivityDetail'),
       method: 'POST',
       header: {
         token: GlobalStore.userInfo.token,
@@ -173,6 +193,20 @@ const HouseDetail: React.FC = () => {
           tags: res.data.result.hostInfo.tags,
           buttonText: '打个招呼',
           buttonFunc: () => {
+            if (GlobalStore.userInfo?.uid === 0) {
+                Taro.showModal({
+                  title: '转至登录页面',
+                  content: '请登录后联系别人~',
+                  success: function (res) {
+                    if (res.confirm) {
+                      Taro.reLaunch({
+                        url: `/pages/login/index`,
+                      });
+                    }
+                  },
+                });
+                return;
+              }
             setShowLikeModal(true);
           }
         });
@@ -252,6 +286,20 @@ const HouseDetail: React.FC = () => {
   }
 
   const handleLike = () => {
+    if (GlobalStore.userInfo?.uid === 0) {
+        Taro.showModal({
+          title: '转至登录页面',
+          content: '请登录后发送点赞消息~',
+          success: function (res) {
+            if (res.confirm) {
+              Taro.reLaunch({
+                url: `/pages/login/index`,
+              });
+            }
+          },
+        });
+        return;
+      }
     setShowLikeModal(true)
   }
 
@@ -326,6 +374,20 @@ const HouseDetail: React.FC = () => {
   }
 
   const handleSubmit = () => {
+    if (GlobalStore.userInfo?.uid === 0) {
+        Taro.showModal({
+          title: '转至登录页面',
+          content: '请登录后提交申请~',
+          success: function (res) {
+            if (res.confirm) {
+              Taro.reLaunch({
+                url: `/pages/login/index`,
+              });
+            }
+          },
+        });
+        return;
+      }
     // check if startDate and endDate are selected
     if (GlobalStore.userInfo?.aboutMe === '' || GlobalStore.userInfo?.backgroundPic === '') {
       Taro.showModal({

@@ -9,6 +9,7 @@ class GlobalStore {
 
   constructor() {
     makeAutoObservable(this, {}, { autoBind: true });
+    this._currentTab = 'world';
 
     const stored = Taro.getStorageSync('userInfo');
     if (stored) {

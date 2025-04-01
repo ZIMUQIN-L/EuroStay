@@ -84,24 +84,9 @@ const HomepageCard = (props: {
             src={props.user.backgroundPic}
             className='user-pic'
             onClick={() => {
-              console.log(props.user);
-              if (GlobalStore.userInfo?.uid === 0) {
-                Taro.showModal({
-                  title: '转至登录页面',
-                  content: '请登录后查看~',
-                  success: function (res) {
-                    if (res.confirm) {
-                      Taro.reLaunch({
-                        url: `/pages/login/index`,
-                      });
-                    }
-                  },
-                });
-              } else {
                 Taro.navigateTo({
                   url: `/pages/user/index?uid=${props.user.uid}`,
                 });
-              }
             }}
           ></Image>
           <View className='homepage-card-bottom'>
@@ -131,23 +116,9 @@ const HomepageCard = (props: {
             src={props.activity.images?.[0]}
             className='user-pic'
             onClick={() => {
-              if (GlobalStore.userInfo?.uid === 0) {
-                Taro.showModal({
-                  title: '转至登录页面',
-                  content: '请登录后查看~',
-                  success: function (res) {
-                    if (res.confirm) {
-                      Taro.reLaunch({
-                        url: `/pages/login/index`,
-                      });
-                    }
-                  },
-                });
-              } else {
                 Taro.navigateTo({
                   url: `/packageHouse/housing-detail/index?id=${props.activity.id}&type=1`,
                 });
-              }
             }}
           ></Image>
           {props.activity.location && (
@@ -194,23 +165,9 @@ const HomepageCard = (props: {
             src={props.property.images?.[0]}
             className='user-pic'
             onClick={() => {
-              if (GlobalStore.userInfo?.uid === 0) {
-                Taro.showModal({
-                  title: '转至登录页面',
-                  content: '请登录后查看~',
-                  success: function (res) {
-                    if (res.confirm) {
-                      Taro.reLaunch({
-                        url: `/pages/login/index`,
-                      });
-                    }
-                  },
-                });
-              } else {
                 Taro.navigateTo({
                   url: `/packageHouse/housing-detail/index?id=${props.property.id}&type=0`,
                 });
-              }
             }}
           ></Image>
           {props.property.location && (

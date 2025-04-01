@@ -95,6 +95,8 @@ const Index = () => {
         page: currentPage,
       },
       success: function (response) {
+          console.log(GlobalStore.userInfo.token);
+          console.log(response);
         if (response.statusCode === 200 && response.data.code === 0) {
           const newData = response.data.result.data;
           // console.log('newData', newData);
