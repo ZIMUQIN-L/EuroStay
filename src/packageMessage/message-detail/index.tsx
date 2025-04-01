@@ -61,7 +61,7 @@ const MessageDetail = () => {
           ...msg.data,
           fromUid: currentUid === msg.data.toUid ? msg.data.fromUid : currentUid,
           id: Date.now(), // 临时生成id
-          mtype: msg.type,
+          mtype: msg.mType,
           createTime: new Date().toISOString()
         }, currentUid);
   
@@ -119,7 +119,7 @@ const MessageDetail = () => {
     // 格式化时间 (只保留小时:分钟)
     let time = '';
     try {
-      const time = formatTime(msg.createTime); // 抽离出安全的函数
+      time = formatTime(msg.createTime); // 抽离出安全的函数
       // 其他处理...
     } catch (e) {
       console.error('createMessageObject 内部报错：', e, msg);
@@ -228,7 +228,10 @@ const MessageDetail = () => {
         messageObj.data = {
           ...messageObj.data,
           toUid: msg.toUid,
-          content: msg.content || ''
+          fromUid: msg.fromUid,
+          subjectId: msg.subjectId,
+          isProperty: msg.isProperty,
+          content: msg.content || 'https://via.placeholder.com/150' // fallback 占位图
         };
         break;
     }
@@ -270,7 +273,7 @@ const MessageDetail = () => {
           const otherUid = firstMsg.fromUid === currentUid ? firstMsg.toUid : firstMsg.fromUid;
           setOtherUserId(otherUid);
         }
-  
+        // console.log("record", records);
         const formattedMessages = records.map(msg =>
           createMessageObject(msg, currentUid)
         );
@@ -510,6 +513,7 @@ const MessageDetail = () => {
   
   // 根据不同的 type 来渲染对应的组件
   const renderMessage = (msg) => {
+    // console.log("renderMessage", msg.type);
     const avatar = getAvatar(msg)
     switch (msg.type) {
       case 'request':
