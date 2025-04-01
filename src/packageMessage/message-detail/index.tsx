@@ -6,6 +6,8 @@ import RequestMessageBox from '@components/MessageComponents/RequestMessageBox'
 import RejectMessageFromHostBox from '@components/MessageComponents/RejectMessageFromHostBox'
 import RejectMessageFromGuestBox from '@components/MessageComponents/RejectMessageFromGuestBox'
 import OfferMessageBox from '@components/MessageComponents/OfferMessageBox'
+import PictureMessageBox from '@components/MessageComponents/PictureMessageBox'
+
 import './index.scss'
 import CustomNavBar from '@components/MessageComponents/message-detail-nav-bar'
 import Taro from '@tarojs/taro'
@@ -469,6 +471,7 @@ const MessageDetail = () => {
         case 5: return 'contact';
         case 6: return 'reject-fg';
         case 7: return 'simple';
+        case 8: return 'pic';
         default: return 'simple';
       }
     };
@@ -551,22 +554,22 @@ const MessageDetail = () => {
             direction={msg.direction}
           />
         )
-        case 'offer':
-          return (
-            <OfferMessageBox
-              avatar={avatar}
-              isProperty={msg.data.isProperty}
-              content={msg.data.content}
-              hostname={msg.data.hostname}
-              applicantname={msg.data.applicantname}
-              time={msg.data.time}
-              price={msg.data.price}
-              direction={msg.direction}
-              subjectId={msg.data.subjectId}  // 传递 subjectId
-              hostUid={msg.data.hostUid}      // 传递 hostUid
-              active={msg.active}
-            />
-          )
+      case 'offer':
+        return (
+          <OfferMessageBox
+            avatar={avatar}
+            isProperty={msg.data.isProperty}
+            content={msg.data.content}
+            hostname={msg.data.hostname}
+            applicantname={msg.data.applicantname}
+            time={msg.data.time}
+            price={msg.data.price}
+            direction={msg.direction}
+            subjectId={msg.data.subjectId}  // 传递 subjectId
+            hostUid={msg.data.hostUid}      // 传递 hostUid
+            active={msg.active}
+          />
+        )
       case 'contact':
         return (
           <ContactMessageBox
@@ -574,7 +577,17 @@ const MessageDetail = () => {
             time={msg.data.time}
             direction={msg.direction}
           />
-        )       
+        )
+      case 'pic':
+        return (
+          <PictureMessageBox
+            avatar={avatar}
+            time={msg.data.time}
+            direction={msg.direction}
+            content={msg.data.content}
+          />
+        );
+        
       default:
         return (
           <SimpleMessageBox

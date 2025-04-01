@@ -1,7 +1,7 @@
 import { View, Text, Button, Image } from '@tarojs/components'
 import Taro from '@tarojs/taro'
 import './index.scss'
-import extraImg from '@assets/images/test-paycode.jpg'
+// import extraImg from '@assets/images/test-paycode.jpg'
 import GlobalStore from '@store/GlobalStore'; 
 
 const OfferMessageBox = (props) => {
@@ -19,7 +19,7 @@ const OfferMessageBox = (props) => {
     singleButtonText = '点击查看'
   } else {
     // 左侧消息（通常表示"对方"或"房主"）
-    content = `${hostname}已通过你的换宿申请，请点击下方按钮确认你将入住此房屋，并扫下方二维码支付此次换宿费用${price}`
+    content = `${hostname}已通过你的换宿申请，请点击下方按钮确认你将入住此房屋，并扫下方二维码支付此次换宿费用`
     leftButtonText = '前往付款'
     rightButtonText = '前往拒绝'
   }
@@ -87,9 +87,9 @@ const OfferMessageBox = (props) => {
         <Text className='content'>{content}</Text>
         
         {/* 如果是左侧消息，则在按钮上方显示额外图片 */}
-        {direction === 'left' && (
+        {/* {direction === 'left' && (
           <Image className='extra-image' src={extraImg} />
-        )}
+        )} */}
         
         {/* 不同 direction，输出不同的按钮区域 */}
         {direction === 'right' ? (
