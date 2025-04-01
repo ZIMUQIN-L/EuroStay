@@ -19,7 +19,7 @@ const OfferMessageBox = (props) => {
     singleButtonText = '点击查看'
   } else {
     // 左侧消息（通常表示"对方"或"房主"）
-    content = `${hostname}已通过你的换宿申请，请点击下方按钮确认你将入住此房屋，并扫下方二维码支付此次换宿费用${price}`
+    content = `${hostname}已通过你的换宿申请，请点击下方按钮确认你将入住此房屋，并扫下方二维码支付此次换宿费用`
     leftButtonText = '前往付款'
     rightButtonText = '前往拒绝'
   }
