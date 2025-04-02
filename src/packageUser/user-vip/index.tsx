@@ -143,7 +143,7 @@ const UserVip = () => {
 
           <View 
             className={`option-card yearly ${selectedPlan === 'yearly' ? 'selected' : ''}`}
-            onClick={() => setSelectedPlan('yearly')}
+            // onClick={() => setSelectedPlan('yearly')}
           >
             <Image className='bg-image' src={bgYearly} />
             <View className='price-info'>
@@ -151,8 +151,8 @@ const UserVip = () => {
                 <Text className='label'>年度会员</Text>
                 <View className='price'>
                   <Text className='currency'>€</Text>
-                  <Text className='amount'>19.9</Text>
-                  <Text className='unit'>/年</Text>
+                  <Text className='amount'>正在上架中</Text>
+                  <Text className='unit'></Text>
                 </View>
               </View>
               {/* <View className='right'>
