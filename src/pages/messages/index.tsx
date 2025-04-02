@@ -39,6 +39,7 @@ const Index = () => {
   const [systemMessages, setSystemMessages] = useState<MessageItem[]>([]);
   const [strangerMessages, setStrangerMessages] = useState<MessageItem[]>([]);
   const [messages, setMessages] = useState<MessageItem[]>([]);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   
   // Mock 数据 - 用于测试
   // const mockNormalMessages = [
@@ -73,23 +74,23 @@ const Index = () => {
   const [isShowPostModal, setIsShowPostModal] = useState(false);
 
   useEffect(() => {
-    // 获取 token
-    const token = GlobalStore.userInfo.token;
-    const uid = GlobalStore.userInfo.uid;
-    
-    // 判断是否在开发环境中使用mock数据
-    const useMockData = process.env.NODE_ENV === 'development' || !token;
-    
-    if (useMockData) {
-      // 使用mock数据
-      // setMessages(mockNormalMessages);
-      // setSystemMessages(mockSystemMessages);
-    }
-    
-    // 不管是否使用mock数据，都调用fetchMessages获取陌生人数据
-    fetchMessages(useMockData);
-  }, [GlobalStore.wsMessageCounter]); // 空数组确保只在组件初次挂载时执行
+    checkLoginStatus();
+  }, [GlobalStore.wsMessageCounter]);
 
+  const checkLoginStatus = () => {
+    const loggedIn = Boolean(GlobalStore.userInfo?.uid && GlobalStore.userInfo?.uid !== 0);
+    setIsLoggedIn(loggedIn);
+    if (loggedIn) {
+      GlobalStore.connectWebSocket(GlobalStore.userInfo.token);
+      fetchMessages();
+    }
+  };
+
+  const handleLogin = () => {
+    Taro.navigateTo({
+      url: '/pages/login/index'
+    });
+  };
 
   const fetchMessages = async () => {
     const token = GlobalStore.userInfo.token;
@@ -245,72 +246,96 @@ const Index = () => {
     type: 'system'
   } : null;
 
+  const renderContent = () => {
+    if (!isLoggedIn) {
+      return (
+        <View className='message-list'>
+          <View className='empty-container'>
+            <Text className='empty-text'>暂无消息</Text>
+          </View>
+        </View>
+      );
+    }
+
+    return (
+      <View className='message-list'>
+        {/* 陌生人入口 */}
+        {strangerEntry && (
+          <View
+            className='message-item special-item'
+            key={strangerEntry.id}
+            onClick={() => handleSpecialItemClick(strangerEntry)}
+          >
+            <View className='avatar-container'>
+              <Image className='avatar' src={strangerEntry.avatar} />
+            </View>
+            <View className='message-content'>
+              <View className='message-header'>
+                <Text className='name'>{strangerEntry.name}</Text>
+                <Text className='time'>{strangerEntry.time}</Text>
+              </View>
+              <Text className='message-text'>{strangerEntry.message}</Text>
+            </View>
+          </View>
+        )}
+
+        {/* 系统消息入口 */}
+        {systemEntry && (
+          <View
+            className='message-item special-item'
+            key={systemEntry.id}
+            onClick={() => handleSpecialItemClick(systemEntry)}
+          >
+            <View className='avatar-container'>
+              <Image className='avatar' src={systemEntry.avatar} />
+            </View>
+            <View className='message-content'>
+              <View className='message-header'>
+                <Text className='name'>{systemEntry.name}</Text>
+                <Text className='time'>{systemEntry.time}</Text>
+              </View>
+              <Text className='message-text'>{systemEntry.message}</Text>
+            </View>
+          </View>
+        )}
+
+        {/* 普通消息列表 */}
+        {messages.map((item) => (
+          <View
+            className='message-item'
+            key={item.id}
+            onClick={() => handleItemClick(item.id, item.name)}
+          >
+            <Image className='avatar' src={item.otherAvatar} />
+            <View className='message-content'>
+              <View className='message-header'>
+                <Text className='name'>{item.name}</Text>
+                <Text className='time'>{item.time}</Text>
+              </View>
+              <Text className='message-text'>
+                {item.rawData.content.length > 20
+                  ? `${item.rawData.content.slice(0, 20)}...`
+                  : item.rawData.content}
+              </Text>
+            </View>
+          </View>
+        ))}
+      </View>
+    );
+  };
+
   return (
     <View className='home-messages'>
+      {renderContent()}
       
-      {/* 陌生人入口 */}
-      {strangerEntry && (
-        <View
-          className='message-item special-item'
-          key={strangerEntry.id}
-          onClick={() => handleSpecialItemClick(strangerEntry)}
-        >
-          <View className='avatar-container'>
-            <Image className='avatar' src={strangerEntry.avatar} />
-          </View>
-          <View className='message-content'>
-            <View className='message-header'>
-              <Text className='name'>{strangerEntry.name}</Text>
-              <Text className='time'>{strangerEntry.time}</Text>
-            </View>
-            <Text className='message-text'>{strangerEntry.message}</Text>
+      {!isLoggedIn && (
+        <View className='login-container'>
+          <View className='login-btn' onClick={handleLogin}>
+            <Text>登录查看</Text>
           </View>
         </View>
       )}
 
-      {/* 系统消息入口 */}
-      {systemEntry && (
-        <View
-          className='message-item special-item'
-          key={systemEntry.id}
-          onClick={() => handleSpecialItemClick(systemEntry)}
-        >
-          <View className='avatar-container'>
-            <Image className='avatar' src={systemEntry.avatar} />
-          </View>
-          <View className='message-content'>
-            <View className='message-header'>
-              <Text className='name'>{systemEntry.name}</Text>
-              <Text className='time'>{systemEntry.time}</Text>
-            </View>
-            <Text className='message-text'>{systemEntry.message}</Text>
-          </View>
-        </View>
-      )}
-
-      {/* 普通消息列表 */}
-      {messages.map((item) => (
-        <View
-          className='message-item'
-          key={item.id}
-          onClick={() => handleItemClick(item.id, item.name)}
-        >
-          <Image className='avatar' src={item.otherAvatar} />
-          <View className='message-content'>
-            <View className='message-header'>
-              <Text className='name'>{item.name}</Text>
-              <Text className='time'>{item.time}</Text>
-            </View>
-            <Text className='message-text'>
-              {item.rawData.content.length > 20
-                ? `${item.rawData.content.slice(0, 20)}...`
-                : item.rawData.content}
-            </Text>
-          </View>
-        </View>
-      ))}
-
-      {/* 添加 TabBar */}
       <TabBar 
         onWorldSelected={() => {}}
         isShowPostModal={isShowPostModal}

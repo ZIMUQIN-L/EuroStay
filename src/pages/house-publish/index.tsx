@@ -930,9 +930,21 @@ const HousePublish = () => {
             {formData.paymentImages.map((image, index) => (
               <View key={index} className='image-item'>
                 <Image src={image} mode='aspectFill' />
+                <View
+                  className='delete-icon'
+                  onClick={e => {
+                    e.stopPropagation();
+                    const newImages = formData.paymentImages.filter(
+                      (_, i) => i !== index,
+                    );
+                    setFormData({ ...formData, paymentImages: newImages });
+                  }}
+                >
+                  ×
+                </View>
               </View>
             ))}
-            {formData.paymentImages.length == 0 && (
+            {formData.paymentImages.length < 1 && (
               <View
                 className='upload-button'
                 onClick={() => {

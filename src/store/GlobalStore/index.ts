@@ -189,7 +189,7 @@ class GlobalStore {
     async sendWebSocketMessage(data: any) {
       if (!this._socket) {
         console.warn('WebSocket 未连接，尝试重新连接并发送消息...');
-        // await this.reconnectAndSend(data);
+        await this.connectWebSocket(this._userInfo.token);
         return;
       }
     

@@ -146,9 +146,14 @@ const HouseDetail: React.FC = () => {
         start.setDate(start.getDate() + 1)
         end.setDate(end.getDate() + 1)
         // console.log('getValidDates', start, end)
+        console.log('today: ', today)
+        let today_date = new Date(today.replace('-', '/').replace('-', '/'))
         for (let j = start; j <= end; j.setDate(j.getDate() + 1)) {
-          valid.push({value: j.toISOString().substring(0, 10).replace('-', '/').replace('-', '/')});
-          // console.log('adding date to valid date: ', j.toISOString().substring(0, 10).replace('-', '/').replace('-', '/'))
+          if (j < today_date) {
+            continue;
+          } else {
+            valid.push({value: j.toISOString().substring(0, 10).replace('-', '/').replace('-', '/')});
+          }
         }
       }
       // setValid(dates.map(date => {
@@ -580,7 +585,7 @@ const HouseDetail: React.FC = () => {
             <AtCalendar
               isMultiSelect
               validDates={getValidDates(order.availableDate)}
-              minDate={today}
+              // minDate={today}
               currentDate={{ start: startDate, end: endDate }}
               onDayClick={date => {
                 const selectedDate = date.value;
