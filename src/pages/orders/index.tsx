@@ -167,10 +167,16 @@ const Index = () => {
   //   setHasMore(true);
   // }, [activeRole, currentTab]);
 
+  useDidShow(() => {
+    console.log('useDidShow');
+    if (activeRole === 'host') getOrderList(setOrderListHost, 0);
+    else getOrderList(setOrderListGuest, 1);
+  });
+
   useEffect(() => {
     getOrderList(setOrderListHost, 0);
     getOrderList(setOrderListGuest, 1);
-    Taro.stopPullDownRefresh()
+    // Taro.stopPullDownRefresh()
   }, []);
 
   useDidShow(() => {
