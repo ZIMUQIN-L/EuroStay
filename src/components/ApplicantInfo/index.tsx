@@ -21,74 +21,67 @@ const ApplicantInfo = ({
         </View>
         
         <View className='info-card-table-row'>
-          <View className='info-card-table-key'>
+          <View className='info-card-key'>
             申请人名称
-            <View className='info-card-table-value'>
-              {name}
-            </View>
+          </View>
+          <View className='info-card-value'>
+            {name}
           </View>
         </View>
 
         <View className='info-card-table-row'>
-          <View className='info-card-table-key'>
+          <View className='info-card-key'>
             申请人ID
-            <View className='info-card-table-value'>
-              {id}
-            </View>
+          </View>
+          <View className='info-card-value'>
+            {id}
           </View>
         </View>
 
         <View className='info-card-table-row'>
-          <View className='info-card-table-key'>
+          <View className='info-card-key'>
             性别
-            <View className='info-card-table-value'>
-              {gender}
-            </View>
+          </View>
+          <View className='info-card-value'>
+            {gender}
           </View>
         </View>
 
         <View className='info-card-table-row'>
-          <View className='info-card-table-key'>
+          <View className='info-card-key'>
             身份
-            <View className='info-card-table-value'>
-              {identity}
-            </View>
+          </View>
+          <View className='info-card-value'>
+            {identity}
           </View>
         </View>
 
         <View className='info-card-table-row'>
-          <View className='info-card-table-key'>
+          <View className='info-card-key'>
             自我介绍
-            <View className='info-card-table-value'>
-              {selfIntroduction}
-            </View>
-            {/* <Textarea 
-              className='info-card-table-value'
-              autoHeight
-              disabled
-            >
-              {selfIntroduction}
-            </Textarea> */}
+          </View>
+          <View className='info-card-value'>
+            {selfIntroduction}
           </View>
         </View>
 
         {type === 0 &&
           <View className='info-card-table-row'>
-            <View className='info-card-table-key'>
+            <View className='info-card-key'>
               换宿人数
-              <View className='info-card-table-value'>
-                {numberOfGuests}人
-              </View>
+            </View>
+            <View className='info-card-value'>
+              {numberOfGuests}人
             </View>
           </View>
         }
 
         <View className='info-card-table-row'>
-          <View className='info-card-table-key'>
+          <View className='info-card-key'>
             {type === 0 ? '换宿' : '申请'}原因
-            <View className='info-card-table-value'>
-              {reason}
-            </View>
+          </View>
+          <View className='info-card-value'>
+            {reason}
           </View>
         </View>
       </View>

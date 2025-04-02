@@ -13,6 +13,7 @@
     position: relative;
 
     .info-card-header {
+        margin-bottom: 36px;
         font-family: 'Alibaba PuHuiTi';
         font-weight: 540;
         height: 40px;
@@ -50,37 +51,48 @@
 
     .info-card-table-row {
         display: flex;
-        height: 40px;
-        width: 100%;
+        min-height: 40px;
+        min-width: 100%;
         justify-content: space-between;
+        // text-align: right;
         padding-bottom: 24px;
+        height: fit-content;
+        flex-direction: row;
 
-        .info-card-table-key {
+        .info-card-value {
+            display: flex;
             font-family: 'Alibaba PuHuiTi';
             font-weight: 500;
-            position: relative;
+            // position: relative;
+            top: 24px;
+            right: 0px; 
+            width: 70%;
+            // max-width: 30%;
+            // display: flex;
+            // margin: 10px auto;
+            // margin-top: 24px;
+            color: #333333;
+            font-size: 26px;
+            height: fit-content;
+            // text-align: right;
+            align-content: right;
+        }
+
+        .info-card-key {
+            display: flex;
+            font-family: 'Alibaba PuHuiTi';
+            font-weight: 500;
+            // position: relative;
             top: 24px;
             left: 0px; 
-            width: 100%;
+            width: 30%;
             // max-width: 30%;
             // display: flex;
             // margin: 10px auto;
             // margin-top: 24px;
             color: #7A63C7;
             font-size: 26px;
-
-            .info-card-table-value {
-                font-family: 'Alibaba PuHuiTi';
-                position: absolute;
-                top: 0px;
-                right: 0px;
-                max-width: 70%;
-                // display: flex;
-                // margin: 10px auto;
-                // margin-top: 24px;
-                color: #333333;
-                font-size: 26px;
-            }
+            height: fit-content;
         }
     }
 
@@ -128,6 +140,8 @@
             top: 0px;
             left: 0px;
             border-bottom: 2px solid #f5f5f5;
+            line-clamp: 5;
+            -webkit-box-orient: vertical;
         }
         .info-card-options {
             display: flex;
