@@ -61,10 +61,10 @@ const MessageDetail = () => {
           ...msg.data,
           fromUid: currentUid === msg.data.toUid ? msg.data.fromUid : currentUid,
           id: Date.now(), // 临时生成id
-          mtype: msg.mType,
+          mtype: msg.data.mType,
           createTime: new Date().toISOString()
         }, currentUid);
-  
+
         setMessages(prev => [...prev, newMessage]);
         setShouldScrollBottom(true);
       }
@@ -150,7 +150,6 @@ const MessageDetail = () => {
         time: time
       }
     };
-    
     // 为不同类型的消息添加特定字段
     switch(messageType) {
       case 'simple':
