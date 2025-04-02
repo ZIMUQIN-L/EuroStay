@@ -81,6 +81,7 @@ const Index = () => {
     const loggedIn = Boolean(GlobalStore.userInfo?.uid && GlobalStore.userInfo?.uid !== 0);
     setIsLoggedIn(loggedIn);
     if (loggedIn) {
+      GlobalStore.connectWebSocket(GlobalStore.userInfo.token);
       fetchMessages();
     }
   };
