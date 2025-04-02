@@ -53,8 +53,10 @@ const TabBar: React.FC<TabBarProps> = ({ onWorldSelected, setIsShowPostModal, is
     if (page === 'post') {
       if (GlobalStore.userInfo?.uid === 0) {
         Taro.showModal({
-          title: '转至登录页面',
+          title: '未登录无法发布信息哦~',
           content: '请登录后进行上传~',
+          confirmText: '前往登录',
+          cancelText: '我再看看',
           success: function (res) {
             if (res.confirm) {
               Taro.reLaunch({
@@ -126,22 +128,6 @@ const TabBar: React.FC<TabBarProps> = ({ onWorldSelected, setIsShowPostModal, is
       if (onWorldSelected) {
         onWorldSelected();
       }
-    } else if (page === 'user' && GlobalStore.userInfo?.uid === 0) {
-      Taro.showModal({
-        title: '页面需要登录哦~',
-        content: '请登录后查看个人主页~',
-        success: function (res) {
-          if (res.confirm) {
-            Taro.reLaunch({
-              url: `/pages/login/index`,
-            });
-          } else if (res.cancel) {
-            Taro.switchTab({
-              url: `/pages/home-world/index`,
-            });
-          }
-        },
-      });
     } else {
       GlobalStore.currentTab = page;
       if (page === "world") {
@@ -155,23 +141,9 @@ const TabBar: React.FC<TabBarProps> = ({ onWorldSelected, setIsShowPostModal, is
           });
       }
       else {
-        if (GlobalStore.userInfo?.uid === 0) {
-          Taro.showModal({
-            title: '页面需要登录哦~',
-            content: '请登录后查看~',
-            success: function (res) {
-              if (res.confirm) {
-                Taro.reLaunch({
-                  url: `/pages/login/index`,
-                });
-              }
-            }
-          });
-        } else {
-          Taro.switchTab({
+        Taro.switchTab({
             url: `/pages/${page}/index`,
           });
-        }
       }
     }
   };

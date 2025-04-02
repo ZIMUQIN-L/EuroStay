@@ -16,27 +16,21 @@ import './index.scss';
 
 const UserSetting = () => {
   const [isShowPostModal, setIsShowPostModal] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
     checkLoginStatus();
   }, []);
 
   const checkLoginStatus = () => {
-    if (!GlobalStore.userInfo?.uid || GlobalStore.userInfo?.uid == 0) {
-      Taro.showModal({
-        title: '您还未登录',
-        content: '点击登录以使用更多功能',
-        confirmText: '前往登录',
-        confirmColor: '#8A70D6',
-        success: function (res) {
-          if (res.confirm) {
-            Taro.navigateTo({
-              url: '/pages/login/index'
-            });
-          }
-        }
-      });
-    }
+    const loggedIn = Boolean(GlobalStore.userInfo?.uid && GlobalStore.userInfo?.uid !== 0);
+    setIsLoggedIn(loggedIn);
+  };
+
+  const handleLogin = () => {
+    Taro.navigateTo({
+      url: '/pages/login/index'
+    });
   };
 
   const handleLogout = () => {
@@ -75,10 +69,10 @@ const UserSetting = () => {
       path: `/pages/user/index?uid=${GlobalStore.userInfo.uid}`
     },
     {
-        icon: starIcon,
-        text: '我的收藏',
-        path: '/packageUser/user-collection/index'
-      },
+      icon: starIcon,
+      text: '我的收藏',
+      path: '/packageUser/user-collection/index'
+    },
     {
       icon: infoIcon,
       text: '关于ES',
@@ -91,6 +85,18 @@ const UserSetting = () => {
     }
   ];
 
+  const handleMenuClick = (path: string) => {
+    if (!isLoggedIn) {
+      Taro.showToast({
+        title: '请先登录',
+        icon: 'none',
+        duration: 500
+      });
+      return;
+    }
+    Taro.navigateTo({ url: path });
+  };
+
   return (
     <View className={`page-container ${isShowPostModal ? 'modal' : ''}`}>
       <View className='user-setting'>
@@ -100,40 +106,42 @@ const UserSetting = () => {
           <View className='user-info'>
             <Image 
               className='avatar' 
-              src={GlobalStore.userInfo.avatar || 'default-avatar-url'} 
+              src={isLoggedIn ? GlobalStore.userInfo.avatar : 'https://eurostay-1330475057.cos.eu-frankfurt.myqcloud.com/sys/loading.png'} 
               mode='aspectFill'
             />
             <View className='info-text'>
-              <Text className='username'>{GlobalStore.userInfo.username || '未设置昵称'}</Text>
-              <Text className='user-id'>ES code：{formatUid(GlobalStore.userInfo.uid || 0)}</Text>
+              <Text className='username'>{isLoggedIn ? GlobalStore.userInfo.username : 'ES游客'}</Text>
+              <Text className='user-id'>ES code：{isLoggedIn ? formatUid(GlobalStore.userInfo.uid) : '未登录'}</Text>
             </View>
-            <View className='edit-btn' onClick={() => Taro.navigateTo({ url: '/packageUser/user-editing/index' })}>
-              <Image className='edit-icon' src={editIcon} mode='aspectFit' />
-            </View>
+            {isLoggedIn && (
+              <View className='edit-btn' onClick={() => Taro.navigateTo({ url: '/packageUser/user-editing/index' })}>
+                <Image className='edit-icon' src={editIcon} mode='aspectFit' />
+              </View>
+            )}
           </View>
         </View>
 
         {/* VIP卡片 */}
         <View 
-          className={`vip-card ${GlobalStore.userInfo.isVip ? 'not-vip' : ''}`} 
-          onClick={() => Taro.navigateTo({ url: '/packageUser/user-vip/index' })}
+          className={`vip-card ${!isLoggedIn || !GlobalStore.userInfo.isVip ? 'not-vip' : ''}`} 
+          onClick={() => isLoggedIn && Taro.navigateTo({ url: '/packageUser/user-vip/index' })}
         >
           <Image 
             className='vip-bg' 
             src={vipCard}
             mode='aspectFill' 
           />
-          {!GlobalStore.userInfo.isVip && <View className='vip-mask' />}
+          {(!isLoggedIn || !GlobalStore.userInfo.isVip) && <View className='vip-mask' />}
           <View className='vip-content'>
             <View className='vip-info'>
               <Text className='vip-title'>
-                {GlobalStore.userInfo.isVip ? 'Eurostay 包月会员' : '开通会员享专属权益'}
+                {isLoggedIn && GlobalStore.userInfo.isVip ? 'Eurostay 包月会员' : '开通会员享专属权益'}
               </Text>
               <Text className='vip-level'>
-                {GlobalStore.userInfo.isVip ? 'LV.1' : ''}
+                {isLoggedIn && GlobalStore.userInfo.isVip ? 'LV.1' : ''}
               </Text>
               <Text className='vip-link'>
-                {GlobalStore.userInfo.isVip ? '会员中心 ›' : '立即开通 ›'}
+                {isLoggedIn && GlobalStore.userInfo.isVip ? '会员中心 ›' : '立即开通 ›'}
               </Text>
             </View>
           </View>
@@ -145,7 +153,7 @@ const UserSetting = () => {
             <View 
               key={item.text}
               className='menu-item'
-              onClick={() => Taro.navigateTo({ url: item.path })}
+              onClick={() => handleMenuClick(item.path)}
             >
               <View className='menu-left'>
                 <Image className='menu-icon' src={item.icon} mode='aspectFit' />
@@ -158,8 +166,8 @@ const UserSetting = () => {
 
         {/* 退出登录按钮容器 */}
         <View className='logout-container'>
-          <View className='logout-btn' onClick={handleLogout}>
-            <Text>退出登录</Text>
+          <View className='logout-btn' onClick={isLoggedIn ? handleLogout : handleLogin}>
+            <Text>{isLoggedIn ? '退出登录' : '点击登录'}</Text>
           </View>
         </View>
       </View>

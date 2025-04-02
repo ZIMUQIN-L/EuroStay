@@ -16,13 +16,13 @@ const ContactMessageBox = (props) => {
     buttonText = '联系小助手'
   } else {
     // 左侧消息（通常表示“对方”或“房主”）
-    content = `${name || '对方'}已确认将入住此房屋。需要任何后续帮助请联系小助手:`
+    content = `对方已确认将入住此房屋。需要任何后续帮助请联系小助手:`
     buttonText = '联系小助手'
   }
 
 
   const handleClick = () => {
-    Taro.showToast({ title: `处理申请, toUid=${toUid}, subjectId=${subjectId}`, icon: 'none' })
+    Taro.navigateTo({url: '/packageUser/user-contact/index'});
   }
 
 

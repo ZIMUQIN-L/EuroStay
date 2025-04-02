@@ -129,7 +129,7 @@
 .orders-page {
   background: #ffffff;
   min-height: 100vh;
-  padding-bottom: 120px; // 为底部 TabBar 留出空间
+  padding-bottom: 120px;
 
   &.modal {
     &::after {
@@ -146,16 +146,57 @@
 
   .order-list-scrollable {
     background-color: #ffffff;
-    overflow-y: auto; // auto, visible, hidden
-    // overflow-x: hidden;
+    overflow-y: auto;
     position: relative;
-    // overflow-x: hidden;
-    // position: absolute;
     top: 0px;
-    // top: 180px;
-    // padding-top: 180px;
-    // margin-bottom: 200px;
     padding-bottom: 150px;
+  }
+
+  .empty-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 300px;
+    width: 100%;
+
+    .empty-text {
+      font-family: 'Alibaba PuHuiTi';
+      font-size: 28px;
+      color: #999999;
+    }
+  }
+
+  .login-container {
+    position: fixed;
+    bottom: 120px;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    background: #ffffff;
+    z-index: 99;
+
+    .login-btn {
+        width: 500px;
+        height: 80px;
+        background: #FFFFFF;
+      border-radius: 44px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Alibaba PuHuiTi';
+      font-size: 32px;
+      color: #8A70D6;
+      border: 2px solid #8A70D6;
+      box-shadow: 0 4px 12px rgba(138, 112, 214, 0.1);
+      margin-bottom: 120px;
+
+      &:active {
+        opacity: 0.8;
+      }
+    }
   }
 
   // ... 其他样式保持不变 ...

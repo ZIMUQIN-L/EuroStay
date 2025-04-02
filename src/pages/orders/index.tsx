@@ -11,12 +11,31 @@ import { set } from 'mobx';
 
 const Index = () => {
   const [currentTab, setCurrentTab] = useState('all');
-
   const [activeRole, setActiveRole] = useState<'host' | 'guest'>('host');
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const handleRoleChange = (role: 'host' | 'guest') => {
     setActiveRole(role);
     tabTitle();
+  };
+
+  useEffect(() => {
+    checkLoginStatus();
+  }, []);
+
+  const checkLoginStatus = () => {
+    const loggedIn = Boolean(GlobalStore.userInfo?.uid && GlobalStore.userInfo?.uid !== 0);
+    setIsLoggedIn(loggedIn);
+    if (loggedIn) {
+      getOrderList(setOrderListHost, 0);
+      getOrderList(setOrderListGuest, 1);
+    }
+  };
+
+  const handleLogin = () => {
+    Taro.navigateTo({
+      url: '/pages/login/index'
+    });
   };
 
   // 添加页码和加载状态
@@ -155,18 +174,23 @@ const Index = () => {
   }, []);
 
   useDidShow(() => {
-    getOrderList(setOrderListHost, 0);
-    getOrderList(setOrderListGuest, 1);
+    checkLoginStatus();
   });
 
-
   const renderContent = () => {
-    console.log('renderContent');
+    if (!isLoggedIn) {
+      return (
+        <View className='order-list-scrollable'>
+          <View className='empty-container'>
+            <Text className='empty-text'>暂无订单数据</Text>
+          </View>
+        </View>
+      );
+    }
+
     if (activeRole === 'host') {
-      console.log('renderHostContent', orderListHost);
       return renderHostContent();
     } else {
-      console.log('renderGuestContent');
       return renderGuestContent();
     }
   };
@@ -273,9 +297,6 @@ const Index = () => {
         >
           <View className={`order-tab ${isActive('awaiting')}`}>
             待审核
-            {/* <View className='order-badge'>
-              1
-            </View> */}
           </View>
         </View>
 
@@ -285,9 +306,6 @@ const Index = () => {
         >
           <View className={`order-tab ${isActive('ongoing')}`}>
             进行中
-            {/* <View className='order-badge'>
-              3
-            </View> */}
           </View>
         </View>
 
@@ -306,7 +324,15 @@ const Index = () => {
         </View>
       </View>
 
-      <View className='order-list-scrollable'>{renderContent()}</View>
+      {renderContent()}
+
+      {!isLoggedIn && (
+        <View className='login-container'>
+          <View className='login-btn' onClick={handleLogin}>
+            <Text>登录查看</Text>
+          </View>
+        </View>
+      )}
 
       <TabBar
         onWorldSelected={() => {}}
