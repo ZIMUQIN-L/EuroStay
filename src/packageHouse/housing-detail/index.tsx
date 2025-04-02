@@ -138,7 +138,7 @@ const HouseDetail: React.FC = () => {
   }
 
   const getValidDates = (dates: Array<string>) => {
-    if (gotValidDates) return valid;
+    if (gotValidDates) return valid.length > 0 ? valid : [{value: null}];
     else {
       for (let i = 0; i < dates.length; i+=2) {
         let start = new Date(dates[i].replace('-', '/').replace('-', '/'));
@@ -156,7 +156,7 @@ const HouseDetail: React.FC = () => {
       // }))
       // console.log('valid dates: ', valid)
       setGotValidDates(true)
-      return valid;
+      return valid.length > 0 ? valid : [{value: null}];
     }
   }
 
@@ -362,6 +362,7 @@ const HouseDetail: React.FC = () => {
     if (valids.length === 0) return false
     const startDate = new Date(start.replace('-', '/').replace('-', '/'));
     const endDate = new Date(end.replace('-', '/').replace('-', '/'));
+    if (startDate >= endDate) return false
     startDate.setDate(startDate.getDate() + 1)
     endDate.setDate(endDate.getDate() + 1)
     const valid_dates = valids.map(date => date.value.replace('-', '/').replace('-', '/').substring(0, 10));
