@@ -87,18 +87,29 @@ const HomeWorld = () => {
   // 添加页码和加载状态
   const [loading, setLoading] = useState(false);
 
-  usePullDownRefresh(() => {
-    setUserPage(1);
-    setHasMoreUser(true);
-    setPropertyPage(1);
-    setHasMoreProperty(true);
-    setActivityPage(1);
-    setHasMoreActivity(true);
-    setLocation({ id: 0, cname: '选择城市', name: '' });
-    setStartDate('');
-    setEndDate('');
-    setCapacity(1);
-  });
+//   usePullDownRefresh(() => {
+//     fetchData().then(() => {
+//         Taro.stopPullDownRefresh(); // 数据加载完成后再停止刷新
+//       }).catch(() => {
+//         Taro.stopPullDownRefresh(); // 即使出错也要停止，避免卡住
+//       });
+//     setUserPage(1);
+//     setHasMoreUser(true);
+//     setUserList([]);
+//     setPropertyPage(1);
+//     setHasMoreProperty(true);
+//     setPropertyList([]);
+//     setActivityList([]);
+//     setActivityPage(1);
+//     setHasMoreActivity(true);
+//     setLocation({ id: 0, cname: '选择城市', name: '' });
+//     setStartDate('');
+//     setEndDate('');
+//     setCapacity(1);
+//     setTimeout(() => {
+//         Taro.stopPullDownRefresh()
+//       }, 100)
+//   });
 
   useDidShow(() => {
     getList('app/esuser/getUserList', setUserList);
@@ -168,6 +179,7 @@ const HomeWorld = () => {
     if (isLoadMore && !getHasMore()) return;
     setLoading(true);
     const currentPage = isLoadMore ? getCurrentPage() : 1;
+    console.log(currentPage, propertyPage, hasMoreProperty);
 
     Taro.request({
       url: `https://api.eurostay.co/${path}`,
@@ -181,6 +193,7 @@ const HomeWorld = () => {
         ...params,
       },
       success: function (response) {
+          console.log(response.data.result.data.length, activeTab);
         if (response.statusCode === 200 && response.data.code === 0) {
           const newData = response.data.result.data;
           if (isLoadMore) {
@@ -260,6 +273,8 @@ const HomeWorld = () => {
     ) {
       return;
     }
+
+    console.log("strat");
 
     if (activeTab === '友友') {
       getList('app/esuser/getUserList', setUserList, {}, true);
@@ -369,121 +384,123 @@ const HomeWorld = () => {
           </View>
         </View>
 
-        {activeTab != '友友' && (
-          <HomepageSearch
-            startDate={startDate}
-            endDate={endDate}
-            activeTab={activeTab}
-            isShowDateSelectProps={isShowDateSelect}
-            onDateSelectChange={value => {
-                if (GlobalStore.userInfo?.uid === 0) {
-                    Taro.showModal({
-                      title: '转至登录页面',
-                      content: '请登录后选择~',
-                      success: function (res) {
-                        if (res.confirm) {
-                          Taro.reLaunch({
-                            url: `/pages/login/index`,
-                          });
-                        }
-                      },
-                    });
-                  }
-                  else {
-                    setIsShowDateSelect(value);
-                  }
-            }}
-            location_={location}
-            onCitySelectChange={value => {
-                if (GlobalStore.userInfo?.uid === 0) {
-                    Taro.showModal({
-                      title: '转至登录页面',
-                      content: '请登录后选择~',
-                      success: function (res) {
-                        if (res.confirm) {
-                          Taro.reLaunch({
-                            url: `/pages/login/index`,
-                          });
-                        }
-                      },
-                    });
-                  }
-                  else {
-                    setIsShowCitySelect(value);
-                  }
-            }}
-            onCapacityChanged={value => {
-              setCapacity(value);
-            }}
-            onSearch={() => {
-              setUserPage(1);
-              setHasMoreUser(true);
-              setPropertyPage(1);
-              setHasMoreProperty(true);
-              setActivityPage(1);
-              setHasMoreActivity(true);
+        <View className='content-container'>
+          {activeTab != '友友' && (
+            <HomepageSearch
+              startDate={startDate}
+              endDate={endDate}
+              activeTab={activeTab}
+              isShowDateSelectProps={isShowDateSelect}
+              onDateSelectChange={value => {
+                  if (GlobalStore.userInfo?.uid === 0) {
+                      Taro.showModal({
+                        title: '转至登录页面',
+                        content: '请登录后选择~',
+                        success: function (res) {
+                          if (res.confirm) {
+                            Taro.reLaunch({
+                              url: `/pages/login/index`,
+                            });
+                          }
+                        },
+                      });
+                    }
+                    else {
+                      setIsShowDateSelect(value);
+                    }
+              }}
+              location_={location}
+              onCitySelectChange={value => {
+                  if (GlobalStore.userInfo?.uid === 0) {
+                      Taro.showModal({
+                        title: '转至登录页面',
+                        content: '请登录后选择~',
+                        success: function (res) {
+                          if (res.confirm) {
+                            Taro.reLaunch({
+                              url: `/pages/login/index`,
+                            });
+                          }
+                        },
+                      });
+                    }
+                    else {
+                      setIsShowCitySelect(value);
+                    }
+              }}
+              onCapacityChanged={value => {
+                setCapacity(value);
+              }}
+              onSearch={() => {
 
-              if (activeTab == '房源') {
-                getList('/app/property/getPropertyList', setPropertyList, {
-                  searchableLocation: location.id,
-                  startDate: startDate,
-                  endDate: endDate,
-                  capacity: capacity,
-                  order: 'DES_PRICE',
-                });
-              }
-              if (activeTab == '活动') {
-                getList('app/activity/getActivityList', setActivityList, {
-                  searchableLocation: location.id,
-                  startDate: startDate,
-                  endDate: endDate,
-                  order: 'DES',
-                });
-              }
-            }}
-          />
-        )}
+                if (activeTab == '房源') {
+                  // setPropertyPage(1);
+                  // setHasMoreProperty(true);
+                  // setPropertyList([]);
+                  getList('/app/property/getPropertyList', setPropertyList, {
+                    searchableLocation: location.id,
+                    startDate: startDate,
+                    endDate: endDate,
+                    capacity: capacity,
+                    order: 'DES_PRICE',
+                  });
+                }
+                if (activeTab == '活动') {
+                  // setActivityPage(1);
+                  // setHasMoreActivity(true);
+                  // setActivityList([]);
+                  getList('app/activity/getActivityList', setActivityList, {
+                    searchableLocation: location.id,
+                    startDate: startDate,
+                    endDate: endDate,
+                    order: 'DES',
+                  });
+                }
+              }}
+            />
+          )}
 
-        <View className='home-user-wrapper'>
-          {activeTab == '友友' &&
-            userList.map((item, index) => {
-              return (
-                <HomepageCard
-                  id={`${activeTab}-${index}`}
-                  {...{ ...item, activeTab: activeTab }}
-                />
-              );
-            })}
-          {activeTab == '房源' &&
-            propertyList.map((item, index) => {
-              return (
-                <HomepageCard
-                  id={`${activeTab}-${index}`}
-                  {...{ ...item, activeTab: activeTab }}
-                />
-              );
-            })}
-          {activeTab == '活动' &&
-            activityList.map((item, index) => {
-              return (
-                <HomepageCard
-                  id={`${activeTab}-${index}`}
-                  {...{ ...item, activeTab: activeTab }}
-                />
-              );
-            })}
+          <View className='home-user-wrapper'>
+            {activeTab == '友友' &&
+              userList.map((item, index) => {
+                return (
+                  <HomepageCard
+                    id={`${activeTab}-${index}`}
+                    {...{ ...item, activeTab: activeTab }}
+                  />
+                );
+              })}
+            {activeTab == '房源' &&
+              propertyList.map((item, index) => {
+                return (
+                  <HomepageCard
+                    id={`${activeTab}-${index}`}
+                    {...{ ...item, activeTab: activeTab }}
+                  />
+                );
+              })}
+            {activeTab == '活动' &&
+              activityList.map((item, index) => {
+                return (
+                  <HomepageCard
+                    id={`${activeTab}-${index}`}
+                    {...{ ...item, activeTab: activeTab }}
+                  />
+                );
+              })}
 
-          {/* 添加加载状态提示 */}
-          {loading && <View className='loading-tips'>加载中...</View>}
-          {!hasMoreUser && activeTab === '友友' && curList.length > 0 && (
-            <View className='no-more-tips'>没有更多数据了</View>
-          )}
-          {!hasMoreProperty && activeTab === '房源' && curList.length > 0 && (
-            <View className='no-more-tips'>没有更多数据了</View>
-          )}
-          {!hasMoreActivity && activeTab === '活动' && curList.length > 0 && (
-            <View className='no-more-tips'>没有更多数据了</View>
-          )}
+            {/* 添加加载状态提示 */}
+            {loading && <View className='loading-tips'>加载中...</View>}
+            {!hasMoreUser && activeTab === '友友' && curList.length > 0 && (
+              <View className='no-more-tips'>没有更多数据了</View>
+            )}
+            {!hasMoreProperty && activeTab === '房源' && curList.length > 0 && (
+              <View className='no-more-tips'>没有更多数据了</View>
+            )}
+            {!hasMoreActivity && activeTab === '活动' && curList.length > 0 && (
+              <View className='no-more-tips'>没有更多数据了</View>
+            )}
+          </View>
         </View>
       </View>
 

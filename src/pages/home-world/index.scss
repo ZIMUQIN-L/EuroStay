@@ -2,7 +2,8 @@
   padding: 20px 5%;
 //   background: #fff;
   background: linear-gradient(180deg, #FFF5DA44 0%, #F5EDFF44 100%);
-  padding-bottom: 120px;
+  padding-bottom: 80px;
+  padding-top: 80px; /* 为固定标签栏留出空间 */
 
   .searchContainer {
     .searchButton {
@@ -30,6 +31,14 @@
     align-items: center;
     padding: 0 15%;
     margin-bottom: 20px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    background: linear-gradient(180deg, #FFF5DABB 0%, #F5EDFFBB 100%);
+    padding-top: 20px;
+    padding-bottom: 20px;
 
     .tab-item {
       font-size: 32px;
@@ -56,8 +65,11 @@
     }
   }
 
+  .content-container {
+    margin-top: 20px;
+  }
+
   .home-user-wrapper {
-    margin-top: 30px;
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
@@ -77,4 +89,10 @@
       //   margin-bottom: 40px;
     }
   }
+}
+
+/* 为房源和活动标签页的搜索框添加特殊样式 */
+.home-search .homepage-search {
+  margin-top: 20px;
+  margin-bottom: 20px;
 }

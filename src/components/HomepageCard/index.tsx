@@ -90,7 +90,11 @@ const HomepageCard = (props: {
             }}
           ></Image>
           <View className='homepage-card-bottom'>
-            <Image src={props.user.avatar} className='user-avatar' />
+            <Image src={props.user.avatar} className='user-avatar'             onClick={() => {
+                Taro.navigateTo({
+                  url: `/pages/user/index?uid=${props.user.uid}`,
+                });
+            }}/>
             <View className='user-details'>
               <View className='user-name'>{props.user.username}</View>
               <View className='user-tags'>

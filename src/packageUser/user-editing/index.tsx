@@ -223,6 +223,21 @@ const UserEditing = () => {
       params: { currentValue: userInfo?.username }
     },
     {
+        label: '个性照片',
+        subLabel: '（选一张你的人生高光瞬间吧，推荐本人照片哦，这将是你在【世界】的出场照，让Guest/Host更好地了解你~）',
+        customContent: (
+          <View className='photo-upload' onClick={() => handleUpload('background')}>
+            {userInfo?.backgroundPic ? (
+              <Image className='uploaded-photo' src={userInfo.backgroundPic} mode='aspectFill' />
+            ) : (
+              <View className='upload-placeholder'>
+                <Text className='plus'>+</Text>
+              </View>
+            )}
+          </View>
+        )
+    },
+    {
       label: '性别',
       customContent: (
         <View className='gender-options'>
@@ -276,21 +291,6 @@ const UserEditing = () => {
       placeholder: '选择个性标签',
       path: '/packageUser/edit-tags/index',
       params: { currentValue: JSON.stringify(userInfo?.tags) }
-    },
-    {
-      label: '个性照片',
-      subLabel: '（选一张你的人生高光瞬间吧，推荐本人照片哦，这将是你在【世界】的出场照，让Guest/Host更好地了解你~）',
-      customContent: (
-        <View className='photo-upload' onClick={() => handleUpload('background')}>
-          {userInfo?.backgroundPic ? (
-            <Image className='uploaded-photo' src={userInfo.backgroundPic} mode='aspectFill' />
-          ) : (
-            <View className='upload-placeholder'>
-              <Text className='plus'>+</Text>
-            </View>
-          )}
-        </View>
-      )
     }
   ];
 
