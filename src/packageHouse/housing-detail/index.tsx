@@ -188,7 +188,26 @@ const HouseDetail: React.FC = () => {
         id: id,
       },
       success: function (res) {
-        // console.log(res)
+        if (res.data.code === 401 || res.data.code === 403) {
+          // Token expired or invalid
+          const currentPage = getCurrentPages();
+          const currentRoute = currentPage[currentPage.length - 1].route;
+          const returnUrl = encodeURIComponent(`/${currentRoute}?id=${id}&type=${type}`);
+          
+          Taro.showModal({
+            title: '登录已过期',
+            content: '请重新登录',
+            success: function (res) {
+              if (res.confirm) {
+                Taro.reLaunch({
+                  url: `/pages/login/index`,
+                });
+              }
+            },
+          });
+          return;
+        }
+        
         setHostDetail({
           uid: res.data.result.hostInfo.uid,
           avatar: res.data.result.hostInfo.avatar,
@@ -254,11 +273,31 @@ const HouseDetail: React.FC = () => {
         }
       },
       fail: function (err) {
-          Taro.showToast({
-              title: '网络请求失败，请重试',
-              icon: 'none',
-              duration: 2000,
+        if (err.statusCode === 401 || err.statusCode === 403) {
+          // Token expired or invalid
+          const currentPage = getCurrentPages();
+          const currentRoute = currentPage[currentPage.length - 1].route;
+          const returnUrl = encodeURIComponent(`/${currentRoute}?id=${id}&type=${type}`);
+          
+          Taro.showModal({
+            title: '登录已过期',
+            content: '请重新登录',
+            success: function (res) {
+              if (res.confirm) {
+                Taro.reLaunch({
+                  url: `/pages/login/index?returnUrl=${returnUrl}`,
+                });
+              }
+            },
           });
+          return;
+        }
+        
+        Taro.showToast({
+          title: '网络请求失败，请重试',
+          icon: 'none',
+          duration: 2000,
+        });
       },
       complete: function () {
         setIsComplete(true)

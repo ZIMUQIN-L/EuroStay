@@ -183,10 +183,39 @@ const Index = () => {
         if (strangerMsgs.length > 0) {
           Taro.setStorageSync('strangerMessages', JSON.stringify(strangerMsgs));
         }
+      } else if (res.data.code === 401 || res.data.code === 403) {
+        // Token expired or invalid
+        Taro.showModal({
+          title: '登录已过期',
+          content: '请重新登录',
+          success: function (res) {
+            if (res.confirm) {
+              Taro.reLaunch({
+                url: '/pages/login/index',
+              });
+            }
+          },
+        });
+        return;
       } else {
         console.error('获取消息列表失败:', res.data.msg);
       }
     } catch (error) {
+      if (error.statusCode === 401 || error.statusCode === 403) {
+        // Token expired or invalid
+        Taro.showModal({
+          title: '登录已过期',
+          content: '请重新登录',
+          success: function (res) {
+            if (res.confirm) {
+              Taro.reLaunch({
+                url: '/pages/login/index',
+              });
+            }
+          },
+        });
+        return;
+      }
       console.error('网络请求失败:', error);
     }
   };

@@ -63,12 +63,14 @@ const HomepageCard = (props: {
               src={uuSelectedIcon}
               className='user'
               onClick={() => setActiveTab('友友')}
+              mode="aspectFit"
             />
             {props.activity && (
               <Image
                 src={activityIcon}
                 className='activity'
                 onClick={() => setActiveTab('活动')}
+                mode="aspectFit"
               />
             )}
 
@@ -77,6 +79,7 @@ const HomepageCard = (props: {
                 src={propertyIcon}
                 className='house'
                 onClick={() => setActiveTab('房源')}
+                mode="aspectFit"
               />
             )}
           </View>
@@ -88,13 +91,21 @@ const HomepageCard = (props: {
                   url: `/pages/user/index?uid=${props.user.uid}`,
                 });
             }}
+            mode="aspectFill"
+            lazyLoad
           ></Image>
           <View className='homepage-card-bottom'>
-            <Image src={props.user.avatar} className='user-avatar'             onClick={() => {
-                Taro.navigateTo({
-                  url: `/pages/user/index?uid=${props.user.uid}`,
-                });
-            }}/>
+            <Image 
+              src={props.user.avatar} 
+              className='user-avatar'
+              onClick={() => {
+                  Taro.navigateTo({
+                    url: `/pages/user/index?uid=${props.user.uid}`,
+                  });
+              }}
+              mode="aspectFill"
+              lazyLoad
+            />
             <View className='user-details'>
               <View className='user-name'>{props.user.username}</View>
               <View className='user-tags'>
@@ -124,6 +135,8 @@ const HomepageCard = (props: {
                   url: `/packageHouse/housing-detail/index?id=${props.activity.id}&type=1`,
                 });
             }}
+            mode="aspectFill"
+            lazyLoad
           ></Image>
           {props.activity.location && (
             <View className='user-location'>
@@ -136,6 +149,7 @@ const HomepageCard = (props: {
                 src={uuIcon}
                 className='user'
                 onClick={() => setActiveTab('友友')}
+                mode="aspectFit"
               />
             )}
             {props.activity && (
@@ -143,6 +157,7 @@ const HomepageCard = (props: {
                 src={activitySelectedIcon}
                 className='activity'
                 onClick={() => setActiveTab('活动')}
+                mode="aspectFit"
               />
             )}
 
@@ -151,6 +166,7 @@ const HomepageCard = (props: {
                 src={propertyIcon}
                 className='house'
                 onClick={() => setActiveTab('房源')}
+                mode="aspectFit"
               />
             )}
           </View>
@@ -173,6 +189,8 @@ const HomepageCard = (props: {
                   url: `/packageHouse/housing-detail/index?id=${props.property.id}&type=0`,
                 });
             }}
+            mode="aspectFill"
+            lazyLoad
           ></Image>
           {props.property.location && (
             <View className='user-location'>
@@ -185,6 +203,7 @@ const HomepageCard = (props: {
                 src={uuIcon}
                 className='user'
                 onClick={() => setActiveTab('友友')}
+                mode="aspectFit"
               />
             )}
             {props.activity && (
@@ -192,6 +211,7 @@ const HomepageCard = (props: {
                 src={activityIcon}
                 className='activity'
                 onClick={() => setActiveTab('活动')}
+                mode="aspectFit"
               />
             )}
 
@@ -200,6 +220,7 @@ const HomepageCard = (props: {
                 src={propertySelectedIcon}
                 className='house'
                 onClick={() => setActiveTab('房源')}
+                mode="aspectFit"
               />
             )}
           </View>

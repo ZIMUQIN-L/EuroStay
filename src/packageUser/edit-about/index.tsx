@@ -43,7 +43,7 @@ const EditAbout = () => {
     <View className='edit-about'>
       <View className='content-container'>
         <View className='input-section'>
-          <Text className='hint'>你是谁？你有什么故事？</Text>
+          <Text className='hint'>请介绍一下你自己吧～目前是什么职业身份，目前在哪里做啥呢？近5年过往独特的生活经历有什么呢？</Text>
           <View className='textarea-container'>
             <Textarea
               className='textarea'

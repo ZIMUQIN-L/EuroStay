@@ -131,9 +131,39 @@ const Index = () => {
             setPage(2);
             setHasMore(true);
           }
+        } else if (response.data.code === 401 || response.data.code === 403) {
+          // Token expired or invalid
+          Taro.showModal({
+            title: '登录已过期',
+            content: '请重新登录',
+            success: function (res) {
+              if (res.confirm) {
+                Taro.reLaunch({
+                  url: '/pages/login/index',
+                });
+              }
+            },
+          });
+          return;
         }
       },
       fail: function (err) {
+        if (err.statusCode === 401 || err.statusCode === 403) {
+          // Token expired or invalid
+          Taro.showModal({
+            title: '登录已过期',
+            content: '请重新登录',
+            success: function (res) {
+              if (res.confirm) {
+                Taro.reLaunch({
+                  url: '/pages/login/index',
+                });
+              }
+            },
+          });
+          return;
+        }
+        
         Taro.showToast({
           title: '网络请求失败，请重试',
           icon: 'none',

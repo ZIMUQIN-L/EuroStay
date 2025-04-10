@@ -201,7 +201,7 @@ const UserEditing = () => {
     {
       label: '邮箱',
       value: userInfo?.email || '',
-      placeholder: '大家怎么能联系到你呢？',
+      placeholder: '仅供提醒，不做展示',
       path: '/packageUser/edit-email/index',
       params: { currentValue: userInfo?.email }
     },
@@ -223,8 +223,9 @@ const UserEditing = () => {
       params: { currentValue: userInfo?.username }
     },
     {
-        label: '个性照片',
-        subLabel: '（选一张你的人生高光瞬间吧，推荐本人照片哦，这将是你在【世界】的出场照，让Guest/Host更好地了解你~）',
+        label: '你的封面',
+        // subLabel: '（选一张你的人生高光瞬间吧，推荐本人照片哦，这将是你在【世界】的出场照，让Guest/Host更好地了解你~）',
+        subLabel: '为你自己在ES选择一张美美的出场照吧！推荐本人照片哦，这将是大家对你的第一印象哦～',
         customContent: (
           <View className='photo-upload' onClick={() => handleUpload('background')}>
             {userInfo?.backgroundPic ? (
@@ -286,9 +287,9 @@ const UserEditing = () => {
       params: { currentValue: userInfo?.aboutMe }
     },
     {
-      label: '个性标签',
+      label: '我的技能',
       value: userInfo?.tags?.join('、') || '',
-      placeholder: '选择个性标签',
+      placeholder: '请选择你最擅长的3个技能吧！',
       path: '/packageUser/edit-tags/index',
       params: { currentValue: JSON.stringify(userInfo?.tags) }
     }

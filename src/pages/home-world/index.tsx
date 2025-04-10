@@ -179,7 +179,6 @@ const HomeWorld = () => {
     if (isLoadMore && !getHasMore()) return;
     setLoading(true);
     const currentPage = isLoadMore ? getCurrentPage() : 1;
-    console.log(currentPage, propertyPage, hasMoreProperty);
 
     Taro.request({
       url: `https://api.eurostay.co/${path}`,
@@ -193,7 +192,6 @@ const HomeWorld = () => {
         ...params,
       },
       success: function (response) {
-          console.log(response.data.result.data.length, activeTab);
         if (response.statusCode === 200 && response.data.code === 0) {
           const newData = response.data.result.data;
           if (isLoadMore) {

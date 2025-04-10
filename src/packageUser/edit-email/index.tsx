@@ -141,7 +141,7 @@ const EditEmail = () => {
                   className='input'
                   value={email}
                   onInput={e => setEmail(e.detail.value)}
-                  placeholder='请输入邮箱地址'
+                  placeholder='为了方便后续的消息提醒～该信息不会对外展示！'
                   type='text'
                 />
               </View>

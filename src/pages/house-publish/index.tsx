@@ -89,6 +89,7 @@ const HousePublish = () => {
   const [customTags, setCustomTags] = useState<string[]>([]);
   const [isShowTagPop, setIsShowTagPop] = useState(false);
   const [curTag, setCurTag] = useState('');
+  const [curTagCategory, setCurTagCategory] = useState('');
   const [customReqs, setCustomReqs] = useState<string[]>([]);
   const [isShowReqPop, setIsShowReqPop] = useState(false);
   const [curReq, setCurReq] = useState('');
@@ -102,6 +103,47 @@ const HousePublish = () => {
   >([]);
   const [pid, setPid] = useState<number | null>(null);
   const uploadRes = useRef<string[]>([]);
+
+  // 定义标签分类
+  const [tagCategories, setTagCategories] = useState([
+    {
+      name: '房源类型',
+      tags: ['学生公寓', '社会公寓', '自购房源', '合租'],
+      id: 'propertyType'
+    },
+    {
+      name: '居住条件',
+      tags: ['独立房源', '独立房间', '沙发', '气垫床'],
+      id: 'livingCondition'
+    },
+    {
+      name: '接待类型',
+      tags: ['一口价', '可商议'],
+      id: 'receptionType'
+    },
+    {
+      name: '房源特色',
+      tags: ['可做饭', '可洗衣', '有咖啡机', '有电视', '有花园', '有阳台', '有宠物'],
+      id: 'propertyFeatures'
+    },
+    {
+      name: '可接待时间',
+      tags: ['周末有空', '节假日有空', '时间都可商议'],
+      id: 'availableTime'
+    }
+  ]);
+
+  const tenantCounts = [
+    { id: 1, name: '1人' },
+    { id: 2, name: '2人' },
+    { id: 3, name: '3人及以上' },
+  ];
+
+  const otherReqs = [
+    { id: 1, name: '要干净' },
+    { id: 2, name: '外向' },
+    { id: 3, name: '喜欢小狗' },
+  ];
 
   useEffect(() => {
     const params = Taro.getCurrentInstance().router?.params;
@@ -239,36 +281,34 @@ const HousePublish = () => {
     setEndDate(endValue);
   };
 
-  const tags = [
-    { id: 1, name: '离市中心近' },
-    { id: 2, name: '公共交通方便' },
-    { id: 4, name: '干净整洁' },
-    { id: 5, name: '女性友好' },
-    { id: 6, name: '采光好' },
-    { id: 11, name: '安静舒适' },
-    { id: 14, name: '绿植环绕' },
-    { id: 15, name: '有小阳台' },
-    { id: 18, name: '宠物友好' },
-    { id: 20, name: '独立卫浴' },
-  ];
-
-  const tenantCounts = [
-    { id: 1, name: '1人' },
-    { id: 2, name: '2人' },
-    { id: 3, name: '3人及以上' },
-  ];
-
-  const otherReqs = [
-    { id: 1, name: '要干净' },
-    { id: 2, name: '外向' },
-    { id: 3, name: '喜欢小狗' },
-  ];
-
   const handleTagSelect = (tag: string) => {
     const newTags = formData.houseTag.includes(tag)
       ? formData.houseTag.filter(t => t !== tag)
       : [...formData.houseTag, tag];
     setFormData({ ...formData, houseTag: newTags });
+  };
+
+  const handleAddCustomTag = (categoryId: string) => {
+    setCurTagCategory(categoryId);
+    setIsShowTagPop(true);
+  };
+
+  const handleTagConfirm = () => {
+    if (curTag.trim()) {
+      // 添加新标签到对应类别
+      setTagCategories(prev => prev.map(category => 
+        category.id === curTagCategory 
+          ? { ...category, tags: [...category.tags, curTag] }
+          : category
+      ));
+      
+      // 添加到表单数据
+      handleTagSelect(curTag);
+      
+      // 重置当前标签
+      setCurTag('');
+      setIsShowTagPop(false);
+    }
   };
 
   const handleGenderSelect = gender => {
@@ -420,9 +460,9 @@ const HousePublish = () => {
       errors.push('请至少上传一张房源照片');
     }
 
-    if (multiDays.length === 0) {
-      errors.push('请选择可出租时间');
-    }
+    // if (multiDays.length === 0) {
+    //   errors.push('请选择可出租时间');
+    // }
 
     if (!formData.story.trim()) {
       errors.push('请填写你的故事');
@@ -432,9 +472,9 @@ const HousePublish = () => {
       errors.push('请填写微信号');
     }
 
-    if (formData.paymentImages.length === 0) {
-      errors.push('请上传微信收款二维码');
-    }
+    // if (formData.paymentImages.length === 0) {
+    //   errors.push('请上传微信收款二维码');
+    // }
 
     return errors;
   };
@@ -475,7 +515,7 @@ const HousePublish = () => {
         capacity: formData.tenantCount,
         whyHost: formData.story,
         wxId: formData.wechat,
-        qrCode: formData.paymentImages?.[0],
+        qrCode: '',
         requirements: formData.otherRequirements,
         availableDate: multiDays
           .flatMap(pair => pair)
@@ -520,7 +560,7 @@ const HousePublish = () => {
           content={
             <Input
               className='input'
-              placeholder='请输入房源标签'
+              placeholder='请输入标签名称'
               placeholderClass='placeholder'
               value={curTag}
               onInput={e => {
@@ -528,16 +568,11 @@ const HousePublish = () => {
               }}
             />
           }
-          title='请输入个性化房源标签'
+          title='添加新标签'
           onClickClose={() => {
             setIsShowTagPop(false);
           }}
-          onClickConfirm={e => {
-            setIsShowTagPop(false);
-            handleTagSelect(curTag);
-            const newTags = [...customTags, curTag];
-            setCustomTags(newTags);
-          }}
+          onClickConfirm={handleTagConfirm}
         />
       )}
       {isShowReqPop && (
@@ -554,7 +589,7 @@ const HousePublish = () => {
               }}
             />
           }
-          title='请输入其他要求'
+          title='你还对旅客有什么基本要求吗~'
           onClickClose={() => {
             setIsShowReqPop(false);
           }}
@@ -588,46 +623,37 @@ const HousePublish = () => {
 
         <View className='input-item'>
           <Text className='label with-margin'>房源个性标签*</Text>
-          <View className='tags'>
-            {tags.map(tag => (
-              <Text
-                key={tag.id}
-                className={`tag ${formData.houseTag.includes(tag.name) ? 'active' : ''}`}
-                onClick={() => handleTagSelect(tag.name)}
-              >
-                {tag.name}
-              </Text>
-            ))}
-            {customTags.map((tag, index) => (
-              <Text
-                key={tags.length + index}
-                className={`tag ${customTags.includes(tag) ? 'active' : ''}`}
-                onClick={() => {
-                  const newTags = customTags.includes(tag)
-                    ? customTags.filter(t => t !== tag)
-                    : [...customTags, tag];
-                  setCustomTags(newTags);
-                }}
-              >
-                {tag}
-              </Text>
-            ))}
-            <Text
-              className='option'
-              onClick={() => {
-                setIsShowTagPop(true);
-              }}
-            >
-              +
-            </Text>
-          </View>
+          <Text className='description'>
+            这些将展示在房源卡片，成为住客选择的重要参考哦！
+          </Text>
+          
+          {tagCategories.map(category => (
+            <View key={category.id} className='tag-category'>
+              <Text className='category-title'>{category.name}</Text>
+              <View className='tags'>
+                {category.tags.map(tag => (
+                  <Text
+                    key={tag}
+                    className={`tag ${formData.houseTag.includes(tag) ? 'active' : ''}`}
+                    onClick={() => handleTagSelect(tag)}
+                  >
+                    {tag}
+                  </Text>
+                ))}
+                <Text className='option' onClick={() => handleAddCustomTag(category.id)}>+</Text>
+              </View>
+            </View>
+          ))}
         </View>
 
         <View className='input-item'>
           <Text className='label'>关于我家*</Text>
+          <Text className='description'>
+          可以填写你家的基本信息（如周边环境特色，房源特色等等）或者你希望的相处公约哦（如门禁时间，有宠物，有些物品不能使用等可能有争议的部分）
+          </Text>
           <Textarea
             className='textarea'
-            placeholder='请描述一些您房源的基本信息和入住须知，减少前期的沟通成本哦'
+            placeholder='请描述一些您房源的基本信息和入住须知，减少前期的沟通成本哦,将会展现在您的房源详情界面'
             placeholderClass='placeholder'
             value={formData.houseDesc}
             onInput={e =>
@@ -673,7 +699,7 @@ const HousePublish = () => {
           <Text className='label'>详细地址*</Text>
           <Textarea
             className='textarea'
-            placeholder='请填写更详细的地址和位置信息吧，比如在凡尔赛宫旁5分钟路程，精确到街道就可以啦~'
+            placeholder='请填写更详细的位置信息，将会展现在房源详情界面，大概在哪个区域什么街道离景点车站距离呢'
             placeholderClass='placeholder'
             value={formData.detailAddress}
             onInput={e =>
@@ -685,6 +711,9 @@ const HousePublish = () => {
 
         <View className='input-item'>
           <Text className='label'>房源成本价*</Text>
+          <Text className='description'>
+          这将展示在房源卡片上，成为住客选择的重要参考哦！若是租房，建议参考房源本身租赁成本哦～
+          </Text>
           <View className='price-input'>
             <Text className='currency'>€</Text>
             <Input
@@ -776,8 +805,7 @@ const HousePublish = () => {
             </Text>
           </View>
           <Text className='description'>
-            (请上传一些您的房子的美照，让Guest更方便的了解您的房源,
-            建议可以分别上传【厨房】、【卧室】、【公共区域】和【卫生间】的照片，全方位展示您的房源~)
+        请拍摄一下你家里的【客厅】【厨房】【卫生间】【旅客住宿区域】的照片，客观真实的展示你家的美照吧！这些将展示在房源卡片，成为住客选择的重要参考哦~
           </Text>
           <View className='image-upload'>
             {formData.houseImages.map((image, index) => (
@@ -809,7 +837,7 @@ const HousePublish = () => {
         </View>
         <View className='input-item'>
           <View className='label'>
-            <Text>我家什么时候有空~*</Text>
+            <Text>我家什么时候有空~</Text>
             <View className='multi-days'>
               {multiDays.map((day, index) => (
                 <View key={index} className='multi-day active'>
@@ -829,7 +857,7 @@ const HousePublish = () => {
             </View>
           </View>
           <Text className='description'>
-            请选择所有您方便的Host时间段吧，请注意可以选择多个时间段！（也可以更改）越多越方便大家匹配哦~
+            请选择你更希望接待的时间吧，可选择多个时间段哦！
           </Text>
           <View className='date-select '>
             <AtCalendar
@@ -893,10 +921,10 @@ const HousePublish = () => {
           <Text>了解更多</Text>
         </View>
         <View className='input-item'>
-          <Text className='label'>想和Guest一起做的事？*</Text>
+          <Text className='label'>期待怎么样的guest？*</Text>
           <Textarea
             className='textarea'
-            placeholder='说说你为什么想当Host?你期待和Guest一起做一些什么事情呢？相信你可以在ES找到同频的朋友~'
+            placeholder='如果愿意技能/房源换宿，你希望解锁什么技能/房源呢？'
             placeholderClass='placeholder'
             value={formData.story}
             onInput={e => setFormData({ ...formData, story: e.detail.value })}
@@ -919,7 +947,7 @@ const HousePublish = () => {
             onInput={e => setFormData({ ...formData, wechat: e.detail.value })}
           />
         </View>
-        <View className='input-item'>
+        {/* <View className='input-item'>
           <View className='label label-flex with-margin'>
             <Text>收款码*</Text>
             <Text className='image-count'>
@@ -958,7 +986,7 @@ const HousePublish = () => {
           <View className='qrcode-tips'>
             注意：当你通过Guest的换宿申请后，该收款码会被自动发给Guest哦~
           </View>
-        </View>
+        </View> */}
       </View>
       <View className='submit-post-house' onClick={handleSubmit}>
         {pid ? '保存修改' : '上传房源'}
