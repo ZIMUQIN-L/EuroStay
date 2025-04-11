@@ -52,7 +52,7 @@ const MessageDetail = () => {
 
   useEffect(() => {
     const handleIncomingMessage = (msg) => {
-      console.log("handleIncomingMessage", msg);
+    //   console.log("handleIncomingMessage", msg);
       setDebugMsg(msg);
       // 判断消息是否属于当前对话
       if (msg.data?.sessionId == id) {
@@ -240,7 +240,7 @@ const MessageDetail = () => {
   
   // 使用方法
   const fetchMessageList = async (page = 1, appendToTop = false) => {
-    console.log("fresh message, page: ", page);
+    // console.log("fresh message, page: ", page);
     const token = GlobalStore.userInfo.token || Taro.getStorageSync('token');
     const currentUid = GlobalStore.userInfo.uid || Taro.getStorageSync('uid');
   
@@ -278,7 +278,7 @@ const MessageDetail = () => {
         );
   
         const sortedMessages = formattedMessages.sort((a, b) => a.id - b.id);
-        console.log("sortedMessage", sortedMessages);
+        // console.log("sortedMessage", sortedMessages);
         setMessages(prev =>
           appendToTop ? [...sortedMessages, ...prev] : sortedMessages
         );
@@ -526,6 +526,7 @@ const MessageDetail = () => {
             time={msg.data.time}
             direction={msg.direction}
             subjectId={msg.data.subjectId}
+            toUid={otherUserId}
           />
         )
       case 'simple':
@@ -535,6 +536,7 @@ const MessageDetail = () => {
             content={msg.data.content}
             time={msg.data.time}
             direction={msg.direction}
+            toUid={otherUserId}
           />
         )
       case 'reject-fh':
@@ -545,6 +547,7 @@ const MessageDetail = () => {
             time={msg.data.time}
             reason={msg.data.reason}
             direction={msg.direction}
+            toUid={otherUserId}
           />
         )
       case 'reject-fg':
@@ -555,6 +558,7 @@ const MessageDetail = () => {
             time={msg.data.time}
             reason={msg.data.reason}
             direction={msg.direction}
+            toUid={otherUserId}
           />
         )
       case 'offer':
@@ -571,6 +575,7 @@ const MessageDetail = () => {
             subjectId={msg.data.subjectId}  // 传递 subjectId
             hostUid={msg.data.hostUid}      // 传递 hostUid
             active={msg.active}
+            toUid={otherUserId}
           />
         )
       case 'contact':
@@ -579,6 +584,7 @@ const MessageDetail = () => {
             avatar={avatar}
             time={msg.data.time}
             direction={msg.direction}
+            toUid={otherUserId}
           />
         )
       case 'pic':
@@ -588,6 +594,7 @@ const MessageDetail = () => {
             time={msg.data.time}
             direction={msg.direction}
             content={msg.data.content}
+            toUid={otherUserId}
           />
         );
         

@@ -148,7 +148,8 @@ const Index = () => {
             otherAvatar: otherAvatar || 'https://eurostay-1330475057.cos.eu-frankfurt.myqcloud.com/sys/loading.png',
             name: otherName || `User ${otherPersonUid}`,
             message: record.esSession.topMessage || '无消息内容',
-            time: formatTime(record.esSession.updateTime),
+            // time: formatTime(record.esSession.updateTime),
+            time: record.esSession.updateTime,
             otherUid: otherPersonUid,
             rawData: {
               fromUid: record.esSession.initUid,
@@ -169,6 +170,14 @@ const Index = () => {
         setMessages(normalMsgs);
         setSystemMessages(systemMsgs);
         setStrangerMessages(strangerMsgs);
+
+        // 对消息按时间排序，越新的越靠前
+        const sortedMessages = [...normalMsgs].sort((a, b) => {
+          const timeA = new Date(a.rawData.createTime).getTime();
+          const timeB = new Date(b.rawData.createTime).getTime();
+          return timeB - timeA; // 降序排序，新的在前
+        });
+        setMessages(sortedMessages);
 
         const sessionDict = {};
 

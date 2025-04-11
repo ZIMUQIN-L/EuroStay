@@ -1,9 +1,9 @@
 import { View, Text, Image } from '@tarojs/components'
 import './index.scss'
 import GlobalStore from '@store/GlobalStore'; 
-
+import Taro from '@tarojs/taro'
 const RejectMessageFromGuestBox = (props) => {
-    const { avatar, name, time, reason, direction = 'left' } = props
+    const { avatar, name, time, reason, direction = 'left', toUid } = props
 
     // 根据 direction 动态设置文案
     let content = ''
@@ -16,7 +16,14 @@ const RejectMessageFromGuestBox = (props) => {
     return (
       <View className={`message-box ${direction}`}>
         {/* 头像 */}
-        <Image className='avatar' src={direction === 'left' ? avatar : GlobalStore.userInfo.avatar} />
+        <Image className='avatar' src={direction === 'left' ? avatar : GlobalStore.userInfo.avatar} 
+        onClick={() => {
+          if (direction === 'left') {
+            Taro.navigateTo({ url: `/pages/user/index?uid=${toUid}` });
+          } else {
+            Taro.navigateTo({ url: `/pages/user/index?uid=${GlobalStore.userInfo.uid}` });
+          }
+        }}/>
 
         {/* 氣泡内容 */}
         <View className='bubble'>

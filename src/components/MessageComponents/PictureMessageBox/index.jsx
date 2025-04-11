@@ -4,7 +4,7 @@ import GlobalStore from '@store/GlobalStore'
 import Taro from '@tarojs/taro'
 
 const PictureMessageBox = (props) => {
-  const { avatar, time, direction = 'left', content } = props;
+  const { avatar, time, direction = 'left', content, toUid } = props;
 
   const handlePreview = () => {
 
@@ -25,6 +25,13 @@ const PictureMessageBox = (props) => {
       <Image
         className='avatar'
         src={direction === 'left' ? avatar : GlobalStore.userInfo.avatar}
+        onClick={() => {
+          if (direction === 'left') {
+            Taro.navigateTo({ url: `/pages/user/index?uid=${toUid}` });
+          } else {
+            Taro.navigateTo({ url: `/pages/user/index?uid=${GlobalStore.userInfo.uid}` });
+          }
+        }}
       />
 
       {/* 气泡内容 */}

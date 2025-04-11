@@ -5,7 +5,7 @@ import './index.scss'
 import GlobalStore from '@store/GlobalStore'; 
 
 const OfferMessageBox = (props) => {
-  const { avatar, time, direction = 'left', hostname, applicantname, price, active = true, isProperty, subjectId } = props
+  const { avatar, time, direction = 'left', hostname, applicantname, price, active = true, isProperty, subjectId, toUid } = props
   
   // 根据 direction 动态设置文案和按钮文字
   let content = ''
@@ -80,7 +80,14 @@ const OfferMessageBox = (props) => {
   return (
     <View className={`message-box ${direction}`}>
       {/* 头像 */}
-      <Image className='avatar' src={direction === 'left' ? avatar : GlobalStore.userInfo.avatar} />
+      <Image className='avatar' src={direction === 'left' ? avatar : GlobalStore.userInfo.avatar} 
+      onClick={() => {
+        if (direction === 'left') {
+          Taro.navigateTo({ url: `/pages/user/index?uid=${toUid}` });
+        } else {
+          Taro.navigateTo({ url: `/pages/user/index?uid=${GlobalStore.userInfo.uid}` });
+        }
+      }}  />
       
       {/* 气泡内容 */}
       <View className='bubble'>
