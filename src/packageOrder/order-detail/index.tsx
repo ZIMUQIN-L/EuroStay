@@ -508,7 +508,7 @@ const Index: React.FC = () => {
     }
 
     return (
-        <>
+        <View style={{ paddingBottom: '120px' }}>
             {/* {role === 'host' && <UserCardSmall {...mockDataApplicant}/>}
             <OrderInfo {...mockDataOrder}/>
             <ApplicantInfo {...mockDataUser}/> */}
@@ -655,7 +655,7 @@ const Index: React.FC = () => {
                     </View>
                 </View>
             )}
-        </>
+        </View>
     );
 };
 
