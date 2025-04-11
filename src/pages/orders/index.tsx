@@ -102,7 +102,6 @@ const Index = () => {
 
     setLoading(true);
     const currentPage = isLoadMore ? page : 1;
-    console.log('currentPage', currentPage);
     Taro.request({
       url: `https://api.eurostay.co/app/order/getOrderList`,
       method: 'POST',
@@ -114,8 +113,6 @@ const Index = () => {
         page: currentPage,
       },
       success: function (response) {
-          console.log(GlobalStore.userInfo.token);
-          console.log(response);
         if (response.statusCode === 200 && response.data.code === 0) {
           const newData = response.data.result.data;
           // console.log('newData', newData);
@@ -141,6 +138,23 @@ const Index = () => {
                 Taro.reLaunch({
                   url: '/pages/login/index',
                 });
+              } else {
+                // 如果用户不登录，重置 GlobalStore 信息
+                GlobalStore.setAllInfo({
+                  token: '',
+                  uid: 0,
+                  username: '',
+                  avatar: '',
+                  aboutMe: '',
+                  location: '',
+                  gender: 0,
+                  isVip: false,
+                  backgroundPic: '',
+                });
+                // 重新加载当前页面
+                Taro.reLaunch({
+                  url: '/pages/orders/index'
+                });
               }
             },
           });
@@ -157,6 +171,23 @@ const Index = () => {
               if (res.confirm) {
                 Taro.reLaunch({
                   url: '/pages/login/index',
+                });
+              } else {
+                // 如果用户不登录，重置 GlobalStore 信息
+                GlobalStore.setAllInfo({
+                  token: '',
+                  uid: 0,
+                  username: '',
+                  avatar: '',
+                  aboutMe: '',
+                  location: '',
+                  gender: 0,
+                  isVip: false,
+                  backgroundPic: '',
+                });
+                // 重新加载当前页面
+                Taro.reLaunch({
+                  url: '/pages/orders/index'
                 });
               }
             },
@@ -198,16 +229,14 @@ const Index = () => {
   // }, [activeRole, currentTab]);
 
   useDidShow(() => {
-    console.log('useDidShow');
-    if (activeRole === 'host') getOrderList(setOrderListHost, 0);
-    else getOrderList(setOrderListGuest, 1);
+    checkLoginStatus();
   });
 
-  useEffect(() => {
-    getOrderList(setOrderListHost, 0);
-    getOrderList(setOrderListGuest, 1);
-    // Taro.stopPullDownRefresh()
-  }, []);
+//   useEffect(() => {
+//     getOrderList(setOrderListHost, 0);
+//     getOrderList(setOrderListGuest, 1);
+//     // Taro.stopPullDownRefresh()
+//   }, []);
 
   useDidShow(() => {
     checkLoginStatus();

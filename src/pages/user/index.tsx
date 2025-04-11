@@ -48,6 +48,7 @@ const UserProfile = () => {
   }, [pageUid]);
 
   useDidShow(() => {
+    checkToken();
     fetchUserInfo();
   });
 
@@ -316,6 +317,107 @@ const UserProfile = () => {
     setShowLikeModal(false);
     setLikeMessage('');
     setCurrentItem(null);
+  };
+
+  const checkToken = async () => {
+    if (!GlobalStore.userInfo?.token) return;
+    
+    try {
+      const res = await Taro.request({
+        url: 'https://api.eurostay.co/app/esuser/tokenCheck',
+        method: 'POST',
+        header: {
+          token: GlobalStore.userInfo.token
+        }
+      });
+
+      if (res.data.code === 401 || res.data.code === 403) {
+        if (!pageUid || String(GlobalStore.userInfo?.uid) === pageUid) {
+          Taro.showModal({
+            title: '登录已过期',
+            content: '请重新登录查看自己的主页',
+            success: function (res) {
+              if (res.confirm) {
+                Taro.reLaunch({
+                  url: '/pages/login/index',
+                });
+              } else {
+                GlobalStore.setAllInfo({
+                  token: '',
+                  uid: 0,
+                  username: '',
+                  avatar: '',
+                  aboutMe: '',
+                  location: '',
+                  gender: 0,
+                  isVip: false,
+                  backgroundPic: '',
+                });
+                Taro.redirectTo({
+                  url: `/pages/user/index?uid=${pageUid}`
+                });
+              }
+            },
+          });
+        } else {
+          GlobalStore.setAllInfo({
+            token: '',
+            uid: 0,
+            username: '',
+            avatar: '',
+            aboutMe: '',
+            location: '',
+            gender: 0,
+            isVip: false,
+            backgroundPic: '',
+          });
+        }
+      }
+    } catch (error) {
+      if (error.statusCode === 401 || error.statusCode === 403) {
+        if (!pageUid || String(GlobalStore.userInfo?.uid) === pageUid) {
+          Taro.showModal({
+            title: '登录已过期',
+            content: '请重新登录查看自己的主页',
+            success: function (res) {
+              if (res.confirm) {
+                Taro.reLaunch({
+                  url: '/pages/login/index',
+                });
+              } else {
+                GlobalStore.setAllInfo({
+                  token: '',
+                  uid: 0,
+                  username: '',
+                  avatar: '',
+                  aboutMe: '',
+                  location: '',
+                  gender: 0,
+                  isVip: false,
+                  backgroundPic: '',
+                });
+                Taro.redirectTo({
+                  url: `/pages/user/index?uid=${pageUid}`
+                });
+              }
+            },
+          });
+        } else {
+          // 如果不是自己的主页，直接重置 GlobalStore 信息
+          GlobalStore.setAllInfo({
+            token: '',
+            uid: 0,
+            username: '',
+            avatar: '',
+            aboutMe: '',
+            location: '',
+            gender: 0,
+            isVip: false,
+            backgroundPic: '',
+          });
+        }
+      }
+    }
   };
 
   if (loading) {

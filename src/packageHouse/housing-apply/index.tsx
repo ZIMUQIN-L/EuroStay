@@ -230,11 +230,11 @@ const Index = () => {
         />
       }
       
-      <Text className='info-card-sec-title'>旅客身份*</Text>
+      <Text className='info-card-sec-title'>出行原因*</Text>
       <Input 
         className='info-card-input'
         value={identity}
-        placeholder="请向Host简单说明一下自己的身份吧~"
+        placeholder="你这趟为什么来这里呢，是出差，旅行或者是看演唱会等等呢？"
         onInput={e => setIdentity(e.detail.value)}
       />
 
@@ -276,12 +276,12 @@ const Index = () => {
       />
       
       {/* <View className='info-card-context'> */}
-        <Text className='info-card-sec-title'>{Number(type) === 0 ? '申请原因' : '申请原因'}*</Text>
+        <Text className='info-card-sec-title'>{Number(type) === 0 ? '你有什么特殊技能吗？' : '申请原因'}*</Text>
         <Textarea
           className='info-card-input-multilines'
           value={reason}
           onInput={e => setReason(e.detail.value)}
-          placeholder={Number(type) === 0 ? '您为什么想要去申请住宿呢？您这次旅行的原因是？' : '请说明申请原因'}
+          placeholder={Number(type) === 0 ? '可以讲讲能为host做的一些事情吗？可参考Host提供的需求，或许可以直接解锁技能/房源换宿哦！' : '请说明申请原因'}
           autoHeight
           showConfirmBar={false}
         />

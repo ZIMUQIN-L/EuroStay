@@ -193,6 +193,23 @@ const Index = () => {
               Taro.reLaunch({
                 url: '/pages/login/index',
               });
+            } else {
+              // 如果用户不登录，重置 GlobalStore 信息
+              GlobalStore.setAllInfo({
+                token: '',
+                uid: 0,
+                username: '',
+                avatar: '',
+                aboutMe: '',
+                location: '',
+                gender: 0,
+                isVip: false,
+                backgroundPic: '',
+              });
+              // 重新加载当前页面
+              Taro.reLaunch({
+                url: '/pages/messages/index'
+              });
             }
           },
         });
@@ -210,6 +227,23 @@ const Index = () => {
             if (res.confirm) {
               Taro.reLaunch({
                 url: '/pages/login/index',
+              });
+            } else {
+              // 如果用户不登录，重置 GlobalStore 信息
+              GlobalStore.setAllInfo({
+                token: '',
+                uid: 0,
+                username: '',
+                avatar: '',
+                aboutMe: '',
+                location: '',
+                gender: 0,
+                isVip: false,
+                backgroundPic: '',
+              });
+              // 重新加载当前页面
+              Taro.reLaunch({
+                url: '/pages/messages/index'
               });
             }
           },

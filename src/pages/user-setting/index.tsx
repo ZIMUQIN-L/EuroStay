@@ -19,12 +19,91 @@ const UserSetting = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
+    checkToken();
     checkLoginStatus();
   }, []);
 
   const checkLoginStatus = () => {
     const loggedIn = Boolean(GlobalStore.userInfo?.uid && GlobalStore.userInfo?.uid !== 0);
     setIsLoggedIn(loggedIn);
+  };
+
+  const checkToken = async () => {
+    if (!GlobalStore.userInfo?.token) return;
+    
+    try {
+      const res = await Taro.request({
+        url: 'https://api.eurostay.co/app/esuser/tokenCheck',
+        method: 'POST',
+        header: {
+          token: GlobalStore.userInfo.token
+        }
+      });
+
+      if (res.data.code === 401 || res.data.code === 403) {
+        // Token 过期或无效
+        Taro.showModal({
+          title: '登录已过期',
+          content: '请重新登录',
+          success: function (res) {
+            if (res.confirm) {
+              Taro.reLaunch({
+                url: '/pages/login/index',
+              });
+            } else {
+              // 如果用户不登录，重置 GlobalStore 信息
+              GlobalStore.setAllInfo({
+                token: '',
+                uid: 0,
+                username: '',
+                avatar: '',
+                aboutMe: '',
+                location: '',
+                gender: 0,
+                isVip: false,
+                backgroundPic: '',
+              });
+              // 重新加载当前页面
+              Taro.reLaunch({
+                url: '/pages/user-setting/index'
+              });
+            }
+          },
+        });
+      }
+    } catch (error) {
+      if (error.statusCode === 401 || error.statusCode === 403) {
+        // Token 过期或无效
+        Taro.showModal({
+          title: '登录已过期',
+          content: '请重新登录',
+          success: function (res) {
+            if (res.confirm) {
+              Taro.reLaunch({
+                url: '/pages/login/index',
+              });
+            } else {
+              // 如果用户不登录，重置 GlobalStore 信息
+              GlobalStore.setAllInfo({
+                token: '',
+                uid: 0,
+                username: '',
+                avatar: '',
+                aboutMe: '',
+                location: '',
+                gender: 0,
+                isVip: false,
+                backgroundPic: '',
+              });
+              // 重新加载当前页面
+              Taro.reLaunch({
+                url: '/pages/user-setting/index'
+              });
+            }
+          },
+        });
+      }
+    }
   };
 
   const handleLogin = () => {
@@ -51,7 +130,7 @@ const UserSetting = () => {
             backgroundPic: '',
           });
           Taro.reLaunch({
-            url: '/pages/login/index'
+            url: '/pages/user-setting/index'
           });
         }
       }

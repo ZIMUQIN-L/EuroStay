@@ -202,6 +202,19 @@ const HouseDetail: React.FC = () => {
                 Taro.reLaunch({
                   url: `/pages/login/index`,
                 });
+              } else {
+                // 如果用户不登录，重置 GlobalStore 信息
+                GlobalStore.setAllInfo({
+                  token: '',
+                  uid: 0,
+                  username: '',
+                  avatar: '',
+                  aboutMe: '',
+                  location: '',
+                  gender: 0,
+                  isVip: false,
+                  backgroundPic: '',
+                });
               }
             },
           });
@@ -285,7 +298,20 @@ const HouseDetail: React.FC = () => {
             success: function (res) {
               if (res.confirm) {
                 Taro.reLaunch({
-                  url: `/pages/login/index?returnUrl=${returnUrl}`,
+                  url: `/pages/login/index`,
+                });
+              } else {
+                // 如果用户不登录，重置 GlobalStore 信息
+                GlobalStore.setAllInfo({
+                  token: '',
+                  uid: 0,
+                  username: '',
+                  avatar: '',
+                  aboutMe: '',
+                  location: '',
+                  gender: 0,
+                  isVip: false,
+                  backgroundPic: '',
                 });
               }
             },
@@ -402,6 +428,15 @@ const HouseDetail: React.FC = () => {
     setCurrentImage(e.detail.current)
   }
 
+  const handleImagePreview = () => {
+    if (isComplete && order.images && order.images.length > 0) {
+      Taro.previewImage({
+        current: order.images[currentImage],
+        urls: order.images
+      });
+    }
+  }
+
   const checkDateValid = (start: string, end: string, valids: Array<{}>) => {
     if (valids.length === 0) return false
     const startDate = new Date(start.replace('-', '/').replace('-', '/'));
@@ -495,6 +530,7 @@ const HouseDetail: React.FC = () => {
         className='image-swiper'
         onChange={handleSwiperChange}
         circular
+        onClick={handleImagePreview}
       >
         {isComplete && order.images.map((image, index) => (
           <SwiperItem key={index}>
