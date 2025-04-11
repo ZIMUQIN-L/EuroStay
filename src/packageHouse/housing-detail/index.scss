@@ -349,6 +349,17 @@
         color: #000000;
         font-weight: bolder;
       }
+      .at-calendar__list.flex .flex__item-extra {
+        color: #7A63C7;
+
+        .extra-marks {
+
+          .mark {
+            color: #7A63C7;
+            background-color: #7A63C7;
+          }
+        }
+      }
       .flex__item
         .flex__item--now
         .flex__item--selected

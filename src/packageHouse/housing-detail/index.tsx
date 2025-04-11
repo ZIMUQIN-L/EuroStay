@@ -438,19 +438,27 @@ const HouseDetail: React.FC = () => {
   }
 
   const checkDateValid = (start: string, end: string, valids: Array<{}>) => {
-    if (valids.length === 0) return false
     const startDate = new Date(start.replace('-', '/').replace('-', '/'));
     const endDate = new Date(end.replace('-', '/').replace('-', '/'));
     if (startDate >= endDate) return false
     startDate.setDate(startDate.getDate() + 1)
     endDate.setDate(endDate.getDate() + 1)
-    const valid_dates = valids.map(date => date.value.replace('-', '/').replace('-', '/').substring(0, 10));
-    // console.log('check date valid', start, end, valids, valid_dates)
-    for (let i = startDate; i <= endDate; i.setDate(i.getDate() + 1)) {
-      // console.log('checking date: ', i.toISOString().substring(0, 10).replace('-', '/').replace('-', '/'))
-      if (!valid_dates.includes(i.toISOString().substring(0, 10).replace('-', '/').replace('-', '/'))) return false
-    }
+    const todayDate = new Date(today.replace('-', '/').replace('-', '/'));
+    if (startDate < todayDate) return false
     return true
+    // if (valids.length === 0) return false
+    // const startDate = new Date(start.replace('-', '/').replace('-', '/'));
+    // const endDate = new Date(end.replace('-', '/').replace('-', '/'));
+    // if (startDate >= endDate) return false
+    // startDate.setDate(startDate.getDate() + 1)
+    // endDate.setDate(endDate.getDate() + 1)
+    // const valid_dates = valids.map(date => date.value.replace('-', '/').replace('-', '/').substring(0, 10));
+    // // console.log('check date valid', start, end, valids, valid_dates)
+    // for (let i = startDate; i <= endDate; i.setDate(i.getDate() + 1)) {
+    //   // console.log('checking date: ', i.toISOString().substring(0, 10).replace('-', '/').replace('-', '/'))
+    //   if (!valid_dates.includes(i.toISOString().substring(0, 10).replace('-', '/').replace('-', '/'))) return false
+    // }
+    // return true
   }
 
   const handleSubmit = () => {
@@ -636,7 +644,7 @@ const HouseDetail: React.FC = () => {
       {Number(type) === 0 && 
         <View className='title-with-badge'>
           <View className='b-title'><View className='purple-badge'/>
-          可选日期
+          推荐入住日期（用 • 标记）
           </View>
         </View>
       }
@@ -659,7 +667,8 @@ const HouseDetail: React.FC = () => {
           <View className='calendar-container'>
             <AtCalendar
               isMultiSelect
-              validDates={getValidDates(order.availableDate)}
+              marks={getValidDates(order.availableDate)}
+              // validDates={getValidDates(order.availableDate)}
               // minDate={today}
               currentDate={{ start: startDate, end: endDate }}
               onDayClick={date => {
