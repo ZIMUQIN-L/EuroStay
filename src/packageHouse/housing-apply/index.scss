@@ -1,0 +1,158 @@
+.info-card {
+    margin: 10px auto;
+    margin-top: 24px;
+    margin-bottom: 24px;
+    border-radius: 30px;
+    background-color: #ffffff;
+    padding-top: 36px;
+    padding-bottom: 36px;
+    padding-right: 32px;
+    padding-left: 32px;
+    align-self: center;
+    width: 80%;
+    position: relative;
+
+    .info-card-header {
+        font-family: 'Alibaba PuHuiTi';
+        height: 40px;
+        // display: flex;
+        // position: relative;
+        padding: 0 16px;
+        font-size: 30px;
+        font-weight: 550;
+        color: #333333;
+        left: 36px;
+        // top: 0px;
+        // top: 36px;
+
+        .purple-badge {
+            position: absolute;
+            top: 41px;
+            left: 32px;
+            background-color: #7A63C7;
+            width: 12px;
+            height: 32px;
+        }
+
+        .status {
+            font-family: 'Alibaba PuHuiTi';
+            font-weight: 500;
+            position: absolute;
+            color: #777777;
+            font-size: 30px;
+            right: 24px;
+            // padding: 0 24px;
+            top: 36px;
+        }
+    }
+
+        .info-card-sec-title {
+            font-family: 'Alibaba PuHuiTi';
+            font-weight: 500;
+            // position: relative;
+            // padding-top: 36px;
+            // top: 36px;
+            display: flex;
+            margin: 10px auto;
+            margin-top: 24px;
+            left: 0px;
+            color: #7A63C7DD;
+            font-size: 28px;
+        }
+        .info-card-input {
+            font-family: 'Alibaba PuHuiTi';
+            width: 100%;
+            height: 48px;
+            font-size: 28px;
+            color: #333333;
+            box-sizing: border-box;
+            // padding: 0 20px;
+            border-bottom: 2px solid #f5f5f5;
+            background-color: white;
+        }
+        .info-card-input-multilines {
+            width: 100%;
+            min-height: 72px;
+            // padding: 20px;
+            box-sizing: border-box;
+            border-bottom: 2px solid #f5f5f5;
+            font-size: 28px;
+            line-height: 1;
+            background-color: white;
+        }
+        .info-card-options {
+            display: flex;
+            gap: 32px;
+    
+            .info-card-option {
+                font-family: 'Alibaba PuHuiTi';
+                width: 90px;
+                height: 40px;
+                border-radius: 30px;
+                // padding-top: 2px;
+                // padding-bottom: 2px;
+                // padding-right: 32px;
+                // padding-left: 32px;
+                font-size: 26px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                border-radius: 40px;
+                // border: 1px solid #ffffff;
+                background: #F2F2F2;
+                color: #333333;
+                cursor: pointer;
+                text-align: center;
+                opacity: 1.0;
+                z-index: 2;
+                top: 0px;
+                left: 0px;
+                // &:hover {
+                //     background: #FFD35E;
+                // }
+                // &:active {
+                //     background: #FFD35E;
+                // }
+                &.active {
+                    background: #FFD35E;
+                }
+            }
+        }   
+    // }
+}
+
+
+
+  .purple-fill-button {
+    font-family: 'Alibaba PuHuiTi';
+    width: 75%;
+    height: 71px;
+    color: #FFFFFF;
+    font-size: 32px;
+    background: #7A63C7;
+    border: 4px solid #7A63C7;
+    border-radius: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 40px;
+    margin-top: 96px;
+    margin: 10px auto;
+  }
+  
+  .purple-empty-button {
+    font-family: 'Alibaba PuHuiTi';
+    width: 75%;
+    height: 71px;
+    color: #333333;
+    font-size: 32px;
+    background: #F5F5F5;
+    border: 4px solid #7A63C7;
+    border-radius: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 40px;
+    margin-top: 96px;
+    margin: 10px auto;
+  }

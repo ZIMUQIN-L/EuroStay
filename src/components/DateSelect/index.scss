@@ -1,0 +1,102 @@
+.date-select {
+  background: #fff;
+  min-height: 100vh;
+  position: absolute;
+  min-width: 100%;
+  z-index: 1000000;
+
+  .calendar-container {
+    padding: 0 30px;
+    .calendar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .date-text {
+      font-size: 32px;
+      color: #333;
+      margin-right: 10px;
+    }
+
+    .nights-text {
+      font-size: 32px;
+      color: #666;
+      margin-left: 10px;
+    }
+  }
+}
+.date-select {
+  // margin-bottom: -80px;
+  margin-top: 20px;
+
+  .date-select-button {
+    padding: 0 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    .date-select-button-confirm {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #7a63c7dd;
+      color: #fff;
+
+      padding: 20px 20px;
+      border-radius: 50px;
+      width: 70%;
+      margin-bottom: 20px;
+    }
+    .date-select-button-cancel {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #fff;
+      color: #6b57ff;
+      width: 70%;
+      padding: 10px 20px;
+      border-radius: 10px;
+    }
+  }
+
+  .calendar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .date-text {
+    font-size: 32px;
+    color: #333;
+    margin-right: 10px;
+  }
+  .at-calendar__list.flex .flex__item--selected {
+    color: black;
+    background-color: #ffd35e;
+  }
+  .activity-publish .section .input-item .date-select .container-text {
+    color: black !important;
+  }
+
+  .at-calendar__list.flex
+    .flex__item--selected-head.flex__item--selected-tail
+    .flex__item-container {
+    background-color: #ffd35e;
+  }
+  .flex__item--selected {
+    color: #000000;
+    background-color: #ffd35e;
+  }
+  .at-calendar__list.flex .flex__item--today {
+    color: #000000;
+    font-weight: bolder;
+  }
+  .at-calendar__list.flex .flex__item-container {
+    width: 60rpx;
+    height: 60rpx;
+  }
+}
+@import '~taro-ui/dist/style/components/calendar.scss';
+@import '~taro-ui/dist/style/components/toast.scss';
+@import '~taro-ui/dist/style/components/icon.scss';

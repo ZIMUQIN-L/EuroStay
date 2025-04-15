@@ -1,0 +1,229 @@
+.page-container {
+  position: relative;
+  min-height: 100vh;
+
+  &.modal {
+    &::after {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(255, 255, 255, 0.95);
+      z-index: 99998;
+    }
+  }
+}
+
+.user-setting {
+  min-height: 100vh;
+  background: linear-gradient(180deg, #F8F0FF 0%, #FFFFFF 100%);
+  padding: 0 32px;
+  box-sizing: border-box;
+  position: relative;
+  padding-bottom: 160px;
+  z-index: 1;
+
+  .page-title {
+    font-size: 36px;
+    font-weight: bold;
+    padding: 40px 0;
+    display: block;
+  }
+
+  .user-header {
+    padding-top: 80px;
+    margin-bottom: 40px;
+
+    .user-info {
+      display: flex;
+      align-items: center;
+      position: relative;
+
+      .avatar {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        margin-right: 24px;
+      }
+
+      .info-text {
+        flex: 1;
+
+        .username {
+          font-size: 36px;
+          font-weight: 500;
+          color: #333;
+          margin-bottom: 12px;
+          display: block;
+        }
+
+        .user-id {
+          font-size: 24px;
+          color: #999;
+          font-family: yahei;
+        }
+      }
+
+      .edit-btn {
+        width: 64px;
+        height: 64px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        .edit-icon {
+          width: 40px;
+          height: 40px;
+        }
+      }
+    }
+  }
+
+  .vip-card {
+    position: relative;
+    height: 300px;
+    border-radius: 24px;
+    margin-bottom: 40px;
+    overflow: hidden;
+
+    .vip-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+    }
+
+    .vip-mask {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.1);
+      backdrop-filter: grayscale(80%);
+      z-index: 2;
+    }
+
+    .vip-content {
+      position: relative;
+      z-index: 3;
+      height: 100%;
+      padding-left: 36px;
+      padding-top: 90px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    &.not-vip {
+      .vip-info {
+        .vip-title {
+          color: rgba(255, 255, 255, 0.8);
+        }
+        .vip-level {
+          color: rgba(255, 255, 255, 0.8);
+        }
+        .vip-link {
+          color: rgba(255, 255, 255, 0.6);
+        }
+      }
+    }
+
+    .vip-info {
+      display: flex;
+      flex-direction: column;
+
+      .vip-title {
+        font-size: 28px;
+        color: #FFFFFF;
+        margin-bottom: 20px;
+      }
+
+      .vip-level {
+        font-size: 48px;
+        font-weight: bold;
+        color: #FFFFFF;
+        margin-bottom: 24px;
+      }
+
+      .vip-link {
+        font-size: 28px;
+        color: rgba(255, 255, 255, 0.8);
+      }
+    }
+  }
+
+  .menu-list {
+    background: #FFFFFF;
+    border-radius: 24px;
+    padding: 0 32px;
+    margin-bottom: 80px;
+
+    .menu-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 110px;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+
+      &:last-child {
+        border-bottom: none;
+      }
+
+      .menu-left {
+        display: flex;
+        align-items: center;
+
+        .menu-icon {
+          width: 48px;
+          height: 48px;
+          margin-right: 24px;
+        }
+
+        .menu-text {
+          font-size: 32px;
+          color: #333;
+        }
+      }
+
+      .arrow {
+        font-size: 36px;
+        color: rgb(2, 2, 2);
+      }
+    }
+  }
+
+  .logout-container {
+    position: fixed;
+    bottom: 64px;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    padding: 0 32px;
+    z-index: 2;
+
+    .logout-btn {
+      width: 500px;
+      height: 80px;
+      background: #FFFFFF;
+      border-radius: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      color: #8A70D6;
+      border: 2px solid #8A70D6;
+      box-shadow: 0 4px 12px rgba(138, 112, 214, 0.1);
+      margin-bottom: 120px;
+
+      &:active {
+        opacity: 0.8;
+        transform: translateY(2px);
+      }
+    }
+  }
+} 

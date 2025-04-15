@@ -1,4 +1,5 @@
-const cloudPath = 'https://eurostay-1330475057.cos.eu-frankfurt.myqcloud.com/sys';
+const cloudPath =
+  'https://eurostay-1330475057.cos.eu-frankfurt.myqcloud.com/sys';
 
 export const loginIp = `${cloudPath}/login-version3.0.png`;
 export const logoIp = `${cloudPath}/login2-version3.0.png`;
@@ -10,7 +11,18 @@ export const starIcon = `${cloudPath}/star.png`;
 export const editIcon = `${cloudPath}/edit.png`;
 export const bgMonthly = `${cloudPath}/bg-monthly.png`;
 export const bgYearly = `${cloudPath}/bg-yearly.png`;
-export const eswx = `${cloudPath}/eswx.png`;
+export const eswx = `${cloudPath}/eswx.jpeg`;
 export const phoneLogo = `${cloudPath}/phone-logo.png`;
-
-
+export const uuIcon = `${cloudPath}/uu.png`;
+export const uuSelectedIcon = `${cloudPath}/uu-active.png`;
+export const propertyIcon = `${cloudPath}/property.png`;
+export const propertySelectedIcon = `${cloudPath}/property-active.png`;
+export const activityIcon = `${cloudPath}/activity.png`;
+export const activitySelectedIcon = `${cloudPath}/activity-active.png`;
+export const settingIcon = `${cloudPath}/setting.png`;
+export const favoriteIcon = `${cloudPath}/heart.png`;
+export const heartPurpleIcon = `${cloudPath}/heart-purple.png`;
+export const starPurpleIcon = `${cloudPath}/star-purple.png`;
+export const starYellowIcon = `${cloudPath}/star-yellow.png`;
+export const sharePurpleIcon = `${cloudPath}/share-purple.png`;
+export const mineUser = `${cloudPath}/user-active.png`;

@@ -56,8 +56,8 @@ const UserVip = () => {
           'Content-Type': 'application/json'
         },
         data: {
-          month: 1,
-          price: 1
+          month: selectedPlan === 'monthly' ? 1 : 12,
+          price: selectedPlan === 'monthly' ? 6.6 : 88.8
         }
       });
 
@@ -75,6 +75,7 @@ const UserVip = () => {
               title: '支付成功',
               icon: 'success'
             });
+            GlobalStore.setIsVip(true);
             // 刷新会员信息
             fetchVipInfo();
           },
@@ -126,38 +127,38 @@ const UserVip = () => {
             <Image className='bg-image' src={bgMonthly} />
             <View className='price-info'>
               <View className='left'>
-                <Text className='label'>连续包月</Text>
+                <Text className='label'>月度会员</Text>
                 <View className='price'>
                   <Text className='currency'>€</Text>
-                  <Text className='amount'>19.9</Text>
+                  <Text className='amount'>0.88</Text>
                   <Text className='unit'>/月</Text>
                 </View>
               </View>
-              <View className='right'>
+              {/* <View className='right'>
                 <Text className='original-price'>原价€29.9</Text>
                 <Text className='discount'>限时67折</Text>
-              </View>
+              </View> */}
             </View>
           </View>
 
           <View 
             className={`option-card yearly ${selectedPlan === 'yearly' ? 'selected' : ''}`}
-            onClick={() => setSelectedPlan('yearly')}
+            // onClick={() => setSelectedPlan('yearly')}
           >
             <Image className='bg-image' src={bgYearly} />
             <View className='price-info'>
               <View className='left'>
-                <Text className='label'>连续包年</Text>
+                <Text className='label'>年度会员</Text>
                 <View className='price'>
                   <Text className='currency'>€</Text>
-                  <Text className='amount'>199</Text>
-                  <Text className='unit'>/年</Text>
+                  <Text className='amount'>正在上架中</Text>
+                  <Text className='unit'></Text>
                 </View>
               </View>
-              <View className='right'>
+              {/* <View className='right'>
                 <Text className='original-price'>原价€358.8</Text>
                 <Text className='discount'>限时5.5折</Text>
-              </View>
+              </View> */}
             </View>
           </View>
         </View>
@@ -167,7 +168,10 @@ const UserVip = () => {
           <View className={`checkbox ${agreed ? 'checked' : ''}`} />
           <Text className='agreement-text'>
             我已阅读并同意Eurostay
-            <Text className='link'>《会员协议》</Text>
+            <Text className='link' 
+                          onClick={() => {
+                            Taro.navigateTo({ url: '/pages/common-setting/index?type=vip' });
+                          }}>《会员协议》</Text>
           </Text>
         </View>
 

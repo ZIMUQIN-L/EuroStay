@@ -26,13 +26,16 @@ const EditTags = () => {
 
   // 预设的热门标签
   const hotTags = {
-    'MBTI': ['INTJ', 'INTP', 'ENTJ', 'ENTP',
-    'ISTJ', 'ISTP', 'ESTJ', 'ESTP',
-    'INFJ', 'INFP', 'ENFJ', 'ENFP',
-    'ISFJ', 'ISFP', 'ESFJ', 'ESFP'],
-    '爱好': ['画画', '美食', '滑雪', '游戏'],
-    '职业': ['学生', '金融', 'Tech', '自由职业'],
-    '其他': ['社牛', '社恐', '宠物控']
+    // '爱好': ['画画', '美食', '滑雪', '游戏', '摄影', '音乐', '看电影', '写作',
+    //     '旅行', '健身', '跳舞', '唱歌', '手工', '阅读', '追剧', '编程',
+    //     '烘焙', '咖啡', '动漫', '爬山'],
+    // '职业': ['学生', 'Tech', '自由职业', '设计师', '产品经理', '程序员',
+    //     '教师', '医生', '艺术家', '音乐人', '编辑', 'marketing',
+    //     '律师', '科研人员', '企业主', '其他'],
+    '生活类': ['做饭好吃', '照顾宠物', '收纳整理', '园艺技能', '健身指导', '会做咖啡', '倾听安慰'],
+    '技术类': ['拍照好看', '编程技能分享', '宠物护理', '家具维修', '会插画', '音乐创作', '创意手工', '抽象艺术'],
+    '其他': ['社牛', '社恐', '宠物控', '夜猫子', '早睡人', '乐天派', '理性派',
+        'emo体质', '养生达人', '搞笑担当']
   };
 
   const handleTagSelect = (tag: string) => {
@@ -91,7 +94,7 @@ const EditTags = () => {
     <View className='edit-tags'>
       <View className='content-container'>
         <View className='selected-tags'>
-          <Text className='section-title'>个人标签</Text>
+          <Text className='section-title'>个性标签</Text>
           <View className='tags-list'>
             <View className='add-tag' onClick={() => setShowAddPopup(true)}>
               <Text className='plus'>+</Text>

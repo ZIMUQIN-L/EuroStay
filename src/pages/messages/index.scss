@@ -1,0 +1,112 @@
+.home-messages {
+  min-height: 100vh;
+  padding-bottom: 120px;
+  background: #fff;
+  
+  .title {
+    font-size: 32rpx;
+    font-weight: bold;
+    margin-bottom: 20rpx;
+  }
+  
+  .message-item {
+    display: flex;
+    padding: 24rpx 32rpx;
+    border-bottom: 1px solid #f5f5f5;
+    
+    .avatar {
+      width: 80rpx;
+      height: 80rpx;
+      border-radius: 50%;
+      margin-right: 24rpx;
+    }
+    
+    .message-content {
+      flex: 1;
+      padding-right: 32rpx;
+      
+      .message-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 8rpx;
+        
+        .name {
+          font-size: 28rpx;
+          color: #333;
+          font-weight: 500;
+        }
+        
+        .time {
+          font-size: 24rpx;
+          color: #999;
+          margin-left: 12rpx;
+        }
+      }
+      
+      .message-text {
+        font-size: 26rpx;
+        color: #666;
+        line-height: 36rpx;
+      }
+    }
+  }
+
+  .special-item {
+    background: #f8f8f8;
+  }
+
+  .message-list {
+    background-color: #ffffff;
+    overflow-y: auto;
+    position: relative;
+    padding-bottom: 150px;
+  }
+
+  .empty-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 300px;
+    width: 100%;
+
+    .empty-text {
+      font-family: 'Alibaba PuHuiTi';
+      font-size: 28px;
+      color: #999999;
+    }
+  }
+
+  .login-container {
+    position: fixed;
+    bottom: 120px;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    background: #ffffff;
+    z-index: 99;
+
+    .login-btn {
+      width: 500px;
+      height: 80px;
+      background: #FFFFFF;
+      border-radius: 44px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Alibaba PuHuiTi';
+      font-size: 32px;
+      color: #8A70D6;
+      border: 2px solid #8A70D6;
+      box-shadow: 0 4px 12px rgba(138, 112, 214, 0.1);
+      margin-bottom: 120px;
+
+      &:active {
+        opacity: 0.8;
+      }
+    }
+  }
+}

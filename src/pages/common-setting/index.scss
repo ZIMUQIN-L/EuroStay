@@ -1,0 +1,123 @@
+.common-setting {
+  min-height: 100vh;
+  background: #F8F8F8;
+  padding-bottom: 120px;
+  position: relative;
+
+  .content {
+    padding: 32px;
+
+    .section {
+      background: #FFFFFF;
+      border-radius: 24px;
+      padding: 32px;
+
+      &-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 40px;
+
+        .label-bar {
+          width: 8px;
+          height: 32px;
+          background: #8A70D6;
+          border-radius: 4px;
+          margin-right: 16px;
+        }
+
+        .section-title {
+          font-size: 32px;
+          font-weight: 600;
+          color: #333333;
+        }
+      }
+
+      &-content {
+        .content-section {
+          margin-bottom: 40px;
+
+          .content-title {
+            font-size: 28px;
+            font-weight: 500;
+            color: #333333;
+            margin-bottom: 24px;
+            display: block;
+          }
+
+          .content-text {
+            font-size: 26px;
+            color: #666666;
+            line-height: 1.6;
+            margin-bottom: 24px;
+            display: block;
+          }
+
+          .content-subsection {
+            margin-bottom: 32px;
+            padding-left: 24px;
+
+            .content-subtitle {
+              font-size: 26px;
+              font-weight: 500;
+              color: #333333;
+              margin-bottom: 16px;
+              display: block;
+            }
+
+            .content-text {
+              font-size: 26px;
+              color: #666666;
+              line-height: 1.6;
+              margin-bottom: 16px;
+              display: block;
+            }
+
+            .content-list {
+              padding-left: 24px;
+
+              .list-item {
+                font-size: 26px;
+                color: #666666;
+                line-height: 1.6;
+                margin-bottom: 12px;
+                display: block;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .button-group {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 24px 32px;
+    background: #FFFFFF;
+    box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.05);
+    display: flex;
+    justify-content: center;
+    z-index: 100;
+
+    .back-button {
+      width: 500px;
+      height: 80px;
+      background: #FFFFFF;
+      border-radius: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      color: #8A70D6;
+      border: 2px solid #8A70D6;
+      box-shadow: 0 4px 12px rgba(138, 112, 214, 0.1);
+
+      &:active {
+        opacity: 0.8;
+        transform: translateY(2px);
+      }
+    }
+  }
+} 

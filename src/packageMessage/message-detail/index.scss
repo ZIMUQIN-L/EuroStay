@@ -1,0 +1,123 @@
+.message-detail {
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+    height: 100vh; /* 如果需要全屏高度 */
+  }
+
+  .message-list {
+    flex: 1;             /* 占据除底部输入框外的全部空间 */
+    overflow-y: auto; /* 如需滚动，可加这个 */
+
+  }
+
+  /* 输入框容器样式 */
+  .input-box {
+    display: flex;
+    align-items: center;
+    padding: 16rpx 30rpx;
+    margin: 20rpx 30rpx;
+    border-radius: 50rpx;
+    background-color: #F5F5F5;
+    height: 83rpx;
+  }
+
+  /* 输入框本身 */
+  .input {
+    flex: 1;
+    border: none;
+    background-color: transparent;
+    outline: none;
+    height: 60rpx;
+    font-size: 32rpx;
+    color: #333;
+  }
+
+  /* 发送按钮样式 */
+  .send-btn {
+    margin-left: 20rpx;
+    flex-shrink: 0;
+    width: 50rpx;
+    height: 50rpx;
+    border: 1px solid #979797;
+    border-radius: 50%;
+    background-color: #fff;
+    color: #979797;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32rpx;
+  }
+  
+  /* 顶部标题区域 */
+  .header {
+    padding: 20rpx;
+    border-bottom: 1px solid #f0f0f0;
+  
+    .title {
+      font-size: 32rpx;
+      font-weight: bold;
+    }
+  }
+  
+  
+  /* 每条消息 */
+  .message-item {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    margin-bottom: 20rpx;
+  
+    .avatar {
+      width: 60rpx;
+      height: 60rpx;
+      border-radius: 50%;
+      margin-right: 20rpx;
+    }
+  
+    /* 气泡本体 */
+    .bubble {
+      background-color: #f8f8f8;
+      border-radius: 16rpx;
+      padding: 20rpx;
+      max-width: 80%;
+      box-shadow: 0 2rpx 4rpx rgba(0, 0, 0, 0.1);
+  
+      .bubble-header {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 8rpx;
+  
+        .name {
+          font-size: 26rpx;
+          font-weight: bold;
+          color: #333;
+        }
+  
+        .time {
+          font-size: 24rpx;
+          color: #999;
+          margin-left: 10rpx;
+        }
+      }
+  
+      .content {
+        display: block;
+        font-size: 32rpx;
+        color: #666;
+        line-height: 1.4;
+        margin-bottom: 10rpx;
+      }
+  
+      .check-btn {
+        background-color: #ff8c00;
+        color: #fff;
+        border-radius: 8rpx;
+        font-size: 26rpx;
+        padding: 0 20rpx;
+      }
+    }
+
+    
+  }
+  

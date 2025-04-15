@@ -1,0 +1,128 @@
+.HostCardSmall {
+    margin: 10px auto;
+    margin-top: 24px;
+    margin-bottom: 24px;
+    border-radius: 30px;
+    border: 1px solid #f5f5f5;
+    background-color: #ffffff;
+    // padding-top: 36px;
+    // padding-bottom: 36px;
+    // padding-right: 40px;
+    // padding-left: 40px;
+    // align-self: center;
+    // align-items: center;
+    // justify-content: center;
+    width: 90%;
+    position: relative;
+    display: flex;
+    height: 170px;
+
+    // .host-info {
+    //     // position: relative;
+    //     // top: 36px;
+    //     // bottom: 36px;
+    //     // left: 64px;
+    //     // right: 64px;
+    //     width: 90%;
+    //     // height: 74px;
+    //     margin: 10px auto;
+    //     padding: 0 24px;
+    //     background: #b8e791;
+    //     // display: flex;
+
+        .host-avatar {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            border-radius: 37px;
+            top: 48px;
+            left: 40px;
+        }
+    
+        .host-name {
+            font-family: 'Alibaba PuHuiTi';
+            position: absolute;
+            font-size: 26px;
+            color: #333333;
+            top: 40px;
+            left: 140px;
+            font-weight: 540;
+            max-width: calc(100% - 340px);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .host-detail {
+            font-family: 'Alibaba PuHuiTi';
+            position: absolute;
+            color: #979797;
+            top: 72px;
+            left: 140px;
+            font-weight: 540;
+            font-size: 22px;
+            max-width: calc(100% - 340px);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    
+        .host-button {
+            font-family: 'Alibaba PuHuiTi';
+            display: flex;
+            // margin: 10px auto;
+            position: absolute;
+            top: 60px;
+            right: 40px;
+            width: 160px;
+            height: 58px;
+            border-radius: 100px;
+            background-color: #7A63C7;
+            color: #ffffff;
+            font-size: 26px;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            justify-items: center;
+            text-justify: center;
+        }
+    
+        .host-tags {
+            font-family: 'Alibaba PuHuiTi';
+            // margin-top: 24px;
+            position: absolute;
+            display: flex;
+            bottom: 36px;
+            left: 140px;
+            max-width: calc(100% - 180px);
+            overflow: hidden;
+            font-size: 16px;
+
+            .host-tag {
+                font-family: 'Alibaba PuHuiTi';
+                display: flex;
+                text-align: center;
+                // margin: auto;
+                margin-right: 5px;
+                align-items: center;
+                justify-content: center;
+                // justify-content: space-between;
+                // bottom: 0px;
+                // width: 45px; ////
+                height: 15px;
+                // height: 27px;
+                border-radius: 20px;
+                // margin-right: 5px;
+                padding: 5px 8px;
+                border: 3px solid #7A63C7;
+                color: #7A63C7;
+                white-space: nowrap;
+                flex-shrink: 0;
+
+                &:last-child {
+                    margin-right: 0;
+                }
+            }
+        }
+    // }
+}

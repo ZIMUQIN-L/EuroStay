@@ -1,16 +1,23 @@
 export default {
   lazyCodeLoading: 'requiredComponents',
   pages: [
-        'pages/login/index',
-        'pages/home/index'
-        ],
+    'pages/home-world/index',
+    'pages/login/index',
+    'pages/messages/index',
+    'pages/user/index',
+    'pages/orders/index',
+    'pages/house-publish/index',
+    'pages/activity-publish/index',
+    'pages/common-setting/index',
+    'pages/user-setting/index',
+  ],
   subPackages: [
     {
       root: 'packageUser/',
       pages: [
-        'user-setting/index',
         'user-editing/index',
         'user-vip/index',
+        'user-collection/index',
         'about-es/index',
         'user-contact/index',
         'edit-nickname/index',
@@ -18,7 +25,18 @@ export default {
         'edit-about/index',
         'edit-tags/index',
         'edit-email/index',
-        'edit-phone/index'
+        'edit-phone/index',
+      ],
+    },
+    {
+      root: 'packageHouse/',
+      pages: ['housing-apply/index', 'housing-detail/index'],
+    },
+    {
+      root: 'packageOrder/',
+      pages: [
+        'order-detail/index',
+        'order-review/index',
       ],
     },
     // {
@@ -29,11 +47,39 @@ export default {
     //   root: 'packageActivity/',
     //   pages: [],
     // },
+    {
+      root: 'packageMessage',
+      pages: ['message-detail/index', 'strangers/index'],
+    },
   ],
   window: {
     backgroundTextStyle: 'light',
-    enablePullDownRefresh: false,
+    navigationBarTitleText: '小程序',
+    navigationBarBackgroundColor: '#f5f5f5',
+    navigationBarTextStyle: 'black',
+    enablePullDownRefresh: true,
     onReachBottomDistance: 50,
   },
   style: 'v2',
+  tabBar: {
+    custom: true,
+    list: [
+      {
+        pagePath: 'pages/home-world/index',
+        text: '主页',
+      },
+      {
+        pagePath: 'pages/orders/index',
+        text: 'orders',
+      },
+      {
+        pagePath: 'pages/messages/index',
+        text: 'messages',
+      },
+      {
+        pagePath: 'pages/user-setting/index',
+        text: 'user',
+      },
+    ],
+  },
 };

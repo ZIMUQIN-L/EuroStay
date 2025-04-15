@@ -96,7 +96,7 @@ const UserEditing = () => {
             GlobalStore.setGender(userInfo ? userInfo.gender: GlobalStore._userInfo.gender);
             GlobalStore.setLocation(userInfo ? userInfo.location: GlobalStore._userInfo.location);
             GlobalStore.setAboutMe(userInfo ? userInfo.aboutMe: GlobalStore._userInfo.aboutMe);
-
+            GlobalStore.setBackgroundPic(userInfo ? userInfo.backgroundPic: GlobalStore._userInfo.backgroundPic);
             Taro.navigateBack({
                 delta:1
             });
@@ -186,23 +186,29 @@ const UserEditing = () => {
     });
   };
 
+  // 添加手机号格式化函数
+  const formatPhoneNumber = (phone: string | null | undefined) => {
+    if (!phone) return '';
+    return phone.replace(/(\d{3})\d{4}(\d{4})/, '$1****$2');
+  };
+
   const accountItems = [
     {
-      label: '账号',
+      label: 'ES code',
       value: userInfo?.uid?.toString().padStart(16, '0') || '',
       readOnly: true
     },
     {
       label: '邮箱',
       value: userInfo?.email || '',
-      placeholder: '输入你的邮箱',
+      placeholder: '仅供提醒，不做展示',
       path: '/packageUser/edit-email/index',
       params: { currentValue: userInfo?.email }
     },
     {
       label: '手机号',
-      value: userInfo?.mobile || '',
-      placeholder: '输入你的手机号',
+      value: formatPhoneNumber(userInfo?.mobile),  // 使用格式化函数处理手机号
+      placeholder: '写一下你的手机号嘛~',
       path: '/packageUser/edit-phone/index',
       params: { currentValue: userInfo?.mobile }
     }
@@ -215,6 +221,22 @@ const UserEditing = () => {
       placeholder: '还没有名称哦~',
       path: '/packageUser/edit-nickname/index',
       params: { currentValue: userInfo?.username }
+    },
+    {
+        label: '你的封面',
+        // subLabel: '（选一张你的人生高光瞬间吧，推荐本人照片哦，这将是你在【世界】的出场照，让Guest/Host更好地了解你~）',
+        subLabel: '为你自己在ES选择一张美美的出场照吧！推荐本人照片哦，这将是大家对你的第一印象哦～',
+        customContent: (
+          <View className='photo-upload' onClick={() => handleUpload('background')}>
+            {userInfo?.backgroundPic ? (
+              <Image className='uploaded-photo' src={userInfo.backgroundPic} mode='aspectFill' />
+            ) : (
+              <View className='upload-placeholder'>
+                <Text className='plus'>+</Text>
+              </View>
+            )}
+          </View>
+        )
     },
     {
       label: '性别',
@@ -253,38 +275,23 @@ const UserEditing = () => {
     {
       label: '地区',
       value: userInfo?.location || '',
-      placeholder: '输入你的地区',
+      placeholder: '你目前居住在？',
       path: '/packageUser/edit-location/index',
       params: { currentValue: userInfo?.location }
     },
     {
       label: '自我介绍',
       value: userInfo?.aboutMe || '',
-      placeholder: '简单介绍一下你自己',
+      placeholder: '你是谁？你有什么故事？',
       path: '/packageUser/edit-about/index',
       params: { currentValue: userInfo?.aboutMe }
     },
     {
-      label: '个人标签',
+      label: '我的技能',
       value: userInfo?.tags?.join('、') || '',
-      placeholder: '选择个人标签',
+      placeholder: '请选择你最擅长的3个技能吧！',
       path: '/packageUser/edit-tags/index',
       params: { currentValue: JSON.stringify(userInfo?.tags) }
-    },
-    {
-      label: '个人照片',
-      subLabel: '（将展示在世界板块）',
-      customContent: (
-        <View className='photo-upload' onClick={() => handleUpload('background')}>
-          {userInfo?.backgroundPic ? (
-            <Image className='uploaded-photo' src={userInfo.backgroundPic} mode='aspectFill' />
-          ) : (
-            <View className='upload-placeholder'>
-              <Text className='plus'>+</Text>
-            </View>
-          )}
-        </View>
-      )
     }
   ];
 

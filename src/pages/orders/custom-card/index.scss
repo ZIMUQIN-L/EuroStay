@@ -1,0 +1,125 @@
+.card {
+  margin: 10px auto;
+  margin-bottom: 24px;
+  min-width: 95%;
+  max-width: 95%;
+  // width: 702px;
+  height: 276px;
+  border-radius: 30px;
+  position: relative; /* 让子元素可以绝对定位 */
+  overflow: hidden; /* 防止子元素溢出 */
+  background: linear-gradient(#d9d9d9, #222222);
+  // background: linear-gradient(#d9d9d9, #737373);
+  // background: linear-gradient(#d9d9d9, #000000);
+  // background: linear-gradient(#737373, #d9d9d9);
+  // filter: brightness(0.8); // 让整体稍微暗一点，提高文字可读性
+  z-index: 1;
+  // background: linear-gradient(#000000, #424242);
+  overflow: hidden;
+
+  .card-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 30px;
+    background-blend-mode: overlay;
+    background-position: center;
+    background-size: cover;
+    opacity: 0.6;
+    z-index: 0; /* 背景层最底部 */
+    // background: linear-gradient(#d9d9d9, #737373);
+    // filter: brightness(0.7); // 让整体稍微暗一点，提高文字可读性
+  }
+
+  /* 按钮样式 */
+  .card-right-bottom-button-host {
+    position: absolute;
+    bottom: 24px; /* 让按钮靠近底部 */
+    right: 24px; /* 让按钮靠近右侧 */
+    z-index: 2; /* 确保按钮显示在背景上 */
+    // width: 182px; /* 固定按钮宽度 */
+    max-width: 26%;
+    min-width: 26%;
+    height: 71px; /* 固定按钮高度 */
+    font-size: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 40px;
+    border: 1px solid #ffffff;
+    background-color: #7a63c7;
+    color: #ffffff; /* 文字颜色设置为白色 */
+    cursor: pointer;
+    text-align: center;
+    opacity: 1;
+    z-index: 2;
+    // &:hover {
+    //   background-color: #dfc8fd;
+    // }
+    &:active {
+      background-color: #7a63c7;
+    }
+  }
+
+  .card-right-bottom-button-guest {
+    position: absolute;
+    bottom: 24px; /* 让按钮靠近底部 */
+    right: 24px; /* 让按钮靠近右侧 */
+    z-index: 2; /* 确保按钮显示在背景上 */
+    // width: 182px; /* 固定按钮宽度 */
+    max-width: 26%;
+    min-width: 26%;
+    height: 71px; /* 固定按钮高度 */
+    font-size: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 40px;
+    border: 1px solid #ffffff;
+    background-color: #ffd35e;
+    color: #ffffff; /* 文字颜色设置为白色 */
+    cursor: pointer;
+    text-align: center;
+    opacity: 1;
+    z-index: 2;
+    // &:hover {
+    //   background-color: #dfc8fd;
+    // }
+    &:active {
+      background-color: #ffd35e;
+    }
+  }
+
+  .card-right-top-text {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    color: #ffffff;
+    font-size: 26px;
+    height: 36px;
+  }
+
+  .card-left-bottom-title {
+    position: absolute;
+    bottom: 64px;
+    left: 24px;
+    color: #ffffff;
+    font-size: 32px;
+    height: 36px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 400px;
+  }
+
+  .card-left-bottom-text {
+    position: absolute;
+    bottom: 24px;
+    left: 24px;
+    color: #ffffff;
+    font-size: 22px;
+    height: 36px;
+  }
+}
