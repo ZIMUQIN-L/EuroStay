@@ -620,15 +620,9 @@ const MessageDetail = () => {
         scrollTop={scrollTop}
         scrollWithAnimation
         scrollIntoView={scrollAnchorId}
-        onScrollToUpper={() => {
-          if (loadingMore || !hasMore) return;
-      
-          setLoadingMore(true);
-          fetchMessageList(pageNum + 1, true).finally(() => {
-            setPageNum(prev => prev + 1);
-            setLoadingMore(false);
-          });
-        }}
+        enableBackToTop
+        upperThreshold={0}
+        lowerThreshold={0}
       >
         {messages.map((msg, index) => (
           <View key={`${msg.id}-${index}`} className='message-wrapper'>
