@@ -103,6 +103,7 @@ const HousePublish = () => {
   >([]);
   const [pid, setPid] = useState<number | null>(null);
   const uploadRes = useRef<string[]>([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // 定义标签分类
   const [tagCategories, setTagCategories] = useState([
@@ -480,8 +481,9 @@ const HousePublish = () => {
   };
 
   const handleSubmit = async () => {
+    if (isSubmitting) return;
+    
     const errors = validateForm();
-
     if (errors.length > 0) {
       Taro.showToast({
         title: errors[0],
@@ -491,13 +493,14 @@ const HousePublish = () => {
       return;
     }
 
-    const fullAddress = combineAddress(
-      formData.country.cname,
-      formData.city.cname,
-      formData.detailAddress,
-    );
-
+    setIsSubmitting(true);
     try {
+      const fullAddress = combineAddress(
+        formData.country.cname,
+        formData.city.cname,
+        formData.detailAddress,
+      );
+
       const url = pid
         ? 'https://api.eurostay.co/app/property/modify'
         : 'https://api.eurostay.co/app/property/upload';
@@ -549,6 +552,8 @@ const HousePublish = () => {
         icon: 'none',
         duration: 2000,
       });
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -988,7 +993,10 @@ const HousePublish = () => {
           </View>
         </View> */}
       </View>
-      <View className='submit-post-house' onClick={handleSubmit}>
+      <View 
+        className={`submit-post-house ${isSubmitting ? 'disabled' : ''}`} 
+        onClick={handleSubmit}
+      >
         {pid ? '保存修改' : '上传房源'}
       </View>
     </View>
