@@ -480,7 +480,7 @@ const HouseDetail: React.FC = () => {
     if (GlobalStore.userInfo?.aboutMe === '' || GlobalStore.userInfo?.backgroundPic === '') {
       Taro.showModal({
         title: '请先完善个人资料',
-        content: '请先完善个人介绍，背景图和邮箱后，再进行申请~',
+        content: '请先完善个人介绍，你的封面和邮箱后，再进行申请~',
         success: function (res) {
           if (res.confirm) {
             Taro.navigateTo({
