@@ -17,6 +17,7 @@ const Index = () => {
     start: '',
     end: ''
   })
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   const router = useRouter();
   const id = router?.params?.id;
@@ -62,14 +63,16 @@ const Index = () => {
   }
 
   const handleSubmit = () => {
+    if (isSubmitting) return;
+
     if (Number(type) === 0) {   
       if (!identity || !introduction || !contact || !reason || !gender || !guestCount) {
         Taro.showToast({
           title: '请填写完整信息',
-        icon: 'none',
-        duration: 2000,
-      })
-      return
+          icon: 'none',
+          duration: 2000,
+        })
+        return
       }
       // check if guestCount is a number, and it is a integer that is greater than 0
       if (!/^\d+$/.test(guestCount) || Number(guestCount) <= 0) {
@@ -79,9 +82,8 @@ const Index = () => {
           duration: 2000,
         })
         return
-        }
-    }
-    else {
+      }
+    } else {
       if (!identity || !introduction || !contact || !reason || !gender) {
         Taro.showToast({
           title: '请填写完整信息',
@@ -91,6 +93,8 @@ const Index = () => {
         return
       }
     }
+
+    setIsSubmitting(true);
     if (Number(type) === 0) {
       Taro.request({
         url: 'https://api.eurostay.co/app/property/applyProperty',
@@ -111,11 +115,6 @@ const Index = () => {
         },
         success: (res) => {
           if (res.statusCode === 200 && res.data.code === 0) {
-
-            // send a message
-            
-
-            // console.log(res)
             Taro.showToast({
               title: '申请已提交',
               icon: 'success',
@@ -138,6 +137,9 @@ const Index = () => {
             icon: 'none',
             duration: 2000,
           });
+        },
+        complete: () => {
+          setIsSubmitting(false);
         }
       })
     } else {
@@ -157,7 +159,6 @@ const Index = () => {
         },
         success: async (res) => {
           if (res.statusCode === 200 && res.data.code === 0) {
-            // console.log(res)
             Taro.showToast({
               title: '申请已提交',
               icon: 'success',
@@ -180,6 +181,9 @@ const Index = () => {
             icon: 'none',
             duration: 2000,
           });
+        },
+        complete: () => {
+          setIsSubmitting(false);
         }
       })
     }
@@ -288,7 +292,10 @@ const Index = () => {
     </View>
 
     {/* 提交按钮 */}
-    <View className='purple-fill-button' onClick={handleSubmit}>
+    <View 
+      className={`purple-fill-button ${isSubmitting ? 'disabled' : ''}`} 
+      onClick={handleSubmit}
+    >
       提交申请
     </View>
     </>
