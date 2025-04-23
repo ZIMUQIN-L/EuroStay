@@ -641,6 +641,26 @@ const HouseDetail: React.FC = () => {
       </View>
       }
 
+      {Number(type) === 0 && (<View className='review-button' onClick={() => {
+        if (GlobalStore.userInfo?.uid === 0) {
+          Taro.showModal({
+            title: '转至登录页面',
+            content: '请登录后评价~',
+            success: function (res) {
+              if (res.confirm) {
+                Taro.reLaunch({
+                  url: `/pages/login/index`,
+                });
+              }
+            },
+          });
+          return;
+        }
+        Taro.navigateTo({ url: `/packageHouse/house-review/index?experienceId=${order.pid}&hostId=${order.uid}` });
+      }}>
+        前往评价
+      </View>)}
+
       {Number(type) === 0 && 
         <View className='title-with-badge'>
           <View className='b-title'><View className='purple-badge'/>

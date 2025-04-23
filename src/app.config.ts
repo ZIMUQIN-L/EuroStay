@@ -30,7 +30,9 @@ export default {
     },
     {
       root: 'packageHouse/',
-      pages: ['housing-apply/index', 'housing-detail/index'],
+      pages: ['housing-apply/index', 
+      'housing-detail/index',
+      'house-review/index'],
     },
     {
       root: 'packageOrder/',

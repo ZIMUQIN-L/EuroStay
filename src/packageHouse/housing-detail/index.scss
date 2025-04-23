@@ -308,6 +308,25 @@
     }
   }
 
+  .review-button {
+    width: 60%;
+    margin: 20px auto;
+    height: 60px;
+    background: #7a63c7AA;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 40px;
+    color: white;
+    font-size: 30px;
+    font-family: 'Alibaba PuHuiTi';
+    margin-bottom: 40px;
+
+    &:active {
+        opacity: 0.8;
+    }
+  }
+
   .date-select {
     background: #fff;
     position: relative;
@@ -398,4 +417,4 @@
   @import '~taro-ui/dist/style/components/calendar.scss';
   @import '~taro-ui/dist/style/components/toast.scss';
   @import '~taro-ui/dist/style/components/icon.scss';
-  
+   

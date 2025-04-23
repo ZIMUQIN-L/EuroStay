@@ -13,23 +13,16 @@ const Index: React.FC = () => {
     const MAX_CONTENT_LENGTH = 500
 
     const router = useRouter();
-    const role = router?.params?.role;
-    const type = router?.params?.type;
-    const id = router?.params?.id;
+    const hostId = router?.params?.hostId;
+
     const experienceId = router?.params?.experienceId;
-    const title = router?.params?.title;
 
     const [complete, setComplete] = useState('') // useState<'yes' | 'no'>('yes')
     const [recommend, setRecommend] = useState('') // useState<'yes' | 'no'>('no')
-    const [finish, setFinish] = useState(false)
 
     const handleReviewComplete = (c: 'yes' | 'no') => {
         setComplete(c)
     }
-
-    const [guestId, setGuestId] = useState('')
-
-    const [hostId, setHostId] = useState('')
 
     const handleRecommend = (r: 'yes' | 'no') => {
         setRecommend(r)
@@ -62,58 +55,37 @@ const Index: React.FC = () => {
 
     const handleSubmit = () => {
         Taro.request({
-            url: Number(type) === 0 ? `https://api.eurostay.co/app/property/showApplicationInfo` : 'https://api.eurostay.co/app/activity/showApplicationInfo',
+            url: 'https://api.eurostay.co/app/property/postRawPropertyReview',
             method: 'POST',
             header: {
                 token: GlobalStore.userInfo.token,
             },
             data: {
-                id: Number(id),
+                experienceId: Number(experienceId),
+                applicationId: 0,
+                targetUid: Number(hostId),
+                done: complete === 'yes' ? true : false,
+                recommend: recommend === 'yes' ? true : false,
+                content: content,
+                images: images,
             },
-            success: function (response) {
-                setGuestId(response.data.result.guestInfo.uid);
-                setHostId(response.data.result.hostInfo.uid);
-                Taro.request({
-                    url: Number(type) === 0 ? 'https://api.eurostay.co/app/property/postPropertyReview' : 'https://api.eurostay.co/app/activity/postActivityReview',
-                    method: 'POST',
-                    header: {
-                        token: GlobalStore.userInfo.token,
-                    },
-                    data: {
-                        experienceId: Number(experienceId),
-                        applicationId: Number(id),
-                        targetUid: role === 'host' ? Number(response.data.result.guestInfo.uid) : Number(response.data.result.hostInfo.uid),
-                        done: complete === 'yes' ? true : false,
-                        recommend: recommend === 'yes' ? true : false,
-                        content: content,
-                        images: images,
-                    },
-                    success: function (res) {
-                        if (res.statusCode === 200 && res.data.code === 0) {
-                            Taro.showToast({
-                                title: '你已成功评价！正在等待审核，审核通过后，待对方也完成评价或7天后评价内容将会显示。',
-                                icon: 'none',
-                                duration: 2000,
-                            })
-                            setTimeout(() => {
-                                Taro.navigateBack();
-                              }, 2000);
-                        } else {
-                            Taro.showToast({
-                                title: res.data.msg + ' 评价失败，请稍后再试',
-                                icon: 'none',
-                                duration: 2000,
-                            })
-                        }
-                    },
-                    fail: function (err) {
-                        Taro.showToast({
-                            title: '网络请求失败，请重试',
-                            icon: 'none',
-                            duration: 2000,
-                        });
-                    }
-                })
+            success: function (res) {
+                if (res.statusCode === 200 && res.data.code === 0) {
+                    Taro.showToast({
+                        title: '你已成功评价！',
+                        icon: 'none',
+                        duration: 2000,
+                    })
+                    setTimeout(() => {
+                        Taro.navigateBack();
+                        }, 2000);
+                } else {
+                    Taro.showToast({
+                        title: res.data.msg + ' 评价失败，请稍后再试',
+                        icon: 'none',
+                        duration: 2000,
+                    })
+                }
             },
             fail: function (err) {
                 Taro.showToast({
@@ -121,16 +93,13 @@ const Index: React.FC = () => {
                     icon: 'none',
                     duration: 2000,
                 });
-            },
-            complete: function () {
-                setFinish(true)
             }
         });
     }
 
     return (
         <>
-            <Text className='review-title'>是否完成本次{Number(type) === 0 ? '换宿' : '活动'}？</Text>
+            <Text className='review-title'>是否完成本次换宿？</Text>
             <View className='review-buttons'>
                 <View 
                 className={`review-button ${complete === 'yes' ? 'active' : ''}`}
@@ -146,8 +115,7 @@ const Index: React.FC = () => {
                 </View>
             </View>
             
-            {role === 'host' && <Text className='review-title'>是否推荐本次Guest？</Text>}
-            {role === 'guest' && <Text className='review-title'>是否推荐本次Host？</Text>}
+            <Text className='review-title'>是否推荐本次Host？</Text>
 
             <View className='review-buttons'>
                 <View 
@@ -192,12 +160,9 @@ const Index: React.FC = () => {
                 </View>
             </View>
 
-            {role === 'host' && <View className='purple-fill-button' onClick={handleSubmit}>
+            <View className='yellow-fill-button' onClick={handleSubmit}>
             发布评价
-            </View>}
-            {role === 'guest' && <View className='yellow-fill-button' onClick={handleSubmit}>
-            发布评价
-            </View>}
+            </View>
         </>
     )
 }

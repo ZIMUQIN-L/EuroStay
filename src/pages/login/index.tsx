@@ -176,11 +176,22 @@ const Login = () => {
             Taro.reLaunch({
               url: '/pages/home-world/index',
               success: function () {
-                Taro.showToast({
-                  title: '登录成功',
-                  icon: 'success',
-                  duration: 2000,
-                });
+                // Taro.showToast({
+                //   title: '登录成功',
+                //   icon: 'success',
+                //   duration: 2000,
+                // });
+                Taro.showModal({
+                    title: '前往补充个人信息',
+                    content: '请前往补充个人信息，方便Guest/Host更好地了解你哦~',
+                    success: function (res) {
+                      if (res.confirm) {
+                        Taro.navigateTo({
+                          url: `/packageUser/user-editing/index`,
+                        });
+                      }
+                    },
+                  });
               },
             });
           }
