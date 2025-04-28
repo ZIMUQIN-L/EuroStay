@@ -45,7 +45,7 @@ const UserCollection: React.FC = () => {
         token: GlobalStore.userInfo.token,
       },
       data: {
-        page: 1,
+        page: page,
         uid: GlobalStore.userInfo.uid
       },
       success: function (res) {
