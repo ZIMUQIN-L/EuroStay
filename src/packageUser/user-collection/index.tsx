@@ -49,6 +49,7 @@ const UserCollection: React.FC = () => {
         uid: 0
       },
       success: function (res) {
+          console.log(res);
         if (res.data.code === 0 && res.statusCode === 200) {
           const response = res.data.result as CollectionResponse
           if (page === 1) {

@@ -569,7 +569,14 @@ const HouseDetail: React.FC = () => {
       }}>{'<'}</View> */}
 
       <HomeOutlined className='back' onClick={() => {
-        Taro.navigateBack({delta: 1})
+        const pages = Taro.getCurrentPages()
+        if (pages.length > 1) {
+            Taro.navigateBack({ delta: 1 })
+        } else {
+            Taro.switchTab({
+                url: `/pages/home-world/index`,
+              });
+        }
       }}/>
 
       <View className='action-buttons'>
