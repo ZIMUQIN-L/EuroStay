@@ -1,3 +1,13 @@
+.message-time {
+  display: flex;
+  justify-content: center;
+  margin: 15rpx 0;
+  .time {
+    font-size: 24rpx;
+    color: #999;
+  }
+}
+
 .message-box {
   display: flex;
   margin-bottom: 20rpx;   // 每条消息与下一条的间距
@@ -34,10 +44,6 @@
     overflow-wrap: break-word;  /* 对旧版浏览器的兼容写法 */
   }
 
-  .time {
-    font-size: 24rpx;
-    color: #999;
-  }
 }
 
 /* 左侧消息 */

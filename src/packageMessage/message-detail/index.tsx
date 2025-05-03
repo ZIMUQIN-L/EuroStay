@@ -1,4 +1,4 @@
-import { View, Button, Input, ScrollView } from '@tarojs/components'
+import { View, Button, Input, ScrollView, Textarea } from '@tarojs/components'
 import { useState, useEffect, useRef } from 'react'
 // 假设你已经有以下两个组件
 import SimpleMessageBox from '@components/MessageComponents/SimpleMessageBox'
@@ -13,6 +13,9 @@ import CustomNavBar from '@components/MessageComponents/message-detail-nav-bar'
 import Taro from '@tarojs/taro'
 import ContactMessageBox from '@components/MessageComponents/ContactMessageBox'
 import GlobalStore from '../../store/GlobalStore'
+import { Message } from 'src/types/message'
+import dayjs from 'dayjs'
+import { formatSmartTime } from '@utils/dateUtil'
 
 
 const MessageDetail = () => {
@@ -28,7 +31,7 @@ const MessageDetail = () => {
   const [pageNum, setPageNum] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const scrollViewRef = useRef(null);
-  const [messages, setMessages] = useState([]);
+  const [messages, setMessages] = useState<Message[]>([]);
   const [loadingMore, setLoadingMore] = useState(false);
   const [shouldScrollBottom, setShouldScrollBottom] = useState(false);
   const sessionDict = Taro.getStorageSync('allSessionDict') || {}
@@ -38,7 +41,7 @@ const MessageDetail = () => {
 
 
   useEffect(() => {
-    fetchMessageList();
+    fetchMessageList(pageNum);
     setShouldScrollBottom(true);
   }, []); 
 
@@ -54,6 +57,7 @@ const MessageDetail = () => {
     const handleIncomingMessage = (msg) => {
     //   console.log("handleIncomingMessage", msg);
       setDebugMsg(msg);
+      console.log(msg)
       // 判断消息是否属于当前对话
       if (msg.data?.sessionId == id) {
         const currentUid = GlobalStore.userInfo.uid;
@@ -119,7 +123,7 @@ const MessageDetail = () => {
     // 格式化时间 (只保留小时:分钟)
     let time = '';
     try {
-      time = formatTime(msg.createTime); // 抽离出安全的函数
+      time = formatSmartTime(msg.createTime); // 抽离出安全的函数
       // 其他处理...
     } catch (e) {
       console.error('createMessageObject 内部报错：', e, msg);
@@ -142,12 +146,16 @@ const MessageDetail = () => {
     }
     
     // 创建基本消息对象
-    let messageObj = {
+    let messageObj: Message = {
       id: msg.id,
       type: messageType,
       direction: direction,
+      createTime: msg.createTime,
       data: {
-        time: time
+        time: time,
+        toUid: msg.toUid,
+        subjectId: msg.subjectId,
+        isProperty: msg.isProperty, 
       }
     };
     // 为不同类型的消息添加特定字段
@@ -156,9 +164,6 @@ const MessageDetail = () => {
         // 普通文本消息
         messageObj.data = {
           ...messageObj.data,
-          toUid: msg.toUid,
-          isProperty: msg.isProperty,
-          subjectId: msg.subjectId,
           content: msg.content || ''
         };
         break;
@@ -167,9 +172,6 @@ const MessageDetail = () => {
         // 申请请求消息
         messageObj.data = {
           ...messageObj.data,
-          toUid: msg.toUid,
-          isProperty: msg.isProperty,
-          subjectId: msg.subjectId,
           name: msg.guestName || msg.fromName || '申请人'
         };
         break;
@@ -178,9 +180,6 @@ const MessageDetail = () => {
         // 房东批准消息
         messageObj.data = {
           ...messageObj.data,
-          toUid: msg.toUid,
-          subjectId: msg.subjectId,
-          isProperty: msg.isProperty,
           hostname: msg.hostName || '房东',
           applicantname: msg.guestName || '申请人',
           price: msg.price || '$0'
@@ -191,9 +190,6 @@ const MessageDetail = () => {
         // 房东拒绝消息
         messageObj.data = {
           ...messageObj.data,
-          toUid: msg.toUid,
-          isProperty: msg.isProperty,
-          subjectId: msg.subjectId,
           name: msg.hostName || '房东',
           reason: msg.reason || msg.content || '未提供原因'
         };
@@ -203,9 +199,6 @@ const MessageDetail = () => {
         // 租客取消消息
         messageObj.data = {
           ...messageObj.data,
-          toUid: msg.toUid,
-          isProperty: msg.isProperty,
-          subjectId: msg.subjectId,
           name: msg.guestName || '申请人',
           reason: msg.reason || msg.content || '申请人取消了预订'
         };
@@ -215,9 +208,6 @@ const MessageDetail = () => {
         // 联系信息消息
         messageObj.data = {
           ...messageObj.data,
-          toUid: msg.toUid,
-          isProperty: msg.isProperty,
-          subjectId: msg.subjectId
           // 联系信息消息可能不需要其他特殊字段
         };
         break;
@@ -226,10 +216,7 @@ const MessageDetail = () => {
         // 图片信息
         messageObj.data = {
           ...messageObj.data,
-          toUid: msg.toUid,
           fromUid: msg.fromUid,
-          subjectId: msg.subjectId,
-          isProperty: msg.isProperty,
           content: msg.content || 'https://via.placeholder.com/150' // fallback 占位图
         };
         break;
@@ -246,6 +233,10 @@ const MessageDetail = () => {
   
     if (!token) {
       console.error('缺少 token，无法获取消息列表');
+      return;
+    }
+
+    if (!hasMore) {
       return;
     }
   
@@ -279,6 +270,7 @@ const MessageDetail = () => {
   
         const sortedMessages = formattedMessages.sort((a, b) => a.id - b.id);
         // console.log("sortedMessage", sortedMessages);
+        setPageNum(prev => prev + 1);
         setMessages(prev =>
           appendToTop ? [...sortedMessages, ...prev] : sortedMessages
         );
@@ -404,45 +396,45 @@ const MessageDetail = () => {
         await GlobalStore.sendWebSocketMessage(wsMessage);
         
         // 创建一个新的本地消息对象，供界面显示
-        const currentUid = GlobalStore.userInfo.uid;
-        const messageObj = {
-          id: now.getTime(), // 用时间戳来模拟一个唯一id
-          type: getMessageTypeFromMtype(messageType),
-          direction: 'right',
-          data: {
-            time: formattedTime,
-            content: content,
-            mtype: messageType,
-            fromUid: currentUid,
-            toUid: otherUserId,
-            ...additionalData
-          }
-        };
+        // const currentUid = GlobalStore.userInfo.uid;
+        // const messageObj = {
+        //   id: now.getTime(), // 用时间戳来模拟一个唯一id
+        //   type: getMessageTypeFromMtype(messageType),
+        //   direction: 'right',
+        //   data: {
+        //     time: formattedTime,
+        //     content: content,
+        //     mtype: messageType,
+        //     fromUid: currentUid,
+        //     toUid: otherUserId,
+        //     ...additionalData
+        //   }
+        // };
         
-        // 根据消息类型添加额外字段
-        switch(messageType) {
-          case 1: // 预订请求
-          case 2: // 确认请求
-            messageObj.data.name = '我';
-            messageObj.data.requestType = messageType === 1 ? 'booking' : 'confirmation';
-            break;
+        // // 根据消息类型添加额外字段
+        // switch(messageType) {
+        //   case 1: // 预订请求
+        //   case 2: // 确认请求
+        //     messageObj.data.name = '我';
+        //     messageObj.data.requestType = messageType === 1 ? 'booking' : 'confirmation';
+        //     break;
             
-          case 3: // 房东批准
-            messageObj.data.hostname = '我';
-            messageObj.data.applicantname = `用户${otherUserId}`;
-            messageObj.data.price = content;
-            break;
+        //   case 3: // 房东批准
+        //     messageObj.data.hostname = '我';
+        //     messageObj.data.applicantname = `用户${otherUserId}`;
+        //     messageObj.data.price = content;
+        //     break;
             
-          case 4: // 房东拒绝
-            messageObj.data.name = '我';
-            messageObj.data.reason = content;
-            break;
+        //   case 4: // 房东拒绝
+        //     messageObj.data.name = '我';
+        //     messageObj.data.reason = content;
+        //     break;
             
-          case 6: // 客人取消
-            messageObj.data.name = '我';
-            messageObj.data.reason = content;
-            break;
-        }
+        //   case 6: // 客人取消
+        //     messageObj.data.name = '我';
+        //     messageObj.data.reason = content;
+        //     break;
+        // }
         
         // 更新本地消息列表，添加到末尾（新消息在下方）
         // setMessages(prevMessages => [...prevMessages, messageObj]);
@@ -511,7 +503,7 @@ const MessageDetail = () => {
   }
   
   // 根据不同的 type 来渲染对应的组件
-  const renderMessage = (msg) => {
+  const renderMessage = (msg: Message, showTime: boolean) => {
     // console.log("renderMessage", msg.type);
     const avatar = getAvatar(msg)
     switch (msg.type) {
@@ -537,6 +529,7 @@ const MessageDetail = () => {
             time={msg.data.time}
             direction={msg.direction}
             toUid={otherUserId}
+            showTime={showTime}
           />
         )
       case 'reject-fh':
@@ -605,9 +598,16 @@ const MessageDetail = () => {
             content={msg.data.content || '未知消息类型'}
             time={msg.data.time}
             direction="left"
+            showTime={showTime}
           />
         )
     }
+  }
+
+  const onLoadMore = async () => {
+    let scrollId = messages[0].id;
+    await fetchMessageList(pageNum, true);
+    setScrollAnchorId(`message-${scrollId}`)
   }
 
   return (
@@ -618,17 +618,25 @@ const MessageDetail = () => {
         className='message-list'  
         scrollY
         scrollTop={scrollTop}
-        scrollWithAnimation
         scrollIntoView={scrollAnchorId}
         enableBackToTop
-        upperThreshold={0}
+        upperThreshold={50}
         lowerThreshold={0}
+        onScrollToUpper={onLoadMore}
       >
-        {messages.map((msg, index) => (
-          <View key={`${msg.id}-${index}`} className='message-wrapper'>
-            {renderMessage(msg)}
-          </View>
-        ))}
+        {messages.map((msg, index) => {
+          let showTime = false;
+          if (index === 0) {
+            showTime = true;
+          } else if (Math.abs(dayjs(msg.createTime).diff(dayjs(messages[index-1].createTime), 'minute')) > 5) {
+            showTime = true;
+          }
+          return (
+            <View key={`${msg.id}-${index}`} id={`message-${msg.id}`} className='message-wrapper'>
+              {renderMessage(msg, showTime)}
+            </View>
+          )
+        })}
 
         {/* 滚动锚点 */}
         <View id='bottom-anchor' style={{ height: '40px' }} />
@@ -637,12 +645,14 @@ const MessageDetail = () => {
       {/* 底部输入框区域 */}
       {!isSystemMessage && (
         <View className='input-box'>
-          <Input
+          <Textarea
             className='input'
             value={inputValue}
+            autoHeight
             onInput={handleInput}
             placeholder='请输入...'
             confirmType='send'
+            showConfirmBar={false}
             onConfirm={handleSend}
           />
           <View className='send-btn' onClick={handleSend}>

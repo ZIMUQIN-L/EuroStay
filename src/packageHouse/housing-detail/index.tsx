@@ -404,6 +404,9 @@ const HouseDetail: React.FC = () => {
             title: '点赞成功',
             icon: 'success'
           })
+          Taro.navigateTo({
+            url: `/packageMessage/message-detail/index?id=${response.data.sessionId}&name=${encodeURIComponent(hostDetail.username || '')}`,
+          });
         } else {
           Taro.showToast({
             title: response.data.msg + ' 点赞失败，请重试',
