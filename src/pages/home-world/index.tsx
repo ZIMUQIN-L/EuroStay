@@ -111,22 +111,22 @@ const HomeWorld = () => {
 //       }, 100)
 //   });
 
-  useDidShow(() => {
-    getList('app/esuser/getUserList', setUserList);
-    getList('app/activity/getActivityList', setActivityList, {
-      searchableLocation: 0,
-      startDate: '',
-      endDate: '',
-      order: 'DES',
-    });
-    getList('app/property/getPropertyList', setPropertyList, {
-      searchableLocation: 0,
-      startDate: '',
-      endDate: '',
-      order: 'DES_PRICE',
-      capacity: 1,
-    });
-  });
+//   useDidShow(() => {
+//     getList('app/esuser/getUserList', setUserList);
+//     getList('app/activity/getActivityList', setActivityList, {
+//       searchableLocation: 0,
+//       startDate: '',
+//       endDate: '',
+//       order: 'DES',
+//     });
+//     getList('app/property/getPropertyList', setPropertyList, {
+//       searchableLocation: 0,
+//       startDate: '',
+//       endDate: '',
+//       order: 'DES_PRICE',
+//       capacity: 1,
+//     });
+//   });
 
   useEffect(() => {
     setActiveTab('友友');

@@ -46,9 +46,10 @@ const UserCollection: React.FC = () => {
       },
       data: {
         page: page,
-        uid: 0
+        uid: GlobalStore.userInfo.uid
       },
       success: function (res) {
+          console.log(res);
         if (res.data.code === 0 && res.statusCode === 200) {
           const response = res.data.result as CollectionResponse
           if (page === 1) {

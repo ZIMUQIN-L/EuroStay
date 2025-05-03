@@ -43,13 +43,48 @@ const Index: React.FC = () => {
           })
           return
         }
-    
+      
         Taro.chooseImage({
-          count: 1,
+          count: MAX_IMAGES - images.length,
           sizeType: ['compressed'],
           sourceType: ['album', 'camera'],
-          success: (res) => {
-            setImages([...images, res.tempFilePaths[0]])
+          success: async (res) => {
+            try {
+              const uploadPromises = res.tempFilePaths.map(filePath => 
+                new Promise<string>((resolve, reject) => {
+                  const uploadTask = Taro.uploadFile({
+                    url: 'https://api.eurostay.co/app/common/upload',
+                    filePath: filePath,
+                    name: 'Image',
+                    formData: {
+                      prefix: 'test',
+                    },
+                    header: {
+                      token: GlobalStore.userInfo.token,
+                    },
+                    success: (response) => {
+                      if (response.statusCode === 200) {
+                        const responseData = JSON.parse(response.data);
+                        const imageUrl = responseData['result'];
+                        resolve(imageUrl);
+                      } else {
+                        reject(new Error('Upload failed'));
+                      }
+                    },
+                    fail: reject
+                  });
+                })
+              );
+
+              const uploadedUrls = await Promise.all(uploadPromises);
+              setImages([...images, ...uploadedUrls]);
+            } catch (error) {
+              console.error('Upload failed:', error);
+              Taro.showToast({
+                title: '图片上传失败',
+                icon: 'none'
+              });
+            }
           }
         })
       }
