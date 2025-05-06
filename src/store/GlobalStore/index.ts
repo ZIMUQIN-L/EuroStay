@@ -129,6 +129,7 @@ class GlobalStore {
    */
     async connectWebSocket(token?: string) {
       const wsToken = token || this._userInfo.token;
+      console.log(wsToken);
       if (!wsToken) {
         console.error('WebSocket 连接失败，缺少 token');
         return;
