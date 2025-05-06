@@ -226,6 +226,9 @@ const UserProfile = () => {
             title: '发送成功',
             icon: 'success'
           });
+          Taro.navigateTo({
+            url: `/packageMessage/message-detail/index?id=${response.data.sessionId}&name=${encodeURIComponent(userInfo?.username || '')}`,
+          });
         } else {
           Taro.showToast({
             title: response.data.msg + ' 发送失败，请重试',

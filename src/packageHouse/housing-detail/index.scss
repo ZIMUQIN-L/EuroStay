@@ -182,12 +182,11 @@
 //   } 
 
   .title-section {
-    margin-top: 36px;
-    width: 100%;
+    padding: 36px 36px 0;
     display: flex;
+    justify-content: space-between;
 
     .title {
-        margin-left: 36px;
         font-size: 36px;
         color: #333333;
         font-weight: 590;
@@ -197,19 +196,17 @@
         max-width: 60%;
         // position: absolute;
         display: flex;
+        gap: 10px 5px;
         flex-flow: wrap;
         bottom: 36px;
         margin-left: 24px;
-        justify-content: space-between;
+        justify-content: flex-end;
 
             .house-tag {
                 flex-flow: row;
                 display: flex;
                 text-align: center;
                 // margin: auto;
-                margin-top: 5px;
-                margin-right: 12px;
-                padding-left: 5px;
                 align-items: center;
                 justify-content: center;
                 // justify-content: space-between;

@@ -1,3 +1,18 @@
+import dayjs from 'dayjs'
+import isToday from 'dayjs/plugin/isToday'
+import isYesterday from 'dayjs/plugin/isYesterday'
+import weekday from 'dayjs/plugin/weekday'
+import localeData from 'dayjs/plugin/localeData'
+import localizedFormat from 'dayjs/plugin/localizedFormat'
+import 'dayjs/locale/zh-cn'
+
+dayjs.extend(isToday)
+dayjs.extend(isYesterday)
+dayjs.extend(weekday)
+dayjs.extend(localeData)
+dayjs.extend(localizedFormat)
+dayjs.locale('zh-cn') // 设置为中文
+
 /**
  * 返回格式化补0后的时间
  * @param second 时间戳
@@ -185,4 +200,31 @@ export function calculateDaysBetweenDates(
   const daysBetween = Math.ceil(diffInMillis / millisInDay);
 
   return daysBetween;
+}
+
+/**
+ * 格式化时间字符串为用户友好的展示
+ * @param {string} input - 格式为 'YYYY-MM-DD HH:mm:ss' 的时间字符串
+ * @returns {string} - 例如 '09:30'、'昨天 09:30'、'星期一 09:30'、'2025/04/20 09:30'
+ */
+export function formatSmartTime(input) {
+  const now = dayjs()
+  const time = dayjs(input)
+
+  if (time.isToday()) {
+    return time.format('HH:mm')
+  }
+
+  if (time.isYesterday()) {
+    return `昨天 ${time.format('HH:mm')}`
+  }
+
+  const diffDays = now.diff(time, 'day')
+
+  if (diffDays < 7) {
+    const weekdayName = time.format('dddd') // 如 '星期一'
+    return `${weekdayName} ${time.format('HH:mm')}`
+  }
+
+  return time.format('YYYY/MM/DD HH:mm')
 }

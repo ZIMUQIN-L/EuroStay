@@ -55,11 +55,17 @@
     }
     .user-details {
       margin-left: 20px;
+      flex: 1;
+      max-width: calc(100% - 100px);
       .user-name {
         font-size: 24px;
         color: white;
         font-weight: 440;
         font-family: 'Alibaba PuHuiTi';
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        width: 100%;
       }
       .user-tags {
         margin-top: 4px;
@@ -78,7 +84,7 @@
         .tag-item {
           background-color: white;
           border-radius: 20px;
-          padding: 5px 4px;
+          padding: 5px 8px;
           margin-bottom: 5px;
           // border: 1px solid black;
           font-size: 18px;

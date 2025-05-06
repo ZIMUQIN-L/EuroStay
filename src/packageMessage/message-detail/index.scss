@@ -8,7 +8,11 @@
   .message-list {
     flex: 1;             /* 占据除底部输入框外的全部空间 */
     overflow-y: auto; /* 如需滚动，可加这个 */
+    padding-top: 10px;
+  }
 
+  .message-wrapper {
+    padding: 0 10px;
   }
 
   /* 输入框容器样式 */
@@ -19,7 +23,7 @@
     margin: 20rpx 30rpx;
     border-radius: 50rpx;
     background-color: #F5F5F5;
-    height: 83rpx;
+    // height: 83rpx;
   }
 
   /* 输入框本身 */
@@ -28,7 +32,7 @@
     border: none;
     background-color: transparent;
     outline: none;
-    height: 60rpx;
+    // height: 60rpx;
     font-size: 32rpx;
     color: #333;
   }
