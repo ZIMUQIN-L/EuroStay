@@ -1,6 +1,6 @@
 import { View, Text, Image } from '@tarojs/components'
 import { observer } from 'mobx-react'
-import Taro from '@tarojs/taro'
+import Taro, { useReachBottom } from '@tarojs/taro'
 import { useState, useEffect } from 'react'
 import './index.scss' // 记得在这里引入自己的样式文件
 import GlobalStore from '@store/GlobalStore'
@@ -40,6 +40,10 @@ const Index = () => {
   const [strangerMessages, setStrangerMessages] = useState<MessageItem[]>([]);
   const [messages, setMessages] = useState<MessageItem[]>([]);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
+  const [loading, setLoading] = useState(false);
   
   // Mock 数据 - 用于测试
   // const mockNormalMessages = [
@@ -94,6 +98,8 @@ const Index = () => {
   };
 
   const fetchMessages = async () => {
+    if (loading || !hasMore) return;
+
     const token = GlobalStore.userInfo.token;
     const currentUid = GlobalStore.userInfo.uid;
   
@@ -102,12 +108,13 @@ const Index = () => {
       return;
     }
   
+    setLoading(true);
     try {
       const res = await Taro.request({
         url: 'https://api.eurostay.co/app/esmessages/sessionList',
         method: 'GET',
         header: { token },
-        data: { pageNum: 1 },
+        data: { pageNum: page },
       });
   
   
@@ -167,6 +174,12 @@ const Index = () => {
             normalMsgs.push({ ...messageObj, type: 'normal' });
           }
         });
+
+        if (res.data.result.pages * res.data.result.size >= res.data.result.total) {
+          setHasMore(false);
+        } else {
+          setPage(prev => prev + 1);
+        }
   
         setMessages(normalMsgs);
         setSystemMessages(systemMsgs);
@@ -261,8 +274,14 @@ const Index = () => {
         return;
       }
       console.error('网络请求失败:', error);
+    } finally {
+      setLoading(false);
     }
   };
+
+  useReachBottom(() => {
+      fetchMessages();
+  });
 
   const formatTime = (dateString) => {
     if (!dateString) return '';
