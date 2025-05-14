@@ -231,7 +231,7 @@ const HomepageCard = (props: {
                 {parseStartDate(props.property?.startDate)}
               </View>
             </View>
-            <View className='bottom-right'>€{props.property?.price}/晚</View>
+            {/* <View className='bottom-right'>€{props.property?.price}/晚</View> */}
           </View>
         </>
       )}

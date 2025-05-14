@@ -175,7 +175,8 @@ const Index = () => {
           }
         });
 
-        if (res.data.result.pages * res.data.result.size >= res.data.result.total) {
+        console.log(res.data.result);
+        if (res.data.result.current * res.data.result.size >= res.data.result.total) {
           setHasMore(false);
         } else {
           setPage(prev => prev + 1);
