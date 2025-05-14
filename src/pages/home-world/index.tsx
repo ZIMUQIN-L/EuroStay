@@ -129,7 +129,7 @@ const HomeWorld = () => {
 //   });
 
   useEffect(() => {
-    setActiveTab('友友');
+    setActiveTab('房源');
     getList('app/esuser/getUserList', setUserList);
     getList('app/activity/getActivityList', setActivityList, {
       searchableLocation: 0,

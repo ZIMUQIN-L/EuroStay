@@ -227,3 +227,113 @@
     }
   }
 } 
+
+.invite-btn-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 32px;
+  margin: 24px 0 0 0;
+}
+.invite-btn {
+  background: #fff;
+  color: #8A70D6;
+  border: 3px solid #8A70D6;
+  border-radius: 22px;
+  padding: 18px 0;
+  font-size: 32px;
+  font-weight: 500;
+  width: 320px;
+  max-width: 45vw;
+  text-align: center;
+  box-shadow: none;
+  margin: 0;
+  transition: background 0.2s;
+}
+@media (max-width: 700px) {
+  .invite-btn {
+    font-size: 28px;
+    width: 44vw;
+    max-width: 44vw;
+    padding: 14px 0;
+  }
+  .invite-btn-row {
+    gap: 16px;
+  }
+}
+
+.invite-modal-mask {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.18);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.invite-modal {
+  background: #fff;
+  border-radius: 28px;
+  padding: 48px 32px 32px 32px;
+  min-width: 600px;
+  max-width: 90vw;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.invite-tip {
+  /* border: 3px solid #bdbdbd; */
+  border: none;
+  border-radius: 0;
+  color: #6b6b6b;
+  font-size: 32px;
+  padding: 18px 32px;
+  margin-bottom: 48px;
+  background: #fff;
+  text-align: center;
+}
+.invite-input-wrapper {
+  width: 100%;
+  margin-bottom: 40px;
+  display: flex;
+  justify-content: center;
+}
+.invite-input {
+  width: 520px;
+  height: 72px;
+  border: 2px solid #bdbdbd;
+  border-radius: 16px;
+  font-size: 32px;
+  padding: 0 24px;
+  background: #fff;
+  color: #333;
+}
+.invite-btn-yellow {
+  width: 100%;
+  background: #ffd464;
+  color: #333;
+  border-radius: 40px;
+  font-size: 32px;
+  font-weight: 500;
+  padding: 22px 0;
+  text-align: center;
+  margin-bottom: 32px;
+  margin-top: 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+.invite-later {
+  color: #333;
+  font-size: 30px;
+  text-align: center;
+  margin-top: 0;
+}
+@media (max-width: 700px) {
+  .invite-input {
+    width: 80vw;
+    font-size: 28px;
+    height: 56px;
+    padding: 0 12px;
+  }
+} 

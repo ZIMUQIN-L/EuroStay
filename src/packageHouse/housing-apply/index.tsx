@@ -160,13 +160,45 @@ const Index = () => {
         success: async (res) => {
           if (res.statusCode === 200 && res.data.code === 0) {
             Taro.showToast({
-              title: '申请已提交',
-              icon: 'success',
-              duration: 2000,
-            })
-            setTimeout(() => {
-              Taro.navigateBack();
-            }, 2000);
+                title: '申请已提交',
+                icon: 'success',
+                duration: 2000,
+              })
+              setTimeout(() => {
+                Taro.navigateBack();
+              }, 2000);
+            // const paymentData = res.data.data;
+            // await Taro.requestPayment({
+            //     timeStamp: paymentData.timeStamp,
+            //     nonceStr: paymentData.nonceStr,
+            //     package: paymentData.package,
+            //     signType: paymentData.signType,
+            //     paySign: paymentData.paySign,
+            //     success: () => {
+            //       Taro.showToast({
+            //         title: '支付成功',
+            //         icon: 'success'
+            //       });
+            //         setTimeout(() => {
+            //         Taro.navigateBack();
+            //         }, 2000);
+            //     },
+            //     fail: (err) => {
+            //       console.error('支付失败', err);
+            //       Taro.showToast({
+            //         title: '支付失败',
+            //         icon: 'none'
+            //       });
+            //     }
+            //   });
+            // Taro.showToast({
+            //   title: '申请已提交',
+            //   icon: 'success',
+            //   duration: 2000,
+            // })
+            // setTimeout(() => {
+            //   Taro.navigateBack();
+            // }, 2000);
           } else {
             Taro.showToast({
               title: res.data.msg + ' 申请提交失败，请重试',
