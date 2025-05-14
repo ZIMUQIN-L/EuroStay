@@ -182,6 +182,9 @@ const Index = () => {
         }
   
         // setMessages(normalMsgs);
+        // setSystemMessages(systemMsgs);
+        // setStrangerMessages(strangerMsgs);
+        // setMessages(prev => [...prev, ...normalMsgs]);
         setSystemMessages(prev => [...prev, ...systemMsgs]);
         setStrangerMessages(prev => [...prev, ...strangerMsgs]);
 
@@ -192,6 +195,7 @@ const Index = () => {
           return timeB - timeA; // 降序排序，新的在前
         });
         setMessages(sortedMessages);
+        // setMessages(prev => [...prev, ...sortedMessages]);
 
         const sessionDict = {};
 
