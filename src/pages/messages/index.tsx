@@ -175,19 +175,18 @@ const Index = () => {
           }
         });
 
-        console.log(res.data.result);
         if (res.data.result.current * res.data.result.size >= res.data.result.total) {
           setHasMore(false);
         } else {
           setPage(prev => prev + 1);
         }
   
-        setMessages(normalMsgs);
-        setSystemMessages(systemMsgs);
-        setStrangerMessages(strangerMsgs);
+        // setMessages(normalMsgs);
+        setSystemMessages(prev => [...prev, ...systemMsgs]);
+        setStrangerMessages(prev => [...prev, ...strangerMsgs]);
 
         // 对消息按时间排序，越新的越靠前
-        const sortedMessages = [...normalMsgs].sort((a, b) => {
+        const sortedMessages = [...messages, ...normalMsgs].sort((a, b) => {
           const timeA = new Date(a.rawData.createTime).getTime();
           const timeB = new Date(b.rawData.createTime).getTime();
           return timeB - timeA; // 降序排序，新的在前
