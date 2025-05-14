@@ -482,7 +482,7 @@ const HousePublish = () => {
 
   const handleSubmit = async () => {
     if (isSubmitting) return;
-    
+
     const errors = validateForm();
     if (errors.length > 0) {
       Taro.showToast({
@@ -495,11 +495,11 @@ const HousePublish = () => {
 
     setIsSubmitting(true);
     try {
-      const fullAddress = combineAddress(
-        formData.country.cname,
-        formData.city.cname,
-        formData.detailAddress,
-      );
+    const fullAddress = combineAddress(
+      formData.country.cname,
+      formData.city.cname,
+      formData.detailAddress,
+    );
 
       const url = pid
         ? 'https://api.eurostay.co/app/property/modify'
@@ -635,18 +635,18 @@ const HousePublish = () => {
           {tagCategories.map(category => (
             <View key={category.id} className='tag-category'>
               <Text className='category-title'>{category.name}</Text>
-              <View className='tags'>
+          <View className='tags'>
                 {category.tags.map(tag => (
-                  <Text
+              <Text
                     key={tag}
                     className={`tag ${formData.houseTag.includes(tag) ? 'active' : ''}`}
                     onClick={() => handleTagSelect(tag)}
-                  >
-                    {tag}
-                  </Text>
-                ))}
+              >
+                {tag}
+              </Text>
+            ))}
                 <Text className='option' onClick={() => handleAddCustomTag(category.id)}>+</Text>
-              </View>
+          </View>
             </View>
           ))}
         </View>
@@ -992,7 +992,7 @@ const HousePublish = () => {
             注意：当你通过Guest的换宿申请后，该收款码会被自动发给Guest哦~
           </View>
         </View> */}
-      </View>
+        </View>
       <View 
         className={`submit-post-house ${isSubmitting ? 'disabled' : ''}`} 
         onClick={handleSubmit}

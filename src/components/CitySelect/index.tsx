@@ -9,6 +9,7 @@ interface IProps {
 }
 const CitySelect = (props: IProps) => {
   const [searchValue, setSearchValue] = useState('');
+  const [selectedCity, setSelectedCity] = useState<{ id: number; cname: string; name: string } | null>(null);
   const [topCityList, setTopCityList] = useState<
     {
       id: number;
@@ -80,6 +81,20 @@ const CitySelect = (props: IProps) => {
     });
   };
 
+  const handleCityClick = (city: { id: number; cname: string; name: string }) => {
+    setSelectedCity(city);
+  };
+
+  const handleConfirm = () => {
+    if (selectedCity) {
+      props.onCitySelected(selectedCity);
+    }
+  };
+
+  const handleCancel = () => {
+    props.onCitySelected({ id: 0, cname: '选择城市', name: '' });
+  };
+
   return (
     <View className='city-select'>
       <View className='search-box'>
@@ -98,10 +113,8 @@ const CitySelect = (props: IProps) => {
           {topCityList.map((city, index) => (
             <View
               key={index}
-              className='city-item'
-              onClick={() => {
-                props.onCitySelected(city);
-              }}
+              className={`city-item ${selectedCity?.id === city.id ? 'selected' : ''}`}
+              onClick={() => handleCityClick(city)}
             >
               {city.cname}
             </View>
@@ -115,16 +128,23 @@ const CitySelect = (props: IProps) => {
           {cities.map((city, index) => (
             <View
               key={index}
-              className='city-row'
-              onClick={() => {
-                props.onCitySelected(city);
-              }}
+              className={`city-row ${selectedCity?.id === city.id ? 'selected' : ''}`}
+              onClick={() => handleCityClick(city)}
             >
               {city.cname}
             </View>
           ))}
         </View>
       ))}
+
+      <View className='floating-buttons'>
+        <View className='confirm-button' onClick={handleConfirm}>
+          确认
+        </View>
+        <View className='cancel-button' onClick={handleCancel}>
+          取消
+        </View>
+      </View>
     </View>
   );
 };

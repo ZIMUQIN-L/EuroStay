@@ -1,4 +1,4 @@
-import { View, Text, Image } from '@tarojs/components';
+import { View, Text, Image, Input } from '@tarojs/components';
 import { observer } from 'mobx-react';
 import Taro from '@tarojs/taro';
 import { useEffect, useState } from 'react';
@@ -17,6 +17,8 @@ import './index.scss';
 const UserSetting = () => {
   const [isShowPostModal, setIsShowPostModal] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [showInviteModal, setShowInviteModal] = useState(false);
+  const [inviteCode, setInviteCode] = useState('');
 
   useEffect(() => {
     checkToken();
@@ -42,11 +44,11 @@ const UserSetting = () => {
 
       if (res.data.code === 401 || res.data.code === 403) {
         // Token 过期或无效
-        Taro.showModal({
+      Taro.showModal({
           title: '登录已过期',
           content: '请重新登录',
-          success: function (res) {
-            if (res.confirm) {
+        success: function (res) {
+          if (res.confirm) {
               Taro.reLaunch({
                 url: '/pages/login/index',
               });
@@ -81,7 +83,7 @@ const UserSetting = () => {
             if (res.confirm) {
               Taro.reLaunch({
                 url: '/pages/login/index',
-              });
+            });
             } else {
               // 如果用户不登录，重置 GlobalStore 信息
               GlobalStore.setAllInfo({
@@ -98,8 +100,8 @@ const UserSetting = () => {
               // 重新加载当前页面
               Taro.reLaunch({
                 url: '/pages/user-setting/index'
-              });
-            }
+      });
+    }
           },
         });
       }
@@ -148,10 +150,10 @@ const UserSetting = () => {
       path: `/pages/user/index?uid=${GlobalStore.userInfo.uid}`
     },
     {
-      icon: starIcon,
-      text: '我的收藏',
-      path: '/packageUser/user-collection/index'
-    },
+        icon: starIcon,
+        text: '我的收藏',
+        path: '/packageUser/user-collection/index'
+      },
     {
       icon: infoIcon,
       text: '关于ES',
@@ -193,10 +195,34 @@ const UserSetting = () => {
               <Text className='user-id'>ES code：{isLoggedIn ? formatUid(GlobalStore.userInfo.uid) : '未登录'}</Text>
             </View>
             {isLoggedIn && (
-              <View className='edit-btn' onClick={() => Taro.navigateTo({ url: '/packageUser/user-editing/index' })}>
-                <Image className='edit-icon' src={editIcon} mode='aspectFit' />
-              </View>
+            <View className='edit-btn' onClick={() => Taro.navigateTo({ url: '/packageUser/user-editing/index' })}>
+              <Image className='edit-icon' src={editIcon} mode='aspectFit' />
+            </View>
             )}
+          </View>
+        </View>
+
+        {/* 填写邀请码按钮 */}
+        <View className='invite-btn-row'>
+          <View
+            className='invite-btn left'
+            onClick={() => {
+              const code = isLoggedIn ? formatUid(GlobalStore.userInfo.uid) : '';
+              if (code) {
+                Taro.setClipboardData({ data: code });
+                Taro.showToast({ title: '已复制到剪贴板', icon: 'none' });
+              } else {
+                Taro.showToast({ title: '请先登录', icon: 'none' });
+              }
+            }}
+          >
+            复制我的邀请码
+          </View>
+          <View
+            className='invite-btn right'
+            onClick={() => setShowInviteModal(true)}
+          >
+            填写邀请码获取会员
           </View>
         </View>
 
@@ -250,6 +276,52 @@ const UserSetting = () => {
           </View>
         </View>
       </View>
+
+      {/* 邀请码弹窗 */}
+      {showInviteModal && (
+        <View className='invite-modal-mask' onClick={() => setShowInviteModal(false)}>
+          <View className='invite-modal' onClick={e => e.stopPropagation()}>
+            <View className='invite-tip'>每个用户只有一次机会哦</View>
+            <View className='invite-input-wrapper'>
+              <Input
+                className='invite-input'
+                type='text'
+                placeholder='请输入邀请码'
+                value={inviteCode}
+                onInput={e => setInviteCode(e.detail.value)}
+              />
+            </View>
+            <View className='invite-btn-yellow' onClick={async () => {
+              if (!inviteCode) {
+                Taro.showToast({ title: '请输入邀请码', icon: 'none' });
+                return;
+              }
+              try {
+                const res = await Taro.request({
+                  url: 'https://api.eurostay.co/app/esuser/processInvitation',
+                  method: 'POST',
+                  header: {
+                    token: GlobalStore.userInfo.token,
+                  },
+                  data: { id: inviteCode },
+                });
+                if (res.data.code === 0) {
+                  Taro.showToast({ title: res.data.msg || '邀请成功，双方各获得一个月会员', icon: 'none' });
+                  setShowInviteModal(false);
+                } else {
+                  Taro.showToast({ title: res.data.msg || '邀请失败', icon: 'none' });
+                  setShowInviteModal(false);
+                }
+              } catch (e) {
+                Taro.showToast({ title: '网络错误，请稍后再试', icon: 'none' });
+              }
+            }}>
+              跟朋友平分2个月会员
+            </View>
+            <View className='invite-later' onClick={() => setShowInviteModal(false)}>稍后再领</View>
+          </View>
+        </View>
+      )}
 
       <TabBar 
         onWorldSelected={() => {}}

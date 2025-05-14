@@ -45,27 +45,27 @@ const Index: React.FC = () => {
             try {
               const uploadPromises = res.tempFilePaths.map(filePath => 
                 new Promise<string>((resolve, reject) => {
-                  const uploadTask = Taro.uploadFile({
-                    url: 'https://api.eurostay.co/app/common/upload',
+              const uploadTask = Taro.uploadFile({
+                url: 'https://api.eurostay.co/app/common/upload',
                     filePath: filePath,
-                    name: 'Image',
-                    formData: {
-                      prefix: 'test',
-                    },
-                    header: {
-                      token: GlobalStore.userInfo.token,
-                    },
+                name: 'Image',
+                formData: {
+                  prefix: 'test',
+                },
+                header: {
+                  token: GlobalStore.userInfo.token,
+                },
                     success: (response) => {
-                      if (response.statusCode === 200) {
-                        const responseData = JSON.parse(response.data);
-                        const imageUrl = responseData['result'];
+                if (response.statusCode === 200) {
+                  const responseData = JSON.parse(response.data);
+                  const imageUrl = responseData['result'];
                         resolve(imageUrl);
-                      } else {
+                } else {
                         reject(new Error('Upload failed'));
                       }
                     },
                     fail: reject
-                  });
+                });
                 })
               );
 

@@ -4,5 +4,5 @@ export default {
   navigationBarTitleText: '消息详情',
   enablePullDownRefresh: false,
   disableScroll: true
-}
+  }
   
