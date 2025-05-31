@@ -445,7 +445,7 @@ const HousePublish = () => {
       errors.push('请填写详细地址');
     }
 
-    if (!formData.price || Number(formData.price) <= 0) {
+    if (!formData.price || Number(formData.price) < 0) {
       errors.push('请填写有效的房源价格');
     }
 

@@ -437,6 +437,14 @@ const UserProfile = () => {
         className="background-image"
         src={userInfo?.backgroundPic || ''}
         mode="aspectFill"
+        onClick={() => {
+          if (userInfo?.backgroundPic) {
+            Taro.previewImage({
+              urls: [userInfo.backgroundPic],
+              current: userInfo.backgroundPic
+            });
+          }
+        }}
       />
       <View className="user-info">
         <View className="basic-info">

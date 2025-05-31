@@ -129,7 +129,7 @@ const HomeWorld = () => {
 //   });
 
   useEffect(() => {
-    setActiveTab('房源');
+    setActiveTab('友友');
     getList('app/esuser/getUserList', setUserList);
     getList('app/activity/getActivityList', setActivityList, {
       searchableLocation: 0,
@@ -352,6 +352,29 @@ const HomeWorld = () => {
       <CitySelect
         onCitySelected={city => {
           setLocation(city);
+          if (activeTab == '房源') {
+            // setPropertyPage(1);
+            // setHasMoreProperty(true);
+            // setPropertyList([]);
+            getList('/app/property/getPropertyList', setPropertyList, {
+              searchableLocation: city.id,
+              startDate: startDate,
+              endDate: endDate,
+              capacity: capacity,
+              order: 'DES_PRICE',
+            });
+          }
+          if (activeTab == '活动') {
+            // setActivityPage(1);
+            // setHasMoreActivity(true);
+            // setActivityList([]);
+            getList('app/activity/getActivityList', setActivityList, {
+              searchableLocation: location.id,
+              startDate: startDate,
+              endDate: endDate,
+              order: 'DES',
+            });
+          }
           setIsShowCitySelect(false);
         }}
       />
