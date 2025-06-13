@@ -1,8 +1,8 @@
 .homepage-card {
   display: inline-block;
-  min-width: 48%;
-  max-width: 48%;
-  height: 500px;
+  min-width: 49%;
+  max-width: 49%;
+  // height: 500px;
   // background-color: antiquewhite;
   border-radius: 30px;
   overflow: hidden;
@@ -10,16 +10,129 @@
   margin-bottom: 30px;
   display: flex;
   flex-direction: column;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  &.user {
+    background: linear-gradient(180deg, #FFF 42.37%, #FFEDBE 99.94%);
+  }
+  &.property {
+    background: linear-gradient(180deg, #FFF 37.42%, #DFD9F9 99.95%);
+  }
   &-bottom {
-    color: white;
+    color: black;
     display: flex;
-    padding: 0 5%;
-    // padding-top: -1%;
-    background-color: #7a63c7dd;
-    align-items: center;
-    min-height: 125px;
-    max-height: 125px;
+    padding: 15px 5%;
+    align-items: flex-start;
+    // min-height: 125px;
+    // max-height: 125px;
     justify-content: flex-start;
+    &.user {
+      padding: 15px 5%;
+      display: flex;
+      flex: 1;
+      align-items: center;
+
+      .travel-title {
+        font-size: 28px;
+        font-weight: 500;
+        width: 100%;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        margin-bottom: 15px;
+      }
+      .user-info-container {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        .user-details {
+          display: flex;
+          flex-direction: column;
+          flex-wrap: wrap;
+          gap: 10px;
+          .user-name-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            .user-name {
+              font-size: 24px;
+              width: auto;
+            }
+            .gender-count {
+              font-size: 16px;
+            }
+          }
+        }
+      }
+    }
+    &.travel {
+      flex-direction: column;
+    }
+    &.property {
+      padding: 15px 5%;
+      flex-direction: column;
+
+      .property-title {
+        font-size: 28px;
+        font-weight: 500;
+        width: 100%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        margin-bottom: 15px;
+      }
+      .property-info-container {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        align-items: flex-start;
+        .property-details {
+          display: flex;
+          flex-direction: column;
+          flex-wrap: wrap;
+          gap: 10px;
+          .capacity {
+            font-size: 22px;
+            font-weight: 400;
+            white-space: nowrap;
+          }
+          .reception-time-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            .time-tag {
+              font-size: 20px;
+              background-color: white;
+              color: #7a63c7;
+              padding: 4px 10px;
+              border-radius: 20px;
+              border: 1px solid #7a63c7;
+            }
+          }
+        }
+        .price-container {
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+          .price-wrapper {
+            display: flex;
+            align-items: flex-end;
+            .price-value {
+              font-size: 28px;
+              font-weight: 500;
+            }
+            .price-unit {
+              font-size: 20px;
+              margin-left: 2px;
+              margin-bottom: 2px;
+            }
+          }
+          .flexible-price-text {
+            font-size: 22px;
+            margin-top: 4px;
+            text-align: right;
+          }
+        }
+      }
+    }
     &.activity {
       padding-top: 12px;
       justify-content: space-between;
@@ -28,8 +141,6 @@
         max-width: 300px;
         .title {
           font-size: 24px;
-          // font-weight: bold;
-          // color: white;
           max-width: 280px;
           white-space: nowrap;
           overflow: hidden;
@@ -43,7 +154,6 @@
       .bottom-right {
         margin-left: 15px;
         font-size: 20px;
-        // font-weight: bold;
       }
     }
     .user-avatar {
@@ -59,7 +169,6 @@
       max-width: calc(100% - 100px);
       .user-name {
         font-size: 24px;
-        color: white;
         font-weight: 440;
         font-family: 'Alibaba PuHuiTi';
         overflow: hidden;
@@ -82,12 +191,13 @@
         max-width: 280px;
 
         .tag-item {
+          font-size: 20px;
           background-color: white;
+          color: #7a63c7;
+          padding: 4px 10px;
           border-radius: 20px;
-          padding: 5px 8px;
+          border: 1px solid #7a63c7;
           margin-bottom: 5px;
-          // border: 1px solid black;
-          font-size: 18px;
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
@@ -101,11 +211,12 @@
     min-width: 100%;
     min-height: 375px;
     max-height: 375px;
+    object-fit: cover;
     // background-color: aqua;
   }
   .button-wrapper {
     position: absolute;
-    bottom: 25%;
+    bottom: 30%;
     display: flex;
     flex-direction: column;
     right: 20px;
@@ -125,11 +236,23 @@
     border-radius: 20px;
     font-size: 24px;
     padding: 5px 10px;
-    border: 2px solid #7a63c7;
     position: absolute;
     top: 20px;
     left: 20px;
     max-width: 240px;
-    color: #7a63c7;
+    
+  }
+  .badge-container {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    .accommodation-badge {
+      background-color: white;
+      color: #7a63c7;
+      border-radius: 20px;
+      font-size: 24px;
+      padding: 5px 12px;
+      font-weight: 500;
+    }
   }
 }

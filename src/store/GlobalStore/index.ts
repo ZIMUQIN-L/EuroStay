@@ -1,8 +1,18 @@
 import { makeAutoObservable } from 'mobx';
 import { ESUserLoginInfoProps } from '@utils/interfaces';
 import Taro from '@tarojs/taro';
+import { getWsUrl } from '@utils/config';
 
 class GlobalStore {
+  setExpectedTags(arg0: any) {
+    throw new Error('Method not implemented.');
+  }
+  setStatus(arg0: any) {
+    throw new Error('Method not implemented.');
+  }
+  setSocialMedia(arg0: any) {
+    throw new Error('Method not implemented.');
+  }
   _currentTab: string = 'home';
   _userInfo: ESUserLoginInfoProps;
   _socket: Taro.SocketTask | null = null;
@@ -140,7 +150,7 @@ class GlobalStore {
         return;
       }
     
-      const wsUrl = `wss://api.eurostay.co/app/essocket/${wsToken}`;
+      const wsUrl = getWsUrl(wsToken);
       console.log('正在连接 WebSocket:', wsUrl);
     
       try {

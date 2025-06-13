@@ -181,6 +181,38 @@
         }
       }
 
+      .status-options {
+        display: flex;
+        gap: 16px;
+        margin-left: auto;
+
+        .status-option {
+          min-width: 120px;
+          height: 64px;
+          border-radius: 32px;
+          border: 2px solid #E5E5E5;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 28px;
+          color: #333;
+          transition: all 0.2s ease;
+          background: #FFFFFF;
+          padding: 0 20px;
+
+          &.selected {
+            background: #FFD036;
+            border-color: #FFD036;
+            color: #333;
+          }
+
+          &:active {
+            opacity: 0.8;
+            transform: scale(0.98);
+          }
+        }
+      }
+
       .photo-upload {
         width: 160px;
         height: 160px;

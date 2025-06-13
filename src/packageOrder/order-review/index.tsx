@@ -1,38 +1,42 @@
 import { View, Input, Textarea, Text, Image, Button } from '@tarojs/components'
 import { observer } from 'mobx-react';
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { useRouter } from '@tarojs/taro';
 import Taro from '@tarojs/taro'
 import './index.scss'
 import GlobalStore from '@store/GlobalStore';
+import { API } from '@utils/apiService';
 
 const Index: React.FC = () => {
     const [images, setImages] = useState<string[]>([])
     const [content, setContent] = useState('')
     const MAX_IMAGES = 3
     const MAX_CONTENT_LENGTH = 500
+    const [isSubmitting, setIsSubmitting] = useState(false)
+    const submitTimeoutRef = useRef<NodeJS.Timeout | null>(null)
 
     const router = useRouter();
     const role = router?.params?.role;
-    const type = router?.params?.type;
     const id = router?.params?.id;
     const experienceId = router?.params?.experienceId;
     const title = router?.params?.title;
 
     const [complete, setComplete] = useState('') // useState<'yes' | 'no'>('yes')
     const [recommend, setRecommend] = useState('') // useState<'yes' | 'no'>('no')
-    const [finish, setFinish] = useState(false)
+    const [anonymous, setAnonymous] = useState('no')
+    const [guestId, setGuestId] = useState('')
+    const [hostId, setHostId] = useState('')
 
     const handleReviewComplete = (c: 'yes' | 'no') => {
         setComplete(c)
     }
 
-    const [guestId, setGuestId] = useState('')
-
-    const [hostId, setHostId] = useState('')
-
     const handleRecommend = (r: 'yes' | 'no') => {
-        setRecommend(r)
+        setRecommend(r === recommend ? '' : r)
+    }
+
+    const handleAnonymous = (a: 'yes' | 'no') => {
+        setAnonymous(a)
     }
 
     const handleAddImage = () => {
@@ -51,29 +55,7 @@ const Index: React.FC = () => {
           success: async (res) => {
             try {
               const uploadPromises = res.tempFilePaths.map(filePath => 
-                new Promise<string>((resolve, reject) => {
-                  const uploadTask = Taro.uploadFile({
-                    url: 'https://api.eurostay.co/app/common/upload',
-                    filePath: filePath,
-                    name: 'Image',
-                    formData: {
-                      prefix: 'test',
-                    },
-                    header: {
-                      token: GlobalStore.userInfo.token,
-                    },
-                    success: (response) => {
-                      if (response.statusCode === 200) {
-                        const responseData = JSON.parse(response.data);
-                        const imageUrl = responseData['result'];
-                        resolve(imageUrl);
-                      } else {
-                        reject(new Error('Upload failed'));
-                      }
-                    },
-                    fail: reject
-                  });
-                })
+                API.common.upload(filePath, { prefix: 'test' })
               );
 
               const uploadedUrls = await Promise.all(uploadPromises);
@@ -89,83 +71,103 @@ const Index: React.FC = () => {
         })
       }
     
-      const handleRemoveImage = (index: number) => {
+    const handleRemoveImage = (index: number) => {
         const newImages = [...images]
         newImages.splice(index, 1)
         setImages(newImages)
-      }
+    }
 
-    const handleSubmit = () => {
-        Taro.request({
-            url: Number(type) === 0 ? `https://api.eurostay.co/app/property/showApplicationInfo` : 'https://api.eurostay.co/app/activity/showApplicationInfo',
-            method: 'POST',
-            header: {
-                token: GlobalStore.userInfo.token,
-            },
-            data: {
-                id: Number(id),
-            },
-            success: function (response) {
-                setGuestId(response.data.result.guestInfo.uid);
-                setHostId(response.data.result.hostInfo.uid);
-                Taro.request({
-                    url: Number(type) === 0 ? 'https://api.eurostay.co/app/property/postPropertyReview' : 'https://api.eurostay.co/app/activity/postActivityReview',
-                    method: 'POST',
-                    header: {
-                        token: GlobalStore.userInfo.token,
-                    },
-                    data: {
-                        experienceId: Number(experienceId),
-                        applicationId: Number(id),
-                        targetUid: role === 'host' ? Number(response.data.result.guestInfo.uid) : Number(response.data.result.hostInfo.uid),
-                        done: complete === 'yes' ? true : false,
-                        recommend: recommend === 'yes' ? true : false,
-                        content: content,
-                        images: images,
-                    },
-                    success: function (res) {
-                        if (res.statusCode === 200 && res.data.code === 0) {
-                            Taro.showToast({
-                                title: '你已成功评价！正在等待审核，审核通过后，待对方也完成评价或7天后评价内容将会显示。',
-                                icon: 'none',
-                                duration: 2000,
-                            })
-                            setTimeout(() => {
-                                Taro.navigateBack();
-                              }, 2000);
-                        } else {
-                            Taro.showToast({
-                                title: res.data.msg + ' 评价失败，请稍后再试',
-                                icon: 'none',
-                                duration: 2000,
-                            })
-                        }
-                    },
-                    fail: function (err) {
-                        Taro.showToast({
-                            title: '网络请求失败，请重试',
-                            icon: 'none',
-                            duration: 2000,
-                        });
-                    }
-                })
-            },
-            fail: function (err) {
-                Taro.showToast({
-                    title: '网络请求失败，请重试',
-                    icon: 'none',
-                    duration: 2000,
-                });
-            },
-            complete: function () {
-                setFinish(true)
-            }
-        });
+    const validateForm = (): boolean => {
+        // Validate required fields
+        if (!id || !experienceId) {
+            Taro.showToast({
+                title: '缺少订单ID',
+                icon: 'none',
+                duration: 2000,
+            });
+            return false;
+        }
+        
+        // Validate done (complete)
+        if (complete !== 'yes' && complete !== 'no') {
+            Taro.showToast({
+                title: '请选择是否完成本次换宿',
+                icon: 'none',
+                duration: 2000,
+            });
+            return false;
+        }
+        
+        // Validate content
+        if (!content.trim()) {
+            Taro.showToast({
+                title: '请填写评价内容',
+                icon: 'none',
+                duration: 2000,
+            });
+            return false;
+        }
+        
+        // Validate anonymous
+        if (anonymous !== 'yes' && anonymous !== 'no') {
+            Taro.showToast({
+                title: '请选择是否匿名评价',
+                icon: 'none',
+                duration: 2000,
+            });
+            return false;
+        }
+        
+        return true;
+    }
+
+    const handleSubmit = async () => {
+        // Prevent multiple submissions
+        if (isSubmitting) return;
+        
+        // Validate form fields
+        if (!validateForm()) return;
+        
+        // Clear any existing timeout
+        if (submitTimeoutRef.current) {
+            clearTimeout(submitTimeoutRef.current);
+            submitTimeoutRef.current = null;
+        }
+        
+        setIsSubmitting(true);
+        
+        try {
+            // Post the review using the new endpoint
+            await API.order.postOrderReview({
+                pid: Number(experienceId),
+                orderId: Number(id),
+                done: complete === 'yes',
+                recommend: recommend === 'yes' ? true : null,
+                content: content,
+                images: images,
+                anonymous: anonymous === 'yes'
+            });
+            
+            Taro.showToast({
+                title: '你已成功评价！正在等待审核，审核通过后，待对方也完成评价或7天后评价内容将会显示。',
+                icon: 'none',
+                duration: 2000,
+            });
+            
+            // Use setTimeout for navigation and reset isSubmitting after navigation
+            submitTimeoutRef.current = setTimeout(() => {
+                Taro.navigateBack();
+                setIsSubmitting(false);
+            }, 2000);
+        } catch (error) {
+            console.error('Review submission failed:', error);
+            setIsSubmitting(false);
+        }
     }
 
     return (
         <>
-            <Text className='review-title'>是否完成本次{Number(type) === 0 ? '换宿' : '活动'}？</Text>
+            <Text className='review-title'>是否完成本次换宿？</Text>
             <View className='review-buttons'>
                 <View 
                 className={`review-button ${complete === 'yes' ? 'active' : ''}`}
@@ -227,11 +229,33 @@ const Index: React.FC = () => {
                 </View>
             </View>
 
-            {role === 'host' && <View className='purple-fill-button' onClick={handleSubmit}>
-            发布评价
+            <Text className='review-title'>是否匿名评价？</Text>
+            <View className='review-buttons'>
+                <View 
+                className={`review-button ${anonymous === 'yes' ? 'active' : ''}`}
+                onClick={() => handleAnonymous('yes')}
+                >
+                是
+                </View>
+                <View 
+                className={`review-button ${anonymous === 'no' ? 'active' : ''}`}
+                onClick={() => handleAnonymous('no')}
+                >
+                否
+                </View>
+            </View>
+
+            {role === 'host' && <View 
+                className={`purple-fill-button ${isSubmitting ? 'disabled' : ''}`}
+                onClick={handleSubmit}
+            >
+                {isSubmitting ? '提交中...' : '发布评价'}
             </View>}
-            {role === 'guest' && <View className='yellow-fill-button' onClick={handleSubmit}>
-            发布评价
+            {role === 'guest' && <View 
+                className={`yellow-fill-button ${isSubmitting ? 'disabled' : ''}`}
+                onClick={handleSubmit}
+            >
+                {isSubmitting ? '提交中...' : '发布评价'}
             </View>}
         </>
     )

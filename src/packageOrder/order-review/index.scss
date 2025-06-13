@@ -13,6 +13,11 @@
   margin-top: 96px;
   margin: 10px auto;
   // padding-top: 96px;
+  
+  &.disabled {
+    opacity: 0.7;
+    pointer-events: none;
+  }
 }
 
 .yellow-fill-button {
@@ -29,6 +34,11 @@
   margin-bottom: 40px;
   margin-top: 96px;
   margin: 10px auto;
+  
+  &.disabled {
+    opacity: 0.7;
+    pointer-events: none;
+  }
 }
 
 .review-buttons {
@@ -99,7 +109,7 @@
   border: 1px solid #f2f2f2;
   // padding-bottom: 36px;
   margin: 0 auto;
-  margin-bottom: 96px;
+  margin-bottom: 0;
   padding-bottom: 20px;
 
   .review-text {
@@ -190,4 +200,9 @@
       text-align: center;
     }
   }
+}
+
+// Add a new class for the anonymous section
+.anonymous-section {
+  margin-bottom: 20px;
 }

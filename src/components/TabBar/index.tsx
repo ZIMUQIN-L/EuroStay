@@ -11,10 +11,10 @@ import userSelectedIcon from '@assets/icons/user-active.png';
 import messageIcon from '@assets/icons/message.png';
 import messageSelectedIcon from '@assets/icons/message-active.png';
 import postHouse from '@assets/icons/post-house.svg';
-import postActivity from '@assets/icons/post-activity.svg';
 import { useMemo } from 'react';
 import GlobalStore from '@store/GlobalStore';
 import { observer } from 'mobx-react-lite';
+import { API } from '@utils/apiService';
 
 interface TabBarProps {
   onWorldSelected?: () => void;
@@ -49,7 +49,7 @@ const TabBar: React.FC<TabBarProps> = ({ onWorldSelected, setIsShowPostModal, is
 
   const tabBarHeight = isIphone ? '60px' : '40px';
 
-  const handleTabClick = (page) => {
+  const handleTabClick = async (page) => {
     if (page === 'post') {
       if (GlobalStore.userInfo?.uid === 0) {
         Taro.showModal({
@@ -91,35 +91,28 @@ const TabBar: React.FC<TabBarProps> = ({ onWorldSelected, setIsShowPostModal, is
             }
           });
           return;
-    }
+      }
       else {
-        const response = Taro.request({
-            url: 'https://api.eurostay.co/app/esuser/getUserCompleteInfo',
-            method: 'POST',
-            header: {
-              'token': GlobalStore.userInfo.token,
-              'Content-Type': 'application/json'
-            },
-            success: (res) => {
-              if (res.data.result.email != "" && res.data.result.email != null) {
-                setIsShowPostModal(true);
-              }
-              else {
-                Taro.showModal({
-                    title: '请先认证邮箱哦~',
-                    content: '请先认证邮箱方便guest联系您时进行提醒呀~',
-                    success: function (res) {
-                      if (res.confirm) {
-                        Taro.navigateTo({
-                          url: '/packageUser/user-editing/index',
-                        });
-                      }
-                    }
+        try {
+          const userInfo = await API.user.getUserCompleteInfo();
+          if (userInfo.email && userInfo.email !== "") {
+            setIsShowPostModal(true);
+          } else {
+            Taro.showModal({
+              title: '请先认证邮箱哦~',
+              content: '请先认证邮箱方便guest联系您时进行提醒呀~',
+              success: function (res) {
+                if (res.confirm) {
+                  Taro.navigateTo({
+                    url: '/packageUser/user-editing/index',
                   });
+                }
               }
-            }
-          });
-        // setIsShowPostModal(true);
+            });
+          }
+        } catch (error) {
+          console.error('Failed to get user info:', error);
+        }
       }
       return;
     }
@@ -172,20 +165,6 @@ const TabBar: React.FC<TabBarProps> = ({ onWorldSelected, setIsShowPostModal, is
           >
             <Image className='icon' src={postHouse} />
             上传房源
-          </View>
-          <View
-            className='post-activity'
-            onClick={e => {
-              e.stopPropagation();
-              e.preventDefault();
-              setIsShowPostModal(false);
-              Taro.navigateTo({
-                url: '/pages/activity-publish/index',
-              });
-            }}
-          >
-            <Image className='icon' src={postActivity} />
-            上传活动
           </View>
         </View>
       )}

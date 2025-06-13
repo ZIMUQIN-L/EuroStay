@@ -1,34 +1,31 @@
-import request from '../utils/request';
-import GlobalStore from '@store/GlobalStore'
-import Taro from '@tarojs/taro';
+// This file exports interfaces and re-exports API functions from apiService
+// It is kept for backward compatibility
 
-export interface UserShortInfo {
-  uid: number;
-  username: string;
-  avatar: string;
-  backgroundPic: string;
-  tags: string[] | null;
-  location: string | null;
-  aboutMe: string | null;
-  isVip: boolean;
-}
+import { API } from '@utils/apiService';
+import { 
+  APIUserShortInfo as UserShortInfo, 
+  PostedItem, 
+  ReviewItem, 
+  PropertyItem, 
+  TravelItem,
+  PaginatedResponse,
+  ReviewerInfo
+} from '@utils/interfaces';
 
+// Re-export interfaces
+export { 
+  UserShortInfo, 
+  PostedItem, 
+  ReviewItem, 
+  PropertyItem, 
+  TravelItem 
+};
+
+// Response interfaces for backward compatibility
 export interface UserShortInfoResponse {
   code: number;
   msg: string;
   result: UserShortInfo;
-}
-
-export interface PostedItem {
-  type: number;
-  id: number;
-  title: string;
-  images: string[];
-  tags: string[];
-  location: string;
-  price: number;
-  startDate: string;
-  startTime: string;
 }
 
 export interface PostedListResult {
@@ -45,7 +42,6 @@ export interface PostedListResponse {
   result: PostedListResult;
 }
 
-// 由于参与列表的数据结构与发布列表相同，我们可以复用 PostedItem 接口
 export interface ParticipatedListResult {
   last_page: number;
   per_page: number;
@@ -60,29 +56,7 @@ export interface ParticipatedListResponse {
   result: ParticipatedListResult;
 }
 
-export interface ReviewerInfo {
-  uid: number;
-  username: string;
-  avatar: string;
-  backgroundPic: string;
-  tags: string[];
-  location: string;
-  aboutMe: string;
-  isVip: boolean;
-}
-
-export interface ReviewItem {
-  id: number;
-  type: number;
-  experience_id: number;
-  done: boolean;
-  content: string;
-  recommend: boolean;
-  create_time: string;
-  fromHost: boolean;
-  reviewerInfo: ReviewerInfo;
-  images: string[];
-}
+export { ReviewerInfo };
 
 export interface ReviewListResult {
   last_page: number;
@@ -98,47 +72,37 @@ export interface ReviewListResponse {
   result: ReviewListResult;
 }
 
-// 获取当前登录用户的信息（通过 token 识别用户）
-export async function getCurrentUserInfo(uid?: number) {
-  return request<UserShortInfoResponse>({
-    url: '/app/esuser/getUserShortInfo',
-    method: 'POST',
-    data: { id: uid || GlobalStore.userInfo.uid },
-  });
+export interface PropertyListResult {
+  last_page: number;
+  per_page: number;
+  total: number;
+  current_page: number;
+  data: PropertyItem[];
 }
 
-// 获取指定用户的信息
-export async function getUserShortInfo(id: number) {
-  return request<UserShortInfoResponse>({
-    url: '/app/esuser/getUserShortInfo',
-    method: 'POST',
-    data: { id },
-  });
+export interface PropertyListResponse {
+  code: number;
+  msg: string;
+  result: PropertyListResult;
 }
 
-// 获取用户发布的列表
-export async function getUserPostedList(uid: number, page: number) {
-  return request<PostedListResponse>({
-    url: '/app/esuser/getUserPostedList',
-    method: 'POST',
-    data: { uid, page },
-  });
+export interface TravelListResult {
+  last_page: number;
+  per_page: number;
+  total: number;
+  current_page: number;
+  data: TravelItem[];
 }
 
-// 获取用户参与的列表
-export async function getUserParticipatedList(uid: number, page: number) {
-  return request<ParticipatedListResponse>({
-    url: '/app/esuser/getUserParticipatedList',
-    method: 'POST',
-    data: { uid, page },
-  });
+export interface TravelListResponse {
+  code: number;
+  msg: string;
+  result: TravelListResult;
 }
 
-// 获取用户收到的评价列表
-export async function getUserReviewList(uid: number, page: number) {
-  return request<ReviewListResponse>({
-    url: '/app/esuser/getUserReviewList',
-    method: 'POST',
-    data: { uid, page },
-  });
-} 
+// Re-export API functions using the same function names for backward compatibility
+export const getCurrentUserInfo = API.user.getCurrentUserInfo;
+export const getUserShortInfo = API.user.getUserShortInfo;
+export const getUserReviewList = API.user.getUserReviewList;
+export const getUserPropertyList = API.user.getUserPropertyList;
+export const getUserTravelList = API.user.getUserTravelList; 

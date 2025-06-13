@@ -14,9 +14,10 @@ interface HouseCardProps {
   title: string;
   availableDate: string;
   price: number;
-  currency: '€' | '$' | '¥';
+  currency: '€' | '$' | '¥' | '';
   location: string;
-  mode?: 'posted' | 'participated';
+  maleCount?: number;
+  femaleCount?: number;
   onSettingClick?: () => void;
   onFavoriteClick?: () => void;
 }
@@ -31,7 +32,8 @@ const HouseCard: React.FC<HouseCardProps> = ({
   price,
   currency,
   location,
-  mode = 'posted',
+  maleCount,
+  femaleCount,
   onSettingClick,
   onFavoriteClick,
 }) => {
@@ -55,6 +57,37 @@ const HouseCard: React.FC<HouseCardProps> = ({
     }
   };
 
+  const handleCardClick = () => {
+    if (type === 1) {
+      Taro.showModal({
+        title: '出行详情',
+        content: '请前往APP查看出行详情',
+        showCancel: false,
+        success: function (res) {}
+      });
+    } else {
+      Taro.navigateTo({ url: `/packageHouse/housing-detail/index?id=${id}&type=${type}` });
+    }
+  };
+
+  const renderPriceOrCount = () => {
+    if (type === 1 && maleCount !== undefined && femaleCount !== undefined) {
+      let countText = '同行';
+      if (maleCount > 0) {
+        countText += `${maleCount}男`;
+      }
+      if (femaleCount > 0) {
+        countText += `${femaleCount}女`;
+      }
+      if (countText === '同行') {
+        countText += '0人';
+      }
+      return <Text className="price">{countText}</Text>;
+    }
+    
+    return price > 0 ? <Text className="price">{currency}{price}/晚</Text> : null;
+  };
+
   return (
     <View className="house-card" onTouchStart={handleTouchStart} onTouchMove={handleTouchMove}>
       <View className="image-container">
@@ -65,14 +98,12 @@ const HouseCard: React.FC<HouseCardProps> = ({
                 className="house-image" 
                 src={image} 
                 mode="aspectFill" 
-                onClick={() => {
-                  Taro.navigateTo({ url: `/packageHouse/housing-detail/index?id=${id}&type=${type}` });
-                }}
+                onClick={handleCardClick}
               />
             </Swiper.Item>
           ))}
         </Swiper>
-        {mode === 'posted' && isCurrentUser ? (
+        {isCurrentUser && onSettingClick ? (
           <View className="settings-button" onClick={onSettingClick}>
             <Image className="settings-icon" src={settingIcon} />
           </View>
@@ -83,10 +114,10 @@ const HouseCard: React.FC<HouseCardProps> = ({
           </View>
         )}
       </View>
-      <View className="info-container">
+      <View className="info-container" onClick={handleCardClick}>
         <View className="title-row">
           <Text className="title">{title}</Text>
-          <Text className="price">{currency}{price}/晚</Text>
+          {renderPriceOrCount()}
         </View>
         <View className="info-row">
           <Text className="date">{availableDate}</Text>

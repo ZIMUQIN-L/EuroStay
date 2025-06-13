@@ -16,6 +16,7 @@ import GlobalStore from '../../store/GlobalStore'
 import { Message } from 'src/types/message'
 import dayjs from 'dayjs'
 import { formatSmartTime } from '@utils/dateUtil'
+import { API } from '@utils/apiService'
 
 
 const MessageDetail = () => {
@@ -23,8 +24,9 @@ const MessageDetail = () => {
   const { id, name: encodedName } = router?.params || {}
   const name = encodedName ? decodeURIComponent(encodedName) : '消息详情'
   const isSystemMessage = name === '系统消息'
-  const [otherUserId, setOtherUserId] = useState(null);
-  const [subjectId, setSubjectId] = useState(null);
+  const [otherUserId, setOtherUserId] = useState<number | null>(null);
+  const [subjectId, setSubjectId] = useState<number | null>(null);
+  const [hostUid, setHostUid] = useState<number | null>(null);
   
   const [inputValue, setInputValue] = useState('')
   const [scrollTop, setScrollTop] = useState(0)
@@ -130,19 +132,34 @@ const MessageDetail = () => {
     }
     
     // 根据 mtype 确定消息类型
-    let messageType;
+    let messageType = 'simple';
+    let messageContent = '';
     
-    switch(msg.mtype) {
-      case 0: messageType = 'simple'; break;
-      case 1: messageType = 'request'; break;
-      case 2: messageType = 'request'; break;
-      case 3: messageType = 'offer'; break;
-      case 4: messageType = 'reject-fh'; break;
-      case 5: messageType = 'contact'; break;
-      case 6: messageType = 'reject-fg'; break;
-      case 7: messageType = 'simple'; break;
-      case 8: messageType = 'pic'; break
-      default: messageType = 'simple';
+    // 处理不同类型的消息内容
+    if (msg.mtype === 0) {
+      // 普通文本消息，直接使用content
+      messageContent = msg.content || '';
+    } else if (msg.mtype === 6) {
+      // 系统消息，直接显示content
+      messageContent = msg.content || '';
+    } else if (msg.mtype === 7) {
+      // 图片消息
+      messageType = 'pic';
+      messageContent = msg.content || '';
+    } else {
+      // 对于其他类型的消息，尝试解析JSON
+      try {
+        const contentObj = JSON.parse(msg.content || '{}');
+        if (contentObj && contentObj.text) {
+          messageContent = contentObj.text + "\n请前往APP查看消息详情";
+        } else {
+          messageContent = "请前往APP查看消息详情";
+        }
+      } catch (e) {
+        // 如果解析失败，显示默认消息
+        messageContent = "请前往APP查看消息详情";
+        console.error('JSON解析失败：', e, msg.content);
+      }
     }
     
     // 创建基本消息对象
@@ -153,86 +170,23 @@ const MessageDetail = () => {
       createTime: msg.createTime,
       data: {
         time: time,
+        content: messageContent,
         toUid: msg.toUid,
         subjectId: msg.subjectId,
-        isProperty: msg.isProperty, 
+        isProperty: msg.isProperty
       }
     };
-    // 为不同类型的消息添加特定字段
-    switch(messageType) {
-      case 'simple':
-        // 普通文本消息
-        messageObj.data = {
-          ...messageObj.data,
-          content: msg.content || ''
-        };
-        break;
-        
-      case 'request':
-        // 申请请求消息
-        messageObj.data = {
-          ...messageObj.data,
-          name: msg.guestName || msg.fromName || '申请人'
-        };
-        break;
-        
-      case 'offer':
-        // 房东批准消息
-        messageObj.data = {
-          ...messageObj.data,
-          hostname: msg.hostName || '房东',
-          applicantname: msg.guestName || '申请人',
-          price: msg.price || '$0'
-        };
-        break;
-        
-      case 'reject-fh':
-        // 房东拒绝消息
-        messageObj.data = {
-          ...messageObj.data,
-          name: msg.hostName || '房东',
-          reason: msg.reason || msg.content || '未提供原因'
-        };
-        break;
-        
-      case 'reject-fg':
-        // 租客取消消息
-        messageObj.data = {
-          ...messageObj.data,
-          name: msg.guestName || '申请人',
-          reason: msg.reason || msg.content || '申请人取消了预订'
-        };
-        break;
-        
-      case 'contact':
-        // 联系信息消息
-        messageObj.data = {
-          ...messageObj.data,
-          // 联系信息消息可能不需要其他特殊字段
-        };
-        break;
-
-      case 'pic':
-        // 图片信息
-        messageObj.data = {
-          ...messageObj.data,
-          fromUid: msg.fromUid,
-          content: msg.content || 'https://via.placeholder.com/150' // fallback 占位图
-        };
-        break;
-    }
-
+    
     return messageObj;
   };
   
   // 使用方法
   const fetchMessageList = async (page = 1, appendToTop = false) => {
     // console.log("fresh message, page: ", page);
-    const token = GlobalStore.userInfo.token || Taro.getStorageSync('token');
-    const currentUid = GlobalStore.userInfo.uid || Taro.getStorageSync('uid');
+    const currentUid = GlobalStore.userInfo.uid;
   
-    if (!token) {
-      console.error('缺少 token，无法获取消息列表');
+    if (!currentUid) {
+      console.error('用户未登录，无法获取消息列表');
       return;
     }
 
@@ -241,44 +195,49 @@ const MessageDetail = () => {
     }
   
     try {
-      const res = await Taro.request({
-        url: 'https://api.eurostay.co/app/esmessages/messageList',
-        method: 'GET',
-        header: { token },
-        data: {
-          requestId: id,
-          pageNum: page,
-        },
-      });
-  
-      if (res.statusCode === 200 && res.data.code === 0 && res.data.result.records) {
-        const records = res.data.result.records;
-        if (records.length === 0) {
-          setHasMore(false); // 没有更多数据
-          return;
+      const response = await API.messages.getMessageList(Number(id), page);
+      
+      // Check if response has data field
+      const messageData = response.data || [];
+      
+      if (messageData.length === 0) {
+        setHasMore(false); // 没有更多数据
+        return;
+      }
+
+      if (messageData.length > 0 && page === 1) {
+        const firstMsg = messageData[0];
+        const otherUid = firstMsg.fromUid === currentUid ? firstMsg.toUid : firstMsg.fromUid;
+        setOtherUserId(otherUid);
+        
+        // Set hostUid from the message data if available
+        if (firstMsg.hostUid) {
+          setHostUid(firstMsg.hostUid);
         }
-  
-        if (records.length > 0 && page === 1) {
-          const firstMsg = records[0];
-          const otherUid = firstMsg.fromUid === currentUid ? firstMsg.toUid : firstMsg.fromUid;
-          setOtherUserId(otherUid);
+        
+        // Set subjectId from the message data if available
+        if (firstMsg.subjectId) {
+          setSubjectId(firstMsg.subjectId);
         }
-        // console.log("record", records);
-        const formattedMessages = records.map(msg =>
-          createMessageObject(msg, currentUid)
-        );
-  
-        const sortedMessages = formattedMessages.sort((a, b) => a.id - b.id);
-        // console.log("sortedMessage", sortedMessages);
-        setPageNum(prev => prev + 1);
-        setMessages(prev =>
-          appendToTop ? [...sortedMessages, ...prev] : sortedMessages
-        );
-      } else {
-        console.error('获取消息列表失败:', res.data.msg);
+      }
+      
+      const formattedMessages = messageData.map(msg =>
+        createMessageObject(msg, currentUid)
+      );
+
+      const sortedMessages = formattedMessages.sort((a, b) => a.id - b.id);
+      
+      setPageNum(prev => prev + 1);
+      setMessages(prev =>
+        appendToTop ? [...sortedMessages, ...prev] : sortedMessages
+      );
+      
+      // Check pagination using the appropriate fields
+      if (response.current_page >= response.last_page) {
+        setHasMore(false);
       }
     } catch (error) {
-      console.error('网络请求失败:', error);
+      console.error('获取消息列表失败:', error);
     }
   };
   

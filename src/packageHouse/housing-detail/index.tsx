@@ -1,7 +1,7 @@
 import { View, Image, Text, Swiper, SwiperItem, Input } from '@tarojs/components'
 import { AtCalendar } from 'taro-ui';
 import { useState, useEffect } from 'react'
-import Taro from '@tarojs/taro'
+import Taro, { getCurrentPages } from '@tarojs/taro'
 import HostCardSmall from '../../components/HostCardSmall';
 import './index.scss'
 import { HomeOutlined } from '@taroify/icons';
@@ -10,15 +10,30 @@ import GlobalStore from '@store/GlobalStore';
 import { HostDetail, Order, ReviewCardProps } from '@utils/interfaces';
 import { formatToday } from '@utils/dateUtil';
 import ReviewCard from '@components/ReviewCard';
-import { get } from 'mobx';
-import {heartPurpleIcon, starPurpleIcon, starYellowIcon, sharePurpleIcon} from '@utils/cloudIcons';
+import { API } from '@utils/apiService';
+import {heartPurpleIcon, starPurpleIcon, starYellowIcon} from '@utils/cloudIcons';
+
+// Define the review interface to match the API response
+interface ReviewData {
+  reviewerInfo: {
+    avatar: string;
+    username: string;
+    location: string;
+  };
+  recommend: boolean;
+  content: string;
+  images: string[];
+  createTime: string;
+  fromHost: boolean;
+  anonymous: boolean;
+}
 
 const HouseDetail: React.FC = () => {
   const [currentImage, setCurrentImage] = useState(0)
   const [isStarred, setIsStarred] = useState(false); 
   const [showLikeModal, setShowLikeModal] = useState(false)
   const [likeMessage, setLikeMessage] = useState('')
-  const [hasReview, sethasReview] = useState(false)
+  const [hasReview, setHasReview] = useState(false)
   const [isComplete, setIsComplete] = useState(false)
   const [isCollapsed, setIsCollapsed] = useState(true)
   const [isSelected, setIsSelected] = useState(false)
@@ -28,7 +43,6 @@ const HouseDetail: React.FC = () => {
 
   const router = useRouter();
   const id = router?.params?.id;
-  const type = router?.params?.type;
 
   const [hostDetail, setHostDetail] = useState<HostDetail>({
     uid: 0,
@@ -42,16 +56,44 @@ const HouseDetail: React.FC = () => {
       setShowLikeModal(true);
     }
   });
-  const [order, setOrder] = useState<Order>({});
-  const [topReview, setTopReview] = useState<ReviewCardProps>({});
+  
+  const [order, setOrder] = useState<Order>({
+    title: '',
+    tags: [],
+    description: '',
+    price: 0,
+    address: '',
+    images: [],
+    pid: 0,
+    uid: 0,
+    availableDate: [],
+    startTime: '',
+    country: '',
+    countryId: 0,
+    city: '',
+    cityId: 0,
+    capacity: 0,
+    flexiblePrice: false
+  });
+  
+  const [topReview, setTopReview] = useState<ReviewCardProps>({
+    userAvatar: '',
+    userName: '',
+    userType: '',
+    isRecommended: false,
+    reviewContent: '',
+    images: [],
+    reviewDate: '',
+    location: ''
+  });
 
   const [startDate, setStartDate] = useState(today);
-  const [endDate, setEndDate] = useState(null);
-  const [valid, setValid] = useState([]);
+  const [endDate, setEndDate] = useState<string | null>(null);
+  const [valid, setValid] = useState<Array<{value: string | null}>>([]);
 
-  const [allReviews, setAllReviews] = useState([]);
+  const [allReviews, setAllReviews] = useState<ReviewData[]>([]);
 
-  Taro.setNavigationBarTitle({ title: Number(type) === 0 ? '房源详情' : '活动详情' });
+  Taro.setNavigationBarTitle({ title: '房源详情' });
 
   const handelCollect = () => {
     if (GlobalStore.userInfo?.uid === 0) {
@@ -69,99 +111,54 @@ const HouseDetail: React.FC = () => {
         return;
       }
     if (!isStarred) { // 收藏
-      Taro.request({
-        url: Number(type) === 0 ? 'https://api.eurostay.co/app/property/addPropertyCollection' : 'https://api.eurostay.co/app/activity/addActivityCollection',
-        method: 'POST',
-        header: {
-          token: GlobalStore.userInfo.token,
-        },
-        data: {
-          id: id,
-        },
-        success: (res) => {
-          if (res.data.code === 0 && res.statusCode === 200) {
-            Taro.showToast({
-              title: '收藏成功',
-              icon: 'success'
-            })
-            setIsStarred(true)
-          } else {
-            Taro.showToast({
-              title: res.data.msg + ' 收藏失败，请重试',
-              icon: 'none',
-              duration: 2000,
-            })
-          }
-        },
-        fail: function (err) {
+      API.property.addPropertyCollection(Number(id))
+        .then(() => {
           Taro.showToast({
-            title: '网络请求失败，请重试',
-            icon: 'none',
-            duration: 2000,
+            title: '收藏成功',
+            icon: 'success'
           });
-        }
-      })
+          setIsStarred(true);
+        })
+        .catch(error => {
+          // Error is already handled in apiRequest
+        });
     } else { // 取消收藏
-      Taro.request({
-        url: Number(type) === 0 ? 'https://api.eurostay.co/app/property/cancelPropertyCollection' : 'https://api.eurostay.co/app/activity/cancelActivityCollection',
-        method: 'POST',
-        header: {
-          token: GlobalStore.userInfo.token,
-        },
-        data: {
-          id: id,
-        },
-        success: (res) => {
-          if (res.data.code === 0 && res.statusCode === 200) {
-            Taro.showToast({
-              title: '取消收藏成功',
-              icon: 'success'
-            })
-            setIsStarred(false)
-          } else {
-            Taro.showToast({
-              title: res.data.msg + ' 取消收藏失败，请重试',
-              icon: 'none',
-              duration: 2000,
-            })
-          }
-        },
-        fail: function (err) {
+      API.property.cancelPropertyCollection(Number(id))
+        .then(() => {
           Taro.showToast({
-            title: '网络请求失败，请重试',
-            icon: 'none',
-            duration: 2000,
+            title: '取消收藏成功',
+            icon: 'success'
           });
-        }
-      })
+          setIsStarred(false);
+        })
+        .catch(error => {
+          // Error is already handled in apiRequest
+        });
     }
   }
 
   const getValidDates = (dates: Array<string>) => {
     if (gotValidDates) return valid.length > 0 ? valid : [{value: null}];
     else {
+      const newValid: Array<{value: string | null}> = [];
       for (let i = 0; i < dates.length; i+=2) {
         let start = new Date(dates[i].replace('-', '/').replace('-', '/'));
         let end = new Date(dates[i + 1].replace('-', '/').replace('-', '/'));
         start.setDate(start.getDate() + 1)
         end.setDate(end.getDate() + 1)
-        // console.log('getValidDates', start, end)
         console.log('today: ', today)
         let today_date = new Date(today.replace('-', '/').replace('-', '/'))
-        for (let j = start; j <= end; j.setDate(j.getDate() + 1)) {
+        for (let j = new Date(start); j <= end; j.setDate(j.getDate() + 1)) {
           if (j < today_date) {
             continue;
           } else {
-            valid.push({value: j.toISOString().substring(0, 10).replace('-', '/').replace('-', '/')});
+            newValid.push({value: j.toISOString().substring(0, 10).replace('-', '/').replace('-', '/')});
           }
         }
       }
-      // setValid(dates.map(date => {
-      //   return {value: date.substring(0, 10).replace('-', '/').replace('-', '/')};
-      // }))
-      // console.log('valid dates: ', valid)
+      setValid(newValid);
       setGotValidDates(true)
-      return valid.length > 0 ? valid : [{value: null}];
+      return newValid.length > 0 ? newValid : [{value: null}];
     }
   }
 
@@ -169,65 +166,45 @@ const HouseDetail: React.FC = () => {
     return date.substring(0, 10);
   }
 
-  const getOrderDetail = (id: number, type: number) => {
-    if (isComplete) return
-    // 这里添加获取房源详情的逻辑
-    Taro.request({
-    url: GlobalStore.userInfo?.uid === 0 
-    ? (type === 0 
-        ? 'https://api.eurostay.co/app/property/getDefaultPropertyDetail' 
-        : 'https://api.eurostay.co/app/activity/getDefaultActivityDetail')
-    : (type === 0 
-        ? 'https://api.eurostay.co/app/property/getPropertyDetail' 
-        : 'https://api.eurostay.co/app/activity/getActivityDetail'),
-      method: 'POST',
-      header: {
-        token: GlobalStore.userInfo.token,
-      },
-      data: {
-        id: id,
-      },
-      success: function (res) {
-        if (res.data.code === 401 || res.data.code === 403) {
-          // Token expired or invalid
-          const currentPage = getCurrentPages();
-          const currentRoute = currentPage[currentPage.length - 1].route;
-          const returnUrl = encodeURIComponent(`/${currentRoute}?id=${id}&type=${type}`);
-          
-          Taro.showModal({
-            title: '登录已过期',
-            content: '请重新登录',
-            success: function (res) {
-              if (res.confirm) {
-                Taro.reLaunch({
-                  url: `/pages/login/index`,
-                });
-              } else {
-                // 如果用户不登录，重置 GlobalStore 信息
-                GlobalStore.setAllInfo({
-                  token: '',
-                  uid: 0,
-                  username: '',
-                  avatar: '',
-                  aboutMe: '',
-                  location: '',
-                  gender: 0,
-                  isVip: false,
-                  backgroundPic: '',
-                });
-              }
-            },
+  const getReviews = (pid: number) => {
+    API.property.showReviewList(pid)
+      .then(result => {
+        if (result && result.data && result.data.length > 0) {
+          setAllReviews(result.data);
+          const review = result.data[0];
+          setTopReview({
+            userAvatar: review.anonymous ? 'https://eurostay-1330475057.cos.eu-frankfurt.myqcloud.com/sys/loading.png' : review.reviewerInfo.avatar,
+            userName: review.anonymous ? '匿名用户' : review.reviewerInfo.username,
+            userType: '房客',
+            isRecommended: review.recommend,
+            reviewContent: review.content,
+            images: review.images || [],
+            reviewDate: getDate(review.createTime),
+            location: review.anonymous ? '' : review.reviewerInfo.location,
           });
-          return;
+          setHasReview(true);
+        } else {
+          setHasReview(false);
         }
-        
+      })
+      .catch(error => {
+        console.error('Failed to fetch reviews:', error);
+        setHasReview(false);
+      });
+  };
+
+  const getOrderDetail = (id: number) => {
+    if (isComplete) return;
+    
+    API.property.getPropertyDetail(id)
+      .then(result => {
         setHostDetail({
-          uid: res.data.result.hostInfo.uid,
-          avatar: res.data.result.hostInfo.avatar,
+          uid: result.hostInfo.uid,
+          avatar: result.hostInfo.avatar,
           role: 'Host',
-          username: res.data.result.hostInfo.username,
-          detail: res.data.result.hostInfo.aboutMe,
-          tags: res.data.result.hostInfo.tags,
+          username: result.hostInfo.username,
+          detail: result.hostInfo.aboutMe,
+          tags: result.hostInfo.tags,
           buttonText: '打个招呼',
           buttonFunc: () => {
             if (GlobalStore.userInfo?.uid === 0) {
@@ -248,49 +225,32 @@ const HouseDetail: React.FC = () => {
           }
         });
         setOrder({
-          title: res.data.result.title,
-          tags: res.data.result.tags,
-          description: res.data.result.description,
-          price: res.data.result.price,
-          location: res.data.result.location,
-          images: res.data.result.images,
-          pid: res.data.result.pid,
-          uid: res.data.result.uid,
-          whyHost: res.data.result.whyHost,
-          availableDate: type === 0 ? res.data.result.availableDate : [],
-          startTime: type === 0 ? '' : res.data.result.startTime,
+          title: result.title,
+          tags: result.tags,
+          description: result.description,
+          price: result.price,
+          address: result.address,
+          images: result.images,
+          pid: result.pid,
+          uid: result.uid,
+          availableDate: result.availableDate,
+          startTime: '',
+          country: result.country || '',
+          countryId: result.countryId || 0,
+          city: result.city || '',
+          cityId: result.cityId || 0,
+          capacity: result.capacity || 0,
+          flexiblePrice: result.flexiblePrice || false
         });
-        setIsStarred(res.data.result.isCollected);
-        if (res.data.result.reviews !== undefined) { 
-          const reviews = res.data.result.reviews.filter(review => review.fromHost === false);
-          setAllReviews(reviews);
-          // console.log('all reviews: ', allReviews)
-          if (reviews.length === 0) {
-            sethasReview(false);
-          } else {
-            const review = reviews[0];
-            setTopReview({
-              userAvatar: review.reviewerInfo.avatar,
-              userName: review.reviewerInfo.username,
-              userType: Number(type) === 0 ? '房客' : 'Guest',
-              isRecommended: review.recommend,
-              reviewContent: review.content,
-              images: review.images,
-              reviewDate: getDate(review.createTime),
-              location: review.reviewerInfo.location,
-            });
-            sethasReview(true);
-          }
-        } else {
-          sethasReview(false);
-        }
-      },
-      fail: function (err) {
-        if (err.statusCode === 401 || err.statusCode === 403) {
+        setIsStarred(result.isCollected);
+      })
+      .catch(error => {
+        // Check for auth errors and handle accordingly
+        if (error.message?.includes('401') || error.message?.includes('403')) {
           // Token expired or invalid
           const currentPage = getCurrentPages();
           const currentRoute = currentPage[currentPage.length - 1].route;
-          const returnUrl = encodeURIComponent(`/${currentRoute}?id=${id}&type=${type}`);
+          const returnUrl = encodeURIComponent(`/${currentRoute}?id=${id}`);
           
           Taro.showModal({
             title: '登录已过期',
@@ -316,44 +276,17 @@ const HouseDetail: React.FC = () => {
               }
             },
           });
-          return;
         }
-        
-        Taro.showToast({
-          title: '网络请求失败，请重试',
-          icon: 'none',
-          duration: 2000,
-        });
-      },
-      complete: function () {
-        setIsComplete(true)
-      }
-    })
+      })
+      .finally(() => {
+        setIsComplete(true);
+      });
   }
 
   useEffect(() => {
-    getOrderDetail(Number(id), Number(type));
+    getOrderDetail(Number(id));
+    getReviews(Number(id));
   }, []);
-
-  const handleShare = () => {
-    Taro.showShareMenu({
-      withShareTicket: true,
-      success: function (res) {
-        Taro.showToast({
-          title: '分享成功',
-          icon: 'success',
-          duration: 2000,
-        });
-      },
-      fail: function (err) {
-        Taro.showToast({
-          title: '分享失败，请重试',
-          icon: 'none',
-          duration: 2000,
-        });
-      }
-    })
-  }
 
   const handleLike = () => {
     if (GlobalStore.userInfo?.uid === 0) {
@@ -387,44 +320,27 @@ const HouseDetail: React.FC = () => {
               }
             }
           });
+          return;
     }
-    Taro.request({
-      url: 'https://api.eurostay.co/app/esmessages/sendLikeMsg',
-      method: 'POST',
-      header: {
-        token: GlobalStore.userInfo.token,
-      },
-      data: {
-        toUid: hostDetail.uid,
-        content: `${GlobalStore.userInfo.username}点赞了您的${Number(type) === 0 ? '房源' : '活动'}${order.title}，并发送了消息：${likeMessage}`,
-      },
-      success: function (response) {
-        if (response.statusCode === 200 && response.data.code === 0) {
-          Taro.showToast({
-            title: '点赞成功',
-            icon: 'success'
-          })
-          Taro.navigateTo({
-            url: `/packageMessage/message-detail/index?id=${response.data.sessionId}&name=${encodeURIComponent(hostDetail.username || '')}`,
-          });
-        } else {
-          Taro.showToast({
-            title: response.data.msg + ' 点赞失败，请重试',
-            icon: 'none',
-            duration: 2000,
-          })
-        }
-      },
-      fail: function (err) {
+    
+    const content = `${GlobalStore.userInfo.username}点赞了您的房源${order.title}，并发送了消息：${likeMessage}`;
+    
+    API.messages.sendLikeMsg(hostDetail.uid, content)
+      .then(result => {
         Taro.showToast({
-          title: '网络请求失败，请重试',
-          icon: 'none',
-          duration: 2000,
+          title: '点赞成功',
+          icon: 'success'
         });
-      }
-    })
-    setShowLikeModal(false)
-    setLikeMessage('')
+        Taro.navigateTo({
+          url: `/packageMessage/message-detail/index?id=${result.sessionId}&name=${encodeURIComponent(hostDetail.username || '')}`,
+        });
+      })
+      .catch(error => {
+        // Error is already handled in apiRequest
+      });
+    
+    setShowLikeModal(false);
+    setLikeMessage('');
   }
 
   const handleSwiperChange = (e) => {
@@ -440,7 +356,7 @@ const HouseDetail: React.FC = () => {
     }
   }
 
-  const checkDateValid = (start: string, end: string, valids: Array<{}>) => {
+  const checkDateValid = (start: string, end: string, valids: Array<{value: string | null}>) => {
     const startDate = new Date(start.replace('-', '/').replace('-', '/'));
     const endDate = new Date(end.replace('-', '/').replace('-', '/'));
     if (startDate >= endDate) return false
@@ -449,19 +365,6 @@ const HouseDetail: React.FC = () => {
     const todayDate = new Date(today.replace('-', '/').replace('-', '/'));
     if (startDate < todayDate) return false
     return true
-    // if (valids.length === 0) return false
-    // const startDate = new Date(start.replace('-', '/').replace('-', '/'));
-    // const endDate = new Date(end.replace('-', '/').replace('-', '/'));
-    // if (startDate >= endDate) return false
-    // startDate.setDate(startDate.getDate() + 1)
-    // endDate.setDate(endDate.getDate() + 1)
-    // const valid_dates = valids.map(date => date.value.replace('-', '/').replace('-', '/').substring(0, 10));
-    // // console.log('check date valid', start, end, valids, valid_dates)
-    // for (let i = startDate; i <= endDate; i.setDate(i.getDate() + 1)) {
-    //   // console.log('checking date: ', i.toISOString().substring(0, 10).replace('-', '/').replace('-', '/'))
-    //   if (!valid_dates.includes(i.toISOString().substring(0, 10).replace('-', '/').replace('-', '/'))) return false
-    // }
-    // return true
   }
 
   const handleSubmit = () => {
@@ -508,32 +411,40 @@ const HouseDetail: React.FC = () => {
           });
           return;
     }
-    if (Number(type) === 0) {
-      if (startDate === null || endDate === null) {
-        Taro.showToast({
-          title: '请选择日期',
-          icon: 'none',
-          duration: 2000,
-        });
-      } 
-      // check if startDate to endDate are in the valid range (order.availableDate)
-      else if (checkDateValid(startDate, endDate, getValidDates(order.availableDate))) {
-        Taro.navigateTo({
-            'url': `/packageHouse/housing-apply/index?id=${id}&type=${type}&startDate=${startDate}&endDate=${endDate}`
-        })
-      } else {
-        Taro.showToast({
-          title: '日期不在有效范围内',
-          icon: 'none',
-          duration: 2000,
-        });
-      }
-    } else {
+    if (startDate === null || endDate === null) {
+      Taro.showToast({
+        title: '请选择日期',
+        icon: 'none',
+        duration: 2000,
+      });
+    } 
+    // check if startDate to endDate are in the valid range (order.availableDate)
+    else if (checkDateValid(startDate, endDate, getValidDates(order.availableDate))) {
       Taro.navigateTo({
-          'url': `/packageHouse/housing-apply/index?id=${id}&type=${type}`
+          'url': `/packageHouse/housing-apply/index?id=${id}&startDate=${startDate}&endDate=${endDate}`
       })
+    } else {
+      Taro.showToast({
+        title: '日期不在有效范围内',
+        icon: 'none',
+        duration: 2000,
+      });
     }
   }
+
+  const handleViewAllReviews = () => {
+    Taro.showModal({
+      title: '更多评价',
+      content: '请前往APP查看更多评价',
+      showCancel: false,
+      success: function (res) {}
+    })
+    // Taro.showToast({
+    //   title: '请前往APP查看更多评价',
+    //   icon: 'none',
+    //   duration: 2000
+    // });
+  };
 
   return (
     <View style={{paddingBottom: '120px'}}>
@@ -565,12 +476,6 @@ const HouseDetail: React.FC = () => {
 
       <View className='house-title'>{order.title}</View>
       
-      <View className='fee'>{Number(type) === 0 ? `€${order.price}/晚` : (order.price === 0 ? '免费' : `€${order.price}`)}</View>
-
-      {/* <View className='back' onClick={() => {
-        Taro.navigateBack()
-      }}>{'<'}</View> */}
-
       <HomeOutlined className='back' onClick={() => {
         const pages = Taro.getCurrentPages()
         if (pages.length > 1) {
@@ -583,9 +488,6 @@ const HouseDetail: React.FC = () => {
       }}/>
 
       <View className='action-buttons'>
-        {/* <View className='action-button' onClick={handleShare}>
-          <Image src={sharePurpleIcon} className='icon' />
-        </View> */}
         <View className='action-button' onClick={handleLike}>
           <Image src={heartPurpleIcon} className='icon' />
         </View>
@@ -597,27 +499,40 @@ const HouseDetail: React.FC = () => {
       </View>
 
       <View className='title-section'>
-        <View className='title'>{order.title}</View>
-        <View className='house-tags'>
+        <View className='title-info-section'>
+          <View className='title'>{order.title}</View>
+          <View className='location-info'>{order.country}{order.city}</View>
+          <View className='capacity-info'>可住{order.capacity}人</View>
+        </View>
+        <View className='title-price-section'>
+          <View className='fee'>
+            <Text className='price-value'>€{order.price}</Text>
+            <Text className='price-unit'>/人/晚</Text>
+          </View>
+          <View className='price-type'>{order.flexiblePrice ? '可换宿' : '一口价'}</View>
+        </View>
+      </View>
+
+      <View className='house-tags'>
           {
             isComplete && order.tags.map(tag => (
               <View className='house-tag'>{tag}</View>
             ))
           }
-        </View>
       </View>
+
 
       <View className='detail-text'>{order.description}</View>
 
       {isComplete && <HostCardSmall {...hostDetail}/>}
 
-      <View className='title-with-badge'>
+      {/* <View className='title-with-badge'>
         <View className='b-title'><View className='purple-badge'/>期待和Guest做什么？</View>
       </View>
 
-      <View className='detail-text'>{order.whyHost}</View>
+      <View className='detail-text'>{order.whyHost}</View> */}
 
-      {Number(type) === 0 && (<View className='review-button' onClick={() => {
+      <View className='review-button' onClick={() => {
         if (GlobalStore.userInfo?.uid === 0) {
           Taro.showModal({
             title: '转至登录页面',
@@ -635,70 +550,38 @@ const HouseDetail: React.FC = () => {
         Taro.navigateTo({ url: `/packageHouse/house-review/index?experienceId=${order.pid}&hostId=${order.uid}` });
       }}>
         前往评价
-      </View>)}
+      </View>
+      
       {isComplete &&
       <View className='title-with-badge'>
         <View className='b-title'><View className='purple-badge'/>
-        {Number(type) === 0 ? '房源' : '活动'}评价
+        房源评价
           <View className='check-detail'
-              onClick={() => {if (hasReview) setIsCollapsed(!isCollapsed)}}
+              onClick={() => {if (hasReview) handleViewAllReviews()}}
           >
-            {!hasReview ? '暂无评价' : isCollapsed ?  '查看全部评价＞' : '收起'}
+            {!hasReview ? '暂无评价' : '查看全部评价＞'}
           </View>
         </View>
         {hasReview &&
           <View className='review-line'>
-            {isCollapsed && <ReviewCard {...topReview} />}
+            <ReviewCard {...topReview} />
           </View>
         }
-        {hasReview && !isCollapsed && (
-          allReviews.map(review => (
-            <View className='review-line'>
-              <ReviewCard
-                userAvatar={review.reviewerInfo.avatar}
-                userName={review.reviewerInfo.username}
-                userType={Number(type) === 0 ? '房客' : 'Guest'}
-                isRecommended={review.recommend}
-                reviewContent={review.content}
-                images={review.images}
-                reviewDate={getDate(review.createTime)}
-                location={review.reviewerInfo.location}
-              />
-            </View>
-          ))
-        )}
       </View>
       }
 
-      {Number(type) === 0 && 
-        <View className='title-with-badge'>
-          <View className='b-title'><View className='purple-badge'/>
-          推荐入住日期（用 • 标记）
-          </View>
+      <View className='title-with-badge'>
+        <View className='b-title'><View className='purple-badge'/>
+        推荐入住日期（用 • 标记）
         </View>
-      }
+      </View>
 
-      {Number(type) === 1 && 
-        <View className='title-with-badge'>
-          <View className='b-title'><View className='purple-badge'/>
-          活动日期
-          </View>
-        </View>
-      }
-
-      {Number(type) === 1 && isComplete && 
-        <View className='detail-text'>{order.startTime}开始</View>
-      }
-
-
-      {Number(type) === 0 && isComplete &&  
+      {isComplete &&  
         <View className='date-select'>
           <View className='calendar-container'>
             <AtCalendar
               isMultiSelect
               marks={getValidDates(order.availableDate)}
-              // validDates={getValidDates(order.availableDate)}
-              // minDate={today}
               currentDate={{ start: startDate, end: endDate }}
               onDayClick={date => {
                 const selectedDate = date.value;

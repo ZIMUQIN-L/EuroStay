@@ -18,6 +18,7 @@ const CustomCard = ({
   type, // 房源: 0, 活动: 1
   id, // 订单id
   experienceId, // 活动 or 房源 id
+  hasReview, // 是否已完成评价
 }) => {
 
   const handleClick = () => {
@@ -25,24 +26,16 @@ const CustomCard = ({
       // console.log('navigate to, ' + `/packageOrder/order-detail/index?role=${role}&status=${status}&type=${type}&id=${id}&experienceId=${experienceId}&title=${title}`);
       Taro.navigateTo({ url: `/packageOrder/order-detail/index?role=${role}&status=${status}&type=${type}&id=${id}&experienceId=${experienceId}&title=${title}` });
     }
-    else if (status === 'review' && role == 'guest') {
-        Taro.showModal({
-            title: '前往房源页面评价',
-            content: '请前往房源详情页面下的评价给Host留下你的留言哦~',
-            confirmText: '前往评价',
-            cancelText: '等下再去',
-            success: function (res) {
-              if (res.confirm) {
-                Taro.navigateTo({
-                    url: `/packageHouse/housing-detail/index?id=${experienceId}&type=0`,
-                  });
-              }
-            }
-          });
-    }
-    else { // review
-      // console.log('navigate to, ' + `/packageOrder/order-review/index?role=${role}&type=${type}&id=${id}&experienceId=${experienceId}&title=${title}`);
-      Taro.navigateTo({ url: `/packageOrder/order-review/index?role=${role}&type=${type}&id=${id}&experienceId=${experienceId}&title=${title}` });
+    else if (status === 'completed') {
+      // Check if review is needed
+      if (hasReview) {
+        // Already reviewed, just view the detail
+        Taro.navigateTo({ url: `/packageOrder/order-detail/index?role=${role}&status=${status}&type=${type}&id=${id}&experienceId=${experienceId}&title=${title}` });
+      } 
+      else {
+        // Needs to review - both host and guest go to order-review
+        Taro.navigateTo({ url: `/packageOrder/order-review/index?role=${role}&type=${type}&id=${id}&experienceId=${experienceId}&title=${title}` });
+      }
     }
   }
 
@@ -78,8 +71,7 @@ const CustomCard = ({
         className='card-left-bottom-text'
       >
           <Text>
-            {type === 0 ? `€${price}/晚`: price === 0 ? `免费`: `€${price}`
-            }，开始{type === 0 ? '日期' : '时间'}：{type === 0 ? date.substring(0, 10) : date}
+            {`€${price}/晚`} {date}
           </Text>
       </View>
       </View>

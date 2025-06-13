@@ -4,6 +4,8 @@ import Taro from '@tarojs/taro';
 import './index.scss';
 import { loginIp, logoIp, LoginLoadingIcon } from '@utils/cloudIcons';
 import GlobalStore from '@store/GlobalStore';
+import { API } from '@utils/apiService';
+import { getWsUrl } from '@utils/config';
 
 const Loading = () => {
   return (
@@ -32,42 +34,25 @@ const Login = () => {
     Taro.login({
       success: function (res) {
         if (res.code) {
-          Taro.request({
-            url: `https://api.eurostay.co/app/esuser/loginCheck?code=${res.code}`,
-            method: 'POST',
-            success: function (response) {
-              if (response.statusCode === 200 && response.data.code === 0) {
-                const { exist, userInfo } = response.data;
-                if (exist) {
-                  GlobalStore.setUid(userInfo.uid);
-                  GlobalStore.setAllInfo(userInfo);
-                  GlobalStore.setToken(response.data.token);
-                  GlobalStore.currentTab = 'world';
-                  Taro.reLaunch({
-                    url: '/pages/home-world/index',
-                  });
-                } else {
-                  setIsChecking(false);
-                }
+          API.user.loginCheck(res.code)
+            .then(result => {
+              const { exist, userInfo, token } = result;
+              if (exist) {
+                GlobalStore.setUid(userInfo.uid);
+                GlobalStore.setAllInfo(userInfo);
+                GlobalStore.setToken(token || '');
+                GlobalStore.currentTab = 'world';
+                Taro.reLaunch({
+                  url: '/pages/home-world/index',
+                });
               } else {
                 setIsChecking(false);
-                Taro.showToast({
-                  title: response.data.msg || '网络请求失败',
-                  icon: 'none',
-                  duration: 2000,
-                });
               }
-            },
-            fail: function (err) {
-              console.error('Request failed:', err);
+            })
+            .catch(error => {
               setIsChecking(false);
-              Taro.showToast({
-                title: '网络请求失败，请重试',
-                icon: 'none',
-                duration: 2000,
-              });
-            },
-          });
+              console.error('Request failed:', error);
+            });
         } else {
           setIsChecking(false);
           console.error('Login check failed:', res.errMsg);
@@ -96,7 +81,7 @@ const Login = () => {
       return;
     }
 
-    const wsUrl = `wss://api.eurostay.co/app/essocket/${token}`;
+    const wsUrl = getWsUrl(token);
     console.log('正在连接 WebSocket:', wsUrl);
 
     try {
@@ -152,57 +137,35 @@ const Login = () => {
         const loginRes = await Taro.login();
         if (loginRes.code) {
           // 调用绑定手机号接口
-          const res = await Taro.request({
-            url: 'https://api.eurostay.co/app/esuser/bindWxPhone',
-            method: 'POST',
-            header: {
-              'Content-Type': 'application/json',
-              'token': GlobalStore._userInfo.token
+          const bindPhoneData = {
+            encryptedData: encryptedData,
+            iv: iv,
+            sessionKey: loginRes.code,
+            code: loginRes.code
+          };
+          
+          const result = await API.user.bindWxPhone(bindPhoneData);
+          
+          GlobalStore.setAllInfo(result.userInfo);
+          GlobalStore.setToken(result.token || '');
+          GlobalStore.currentTab = 'world';
+          setIsChecking(false);
+          Taro.reLaunch({
+            url: '/pages/home-world/index',
+            success: function () {
+              Taro.showModal({
+                  title: '前往补充个人信息',
+                  content: '请前往补充个人信息，方便Guest/Host更好地了解你哦~',
+                  success: function (res) {
+                    if (res.confirm) {
+                      Taro.navigateTo({
+                        url: `/packageUser/user-editing/index`,
+                      });
+                    }
+                  },
+                });
             },
-            data: {
-              encryptedData: encryptedData,
-              iv: iv,
-              sessionKey: loginRes.code, // 使用登录凭证作为sessionKey
-              code: loginRes.code
-            }
           });
-          console.log(res);
-
-          if (res.statusCode === 200 && res.data.code === 0) {
-            GlobalStore.setAllInfo(res.data.userInfo);
-            GlobalStore.setToken(res.data.token);
-            GlobalStore.currentTab = 'world';
-            setIsChecking(false);
-            Taro.reLaunch({
-              url: '/pages/home-world/index',
-              success: function () {
-                // Taro.showToast({
-                //   title: '登录成功',
-                //   icon: 'success',
-                //   duration: 2000,
-                // });
-                Taro.showModal({
-                    title: '前往补充个人信息',
-                    content: '请前往补充个人信息，方便Guest/Host更好地了解你哦~',
-                    success: function (res) {
-                      if (res.confirm) {
-                        Taro.navigateTo({
-                          url: `/packageUser/user-editing/index`,
-                        });
-                      }
-                    },
-                  });
-              },
-            });
-          }
-          else {
-            setIsChecking(false);
-            Taro.showToast({
-                title: res.data.msg || '登录失败',
-                icon: 'none',
-                duration: 2000,
-              });
-          }
         }
       } catch (error) {
         setIsChecking(false);
@@ -247,42 +210,25 @@ const Login = () => {
     Taro.login({
       success: function (res) {
         if (res.code) {
-          Taro.request({
-            url: `https://api.eurostay.co/app/esuser/wxLogin?code=${res.code}`,
-            method: 'POST',
-            success: function (response) {
-              if (response.statusCode === 200 && response.data.code === 0) {
-                // 保存 token 和 uid
-                GlobalStore.setAllInfo(response.data.userInfo);
-                GlobalStore.setToken(response.data.token);
-                GlobalStore.currentTab = 'world';
-                Taro.reLaunch({
-                  url: '/pages/home-world/index',
-                  success: function () {
-                    Taro.showToast({
-                      title: '登录成功',
-                      icon: 'success',
-                      duration: 2000,
-                    });
-                  },
-                });
-              } else {
-                Taro.showToast({
-                  title: response.data.msg || '登录失败',
-                  icon: 'none',
-                  duration: 2000,
-                });
-              }
-            },
-            fail: function (err) {
-              console.error('Request failed:', err);
-              Taro.showToast({
-                title: '登录失败，请重试',
-                icon: 'none',
-                duration: 2000,
+          API.user.wxLogin(res.code)
+            .then(result => {
+              GlobalStore.setAllInfo(result.userInfo);
+              GlobalStore.setToken(result.token || '');
+              GlobalStore.currentTab = 'world';
+              Taro.reLaunch({
+                url: '/pages/home-world/index',
+                success: function () {
+                  Taro.showToast({
+                    title: '登录成功',
+                    icon: 'success',
+                    duration: 2000,
+                  });
+                },
               });
-            },
-          });
+            })
+            .catch(error => {
+              console.error('Request failed:', error);
+            });
         } else {
           console.error('Login failed:', res.errMsg);
           Taro.showToast({

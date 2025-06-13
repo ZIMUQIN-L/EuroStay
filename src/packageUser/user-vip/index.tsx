@@ -4,6 +4,7 @@ import {bgMonthly, bgYearly, infoIcon, contactIcon, starIcon, editIcon} from '@u
 import GlobalStore from '@store/GlobalStore';
 import './index.scss';
 import Taro from '@tarojs/taro';
+import { API } from '@utils/apiService';
 
 const UserVip = () => {
   const [agreed, setAgreed] = useState(false);
@@ -17,17 +18,8 @@ const UserVip = () => {
 
   const fetchVipInfo = async () => {
     try {
-      const res = await Taro.request({
-        url: 'https://api.eurostay.co/app/vip/vipInfo',
-        method: 'POST',
-        header: {
-          'token': GlobalStore._userInfo.token
-        }
-      });
-
-      if (res.data.code === 0) {
-        setVipEndDate(res.data.endDate);
-      }
+      const result = await API.vip.getVipInfo();
+      setVipEndDate(result.endDate);
     } catch (error) {
       console.error('获取会员信息失败', error);
     }
@@ -48,46 +40,35 @@ const UserVip = () => {
 
     try {
       // 调用充值接口
-      const res = await Taro.request({
-        url: 'https://api.eurostay.co/app/vip/recharge',
-        method: 'POST',
-        header: {
-          'token': GlobalStore._userInfo.token,
-          'Content-Type': 'application/json'
+      const month = selectedPlan === 'monthly' ? 1 : 12;
+      const price = selectedPlan === 'monthly' ? 6.6 : 88.8;
+      
+      const paymentData = await API.vip.recharge(month, price);
+      
+      // 调用支付
+      await Taro.requestPayment({
+        timeStamp: paymentData.timeStamp,
+        nonceStr: paymentData.nonceStr,
+        package: paymentData.package,
+        signType: paymentData.signType,
+        paySign: paymentData.paySign,
+        success: () => {
+          Taro.showToast({
+            title: '支付成功',
+            icon: 'success'
+          });
+          GlobalStore.setIsVip(true);
+          // 刷新会员信息
+          fetchVipInfo();
         },
-        data: {
-          month: selectedPlan === 'monthly' ? 1 : 12,
-          price: selectedPlan === 'monthly' ? 6.6 : 88.8
+        fail: (err) => {
+          console.error('支付失败', err);
+          Taro.showToast({
+            title: '支付失败',
+            icon: 'none'
+          });
         }
       });
-
-      if (res.data.code === 0) {
-        const paymentData = res.data.data;
-        // 调用支付
-        await Taro.requestPayment({
-          timeStamp: paymentData.timeStamp,
-          nonceStr: paymentData.nonceStr,
-          package: paymentData.package,
-          signType: paymentData.signType,
-          paySign: paymentData.paySign,
-          success: () => {
-            Taro.showToast({
-              title: '支付成功',
-              icon: 'success'
-            });
-            GlobalStore.setIsVip(true);
-            // 刷新会员信息
-            fetchVipInfo();
-          },
-          fail: (err) => {
-            console.error('支付失败', err);
-            Taro.showToast({
-              title: '支付失败',
-              icon: 'none'
-            });
-          }
-        });
-      }
     } catch (error) {
       console.error('请求失败', error);
       Taro.showToast({

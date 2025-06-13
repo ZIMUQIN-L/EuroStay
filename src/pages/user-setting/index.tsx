@@ -4,6 +4,7 @@ import Taro from '@tarojs/taro';
 import { useEffect, useState } from 'react';
 import GlobalStore from '@store/GlobalStore';
 import TabBar from '@components/TabBar';
+import { API } from '@utils/apiService';
 import { 
   vipCard, 
   starIcon,
@@ -34,21 +35,15 @@ const UserSetting = () => {
     if (!GlobalStore.userInfo?.token) return;
     
     try {
-      const res = await Taro.request({
-        url: 'https://api.eurostay.co/app/esuser/tokenCheck',
-        method: 'POST',
-        header: {
-          token: GlobalStore.userInfo.token
-        }
-      });
+      const res = await API.user.tokenCheck();
 
       if (res.data.code === 401 || res.data.code === 403) {
         // Token 过期或无效
-      Taro.showModal({
+        Taro.showModal({
           title: '登录已过期',
           content: '请重新登录',
-        success: function (res) {
-          if (res.confirm) {
+          success: function (res) {
+            if (res.confirm) {
               Taro.reLaunch({
                 url: '/pages/login/index',
               });
@@ -83,7 +78,7 @@ const UserSetting = () => {
             if (res.confirm) {
               Taro.reLaunch({
                 url: '/pages/login/index',
-            });
+              });
             } else {
               // 如果用户不登录，重置 GlobalStore 信息
               GlobalStore.setAllInfo({
@@ -100,8 +95,8 @@ const UserSetting = () => {
               // 重新加载当前页面
               Taro.reLaunch({
                 url: '/pages/user-setting/index'
-      });
-    }
+              });
+            }
           },
         });
       }
@@ -297,23 +292,11 @@ const UserSetting = () => {
                 return;
               }
               try {
-                const res = await Taro.request({
-                  url: 'https://api.eurostay.co/app/esuser/processInvitation',
-                  method: 'POST',
-                  header: {
-                    token: GlobalStore.userInfo.token,
-                  },
-                  data: { id: inviteCode },
-                });
-                if (res.data.code === 0) {
-                  Taro.showToast({ title: res.data.msg || '邀请成功，双方各获得一个月会员', icon: 'none' });
-                  setShowInviteModal(false);
-                } else {
-                  Taro.showToast({ title: res.data.msg || '邀请失败', icon: 'none' });
-                  setShowInviteModal(false);
-                }
+                await API.user.processInvitation(inviteCode);
+                Taro.showToast({ title: '邀请成功，双方各获得一个月会员', icon: 'none' });
+                setShowInviteModal(false);
               } catch (e) {
-                Taro.showToast({ title: '网络错误，请稍后再试', icon: 'none' });
+                setShowInviteModal(false);
               }
             }}>
               跟朋友平分2个月会员

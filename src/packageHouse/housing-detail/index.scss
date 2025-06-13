@@ -59,16 +59,6 @@
         color: #FFFFFF;
     }
 
-    .fee {
-        font-family: 'Alibaba PuHuiTi';
-        position: absolute;
-        color: #FFFFFF;
-        font-size: 32px;
-        top: 590px;
-        left: 36px;
-        z-index: 100;
-    }
-
     .back {
         position: fixed;
         color: #FFFFFF;
@@ -186,42 +176,84 @@
     display: flex;
     justify-content: space-between;
 
-    .title {
-        font-size: 36px;
+    .title-info-section {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+
+      .title {
+        font-size: 50px;
+        font-weight: 500;
+        font-family: "Alibaba PuHuiTi";
+      }
+
+      .location-info {
+        font-size: 32px;
         color: #333333;
-        font-weight: 590;
+      }
+
+      .capacity-info {
+        font-size: 24px;
+        color: #333333;
+      }
     }
 
-    .house-tags {
-        max-width: 60%;
-        // position: absolute;
-        display: flex;
-        gap: 10px 5px;
-        flex-flow: wrap;
-        bottom: 36px;
-        margin-left: 24px;
-        justify-content: flex-end;
+    .title-price-section {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      align-items: flex-end;
+      text-align: right;
 
-            .house-tag {
-                flex-flow: row;
-                display: flex;
-                text-align: center;
-                // margin: auto;
-                align-items: center;
-                justify-content: center;
-                // justify-content: space-between;
-                // bottom: 0px;
-                // width: 45px; ////
-                height: 30px;
-                // height: 27px;
-                border-radius: 30px;
-                // margin-right: 5px;
-                padding: 5px 8px;
-                border: 3px solid #7A63C7;
-                color: #7A63C7;
-            }
-            font-size: 24px;
+      .fee {
+        font-family: 'Alibaba PuHuiTi';
+        
+        .price-value {
+          font-size: 48px;
+          font-weight: 600;
+          color: #333333;
+        }
+        
+        .price-unit {
+          font-size: 20px;
+          color: #9B9B9B;
+        }
+      }
+
+      .price-type {
+        font-size: 30px;
+        color: #7A63C7;
+      }
     }
+    
+  }
+
+  .house-tags {
+    display: flex;
+    gap: 10px 5px;
+    flex-flow: wrap;
+    bottom: 36px;
+    margin: 20px 36px 0;
+
+        .house-tag {
+            flex-flow: row;
+            display: flex;
+            text-align: center;
+            // margin: auto;
+            align-items: center;
+            justify-content: center;
+            // justify-content: space-between;
+            // bottom: 0px;
+            // width: 45px; ////
+            height: 30px;
+            // height: 27px;
+            border-radius: 30px;
+            // margin-right: 5px;
+            padding: 5px 8px;
+            border: 3px solid #7A63C7;
+            color: #7A63C7;
+        }
+        font-size: 24px;
   }
 
   .review-line {

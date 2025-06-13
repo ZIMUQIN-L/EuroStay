@@ -3,6 +3,7 @@ import { observer } from 'mobx-react';
 import Taro from '@tarojs/taro';
 import { useEffect, useState } from 'react';
 import GlobalStore from '@store/GlobalStore';
+import { API } from '@utils/apiService';
 import { editIcon } from '@utils/cloudIcons';
 import './index.scss';
 
@@ -21,6 +22,9 @@ interface UserInfo {
   studentVerified: boolean;
   isVip: boolean;
   birthday: string;
+  expectedTags: string[];
+  status: number;
+  socialMedia: string;
 }
 
 const UserEditing = () => {
@@ -34,27 +38,12 @@ const UserEditing = () => {
   const fetchUserInfo = async () => {
     try {
       setLoading(true);
-      const response = await Taro.request({
-        url: 'https://api.eurostay.co/app/esuser/getUserCompleteInfo',
-        method: 'POST',
-        header: {
-          'token': GlobalStore.userInfo.token,
-          'Content-Type': 'application/json'
-        }
-      });
-
-      if (response.statusCode === 200 && response.data.code === 0) {
-        setUserInfo(response.data.result);
-      } else {
-        Taro.showToast({
-          title: response.data.msg || '获取用户信息失败',
-          icon: 'none'
-        });
-      }
+      const userCompleteInfo = await API.user.getUserCompleteInfo();
+      setUserInfo(userCompleteInfo);
     } catch (error) {
       console.error('Fetch user info failed:', error);
       Taro.showToast({
-        title: '网络请求失败',
+        title: '获取用户信息失败',
         icon: 'none'
       });
     } finally {
@@ -63,62 +52,52 @@ const UserEditing = () => {
   };
 
   const handleUpdate = async () => {
-      // 收集需要提交的数据
-      const profileData = {
-        aboutMe: userInfo?.aboutMe,
-        avatar: userInfo?.avatar,
-        backgroundPic: userInfo?.backgroundPic,
-        birthday: userInfo?.birthday || '2001-01-01',
-        gender: userInfo?.gender,
-        location: userInfo?.location,
-        tags: userInfo?.tags || [],
-        username: userInfo?.username
-      };
+    // 收集需要提交的数据
+    const profileData = {
+      aboutMe: userInfo?.aboutMe,
+      avatar: userInfo?.avatar,
+      backgroundPic: userInfo?.backgroundPic,
+      birthday: userInfo?.birthday || '2001-01-01',
+      gender: userInfo?.gender,
+      location: userInfo?.location,
+      tags: userInfo?.tags || [],
+      username: userInfo?.username,
+      expectedTags: userInfo?.expectedTags || [],
+      status: userInfo?.status || 0,
+      socialMedia: userInfo?.socialMedia
+    };
 
-      // 发送更新请求
-      Taro.request({
-        url: 'https://api.eurostay.co/app/esuser/userProfileModify',
-        method: 'POST',
-        data: profileData,
-        header: {
-          'token': GlobalStore.userInfo.token,
-          'Content-Type': 'application/json'
-        },
-        success: (res) => {
-          if (res.data.code === 0) {
-            Taro.showToast({
-              title: '保存成功',
-              icon: 'success',
-              duration: 2000
-            });
-            GlobalStore.setAvatar(userInfo ? userInfo.avatar: GlobalStore._userInfo.avatar);
-            GlobalStore.setUsername(userInfo ? userInfo.username: GlobalStore._userInfo.username);
-            GlobalStore.setGender(userInfo ? userInfo.gender: GlobalStore._userInfo.gender);
-            GlobalStore.setLocation(userInfo ? userInfo.location: GlobalStore._userInfo.location);
-            GlobalStore.setAboutMe(userInfo ? userInfo.aboutMe: GlobalStore._userInfo.aboutMe);
-            GlobalStore.setBackgroundPic(userInfo ? userInfo.backgroundPic: GlobalStore._userInfo.backgroundPic);
-            Taro.navigateBack({
-                delta:1
-            });
-            // 更新成功后刷新用户信息
-            fetchUserInfo();
-          } else {
-            Taro.showToast({
-              title: res.data.msg || '保存失败',
-              icon: 'none',
-              duration: 2000
-            });
-          }
-        },
-        fail: () => {
-          Taro.showToast({
-            title: '网络请求失败',
-            icon: 'none',
-            duration: 2000
-          });
-        }
+    try {
+      await API.user.userProfileModify(profileData);
+      
+      Taro.showToast({
+        title: '保存成功',
+        icon: 'success',
+        duration: 2000
+      });
+      
+      // Update GlobalStore with new user info
+      GlobalStore.setAvatar(userInfo ? userInfo.avatar: GlobalStore._userInfo.avatar);
+      GlobalStore.setUsername(userInfo ? userInfo.username: GlobalStore._userInfo.username);
+      GlobalStore.setGender(userInfo ? userInfo.gender: GlobalStore._userInfo.gender);
+      GlobalStore.setLocation(userInfo ? userInfo.location: GlobalStore._userInfo.location);
+      GlobalStore.setAboutMe(userInfo ? userInfo.aboutMe: GlobalStore._userInfo.aboutMe);
+      GlobalStore.setBackgroundPic(userInfo ? userInfo.backgroundPic: GlobalStore._userInfo.backgroundPic);
+      
+      Taro.navigateBack({
+        delta: 1
+      });
+      // 更新成功后刷新用户信息
+      fetchUserInfo();
+    } catch (error) {
+      console.error('Update profile failed:', error);
+      Taro.showToast({
+        title: '保存失败',
+        icon: 'none',
+        duration: 2000
       });
     }
+  };
 
   const handleUpload = async (type: 'avatar' | 'background') => {
     try {
@@ -129,27 +108,13 @@ const UserEditing = () => {
       });
 
       if (res.tempFilePaths && res.tempFilePaths[0]) {
-        const uploadRes = await Taro.uploadFile({
-          url: 'https://api.eurostay.co/app/common/upload',
-          filePath: res.tempFilePaths[0],
-          name: 'Image',
-          formData: {
-            prefix: 'test'
-          },
-          header: {
-            'token': GlobalStore.userInfo.token,
-          },
-          success: function(result) {
-              const responseData = JSON.parse(result.data);
-              const imageUrl = responseData["result"];
-              // 根据类型更新不同的字段
-              setUserInfo(prev => prev ? {
-                ...prev,
-                ...(type === 'avatar' ? { avatar: imageUrl } : { backgroundPic: imageUrl })
-              } : null);
-              return imageUrl;
-          }
-        });
+        const imageUrl = await API.common.upload(res.tempFilePaths[0]);
+        
+        // 根据类型更新不同的字段
+        setUserInfo(prev => prev ? {
+          ...prev,
+          ...(type === 'avatar' ? { avatar: imageUrl } : { backgroundPic: imageUrl })
+        } : null);
       }
     } catch (error) {
       console.error('Upload failed:', error);
@@ -211,7 +176,15 @@ const UserEditing = () => {
       placeholder: '写一下你的手机号嘛~',
       path: '/packageUser/edit-phone/index',
       params: { currentValue: userInfo?.mobile }
-    }
+    },
+    {
+      label: '社交媒体',
+      value: userInfo?.socialMedia || '',
+      placeholder: '写一下你的社交媒体嘛~',
+      path: '/packageUser/edit-social-media/index',
+      params: { currentValue: userInfo?.socialMedia }
+    },
+
   ];
 
   const profileItems = [
@@ -268,6 +241,40 @@ const UserEditing = () => {
             }}
           >
             其他
+          </View>
+        </View>
+      )
+    },
+    {
+      label: '状态',
+      customContent: (
+        <View className='status-options'>
+          <View 
+            className={`status-option ${userInfo?.status === 0 ? 'selected' : ''}`}
+            onClick={(e) => {
+              e.stopPropagation();
+              setUserInfo(prev => prev ? { ...prev, status: 0 } : null);
+            }}
+          >
+            无状态
+          </View>
+          <View 
+            className={`status-option ${userInfo?.status === 1 ? 'selected' : ''}`}
+            onClick={(e) => {
+              e.stopPropagation();
+              setUserInfo(prev => prev ? { ...prev, status: 1 } : null);
+            }}
+          >
+            供宿中
+          </View>
+          <View 
+            className={`status-option ${userInfo?.status === 2 ? 'selected' : ''}`}
+            onClick={(e) => {
+              e.stopPropagation();
+              setUserInfo(prev => prev ? { ...prev, status: 2 } : null);
+            }}
+          >
+            求宿中
           </View>
         </View>
       )

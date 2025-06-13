@@ -10,9 +10,14 @@ const ApplicantInfo = ({
     gender,
     identity,
     selfIntroduction,
-    numberOfGuests,
-    reason
+    femaleNumber,
+    maleNumber,
+    reason,
+    skill
 }) => {
+    // type 0: Host, type 1: Guest/Applicant
+    const isHost = type === 0;
+    
     return (
       <View className='info-card'>
         <View className='info-card-header'>
@@ -22,7 +27,7 @@ const ApplicantInfo = ({
         
         <View className='info-card-table-row'>
           <View className='info-card-key'>
-            申请人名称
+            {isHost ? 'Host名称' : '申请人名称'}
           </View>
           <View className='info-card-value'>
             {name}
@@ -31,7 +36,7 @@ const ApplicantInfo = ({
 
         <View className='info-card-table-row'>
           <View className='info-card-key'>
-            申请人ID
+            {isHost ? 'Host ID' : '申请人ID'}
           </View>
           <View className='info-card-value'>
             {id}
@@ -49,15 +54,6 @@ const ApplicantInfo = ({
 
         <View className='info-card-table-row'>
           <View className='info-card-key'>
-            身份
-          </View>
-          <View className='info-card-value'>
-            {identity}
-          </View>
-        </View>
-
-        <View className='info-card-table-row'>
-          <View className='info-card-key'>
             自我介绍
           </View>
           <View className='info-card-value'>
@@ -65,25 +61,47 @@ const ApplicantInfo = ({
           </View>
         </View>
 
-        {type === 0 &&
-          <View className='info-card-table-row'>
-            <View className='info-card-key'>
-              换宿人数
-            </View>
-            <View className='info-card-value'>
-              {numberOfGuests}人
-            </View>
-          </View>
-        }
-
         <View className='info-card-table-row'>
           <View className='info-card-key'>
-            {type === 0 ? '换宿' : '申请'}原因
+            {isHost ? '可换宿人数' : '换宿人数'}
           </View>
           <View className='info-card-value'>
-            {reason}
+            {maleNumber > 0 && `${maleNumber}男`}{maleNumber > 0 && femaleNumber > 0 && ' '}{femaleNumber > 0 && `${femaleNumber}女`}
           </View>
         </View>
+
+        {!isHost && identity && (
+          <View className='info-card-table-row'>
+            <View className='info-card-key'>
+              身份
+            </View>
+            <View className='info-card-value'>
+              {identity}
+            </View>
+          </View>
+        )}
+
+        {!isHost && reason && (
+          <View className='info-card-table-row'>
+            <View className='info-card-key'>
+              换宿原因
+            </View>
+            <View className='info-card-value'>
+              {reason}
+            </View>
+          </View>
+        )}
+
+        {!isHost && skill && (
+          <View className='info-card-table-row'>
+            <View className='info-card-key'>
+              用于交换的技能
+            </View>
+            <View className='info-card-value'>
+              {skill}
+            </View>
+          </View>
+        )}
       </View>
     )
 };

@@ -9,16 +9,58 @@ import UserCardSmall from '../../components/UserCardSmall';
 import './index.scss'
 import GlobalStore from '@store/GlobalStore';
 import { UserShortInfo, OrderDetail, ApplicantDetail } from '@utils/interfaces';
+import { API } from '@utils/apiService';
 
 const Index: React.FC = () => {
     Taro.setBackgroundColor({
         backgroundColor: '#f5f5f5'
     })
 
-    const [infoHost, setInfoHost] = useState<UserShortInfo>({});
-    const [infoGuest, setInfoGuest] = useState<UserShortInfo>({});
-    const [infoOrder, setInfoOrder] = useState<OrderDetail>({});
-    const [infoApplicant, setInfoApplicant] = useState<ApplicantDetail>({});
+    const [infoHost, setInfoHost] = useState<UserShortInfo>({
+        uid: 0,
+        avatar: '',
+        role: 'Host',
+        username: '',
+        tags: [],
+        buttonText: '',
+        buttonFunc: () => {}
+    });
+    
+    const [infoGuest, setInfoGuest] = useState<UserShortInfo>({
+        uid: 0,
+        avatar: '',
+        role: 'Guest',
+        username: '',
+        tags: [],
+        buttonText: '',
+        buttonFunc: () => {}
+    });
+    
+    const [infoOrder, setInfoOrder] = useState<OrderDetail>({
+        type: 0,
+        orderStatus: '',
+        orderId: 0,
+        houseName: '',
+        houseId: 0,
+        price: 0,
+        time: '',
+        refuseReason: '',
+        orderTime: ''
+    });
+    
+    const [infoApplicant, setInfoApplicant] = useState<ApplicantDetail>({
+        type: 0,
+        title: '',
+        name: '',
+        id: 0,
+        gender: '',
+        identity: '',
+        selfIntroduction: '',
+        femaleNumber: 0,
+        maleNumber: 0,
+        reason: '',
+        skill: ''
+    });
 
     const [ifGotRejectReason, setIfGotRejectReason] = useState(false);
 
@@ -35,48 +77,28 @@ const Index: React.FC = () => {
     const [rejectMessage, setRejectMessage] = useState('');
     const [rejectReason, setRejectReason] = useState('');
     const [showRejectModal, setShowRejectModal] = useState(false)
-    const [orderStatus, setOrderStatus] = useState();
+    const [orderStatus, setOrderStatus] = useState<number | undefined>(undefined);
     const [showChatModal, setShowChatModal] = useState(false)
     const [chatMessage, setChatMessage] = useState('')
     const [username, setUsername] = useState('')
 
-    const hostConfirm = () => {
-        Taro.request({
-            url: Number(type) === 0 ? `https://api.eurostay.co/app/property/approvePropertyApplication`: `https://api.eurostay.co/app/activity/approveActivityApplication`,
-            method: 'POST',
-            header: {
-                token: GlobalStore.userInfo.token,
-            },
-            data: {
-                id: Number(id),
-            },
-            success: function (response) {
-                if (response.statusCode === 200 && response.data.code === 0) {
-                    Taro.showToast({
-                        title: '已同意申请，等待 Guest 确认',
-                        icon: 'none',
-                        duration: 2000,
-                    });
-                    setTimeout(() => {
-                        setLoadingComplete(false);
-                        Taro.navigateBack();
-                      }, 2000);
-                } else {
-                    Taro.showToast({
-                        title: response.data.msg + ' 同意申请失败，请稍后再试',
-                        icon: 'none',
-                        duration: 2000,
-                    })
-                }
-            },
-            fail: function (err) {
-                Taro.showToast({
-                    title: '网络请求失败，请重试',
-                    icon: 'none',
-                    duration: 2000,
-                });
-            }
-        });
+    const hostConfirm = async () => {
+        try {
+            await API.order.approveOrder(Number(id));
+            
+            Taro.showToast({
+                title: '已同意申请',
+                icon: 'none',
+                duration: 2000,
+            });
+            
+            setTimeout(() => {
+                setLoadingComplete(false);
+                Taro.navigateBack();
+            }, 2000);
+        } catch (error) {
+            // Error handling is done in the apiRequest function
+        }
     }
 
     const handelReject = () => {
@@ -95,139 +117,78 @@ const Index: React.FC = () => {
         }
     }
 
-    const hostReject = () => {
-        Taro.request({
-            url: Number(type) === 0 ? `https://api.eurostay.co/app/property/rejectPropertyApplication` : 'https://api.eurostay.co/app/activity/rejectActivityApplication',
-            method: 'POST',
-            header: {
-                token: GlobalStore.userInfo.token,
-            },
-            data: {
-                applicationId: Number(id),
-                reason: rejectMessage,
-            },
-            success: function (response) {
-                if (response.statusCode === 200 && response.data.code === 0) {
-                    Taro.showToast({
-                        title: '已拒绝申请',
-                        icon: 'none',
-                        duration: 2000,
-                    });
-                    setTimeout(() => {
-                        setLoadingComplete(false);
-                        Taro.navigateBack();
-                      }, 2000);
-                } else {
-                    Taro.showToast({
-                        title: response.data.msg + ' 拒绝申请失败，请稍后再试',
-                        icon: 'none',
-                        duration: 2000,
-                    })
-                }
-            },
-            fail: function (err) {
-                Taro.showToast({
-                    title: '网络请求失败，请重试',
-                    icon: 'none',
-                    duration: 2000,
-                });
-            }
-        });
+    const hostReject = async () => {
+        try {
+            await API.order.rejectOrder(Number(id), rejectMessage);
+            
+            Taro.showToast({
+                title: '已拒绝申请',
+                icon: 'none',
+                duration: 2000,
+            });
+            
+            setTimeout(() => {
+                setLoadingComplete(false);
+                Taro.navigateBack();
+            }, 2000);
+        } catch (error) {
+            // Error handling is done in the apiRequest function
+        }
     }
 
-    const guestConfirm = () => {
-        Taro.request({
-            url: Number(type) === 0 ? `https://api.eurostay.co/app/property/acceptOffer` : 'https://api.eurostay.co/app/activity/acceptOffer',
-            method: 'POST',
-            header: {
-                token: GlobalStore.userInfo.token,
-            },
-            data: {
-                id: Number(id),
-            },
-            success: function (response) {
-                if (response.statusCode === 200 && response.data.code === 0) {
-                    Taro.showToast({
-                        title: '已确认订单',
-                        icon: 'none',
-                        duration: 2000,
-                    });
-                    setTimeout(() => {
-                        setLoadingComplete(false);
-                        Taro.navigateBack();
-                      }, 2000);
-                } else {
-                    Taro.showToast({
-                        title: response.data.msg + ' 确认订单失败，请稍后再试',
-                        icon: 'none',
-                        duration: 2000,
-                    })
-                }
-            },
-            fail: function (err) {
-                Taro.showToast({
-                    title: '网络请求失败，请重试',
-                    icon: 'none',
-                    duration: 2000,
-                });
-            }
-        });
+    const guestConfirm = async () => {
+        try {
+            await API.order.acceptOffer(Number(id));
+            
+            Taro.showToast({
+                title: '已确认订单',
+                icon: 'none',
+                duration: 2000,
+            });
+            
+            setTimeout(() => {
+                setLoadingComplete(false);
+                Taro.navigateBack();
+            }, 2000);
+        } catch (error) {
+            // Error handling is done in the apiRequest function
+        }
     }
 
-    const guestReject = () => {
-        Taro.request({
-            url: Number(type) === 0 ? `https://api.eurostay.co/app/property/rejectOffer` : 'https://api.eurostay.co/app/activity/rejectOffer',
-            method: 'POST',
-            header: {
-                token: GlobalStore.userInfo.token,
-            },
-            data: {
-                applicationId: Number(id),
-                reason: rejectMessage,
-            },
-            success: function (response) {
-                if (response.statusCode === 200 && response.data.code === 0) {
-                    Taro.showToast({
-                        title: '已拒绝订单',
-                        icon: 'none',
-                        duration: 2000,
-                    });
-                    setTimeout(() => {
-                        setLoadingComplete(false);
-                        Taro.navigateBack();
-                      }, 2000);
-                } else {
-                    Taro.showToast({
-                        title: response.data.msg + ' 拒绝订单失败，请稍后再试',
-                        icon: 'none',
-                        duration: 2000,
-                    })
-                }
-            },
-            fail: function (err) {
-                Taro.showToast({
-                    title: '网络请求失败，请重试',
-                    icon: 'none',
-                    duration: 2000,
-                });
-            }
-        });
+    const guestReject = async () => {
+        try {
+            await API.order.rejectOffer(Number(id), rejectMessage);
+            
+            Taro.showToast({
+                title: '已拒绝订单',
+                icon: 'none',
+                duration: 2000,
+            });
+            
+            setTimeout(() => {
+                setLoadingComplete(false);
+                Taro.navigateBack();
+            }, 2000);
+        } catch (error) {
+            // Error handling is done in the apiRequest function
+        }
     }
 
-    const getOrderStatus = (status: number): string => {
+    const getOrderStatus = (status: number, orderType?: number): string => {
         switch (status) {
-            case 0:
-                return "申请中";
             case 1:
-                return "申请通过待确认";
+                // Different status text based on order type
+                if (orderType === 0) { // Host offer
+                    return "旅行者未确认";
+                } else { // Guest application
+                    return "Host未确认";
+                }
             case 2:
                 return "进行中";
             case 3:
-                return "待评价";
+                return "已完成";
             case 4:
                 return "已失效";
-            case 5:
-                return "已完成";
             default:
                 return "";
         }
@@ -246,9 +207,68 @@ const Index: React.FC = () => {
         if (date === '') {
             return '';
         }
-        // const dateObj = new Date(date.replace('-', '/').replace('-', '/'));
-        // return `${dateObj.getFullYear()}年${dateObj.getMonth() + 1}月${dateObj.getDay()}日`;
         return date.replace('-', '/').replace('-', '/').substring(0, 10);
+    }
+    
+    const formatDateChinese = (date: string): string => {
+        if (date === '' || !date) {
+            return '';
+        }
+        
+        try {
+            // Handle full datetime format like "2025-06-11 08:00:00"
+            // Extract just the date part first
+            const datePart = date.split(' ')[0];
+            const parts = datePart.split('-');
+            
+            if (parts.length !== 3) return date;
+            return `${parts[0]}年${parts[1]}月${parts[2]}日`;
+        } catch (e) {
+            return date;
+        }
+    }
+    
+    const formatDateTimeWithHours = (dateTime: string): string => {
+        if (!dateTime) return '';
+        
+        try {
+            // First try to parse directly if it's a standard format
+            let date = new Date(dateTime);
+            
+            // If the date is invalid, try manual parsing
+            if (isNaN(date.getTime())) {
+                // Parse format like "2025-06-11 08:00:00"
+                const parts = dateTime.split(/[- :]/);
+                if (parts.length >= 6) {
+                    // parts[0] = year, parts[1] = month, parts[2] = day
+                    // parts[3] = hours, parts[4] = minutes, parts[5] = seconds
+                    date = new Date(
+                        parseInt(parts[0]), 
+                        parseInt(parts[1]) - 1, // Months are 0-indexed in JS
+                        parseInt(parts[2]),
+                        parseInt(parts[3]),
+                        parseInt(parts[4]),
+                        parseInt(parts[5])
+                    );
+                }
+            }
+            
+            // Check if date is valid after parsing
+            if (isNaN(date.getTime())) {
+                return dateTime; // Return original if parsing failed
+            }
+            
+            const year = date.getFullYear();
+            const month = date.getMonth() + 1;
+            const day = date.getDate();
+            const hours = date.getHours();
+            const minutes = date.getMinutes();
+            
+            // Format as YYYY年MM月DD日 HH:MM
+            return `${year}年${month.toString().padStart(2, '0')}月${day.toString().padStart(2, '0')}日 ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+        } catch (e) {
+            return dateTime;
+        }
     }
 
     const getGender = (gender: number): string => {
@@ -264,247 +284,157 @@ const Index: React.FC = () => {
         }
     }
 
-    const getOrderDetail = () => {
+    const getOrderDetail = async () => {
         if (loadingComplete) {
             return;
         }
-        if (Number(type) === 0) {
-            Taro.request({
-                url: `https://api.eurostay.co/app/property/showApplicationInfo`,
-                method: 'POST',
-                header: {
-                    token: GlobalStore.userInfo.token,
-                },
-                data: {
-                    id: Number(id),
-                },
-                success: function (response) {
-                    if (response.data.result.status === 4) { // 已失效
-                        Taro.request({
-                            url: `https://api.eurostay.co/app/property/showReservationInfo`,
-                            method: 'POST',
-                            header: {
-                                token: GlobalStore.userInfo.token,
-                            },
-                            data: {
-                                id: Number(id),
-                            },
-                            success: function (res) {
-                                // console.log('showReservationInfo', res)
-                                setRejectReason(res.data.result.result);
-                                setInfoOrder({
-                                    type: 0,
-                                    orderStatus: getOrderStatus(response.data.result.status),
-                                    orderId: response.data.result.applicationId,
-                                    houseName: title,
-                                    houseId: Number(experienceId),
-                                    price: response.data.result.price,
-                                    time: `${getDate(response.data.result.startDate)} 至 ${getDate(response.data.result.endDate)}`,
-                                    refuseReason: res.data.result.result,
-                                });
-                            },
-                            complete: function () {
-                                setIfGotRejectReason(true);
-                            }
-                        })
-                    } else {
-                        setRejectReason('');
-                        setInfoOrder({
-                            type: 0,
-                            orderStatus: getOrderStatus(response.data.result.status),
-                            orderId: response.data.result.applicationId,
-                            houseName: title,
-                            houseId: Number(experienceId),
-                            price: response.data.result.price,
-                            time: `${getDate(response.data.result.startDate)} 至 ${getDate(response.data.result.endDate)}`,
-                            refuseReason: '',
-                        });
-                        setIfGotRejectReason(true);
-                    }
-                    // console.log('getOrderDetail', response.data.result);
-                    setInfoGuest({
-                        uid: response.data.result.guestInfo.uid,
-                        avatar: response.data.result.guestInfo.avatar,
-                        role: 'Guest',
-                        username: response.data.result.guestInfo.username,
-                        tags: response.data.result.guestInfo.tags,
-                        buttonText: '和ta聊聊',
-                        buttonFunc: handleChat,
-                    });
-                    setOrderStatus(response.data.result.status);
-                    setInfoHost({
-                        uid: response.data.result.hostInfo.uid,
-                        avatar: response.data.result.hostInfo.avatar,
-                        role: 'Host',
-                        username: response.data.result.hostInfo.username,
-                        tags: response.data.result.hostInfo.tags,
-                        buttonText: '和ta聊聊',
-                        buttonFunc: handleChat,
-                    });
-                    setInfoApplicant({
-                        type: 0,
-                        title: role === 'host' ? '申请人信息': '你的信息',
-                        name: response.data.result.guestInfo.username,
-                        id: response.data.result.guestInfo.uid,
-                        gender: getGender(response.data.result.gender),
-                        identity: response.data.result.occupation,
-                        selfIntroduction: response.data.result.selfIntro,
-                        numberOfGuests: response.data.result.capacity,
-                        reason: response.data.result.why
-                    });
-                },
-                fail: function (err) {
-                    Taro.showToast({
-                        title: '网络请求失败，请重试',
-                        icon: 'none',
-                        duration: 2000,
-                    });
-                },
-                complete: function () {
-                    setLoadingComplete(true);
-                }
+        
+        try {
+            const response = await API.order.getOrderDetail(Number(id));
+            const orderType = response.type; // 0: Host offer, 1: Guest application
+            
+            // Format order creation time to match "2025年2月11日 15:00" format
+            const orderDateTime = response.createTime ? 
+                formatDateTimeWithHours(response.createTime) : '';
+                
+            // Format exchange dates in Chinese format with space around 至
+            const formattedTime = `${formatDateChinese(response.startDate)}至${formatDateChinese(response.endDate)}`;
+                
+            if (response.status === 4) { // 已失效
+                setRejectReason(response.result || '');
+                setInfoOrder({
+                    type: orderType,
+                    orderStatus: getOrderStatus(response.status, orderType),
+                    orderId: response.id,
+                    houseName: response.title || title || '',
+                    houseId: Number(response.pid),
+                    price: response.price,
+                    time: formattedTime,
+                    refuseReason: response.result || '',
+                    orderTime: orderDateTime
+                });
+                setIfGotRejectReason(true);
+            } else {
+                setRejectReason('');
+                setInfoOrder({
+                    type: orderType,
+                    orderStatus: getOrderStatus(response.status, orderType),
+                    orderId: response.id,
+                    houseName: response.title || title || '',
+                    houseId: Number(response.pid),
+                    price: response.price,
+                    time: formattedTime,
+                    refuseReason: '',
+                    orderTime: orderDateTime
+                });
+                setIfGotRejectReason(true);
+            }
+            
+            setInfoGuest({
+                uid: response.guestInfo.uid,
+                avatar: response.guestInfo.avatar,
+                role: 'Guest',
+                username: response.guestInfo.username,
+                tags: response.guestInfo.tags,
+                buttonText: '和ta聊聊',
+                buttonFunc: handleChat,
             });
-        } else {
-            Taro.request({
-                url: 'https://api.eurostay.co/app/activity/showApplicationInfo',
-                method: 'POST',
-                header: {
-                    token: GlobalStore.userInfo.token,
-                },
-                data: {
-                    id: Number(id),
-                },
-                success: function (response) {
-                    if (response.data.result.status === 4) { // 已失效
-                        Taro.request({
-                            url: `https://api.eurostay.co/app/activity/showReservationInfo`,
-                            method: 'POST',
-                            header: {
-                                token: GlobalStore.userInfo.token,
-                            },
-                            data: {
-                                id: Number(id),
-                            },
-                            success: function (res) {
-                                // console.log('showReservationInfo', res)
-                                setRejectReason(res.data.result.result);
-                                setInfoOrder({
-                                    type: 1,
-                                    orderStatus: getOrderStatus(response.data.result.status),
-                                    orderId: response.data.result.applicationId,
-                                    houseName: title,
-                                    houseId: Number(experienceId),
-                                    price: response.data.result.price,
-                                    time: response.data.result.startDate,
-                                    refuseReason: res.data.result.result,
-                                });
-                            },
-                            complete: function () {
-                                setIfGotRejectReason(true);
-                                // console.log('rejectReason', rejectReason);
-                            }
-                        })
-                    } else {
-                        setIfGotRejectReason(true);
-                        setInfoOrder({
-                            type: 1,
-                            orderStatus: getOrderStatus(response.data.result.status),
-                            orderId: response.data.result.applicationId,
-                            houseName: title,
-                            houseId: Number(experienceId),
-                            price: response.data.result.price,
-                            time: response.data.result.startDate,
-                            refuseReason: '',
-                        });
-                    }
-                    setInfoGuest({
-                        uid: response.data.result.guestInfo.uid,
-                        avatar: response.data.result.guestInfo.avatar,
-                        role: 'Guest',
-                        username: response.data.result.guestInfo.username,
-                        tags: response.data.result.guestInfo.tags,
-                        buttonText: '和ta聊聊',
-                        buttonFunc: handleChat,
-                    });
-                    setOrderStatus(response.data.result.status);
-                    setInfoHost({
-                        uid: response.data.result.hostInfo.uid,
-                        avatar: response.data.result.hostInfo.avatar,
-                        role: 'Host',
-                        username: response.data.result.hostInfo.username,
-                        tags: response.data.result.hostInfo.tags,
-                        buttonText: '和ta聊聊',
-                        buttonFunc: handleChat,
-                    });
-                    setInfoApplicant({
-                        type: 1,
-                        title: role === 'host' ? '申请人信息': '你的信息',
-                        name: response.data.result.guestInfo.username,
-                        id: response.data.result.guestInfo.uid,
-                        gender: getGender(response.data.result.gender),
-                        identity: response.data.result.occupation,
-                        selfIntroduction: response.data.result.selfIntro,
-                        reason: response.data.result.why
-                    });
-                },
-                fail: function (err) {
-                    Taro.showToast({
-                        title: '网络请求失败，请重试',
-                        icon: 'none',
-                        duration: 2000,
-                    });
-                },
-                complete: function () {
-                    setLoadingComplete(true);
-                }
+            
+            setOrderStatus(response.status);
+            
+            setInfoHost({
+                uid: response.hostInfo.uid,
+                avatar: response.hostInfo.avatar,
+                role: 'Host',
+                username: response.hostInfo.username,
+                tags: response.hostInfo.tags,
+                buttonText: '和ta聊聊',
+                buttonFunc: handleChat,
             });
+            
+            if (orderType === 0) {
+                // Type 0: Host initiated offer - always show Host information
+                const hostGender = response.hostInfo.userGender;
+                const hostGenderStr = getGender(hostGender);
+                
+                setInfoApplicant({
+                    type: orderType,
+                    title: 'Host信息', // Always "Host信息" for host offers
+                    name: response.hostInfo.username,
+                    id: response.hostInfo.uid,
+                    gender: hostGenderStr,
+                    identity: '',
+                    selfIntroduction: response.hostInfo.aboutMe || '',
+                    femaleNumber: response.hostInfo.femaleNumber || 0,
+                    maleNumber: response.hostInfo.maleNumber || 0,
+                    reason: '', // Don't show reason for host offers
+                    skill: ''
+                });
+            } else {
+                // Type 1: Guest initiated application - always show Applicant information
+                const guestGender = response.guestInfo.userGender;
+                const guestGenderStr = getGender(guestGender);
+                
+                setInfoApplicant({
+                    type: orderType,
+                    title: '申请人信息', // Always "申请人信息" for guest applications
+                    name: response.guestInfo.username,
+                    id: response.guestInfo.uid,
+                    gender: guestGenderStr,
+                    identity: '', 
+                    selfIntroduction: response.guestInfo.aboutMe || '',
+                    femaleNumber: parseInt(response.guestInfo.femaleNumber || '0'),
+                    maleNumber: parseInt(response.guestInfo.maleNumber || '0'),
+                    reason: response.guestInfo.description || '', // Using description as reason
+                    skill: response.guestInfo.skill || '' // Add the skill field from guestInfo
+                });
+            }
+        } catch (error) {
+            // Error handling is done in the apiRequest function
+        } finally {
+            setLoadingComplete(true);
         }
     }
     
     useEffect(() => {
         getOrderDetail();
+        
+        // Map URL status parameter to numeric orderStatus if needed
+        if (status && !loadingComplete) {
+            const statusMap = {
+                'awaiting': 1,
+                'ongoing': 2,
+                'completed': 3,
+                'expired': 4
+            };
+            
+            if (statusMap[status]) {
+                setOrderStatus(statusMap[status]);
+            }
+        }
     }, []);
 
     const handleChat = () => {
         setShowChatModal(true)
     }
 
-    const handleSendChat = () => {
-        // 发送聊天消息
-        Taro.request({
-            url: 'https://api.eurostay.co/app/esmessages/sendLikeMsg',
-            method: 'POST',
-            header: {
-                token: GlobalStore.userInfo.token,
-            },
-            data: {
-                toUid: role === 'host' ? infoGuest.uid : infoHost.uid,
-                content: `订单${title}的${role === 'host' ? 'Host': 'Guest'}${role === 'host' ? infoHost.username : infoGuest.username}向您发送了消息：${chatMessage}`,
-            },
-            success: function (response) {
-                if (response.statusCode === 200 && response.data.code === 0) {
-                    Taro.showToast({
-                        title: '消息已发送',
-                        icon: 'success'
-                    })
-                } else {
-                    Taro.showToast({
-                        title: response.data.msg + ' 发送失败，请重试',
-                        icon: 'none',
-                        duration: 2000,
-                    })
-                }
-            },
-            fail: function (err) {
-                Taro.showToast({
-                    title: '网络请求失败，请重试',
-                    icon: 'none',
-                    duration: 2000,
-                });
-            }
-        })
-        setShowChatModal(false)
-        setChatMessage('')
+    const handleSendChat = async () => {
+        try {
+            const toUid = role === 'host' ? infoGuest.uid : infoHost.uid;
+            let content = `订单${infoOrder.houseName}的${role === 'host' ? 'Host': 'Guest'}${role === 'host' ? infoHost.username : infoGuest.username}向您发送了消息：${chatMessage}`;
+            
+            await API.messages.sendLikeMsg(toUid, content);
+            
+            Taro.showToast({
+                title: '消息已发送',
+                icon: 'success'
+            });
+        } catch (error) {
+            // Error handling is done in the apiRequest function
+        }
+        
+        setShowChatModal(false);
+        setChatMessage('');
     }
 
     return (
@@ -516,16 +446,44 @@ const Index: React.FC = () => {
             {console.log('orderStatus', orderStatus)}
             {console.log('status', status)} */}
             {loadingComplete && role === 'host' && <UserCardSmall {...infoGuest}/>}
-            {/* {role === 'guest' && <UserCardSmall {...infoHost}/>} */}
+            {loadingComplete && role === 'guest' && <UserCardSmall {...infoHost}/>}
             {loadingComplete && ifGotRejectReason && <OrderInfo {...infoOrder}/>}
             {loadingComplete && <ApplicantInfo {...infoApplicant}/>}
-            {loadingComplete && role === 'host' && status === 'awaiting' && orderStatus === 0 && 
+            
+            {/* Status 1 buttons - depends on order type */}
+            {loadingComplete && orderStatus === 1 && infoOrder.type === 0 && role === 'host' && 
+                <View 
+                    className='purple-fill-button' 
+                    onClick={handleChat}
+                >
+                    联系Guest
+                </View>
+            }
+            
+            {loadingComplete && orderStatus === 1 && infoOrder.type === 0 && role === 'guest' && 
+                <>
+                    <View 
+                        className='yellow-fill-button' 
+                        onClick={() => guestConfirm()}
+                    >
+                        接受TA的邀请
+                    </View>
+                    <View 
+                        className='yellow-empty-button' 
+                        onClick={() => setShowRejectModal(true)}
+                    >
+                        拒绝邀请
+                    </View>
+                </>
+            }
+            
+            {loadingComplete && orderStatus === 1 && infoOrder.type === 1 && role === 'host' && 
                 <>
                     <View 
                         className='purple-fill-button' 
                         onClick={() => hostConfirm()}
                     >
-                        同意申请
+                        通过TA的申请
                     </View>
                     <View 
                         className='purple-empty-button' 
@@ -535,7 +493,18 @@ const Index: React.FC = () => {
                     </View>
                 </>
             }
-            {loadingComplete && role === 'host' && status === 'ongoing' && 
+            
+            {loadingComplete && orderStatus === 1 && infoOrder.type === 1 && role === 'guest' && 
+                <View 
+                    className='yellow-fill-button' 
+                    onClick={handleChat}
+                >
+                    联系Host
+                </View>
+            }
+            
+            {/* Status 2 buttons */}
+            {loadingComplete && role === 'host' && orderStatus === 2 && 
                 <View 
                     className='purple-fill-button' 
                     onClick={handleChat}
@@ -543,7 +512,17 @@ const Index: React.FC = () => {
                     联系Guest
                 </View>
             }
-            {loadingComplete && role === 'host' && status === 'awaiting' && orderStatus === 1 && 
+            {loadingComplete && role === 'guest' && orderStatus === 2 && 
+                <View 
+                    className='yellow-fill-button' 
+                    onClick={handleChat}
+                >
+                    联系Host
+                </View>
+            }
+            
+            {/* Status 3 buttons */}
+            {loadingComplete && role === 'host' && orderStatus === 3 && 
                 <View 
                     className='purple-fill-button' 
                     onClick={handleChat}
@@ -551,7 +530,17 @@ const Index: React.FC = () => {
                     联系Guest
                 </View>
             }
-            {loadingComplete && role === 'host' && status === 'expired' && 
+            {loadingComplete && role === 'guest' && orderStatus === 3 && 
+                <View 
+                    className='yellow-fill-button' 
+                    onClick={handleChat}
+                >
+                    联系Host
+                </View>
+            }
+            
+            {/* Status 4 buttons */}
+            {loadingComplete && role === 'host' && orderStatus === 4 && 
                 <View 
                     className='purple-fill-button' 
                     onClick={handleChat}
@@ -559,39 +548,7 @@ const Index: React.FC = () => {
                     和申请人聊聊
                 </View>
             }
-            {loadingComplete && role === 'guest' && status === 'awaiting' && orderStatus === 1 && 
-                <>
-                    <View 
-                        className='yellow-fill-button' 
-                        onClick={() => guestConfirm()}
-                    >
-                        确认{Number(type) === 0 ? '入住' : '参加'}
-                    </View>
-                    <View 
-                        className='yellow-empty-button' 
-                        onClick={() => setShowRejectModal(true)}
-                    >
-                        取消{Number(type) === 0 ? '入住' : '参加'}
-                    </View>
-                </>
-            }
-            {loadingComplete && role === 'guest' && status === 'ongoing' && 
-                <View 
-                    className='yellow-fill-button' 
-                    onClick={handleChat}
-                >
-                    联系Host
-                </View>
-            }
-            {loadingComplete && role === 'guest' && status === 'awaiting' && orderStatus === 0 && 
-                <View 
-                    className='yellow-fill-button' 
-                    onClick={handleChat}
-                >
-                    联系Host
-                </View>
-            }
-            {loadingComplete && role === 'guest' && status === 'expired' && 
+            {loadingComplete && role === 'guest' && orderStatus === 4 && 
                 <View 
                     className='yellow-fill-button' 
                     onClick={handleChat}
@@ -599,6 +556,7 @@ const Index: React.FC = () => {
                     和Host聊聊
                 </View>
             }
+            
             {/* 聊天弹窗 */}
             {showChatModal && (
                 <View 
@@ -627,6 +585,7 @@ const Index: React.FC = () => {
                     </View>
                 </View>
             )}
+            
             {/* 拒绝弹窗 */}
             {showRejectModal && (
                 <View 

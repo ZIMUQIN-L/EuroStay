@@ -1,5 +1,5 @@
 export default {
-  lazyCodeLoading: 'requiredComponents',
+  // lazyCodeLoading: 'requiredComponents',
   pages: [
     'pages/home-world/index',
     'pages/login/index',
@@ -7,9 +7,10 @@ export default {
     'pages/user/index',
     'pages/orders/index',
     'pages/house-publish/index',
-    'pages/activity-publish/index',
+    // 'pages/activity-publish/index',
     'pages/common-setting/index',
     'pages/user-setting/index',
+    'pages/app-login/index',
   ],
   subPackages: [
     {
@@ -26,6 +27,7 @@ export default {
         'edit-tags/index',
         'edit-email/index',
         'edit-phone/index',
+        'edit-social-media/index',
       ],
     },
     {

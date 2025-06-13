@@ -4,27 +4,9 @@ import { useDidShow } from '@tarojs/taro';
 import Taro from '@tarojs/taro'
 import HouseCard from '@components/HouseCard'
 import GlobalStore from '@store/GlobalStore'
+import { API } from '@utils/apiService'
+import { CollectionItem, PaginatedResponse } from '@utils/interfaces'
 import './index.scss'
-
-interface CollectionItem {
-  id: number
-  images: string[]
-  location: string
-  price: number
-  startDate: string | null
-  startTime: string | null
-  tags: string[]
-  title: string
-  type: number
-}
-
-interface CollectionResponse {
-  last_page: number
-  per_page: number
-  total: number
-  current_page: number
-  data: CollectionItem[]
-}
 
 const UserCollection: React.FC = () => {
   const [collections, setCollections] = useState<CollectionItem[]>([])
@@ -36,65 +18,58 @@ const UserCollection: React.FC = () => {
     fetchCollections(1);
   });
 
-  const fetchCollections = (page: number) => {
+  const fetchCollections = async (page: number) => {
     setLoading(true)
-    Taro.request({
-      url: 'https://api.eurostay.co/app/esuser/getUserCollectionList',
-      method: 'POST',
-      header: {
-        token: GlobalStore.userInfo.token,
-      },
-      data: {
-        page: page,
-        uid: GlobalStore.userInfo.uid
-      },
-      success: function (res) {
-          console.log(res);
-        if (res.data.code === 0 && res.statusCode === 200) {
-          const response = res.data.result as CollectionResponse
-          if (page === 1) {
-            setCollections(response.data)
-          } else {
-            setCollections(prev => [...prev, ...response.data])
-          }
-          if (response.data.length < response.per_page) {
-              setHasMorePage(false);
-          }
-          setCurrentPage(response.current_page)
-        } else {
-          Taro.showToast({
-            title: '获取收藏列表失败，请重试',
-            icon: 'none',
-            duration: 2000,
-          })
-        }
-      },
-      fail: function (err) {
-        Taro.showToast({
-          title: '网络请求失败，请重试',
-          icon: 'none',
-          duration: 2000,
-        })
-      },
-      complete: function () {
-        setLoading(false)
-        Taro.stopPullDownRefresh()
+    try {
+      const response = await API.user.getUserCollectionList(GlobalStore.userInfo.uid, page);
+      
+      // Process the data with location information
+      const processedData = response.data.map(item => ({
+        ...item,
+        location: `${item.country}${item.city}`
+      }));
+      
+      if (page === 1) {
+        setCollections(processedData)
+      } else {
+        setCollections(prev => [...prev, ...processedData])
       }
-    })
+      
+      if (response.current_page >= response.last_page) {
+        setHasMorePage(false);
+      }
+      
+      setCurrentPage(response.current_page)
+    } catch (error) {
+      Taro.showToast({
+        title: '获取收藏列表失败，请重试',
+        icon: 'none',
+        duration: 2000,
+      })
+    } finally {
+      setLoading(false)
+      Taro.stopPullDownRefresh()
+    }
   }
 
-  const parseStartDate = (startDate: string | undefined | null): string => {
-    if (!startDate) {
-      return '暂无可入住时间';
+  const formatDate = (date: Date): string => {
+    if (!date) {
+      return '暂无日期';
     }
-    const date = new Date(startDate.replace(/-/g, "/"));
-    return `${date.getMonth() + 1}月${date.getDate()}日起可入住`;
+    const dateObj = new Date(date);
+    return `${dateObj.getFullYear()}年${dateObj.getMonth() + 1}月${dateObj.getDate()}日`;
+  };
+
+  const getAvailableDateText = (item: CollectionItem): string => {
+    if (!item.startDate || !item.endDate) {
+      return '暂无日期信息';
+    }
+    return `${formatDate(item.startDate)}-${formatDate(item.endDate)}`;
   };
 
   useEffect(() => {
     fetchCollections(1)
   }, [])
-
 
   // 上拉加载更多
   Taro.useReachBottom(() => {
@@ -102,7 +77,6 @@ const UserCollection: React.FC = () => {
       fetchCollections(currentPage + 1)
     }
   })
-
 
   return (
     <View className='collection-container'>
@@ -114,12 +88,13 @@ const UserCollection: React.FC = () => {
             uid={GlobalStore.userInfo.uid}
             type={item.type}
             title={item.title}
-            location={item.location}
-            price={item.price}
+            location={item.location || ''}
+            price={item.price || 0}
             images={item.images}
             currency='€'
-            mode="participated"
-            availableDate={item.type === 0 ? parseStartDate(item.startDate) : (item.startTime || '暂无开始时间')}
+            maleCount={item.type === 1 ? item.maleNumber : undefined}
+            femaleCount={item.type === 1 ? item.femaleNumber : undefined}
+            availableDate={getAvailableDateText(item)}
             onFavoriteClick={() => {}}
           />
         </View>

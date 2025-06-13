@@ -1,7 +1,7 @@
 import { View, Text, Input } from '@tarojs/components';
 import { useEffect, useState } from 'react';
 import './index.scss';
-
+import { CombinedLocationData } from '@utils/interfaces';
 import { formatToday } from '@utils/dateUtil';
 
 interface HomepageSearchProps {
@@ -11,7 +11,7 @@ interface HomepageSearchProps {
   onCitySelectChange: (value: boolean) => void;
   startDate: string;
   endDate: string;
-  location_: { id: number; cname: string; name: string };
+  location_: CombinedLocationData;
   onSearch: () => void;
   onCapacityChanged: (value: number) => void;
 }
@@ -28,10 +28,9 @@ const HomepageSearch: React.FC<HomepageSearchProps> = ({
   onSearch,
 }) => {
   useEffect(() => {
-    console.log(location_.cname, 'location_.cname');
-    setLocation(location_.cname);
-  }, [location_.cname]);
-  const [location, setLocation] = useState(location_.cname);
+    setLocation(location_.displayName);
+  }, [location_.displayName]);
+  const [location, setLocation] = useState(location_.displayName);
   const [guests, setGuests] = useState(1);
 
   return (
@@ -45,7 +44,7 @@ const HomepageSearch: React.FC<HomepageSearchProps> = ({
         >
           <Text>地区</Text>
           <View
-            className={`location-value ${location == '选择城市' ? 'empty' : ''}`}
+            className={`location-value ${location == '选择国家和城市' ? 'empty' : ''}`}
           >
             {location}
           </View>

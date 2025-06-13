@@ -4,6 +4,7 @@ import Taro, { useRouter } from '@tarojs/taro';
 import { useState, useEffect } from 'react';
 import './index.scss';
 import GlobalStore from '@store/GlobalStore';
+import { API } from '@utils/apiService';
 
 const EditEmail = () => {
   const router = useRouter();
@@ -43,34 +44,15 @@ const EditEmail = () => {
     setLoading(true);
 
     try {
-      const res = await Taro.request({
-        url: 'https://api.eurostay.co/app/esuser/sendEmailCode',
-        method: 'POST',
-        header: {
-          'token': GlobalStore.userInfo.token,
-          'Content-Type': 'application/x-www-form-urlencoded'
-        },
-        data: `email=${encodeURIComponent(email.trim())}`
-      });
-
-      if (res.data.code === 0) {
-        setShowVerifyPage(true);
-        setCountdown(60);
-        Taro.showToast({
-          title: '验证码已发送',
-          icon: 'success'
-        });
-      } else {
-        Taro.showToast({
-          title: res.data.msg || '发送失败',
-          icon: 'none'
-        });
-      }
-    } catch (error) {
+      await API.user.sendEmailCode(email.trim());
+      setShowVerifyPage(true);
+      setCountdown(60);
       Taro.showToast({
-        title: '网络请求失败',
-        icon: 'none'
+        title: '验证码已发送',
+        icon: 'success'
       });
+    } catch (error) {
+      // Error is already handled by apiRequest
     } finally {
       setLoading(false);
     }
@@ -86,41 +68,19 @@ const EditEmail = () => {
     }
 
     try {
-      // 验证邮箱的API调用
-      const response = await Taro.request({
-        url: 'https://api.eurostay.co/app/esuser/emailVerify',
-        method: 'POST',
-        data: {
-          email: email.trim(),
-          code: verifyCode.trim()
-        },
-        header: {
-          'content-type': 'application/x-www-form-urlencoded',
-          token: GlobalStore.userInfo.token,
-        }
+      await API.user.emailVerify(email.trim(), verifyCode.trim());
+      
+      // 更新上一页的数据
+      const pages = Taro.getCurrentPages();
+      const prevPage = pages[pages.length - 1];
+      const eventChannel = prevPage.getOpenerEventChannel();
+      eventChannel.emit('updateData', {
+        email: email.trim()
       });
 
-      if (response.data.code === 0) {
-        // 更新上一页的数据
-        const pages = Taro.getCurrentPages();
-        const prevPage = pages[pages.length - 1];
-        const eventChannel = prevPage.getOpenerEventChannel();
-        eventChannel.emit('updateData', {
-          email: email.trim()
-        });
-
-        Taro.navigateBack();
-      } else {
-        Taro.showToast({
-          title: response.data.msg || '验证失败',
-          icon: 'none'
-        });
-      }
+      Taro.navigateBack();
     } catch (error) {
-      Taro.showToast({
-        title: '网络请求失败',
-        icon: 'none'
-      });
+      // Error is already handled by apiRequest
     }
   };
 

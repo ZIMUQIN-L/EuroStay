@@ -3,6 +3,7 @@ import { useState } from 'react';
 import Taro from '@tarojs/taro';
 import GlobalStore from '@store/GlobalStore';
 import { phoneLogo } from '@utils/cloudIcons';  // 假设你的logo存在这里
+import { API } from '@utils/apiService';
 import './index.scss';
 
 const EditPhone = () => {
@@ -31,58 +32,42 @@ const EditPhone = () => {
         const loginRes = await Taro.login();
         if (loginRes.code) {
           // 调用绑定手机号接口
-          const res = await Taro.request({
-            url: 'https://api.eurostay.co/app/esuser/bindWxPhone',
-            method: 'POST',
-            header: {
-              'Content-Type': 'application/json',
-              'token': GlobalStore._userInfo.token
-            },
-            data: {
-              encryptedData: encryptedData,
-              iv: iv,
-              sessionKey: loginRes.code, // 使用登录凭证作为sessionKey
+          try {
+            await API.user.bindWxPhone({
+              encryptedData,
+              iv,
+              sessionKey: loginRes.code,
               code: loginRes.code
-            }
-          });
-          console.log(res);
-
-          if (res.data.code === 0) {
+            });
+            
             Taro.showToast({
               title: '绑定成功',
               icon: 'success'
             });
-            setTimeout(() => {
-            const pages = Taro.getCurrentPages();
-            const prevPage = pages[pages.length - 1];
-            const eventChannel = prevPage.getOpenerEventChannel();
-            const response = Taro.request({
-                url: 'https://api.eurostay.co/app/esuser/getUserCompleteInfo',
-                method: 'POST',
-                header: {
-                  'token': GlobalStore.userInfo.token,
-                  'Content-Type': 'application/json'
-                },
-                success: (res) => {
-                  if (res.statusCode === 200 && res.data.code === 0) {
-                    eventChannel.emit('updateData', {
-                      mobile: res.data.result.mobile
-                  });
-                  }
-                }
-              });
-        
+            
+            setTimeout(async () => {
+              const pages = Taro.getCurrentPages();
+              const prevPage = pages[pages.length - 1];
+              const eventChannel = prevPage.getOpenerEventChannel();
+              
+              try {
+                const userInfo = await API.user.getUserCompleteInfo();
+                eventChannel.emit('updateData', {
+                  mobile: userInfo.mobile
+                });
+              } catch (error) {
+                console.error('获取用户信息失败', error);
+              }
+              
               Taro.navigateBack();
             }, 1500);
-          } else {
-            Taro.showToast({
-              title: res.data.msg || '绑定失败',
-              icon: 'none'
-            });
+          } catch (error) {
+            console.error('绑定手机号失败', error);
+            // Error is already handled by apiRequest
           }
         }
       } catch (error) {
-        console.error('绑定手机号失败', error);
+        console.error('获取登录凭证失败', error);
         Taro.showToast({
           title: '绑定失败',
           icon: 'none'

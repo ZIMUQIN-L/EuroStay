@@ -1,7 +1,6 @@
-import { View, Text, Input, Image, Picker, Textarea } from '@tarojs/components';
-import { useEffect, useRef, useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Taro from '@tarojs/taro';
-import './index.scss';
+import { View, Text, Input, Textarea, Image, Picker } from '@tarojs/components';
 import { AtCalendar } from 'taro-ui';
 import {
   calculateDaysBetweenDates,
@@ -12,14 +11,20 @@ import {
 } from '@utils/dateUtil';
 import '../../components/Popup/index.scss';
 import Popup from '../../components/Popup';
+import './index.scss';
 import GlobalStore from '@store/GlobalStore';
-import { combineAddress, parseAddress } from '@utils/addressUtil';
+import { API } from '@utils/apiService';
 
 enum Gender {
   Female = 0,
   Male = 1,
   NoLimit = 2,
   Default = 999,
+}
+
+enum PropertyStatus {
+  Unavailable = 0,
+  Available = 1,
 }
 
 interface HouseFormData {
@@ -38,13 +43,15 @@ interface HouseFormData {
   };
   detailAddress: string;
   price: string;
+  flexiblePrice: boolean;
   tenantGender: number;
   tenantCount: number;
-  otherRequirements: string[];
   houseImages: string[];
   paymentImages: string[];
-  story: string;
+  story: string[];
   wechat: string;
+  status: number;
+  receptionTime: string[];
 }
 
 interface PropertyBase {
@@ -74,13 +81,15 @@ const HousePublish = () => {
     city: { id: 0, cname: '选择城市', name: '' },
     detailAddress: '',
     price: '',
+    flexiblePrice: false,
     tenantGender: Gender.Default,
     tenantCount: 0,
-    otherRequirements: [],
     houseImages: [],
     paymentImages: [],
-    story: '',
+    story: [],
     wechat: '',
+    status: PropertyStatus.Available,
+    receptionTime: [],
   });
   const today = formatToday();
   const [startDate, setStartDate] = useState(today);
@@ -90,9 +99,6 @@ const HousePublish = () => {
   const [isShowTagPop, setIsShowTagPop] = useState(false);
   const [curTag, setCurTag] = useState('');
   const [curTagCategory, setCurTagCategory] = useState('');
-  const [customReqs, setCustomReqs] = useState<string[]>([]);
-  const [isShowReqPop, setIsShowReqPop] = useState(false);
-  const [curReq, setCurReq] = useState('');
   const [multiDays, setMultiDays] = useState<[string, string][]>([]);
   const [marks, setMarks] = useState<{ value: string }[]>([]);
   const [countries, setCountries] = useState<
@@ -104,6 +110,12 @@ const HousePublish = () => {
   const [pid, setPid] = useState<number | null>(null);
   const uploadRes = useRef<string[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isShowReceptionTimePop, setIsShowReceptionTimePop] = useState(false);
+  const [curReceptionTime, setCurReceptionTime] = useState('');
+  const [customReceptionTimes, setCustomReceptionTimes] = useState<string[]>([]);
+  const [isShowStoryPop, setIsShowStoryPop] = useState(false);
+  const [curStory, setCurStory] = useState('');
+  const [customStories, setCustomStories] = useState<string[]>([]);
 
   // 定义标签分类
   const [tagCategories, setTagCategories] = useState([
@@ -117,21 +129,21 @@ const HousePublish = () => {
       tags: ['独立房源', '独立房间', '沙发', '气垫床'],
       id: 'livingCondition'
     },
-    {
-      name: '接待类型',
-      tags: ['一口价', '可商议'],
-      id: 'receptionType'
-    },
+    // {
+    //   name: '接待类型',
+    //   tags: ['一口价', '可商议'],
+    //   id: 'receptionType'
+    // },
     {
       name: '房源特色',
       tags: ['可做饭', '可洗衣', '有咖啡机', '有电视', '有花园', '有阳台', '有宠物'],
       id: 'propertyFeatures'
     },
-    {
-      name: '可接待时间',
-      tags: ['周末有空', '节假日有空', '时间都可商议'],
-      id: 'availableTime'
-    }
+    // {
+    //   name: '可接待时间',
+    //   tags: ['周末有空', '节假日有空', '时间都可商议'],
+    //   id: 'availableTime'
+    // }
   ]);
 
   const tenantCounts = [
@@ -165,112 +177,84 @@ const HousePublish = () => {
   }, [formData.country.id]);
 
   const getCities = async () => {
-    await Taro.request({
-      url: `https://api.eurostay.co/app/eslocation/cityList`,
-      method: 'GET',
-      header: {
-        token: GlobalStore.userInfo.token,
-      },
-      data: {
-        countryId: formData.country.id,
-      },
-      success: function (response) {
-        console.log(response);
-        if (response.statusCode === 200 && response.data.code === 0) {
-          setCities(response.data.result);
-          console.log(response.data.result);
-        }
-      },
-      fail: function (err) {
-        Taro.showToast({
-          title: '网络请求失败，请重试',
-          icon: 'none',
-          duration: 2000,
-        });
-      },
-    });
+    try {
+      const citiesData = await API.location.cityList(formData.country.id);
+      setCities(citiesData);
+    } catch (error) {
+      Taro.showToast({
+        title: '获取城市列表失败，请重试',
+        icon: 'none',
+        duration: 2000,
+      });
+    }
   };
 
   const getCountries = async () => {
-    await Taro.request({
-      url: `https://api.eurostay.co/app/eslocation/countryList`,
-      method: 'GET',
-      header: {
-        token: GlobalStore.userInfo.token,
-      },
-      success: function (response) {
-        if (response.statusCode === 200 && response.data.code === 0) {
-          setCountries(response.data.result);
-          console.log(response.data.result);
-        }
-      },
-      fail: function (err) {
-        Taro.showToast({
-          title: '网络请求失败，请重试',
-          icon: 'none',
-          duration: 2000,
-        });
-      },
-    });
+    try {
+      const countriesData = await API.location.countryList();
+      setCountries(countriesData);
+    } catch (error) {
+      Taro.showToast({
+        title: '获取国家列表失败，请重试',
+        icon: 'none',
+        duration: 2000,
+      });
+    }
   };
 
   const fetchPropertyBase = async (propertyId: number) => {
     try {
-      const response = await Taro.request({
-        url: `https://api.eurostay.co/app/property/getPropertyBase`,
-        method: 'POST',
-        header: {
-          token: GlobalStore.userInfo.token,
-        },
-        data: { id: propertyId },
+      const detail = await API.property.getPropertyDetail(propertyId);
+
+      const availableDates: [string, string][] = [];
+      let currentStart = '';
+
+      detail.availableDate.forEach((date, index) => {
+        const cleanDate = date.split(' ')[0];
+        if (index % 2 === 0) {
+          currentStart = cleanDate;
+        } else {
+          availableDates.push([currentStart, cleanDate]);
+        }
       });
 
-      if (response.statusCode === 200 && response.data.code === 0) {
-        const detail = response.data.result;
+      setFormData({
+        ...formData,
+        houseName: detail.title,
+        houseDesc: detail.description,
+        country: {
+          id: detail.countryId || 0,
+          cname: detail.country || '',
+          name: '',
+        },
+        city: {
+          id: detail.cityId || 0,
+          cname: detail.city || '',
+          name: '',
+        },
+        detailAddress: detail.address || '',
+        price: String(detail.price),
+        flexiblePrice: detail.flexiblePrice || false,
+        tenantGender: detail.gender,
+        tenantCount: detail.capacity,
+        houseImages: detail.images || [],
+        wechat: detail.wxId || '',
+        houseTag: detail.tags || [],
+        status: detail.status || PropertyStatus.Available,
+        receptionTime: detail.receptionTime || [],
+        story: detail.requirement || [],
+      });
 
-        const availableDates: [string, string][] = [];
-        let currentStart = '';
-
-        detail.availableDate.forEach((date, index) => {
-          const cleanDate = date.split(' ')[0];
-          if (index % 2 === 0) {
-            currentStart = cleanDate;
-          } else {
-            availableDates.push([currentStart, cleanDate]);
-          }
-        });
-
-        // 解析地址
-        const addressComponents = parseAddress(detail.location);
-        console.log(addressComponents);
-
-        setFormData({
-          ...formData,
-          houseName: detail.title,
-          houseDesc: detail.description,
-          houseTag: detail.tags,
-          country: { id: 0, cname: addressComponents.country, name: '' },
-          city: {
-            id: detail.searchableLocation,
-            cname: addressComponents.city,
-            name: '',
-          },
-          price: String(detail.price),
-          tenantGender: detail.gender,
-          tenantCount: detail.capacity,
-          otherRequirements: detail.requirements,
-          houseImages: detail.images,
-          story: detail.whyHost,
-          wechat: detail.wxId,
-          paymentImages: detail.qrCode ? [detail.qrCode] : [],
-          detailAddress: addressComponents.detail, // 设置详细地址
-        });
-
-        setMultiDays(availableDates);
+      if (detail.requirement && detail.requirement.length > 0) {
+        setCustomStories(detail.requirement.filter(req => 
+          !['做饭好吃', 'A钱快', '会拍照'].includes(req)
+        ));
       }
+
+      setMultiDays(availableDates);
     } catch (error) {
       Taro.showToast({
-        title: '获取房源信息失败',
+        title: '获取房源信息失败，请重试',
         icon: 'none',
         duration: 2000,
       });
@@ -316,15 +300,20 @@ const HousePublish = () => {
     setFormData({ ...formData, tenantGender: gender });
   };
 
+  const handleFlexiblePriceToggle = (isFlexible: boolean) => {
+    setFormData({ ...formData, flexiblePrice: isFlexible });
+  };
+
   const handleTenantCountSelect = count => {
     setFormData({ ...formData, tenantCount: count });
   };
 
-  const handleOtherReqSelect = (req: string) => {
-    const newReqs = formData.otherRequirements.includes(req)
-      ? formData.otherRequirements.filter(r => r !== req)
-      : [...formData.otherRequirements, req];
-    setFormData({ ...formData, otherRequirements: newReqs });
+  const handleTenantCountInput = e => {
+    const value = e.detail.value;
+    // 确保输入是有效的数字
+    if (value === '' || /^[1-9]\d*$/.test(value)) {
+      setFormData({ ...formData, tenantCount: value === '' ? 0 : Number(value) });
+    }
   };
 
   const handleUpload = async (type: string) => {
@@ -334,51 +323,22 @@ const HousePublish = () => {
         sizeType: ['compressed'],
         sourceType: ['album', 'camera'],
       });
-      uploadRes.current = [];
-      await Promise.all(
-        res.tempFilePaths.map(async file => {
-          console.log('file', file);
-          if (!file) {
-            return '';
-          }
-          await Taro.uploadFile({
-            url: 'https://api.eurostay.co/app/common/upload',
-            filePath: file,
-            name: 'Image',
-            formData: {
-              prefix: 'test',
-            },
-            header: {
-              token: GlobalStore.userInfo.token,
-            },
-            fail: function (err) {
-              console.error('Upload failed:', err);
-              Taro.showToast({
-                title: '上传失败',
-                icon: 'none',
-              });
-              return '';
-            },
-            success: function (result) {
-              console.log('result', result);
-              const responseData = JSON.parse(result.data);
-              const imageUrl: string = responseData['result'];
-              console.log(imageUrl);
-              uploadRes.current.push(imageUrl);
-            },
-          });
-        }),
+      
+      const uploadPromises = res.tempFilePaths.map(file => 
+        API.common.upload(file, { prefix: 'test' })
       );
-      console.log('uploadImages', uploadRes.current);
+      
+      const uploadedImages = await Promise.all(uploadPromises);
+      
       if (type === 'house') {
         setFormData({
           ...formData,
-          houseImages: [...formData.houseImages, ...uploadRes.current],
+          houseImages: [...formData.houseImages, ...uploadedImages],
         });
       } else {
         setFormData({
           ...formData,
-          paymentImages: [...formData.paymentImages, ...uploadRes.current],
+          paymentImages: [...formData.paymentImages, ...uploadedImages],
         });
       }
     } catch (error) {
@@ -422,6 +382,26 @@ const HousePublish = () => {
     setMarks(marksList);
   }, [multiDays.length]);
 
+  const handleStorySelect = (story: string) => {
+    const newStories = formData.story.includes(story)
+      ? formData.story.filter(s => s !== story)
+      : [...formData.story, story];
+    setFormData({ ...formData, story: newStories });
+  };
+
+  const handleAddStory = () => {
+    setIsShowStoryPop(true);
+  };
+
+  const handleStoryConfirm = () => {
+    if (curStory.trim()) {
+      handleStorySelect(curStory);
+      setCustomStories([...customStories, curStory]);
+      setCurStory('');
+      setIsShowStoryPop(false);
+    }
+  };
+
   const validateForm = () => {
     const errors: string[] = [];
 
@@ -454,28 +434,21 @@ const HousePublish = () => {
     }
 
     if (formData.tenantCount === 0) {
-      errors.push('请选择租客人数要求');
+      errors.push('请填写租客人数要求');
     }
 
     if (formData.houseImages.length === 0) {
       errors.push('请至少上传一张房源照片');
     }
 
-    // if (multiDays.length === 0) {
-    //   errors.push('请选择可出租时间');
-    // }
-
-    if (!formData.story.trim()) {
-      errors.push('请填写你的故事');
+    if (formData.status !== PropertyStatus.Available && formData.status !== PropertyStatus.Unavailable) {
+      errors.push('请选择房源状态');
     }
 
     if (!formData.wechat.trim()) {
       errors.push('请填写微信号');
     }
 
-    // if (formData.paymentImages.length === 0) {
-    //   errors.push('请上传微信收款二维码');
-    // }
 
     return errors;
   };
@@ -495,58 +468,86 @@ const HousePublish = () => {
 
     setIsSubmitting(true);
     try {
-    const fullAddress = combineAddress(
-      formData.country.cname,
-      formData.city.cname,
-      formData.detailAddress,
-    );
+      // Create tagsJson from tag categories
+      const tagsJson = {};
+      tagCategories.forEach(category => {
+        const selectedTags = category.tags.filter(tag => formData.houseTag.includes(tag));
+        if (selectedTags.length > 0) {
+          tagsJson[category.id] = selectedTags;
+        }
+      });
 
-      const url = pid
-        ? 'https://api.eurostay.co/app/property/modify'
-        : 'https://api.eurostay.co/app/property/upload';
+      // Convert available dates to required format
+      const availableDates = multiDays
+        .flatMap(pair => pair)
+        .sort((a, b) => new Date(a).getTime() - new Date(b).getTime());
 
       const requestData = {
         ...(pid && { pid }),
         title: formData.houseName,
-        description: formData.houseDesc,
-        location: fullAddress,
-        searchableLocation: formData.city.id,
-        price: Number(formData.price),
-        images: formData.houseImages,
         tags: formData.houseTag,
-        gender: formData.tenantGender,
+        tagsJson: JSON.stringify(tagsJson),
+        country: formData.country.cname,
+        countryId: formData.country.id,
+        city: formData.city.cname,
+        cityId: formData.city.id,
+        address: formData.detailAddress,
+        description: formData.houseDesc,
         capacity: formData.tenantCount,
-        whyHost: formData.story,
+        gender: formData.tenantGender,
+        images: formData.houseImages,
         wxId: formData.wechat,
-        qrCode: '',
-        requirements: formData.otherRequirements,
-        availableDate: multiDays
-          .flatMap(pair => pair)
-          .sort((a, b) => new Date(a).getTime() - new Date(b).getTime()),
+        price: Number(formData.price),
+        flexiblePrice: formData.flexiblePrice,
+        status: formData.status,
+        receptionTime: formData.receptionTime,
+        requirement: formData.story,
+        availableDate: availableDates,
       };
 
-      const response = await Taro.request({
-        url,
-        method: 'POST',
-        header: {
-          token: GlobalStore.userInfo.token,
-        },
-        data: requestData,
-      });
-
-      if (response.statusCode === 200 && response.data.code === 0) {
+      if (pid) {
+        const modifyData = {
+          pid,
+          title: requestData.title,
+          tags: requestData.tags,
+          tagsJson: requestData.tagsJson,
+          country: requestData.country,
+          countryId: requestData.countryId,
+          city: requestData.city,
+          cityId: requestData.cityId,
+          address: requestData.address,
+          description: requestData.description,
+          capacity: requestData.capacity,
+          gender: requestData.gender,
+          images: requestData.images,
+          wxId: requestData.wxId,
+          price: requestData.price,
+          flexiblePrice: requestData.flexiblePrice,
+          status: requestData.status,
+          receptionTime: requestData.receptionTime,
+          requirement: requestData.requirement,
+          availableDate: requestData.availableDate,
+        };
+        await API.property.modifyProperty(modifyData);
         Taro.showToast({
-          title: pid
-            ? '修改成功！'
-            : '你已成功上传房源！房源正在等待审核，审核通过后将公众可见。',
+          title: '修改成功！',
           icon: 'none',
           duration: 2000,
         });
-        setTimeout(() => {
-          Taro.navigateBack();
-        }, 2000);
+      } else {
+        await API.property.uploadProperty(requestData);
+        Taro.showToast({
+          title: '你已成功上传房源！房源正在等待审核，审核通过后将公众可见。',
+          icon: 'none',
+          duration: 2000,
+        });
       }
+      
+      setTimeout(() => {
+        Taro.navigateBack();
+      }, 2000);
     } catch (error) {
+      console.error('Submission failed:', error);
       Taro.showToast({
         title: '网络请求失败，请重试',
         icon: 'none',
@@ -554,6 +555,30 @@ const HousePublish = () => {
       });
     } finally {
       setIsSubmitting(false);
+    }
+  };
+
+  const handleStatusSelect = (status: number) => {
+    setFormData({ ...formData, status: status });
+  };
+
+  const handleReceptionTimeSelect = (time: string) => {
+    const newTimes = formData.receptionTime.includes(time)
+      ? formData.receptionTime.filter(t => t !== time)
+      : [...formData.receptionTime, time];
+    setFormData({ ...formData, receptionTime: newTimes });
+  };
+
+  const handleAddReceptionTime = () => {
+    setIsShowReceptionTimePop(true);
+  };
+
+  const handleReceptionTimeConfirm = () => {
+    if (curReceptionTime.trim()) {
+      handleReceptionTimeSelect(curReceptionTime);
+      setCustomReceptionTimes([...customReceptionTimes, curReceptionTime]);
+      setCurReceptionTime('');
+      setIsShowReceptionTimePop(false);
     }
   };
 
@@ -580,30 +605,44 @@ const HousePublish = () => {
           onClickConfirm={handleTagConfirm}
         />
       )}
-      {isShowReqPop && (
+      {isShowStoryPop && (
         <Popup
-          className={'req-pop'}
+          className={'tag-pop'}
           content={
             <Input
               className='input'
-              placeholder='请输入其他要求'
+              placeholder='请描述你期待的guest类型'
               placeholderClass='placeholder'
-              value={curReq}
+              value={curStory}
+              onInput={e => setCurStory(e.detail.value)}
+            />
+          }
+          title='添加期待的guest类型'
+          onClickClose={() => {
+            setIsShowStoryPop(false);
+          }}
+          onClickConfirm={handleStoryConfirm}
+        />
+      )}
+      {isShowReceptionTimePop && (
+        <Popup
+          className={'reception-time-pop'}
+          content={
+            <Input
+              className='input'
+              placeholder='请输入接待时间'
+              placeholderClass='placeholder'
+              value={curReceptionTime}
               onInput={e => {
-                setCurReq(e.detail.value);
+                setCurReceptionTime(e.detail.value);
               }}
             />
           }
-          title='你还对旅客有什么基本要求吗~'
+          title='添加自定义接待时间'
           onClickClose={() => {
-            setIsShowReqPop(false);
+            setIsShowReceptionTimePop(false);
           }}
-          onClickConfirm={e => {
-            setIsShowReqPop(false);
-            handleOtherReqSelect(curReq);
-            const newReqs = [...customReqs, curReq];
-            setCustomReqs(newReqs);
-          }}
+          onClickConfirm={handleReceptionTimeConfirm}
         />
       )}
       <View className='section'>
@@ -732,6 +771,24 @@ const HousePublish = () => {
             <Text className='unit'>/晚</Text>
           </View>
         </View>
+        
+        <View className='input-item'>
+          <View className='price-options'>
+            <Text className='label'>接待类型</Text>
+            <Text
+              className={`option ${formData.flexiblePrice ? 'active' : ''}`}
+              onClick={() => handleFlexiblePriceToggle(true)}
+            >
+              可商议
+            </Text>
+            <Text
+              className={`option ${!formData.flexiblePrice ? 'active' : ''}`}
+              onClick={() => handleFlexiblePriceToggle(false)}
+            >
+              一口价
+            </Text>
+          </View>
+        </View>
 
         <View className='input-item'>
           <>
@@ -761,45 +818,17 @@ const HousePublish = () => {
 
           <View className='count-options'>
             <Text className='label '>人数</Text>
-            {tenantCounts.map(count => (
-              <Text
-                key={count.id}
-                className={`option ${formData.tenantCount === count.id ? 'active' : ''}`}
-                onClick={() => handleTenantCountSelect(count.id)}
-              >
-                {count.name}
-              </Text>
-            ))}
-          </View>
-
-          <View className='other-options'>
-            <Text className='label'>其他</Text>
-            {otherReqs.map(req => (
-              <Text
-                key={req.id}
-                className={`option ${formData.otherRequirements.includes(req.name) ? 'active' : ''}`}
-                onClick={() => handleOtherReqSelect(req.name)}
-              >
-                {req.name}
-              </Text>
-            ))}
-            {customReqs.map((req, index) => (
-              <Text
-                key={otherReqs.length + index}
-                className={`option ${formData.otherRequirements.includes(req) ? 'active' : ''}`}
-                onClick={() => handleOtherReqSelect(req)}
-              >
-                {req}
-              </Text>
-            ))}
-            <Text
-              className='option'
-              onClick={() => {
-                setIsShowReqPop(true);
-              }}
-            >
-              +
-            </Text>
+            <View className='number-input-container'>
+              <Input
+                className='number-input'
+                type='number'
+                placeholder='可接待人数'
+                placeholderClass='placeholder'
+                value={formData.tenantCount === 0 ? '' : String(formData.tenantCount)}
+                onInput={handleTenantCountInput}
+              />
+              <Text className='unit'>人</Text>
+            </View>
           </View>
         </View>
         <View className='input-item'>
@@ -864,6 +893,53 @@ const HousePublish = () => {
           <Text className='description'>
             请选择你更希望接待的时间吧，可选择多个时间段哦！
           </Text>
+          
+          <View className='tag-category'>
+            <Text className='category-title'>房源状态*</Text>
+            <View className='tags'>
+              <Text
+                className={`tag ${formData.status === PropertyStatus.Available ? 'active' : ''}`}
+                onClick={() => handleStatusSelect(PropertyStatus.Available)}
+              >
+                正在接待
+              </Text>
+              <Text
+                className={`tag ${formData.status === PropertyStatus.Unavailable ? 'active' : ''}`}
+                onClick={() => handleStatusSelect(PropertyStatus.Unavailable)}
+              >
+                未开放接待
+              </Text>
+            </View>
+          </View>
+          
+          <View className='tag-category'>
+            <Text className='category-title'>接待时间</Text>
+            <View className='tags'>
+              <Text
+                className={`tag ${formData.receptionTime.includes('周末') ? 'active' : ''}`}
+                onClick={() => handleReceptionTimeSelect('周末')}
+              >
+                周末
+              </Text>
+              <Text
+                className={`tag ${formData.receptionTime.includes('节假日') ? 'active' : ''}`}
+                onClick={() => handleReceptionTimeSelect('节假日')}
+              >
+                节假日
+              </Text>
+              {customReceptionTimes.map((time, index) => (
+                <Text
+                  key={`custom-time-${index}`}
+                  className={`tag ${formData.receptionTime.includes(time) ? 'active' : ''}`}
+                  onClick={() => handleReceptionTimeSelect(time)}
+                >
+                  {time}
+                </Text>
+              ))}
+              <Text className='option' onClick={handleAddReceptionTime}>+</Text>
+            </View>
+          </View>
+          
           <View className='date-select '>
             <AtCalendar
               isMultiSelect
@@ -927,14 +1003,41 @@ const HousePublish = () => {
         </View>
         <View className='input-item'>
           <Text className='label'>期待怎么样的guest？*</Text>
-          <Textarea
-            className='textarea'
-            placeholder='如果愿意技能/房源换宿，你希望解锁什么技能/房源呢？'
-            placeholderClass='placeholder'
-            value={formData.story}
-            onInput={e => setFormData({ ...formData, story: e.detail.value })}
-            autoHeight
-          />
+          <Text className='description'>
+            请选择或添加你期待的guest类型，如果愿意技能/房源换宿，你希望解锁什么技能/房源呢？
+          </Text>
+          <View className='tag-category'>
+            <View className='tags'>
+              <Text
+                className={`tag ${formData.story.includes('做饭好吃') ? 'active' : ''}`}
+                onClick={() => handleStorySelect('做饭好吃')}
+              >
+                做饭好吃
+              </Text>
+              <Text
+                className={`tag ${formData.story.includes('A钱快') ? 'active' : ''}`}
+                onClick={() => handleStorySelect('A钱快')}
+              >
+                A钱快
+              </Text>
+              <Text
+                className={`tag ${formData.story.includes('会拍照') ? 'active' : ''}`}
+                onClick={() => handleStorySelect('会拍照')}
+              >
+                会拍照
+              </Text>
+              {customStories.map((story, index) => (
+                <Text
+                  key={`custom-story-${index}`}
+                  className={`tag ${formData.story.includes(story) ? 'active' : ''}`}
+                  onClick={() => handleStorySelect(story)}
+                >
+                  {story}
+                </Text>
+              ))}
+              <Text className='option' onClick={handleAddStory}>+</Text>
+            </View>
+          </View>
         </View>
       </View>
       <View className='section'>
@@ -952,47 +1055,7 @@ const HousePublish = () => {
             onInput={e => setFormData({ ...formData, wechat: e.detail.value })}
           />
         </View>
-        {/* <View className='input-item'>
-          <View className='label label-flex with-margin'>
-            <Text>收款码*</Text>
-            <Text className='image-count'>
-              {formData.paymentImages.length}/1张
-            </Text>
-          </View>
-          <View className='image-upload'>
-            {formData.paymentImages.map((image, index) => (
-              <View key={index} className='image-item'>
-                <Image src={image} mode='aspectFill' />
-                <View
-                  className='delete-icon'
-                  onClick={e => {
-                    e.stopPropagation();
-                    const newImages = formData.paymentImages.filter(
-                      (_, i) => i !== index,
-                    );
-                    setFormData({ ...formData, paymentImages: newImages });
-                  }}
-                >
-                  ×
-                </View>
-              </View>
-            ))}
-            {formData.paymentImages.length < 1 && (
-              <View
-                className='upload-button'
-                onClick={() => {
-                  handleUpload('payment');
-                }}
-              >
-                <Text className='plus'>+</Text>
-              </View>
-            )}
-          </View>
-          <View className='qrcode-tips'>
-            注意：当你通过Guest的换宿申请后，该收款码会被自动发给Guest哦~
-          </View>
-        </View> */}
-        </View>
+      </View>
       <View 
         className={`submit-post-house ${isSubmitting ? 'disabled' : ''}`} 
         onClick={handleSubmit}
