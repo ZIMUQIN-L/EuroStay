@@ -191,38 +191,19 @@
         font-size: 32px;
         color: #333333;
       }
-
-      .capacity-info {
-        font-size: 24px;
-        color: #333333;
-      }
     }
 
-    .title-price-section {
+    .title-capacity-section {
       display: flex;
       flex-direction: column;
       gap: 10px;
       align-items: flex-end;
       text-align: right;
 
-      .fee {
-        font-family: 'Alibaba PuHuiTi';
-        
-        .price-value {
-          font-size: 48px;
-          font-weight: 600;
-          color: #333333;
-        }
-        
-        .price-unit {
-          font-size: 20px;
-          color: #9B9B9B;
-        }
-      }
-
-      .price-type {
-        font-size: 30px;
-        color: #7A63C7;
+      .capacity-info {
+        font-size: 32px;
+        color: #333333;
+        font-weight: 500;
       }
     }
     
@@ -299,6 +280,11 @@
     display: flex;
     margin-left: 24px;
     margin-bottom: 12px;
+    
+    &.guest-expectation {
+      margin-top: 40px;
+      margin-bottom: 20px;
+    }
     
     .b-title{
         width: 100%;

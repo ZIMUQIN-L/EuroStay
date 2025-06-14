@@ -163,7 +163,7 @@ const HomepageCard = (props: {
             lazyLoad
           ></Image>
           <View className='badge-container'>
-            <View className='accommodation-badge'>{props.property.flexiblePrice ? '可换宿' : '一口价'}</View>
+            <View className='location-badge'>{props.property.country}{props.property.city}</View>
           </View>
           <View className='button-wrapper'>
             {props.user && (
@@ -193,19 +193,8 @@ const HomepageCard = (props: {
                     <View key={index} className='time-tag'>{time}</View>
                   ))}
                 </View>
-
-                <View className='capacity'>可住{props.property?.capacity}人</View>
               </View>
-
-              <View className='price-container'>
-                <View className='price-wrapper'>
-                  <Text className='price-value'>€{props.property?.price}</Text>
-                  <Text className='price-unit'>/人/晚</Text>
-                </View>
-                <View className='flexible-price-text'>
-                  {props.property.flexiblePrice ? '可换宿' : '一口价'}
-                </View>
-              </View>
+              <View className='capacity'>可住{props.property?.capacity}人</View>
             </View>
           </View>
         </>

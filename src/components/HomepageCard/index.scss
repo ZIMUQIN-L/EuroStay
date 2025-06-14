@@ -79,21 +79,19 @@
         text-overflow: ellipsis;
         margin-bottom: 15px;
       }
+
       .property-info-container {
         display: flex;
         justify-content: space-between;
         width: 100%;
-        align-items: flex-start;
+        align-items: center;
+
         .property-details {
           display: flex;
           flex-direction: column;
           flex-wrap: wrap;
           gap: 10px;
-          .capacity {
-            font-size: 22px;
-            font-weight: 400;
-            white-space: nowrap;
-          }
+
           .reception-time-tags {
             display: flex;
             flex-wrap: wrap;
@@ -108,28 +106,12 @@
             }
           }
         }
-        .price-container {
-          display: flex;
-          flex-direction: column;
-          gap: 10px;
-          .price-wrapper {
-            display: flex;
-            align-items: flex-end;
-            .price-value {
-              font-size: 28px;
-              font-weight: 500;
-            }
-            .price-unit {
-              font-size: 20px;
-              margin-left: 2px;
-              margin-bottom: 2px;
-            }
-          }
-          .flexible-price-text {
-            font-size: 22px;
-            margin-top: 4px;
-            text-align: right;
-          }
+
+        .capacity {
+          font-size: 22px;
+          font-weight: 400;
+          white-space: nowrap;
+          margin-left: auto;
         }
       }
     }
@@ -246,7 +228,7 @@
     position: absolute;
     top: 20px;
     left: 20px;
-    .accommodation-badge {
+    .location-badge {
       background-color: white;
       color: #7a63c7;
       border-radius: 20px;

@@ -73,7 +73,8 @@ const HouseDetail: React.FC = () => {
     city: '',
     cityId: 0,
     capacity: 0,
-    flexiblePrice: false
+    flexiblePrice: false,
+    requirement: ''
   });
   
   const [topReview, setTopReview] = useState<ReviewCardProps>({
@@ -240,7 +241,8 @@ const HouseDetail: React.FC = () => {
           city: result.city || '',
           cityId: result.cityId || 0,
           capacity: result.capacity || 0,
-          flexiblePrice: result.flexiblePrice || false
+          flexiblePrice: result.flexiblePrice || false,
+          requirement: result.requirement || ''
         });
         setIsStarred(result.isCollected);
       })
@@ -498,18 +500,17 @@ const HouseDetail: React.FC = () => {
         }
       </View>
 
+      {/* Host Card - 放在最上方 */}
+      {isComplete && <HostCardSmall {...hostDetail}/>}
+
+      {/* 房源信息 */}
       <View className='title-section'>
         <View className='title-info-section'>
           <View className='title'>{order.title}</View>
           <View className='location-info'>{order.country}{order.city}</View>
-          <View className='capacity-info'>可住{order.capacity}人</View>
         </View>
-        <View className='title-price-section'>
-          <View className='fee'>
-            <Text className='price-value'>€{order.price}</Text>
-            <Text className='price-unit'>/人/晚</Text>
-          </View>
-          <View className='price-type'>{order.flexiblePrice ? '可换宿' : '一口价'}</View>
+        <View className='title-capacity-section'>
+          <View className='capacity-info'>可住{order.capacity}人</View>
         </View>
       </View>
 
@@ -521,17 +522,35 @@ const HouseDetail: React.FC = () => {
           }
       </View>
 
-
       <View className='detail-text'>{order.description}</View>
 
-      {isComplete && <HostCardSmall {...hostDetail}/>}
-
-      {/* <View className='title-with-badge'>
-        <View className='b-title'><View className='purple-badge'/>期待和Guest做什么？</View>
+      {/* 期待遇见的guest - 添加间距 */}
+      <View className='title-with-badge guest-expectation'>
+        <View className='b-title'><View className='purple-badge'/>期待遇见的guest</View>
       </View>
 
-      <View className='detail-text'>{order.whyHost}</View> */}
+      <View className='detail-text'>{order.requirement}</View>
 
+      {/* 房源评价 */}
+      {isComplete &&
+      <View className='title-with-badge'>
+        <View className='b-title'><View className='purple-badge'/>
+        房源评价
+          <View className='check-detail'
+              onClick={() => {if (hasReview) handleViewAllReviews()}}
+          >
+            {!hasReview ? '暂无评价' : '查看全部评价＞'}
+          </View>
+        </View>
+        {hasReview &&
+          <View className='review-line'>
+            <ReviewCard {...topReview} />
+          </View>
+        }
+      </View>
+      }
+
+      {/* 前往评价按钮 */}
       <View className='review-button' onClick={() => {
         if (GlobalStore.userInfo?.uid === 0) {
           Taro.showModal({
@@ -551,25 +570,8 @@ const HouseDetail: React.FC = () => {
       }}>
         前往评价
       </View>
-      
-      {isComplete &&
-      <View className='title-with-badge'>
-        <View className='b-title'><View className='purple-badge'/>
-        房源评价
-          <View className='check-detail'
-              onClick={() => {if (hasReview) handleViewAllReviews()}}
-          >
-            {!hasReview ? '暂无评价' : '查看全部评价＞'}
-          </View>
-        </View>
-        {hasReview &&
-          <View className='review-line'>
-            <ReviewCard {...topReview} />
-          </View>
-        }
-      </View>
-      }
 
+      {/* 推荐入住日期 */}
       <View className='title-with-badge'>
         <View className='b-title'><View className='purple-badge'/>
         推荐入住日期（用 • 标记）

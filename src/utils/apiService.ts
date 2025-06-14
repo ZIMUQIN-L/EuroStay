@@ -231,7 +231,7 @@ export const API = {
       wxId: string;
       price: number;
       flexiblePrice: boolean;
-      requirement: string[];
+      requirement: string;
       status: number;
       receptionTime: string[];
       availableDate: string[];
@@ -254,7 +254,7 @@ export const API = {
       wxId: string;
       price: number;
       flexiblePrice: boolean;
-      requirement: string[];
+      requirement: string;
       status: number;
       receptionTime: string[];
       availableDate: string[];

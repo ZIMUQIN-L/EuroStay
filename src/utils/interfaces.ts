@@ -203,6 +203,9 @@ export interface homePropertyProps {
   capacity: number;
   flexiblePrice: boolean;
   receptionTime: string[];
+  country: string;
+  city: string;
+  tags: string[];
 }
 
 export interface ApplicantDetail {
@@ -267,6 +270,7 @@ export interface Order {
     cityId?: number;
     capacity?: number;
     flexiblePrice?: boolean;
+    requirement?: string;
 }
 
 export interface ReviewCardProps {

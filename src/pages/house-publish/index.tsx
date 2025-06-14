@@ -42,13 +42,12 @@ interface HouseFormData {
     name: string;
   };
   detailAddress: string;
-  price: string;
   flexiblePrice: boolean;
   tenantGender: number;
   tenantCount: number;
   houseImages: string[];
   paymentImages: string[];
-  story: string[];
+  story: string;
   wechat: string;
   status: number;
   receptionTime: string[];
@@ -80,13 +79,12 @@ const HousePublish = () => {
     country: { id: 0, cname: '选择国家', name: '' },
     city: { id: 0, cname: '选择城市', name: '' },
     detailAddress: '',
-    price: '',
     flexiblePrice: false,
     tenantGender: Gender.Default,
     tenantCount: 0,
     houseImages: [],
     paymentImages: [],
-    story: [],
+    story: '',
     wechat: '',
     status: PropertyStatus.Available,
     receptionTime: [],
@@ -233,7 +231,6 @@ const HousePublish = () => {
           name: '',
         },
         detailAddress: detail.address || '',
-        price: String(detail.price),
         flexiblePrice: detail.flexiblePrice || false,
         tenantGender: detail.gender,
         tenantCount: detail.capacity,
@@ -242,17 +239,12 @@ const HousePublish = () => {
         houseTag: detail.tags || [],
         status: detail.status || PropertyStatus.Available,
         receptionTime: detail.receptionTime || [],
-        story: detail.requirement || [],
+        story: detail.requirement || '',
       });
-
-      if (detail.requirement && detail.requirement.length > 0) {
-        setCustomStories(detail.requirement.filter(req => 
-          !['做饭好吃', 'A钱快', '会拍照'].includes(req)
-        ));
-      }
 
       setMultiDays(availableDates);
     } catch (error) {
+      console.error('获取房源信息失败，请重试', error);
       Taro.showToast({
         title: '获取房源信息失败，请重试',
         icon: 'none',
@@ -382,24 +374,11 @@ const HousePublish = () => {
     setMarks(marksList);
   }, [multiDays.length]);
 
-  const handleStorySelect = (story: string) => {
-    const newStories = formData.story.includes(story)
-      ? formData.story.filter(s => s !== story)
-      : [...formData.story, story];
-    setFormData({ ...formData, story: newStories });
-  };
-
-  const handleAddStory = () => {
-    setIsShowStoryPop(true);
-  };
-
-  const handleStoryConfirm = () => {
-    if (curStory.trim()) {
-      handleStorySelect(curStory);
-      setCustomStories([...customStories, curStory]);
-      setCurStory('');
-      setIsShowStoryPop(false);
-    }
+  const handleStoryInput = (e) => {
+    setFormData({
+      ...formData,
+      story: e.detail.value
+    });
   };
 
   const validateForm = () => {
@@ -425,10 +404,6 @@ const HousePublish = () => {
       errors.push('请填写详细地址');
     }
 
-    if (!formData.price || Number(formData.price) < 0) {
-      errors.push('请填写有效的房源价格');
-    }
-
     if (formData.tenantGender === Gender.Default) {
       errors.push('请选择租客性别要求');
     }
@@ -449,6 +424,9 @@ const HousePublish = () => {
       errors.push('请填写微信号');
     }
 
+    if (!formData.story.trim()) {
+      errors.push('请填写对guest的期待');
+    }
 
     return errors;
   };
@@ -466,8 +444,8 @@ const HousePublish = () => {
       return;
     }
 
-    setIsSubmitting(true);
     try {
+      setIsSubmitting(true);
       // Create tagsJson from tag categories
       const tagsJson = {};
       tagCategories.forEach(category => {
@@ -497,7 +475,7 @@ const HousePublish = () => {
         gender: formData.tenantGender,
         images: formData.houseImages,
         wxId: formData.wechat,
-        price: Number(formData.price),
+        price: 0,
         flexiblePrice: formData.flexiblePrice,
         status: formData.status,
         receptionTime: formData.receptionTime,
@@ -603,25 +581,6 @@ const HousePublish = () => {
             setIsShowTagPop(false);
           }}
           onClickConfirm={handleTagConfirm}
-        />
-      )}
-      {isShowStoryPop && (
-        <Popup
-          className={'tag-pop'}
-          content={
-            <Input
-              className='input'
-              placeholder='请描述你期待的guest类型'
-              placeholderClass='placeholder'
-              value={curStory}
-              onInput={e => setCurStory(e.detail.value)}
-            />
-          }
-          title='添加期待的guest类型'
-          onClickClose={() => {
-            setIsShowStoryPop(false);
-          }}
-          onClickConfirm={handleStoryConfirm}
         />
       )}
       {isShowReceptionTimePop && (
@@ -753,24 +712,7 @@ const HousePublish = () => {
           />
         </View>
 
-        <View className='input-item'>
-          <Text className='label'>房源成本价*</Text>
-          <Text className='description'>
-          这将展示在房源卡片上，成为住客选择的重要参考哦！若是租房，建议参考房源本身租赁成本哦～
-          </Text>
-          <View className='price-input'>
-            <Text className='currency'>€</Text>
-            <Input
-              className='input'
-              type='number'
-              placeholder='0'
-              placeholderClass='placeholder'
-              value={formData.price}
-              onInput={e => setFormData({ ...formData, price: e.detail.value })}
-            />
-            <Text className='unit'>/晚</Text>
-          </View>
-        </View>
+        
         
         <View className='input-item'>
           <View className='price-options'>
@@ -1002,41 +944,17 @@ const HousePublish = () => {
           <Text>了解更多</Text>
         </View>
         <View className='input-item'>
-          <Text className='label'>期待怎么样的guest？*</Text>
-          <Text className='description'>
-            请选择或添加你期待的guest类型，如果愿意技能/房源换宿，你希望解锁什么技能/房源呢？
-          </Text>
-          <View className='tag-category'>
-            <View className='tags'>
-              <Text
-                className={`tag ${formData.story.includes('做饭好吃') ? 'active' : ''}`}
-                onClick={() => handleStorySelect('做饭好吃')}
-              >
-                做饭好吃
-              </Text>
-              <Text
-                className={`tag ${formData.story.includes('A钱快') ? 'active' : ''}`}
-                onClick={() => handleStorySelect('A钱快')}
-              >
-                A钱快
-              </Text>
-              <Text
-                className={`tag ${formData.story.includes('会拍照') ? 'active' : ''}`}
-                onClick={() => handleStorySelect('会拍照')}
-              >
-                会拍照
-              </Text>
-              {customStories.map((story, index) => (
-                <Text
-                  key={`custom-story-${index}`}
-                  className={`tag ${formData.story.includes(story) ? 'active' : ''}`}
-                  onClick={() => handleStorySelect(story)}
-                >
-                  {story}
-                </Text>
-              ))}
-              <Text className='option' onClick={handleAddStory}>+</Text>
-            </View>
+          <View className='form-item'>
+            <View className='form-label'>期待什么样的guest？</View>
+            <Text className='description'>
+            如果愿意让旅客用房源/技能/较少的金钱换宿,你希望解锁什么样的旅客呢？
+            </Text>
+            <Textarea
+              className='form-textarea'
+              placeholder='请输入您对guest的期待'
+              value={formData.story}
+              onInput={handleStoryInput}
+            />
           </View>
         </View>
       </View>
