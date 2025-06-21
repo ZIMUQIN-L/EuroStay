@@ -7,7 +7,7 @@ import Taro from '@tarojs/taro';
 
 const UserVip = () => {
   const [agreed, setAgreed] = useState(false);
-  const [selectedPlan, setSelectedPlan] = useState<'monthly' | 'yearly'>('monthly');
+  const [selectedPlan, setSelectedPlan] = useState<'monthly' | 'yearly'|'appsingle' | 'appdouble'>('monthly');
   const [vipEndDate, setVipEndDate] = useState('');
 
   // 获取会员信息
@@ -45,7 +45,58 @@ const UserVip = () => {
       });
       return;
     }
-
+    if (selectedPlan === 'appsingle' || selectedPlan === 'appdouble') {
+      try {
+        // 调用充值接口
+        const res = await Taro.request({
+          url: 'https://api.eurostay.co/app/vip/activity',
+          method: 'POST',
+          header: {
+            'token': GlobalStore._userInfo.token,
+            'Content-Type': 'application/json'
+          },
+          data: {
+            month: selectedPlan === 'appsingle' ? 1 : 2,
+            price: selectedPlan === 'appsingle' ? 15 : 22.5
+          }
+        });
+  
+        if (res.data.code === 0) {
+          const paymentData = res.data.data;
+          // 调用支付
+          await Taro.requestPayment({
+            timeStamp: paymentData.timeStamp,
+            nonceStr: paymentData.nonceStr,
+            package: paymentData.package,
+            signType: paymentData.signType,
+            paySign: paymentData.paySign,
+            success: () => {
+              Taro.showToast({
+                title: '支付成功',
+                icon: 'success'
+              });
+              GlobalStore.setIsVip(true);
+              // 刷新会员信息
+              fetchVipInfo();
+            },
+            fail: (err) => {
+              console.error('支付失败', err);
+              Taro.showToast({
+                title: '支付失败',
+                icon: 'none'
+              });
+            }
+          });
+        }
+      } catch (error) {
+        console.error('请求失败', error);
+        Taro.showToast({
+          title: '请求失败',
+          icon: 'none'
+        });
+      }
+      return;
+    }
     try {
       // 调用充值接口
       const res = await Taro.request({
@@ -57,7 +108,7 @@ const UserVip = () => {
         },
         data: {
           month: selectedPlan === 'monthly' ? 1 : 12,
-          price: selectedPlan === 'monthly' ? 6.6 : 88.8
+          price: selectedPlan === 'monthly' ? 22.5 : 88.8
         }
       });
 
@@ -130,18 +181,60 @@ const UserVip = () => {
                 <Text className='label'>月度会员</Text>
                 <View className='price'>
                   <Text className='currency'>€</Text>
-                  <Text className='amount'>0.88</Text>
+                  <Text className='amount'>2.99</Text>
                   <Text className='unit'>/月</Text>
                 </View>
               </View>
-              {/* <View className='right'>
-                <Text className='original-price'>原价€29.9</Text>
-                <Text className='discount'>限时67折</Text>
-              </View> */}
+              <View className='right'>
+                <Text className='original-price'>原价€5.99</Text>
+                <Text className='discount'>限时5折</Text>
+              </View>
             </View>
           </View>
 
           <View 
+            className={`option-card monthly ${selectedPlan === 'appsingle' ? 'selected' : ''}`}
+            onClick={() => setSelectedPlan('appsingle')}
+          >
+            <Image className='bg-image' src={bgMonthly} />
+            <View className='price-info'>
+              <View className='left'>
+                <Text className='label'>APP抢先试用一个月</Text>
+                <View className='price'>
+                  <Text className='currency'>€</Text>
+                  <Text className='amount'>1.99</Text>
+                  {/* <Text className='unit'>/月</Text> */}
+                </View>
+              </View>
+              <View className='right'>
+                <Text className='original-price'>原价€5.99</Text>
+                <Text className='discount'>限时3.3折</Text>
+              </View>
+            </View>
+          </View>
+
+          <View 
+            className={`option-card monthly ${selectedPlan === 'appdouble' ? 'selected' : ''}`}
+            onClick={() => setSelectedPlan('appdouble')}
+          >
+            <Image className='bg-image' src={bgMonthly} />
+            <View className='price-info'>
+              <View className='left'>
+                <Text className='label'>APP抢先试用两个月</Text>
+                <View className='price'>
+                  <Text className='currency'>€</Text>
+                  <Text className='amount'>2.99</Text>
+                  {/* <Text className='unit'>/月</Text> */}
+                </View>
+              </View>
+              <View className='right'>
+                <Text className='original-price'>原价€10.99</Text>
+                <Text className='discount'>限时2.8折</Text>
+              </View>
+            </View>
+          </View>
+
+          {/* <View 
             className={`option-card yearly ${selectedPlan === 'yearly' ? 'selected' : ''}`}
             // onClick={() => setSelectedPlan('yearly')}
           >
@@ -155,12 +248,13 @@ const UserVip = () => {
                   <Text className='unit'></Text>
                 </View>
               </View>
-              {/* <View className='right'>
+              <View className='right'>
                 <Text className='original-price'>原价€358.8</Text>
                 <Text className='discount'>限时5.5折</Text>
-              </View> */}
+              </View>
             </View>
-          </View>
+          </View> */}
+          
         </View>
 
         {/* 协议同意 */}
