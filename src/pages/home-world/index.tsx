@@ -19,6 +19,7 @@ import {
 } from '@utils/interfaces';
 import CitySelect from '@components/CitySelect';
 import TabBar from '@components/TabBar';
+import WelcomePopup from '@components/WelcomePopup';
 
 const HomeWorld = () => {
   const [activeTab, setActiveTab] = useState<'友友' | '房源' | '活动'>('友友');
@@ -73,6 +74,7 @@ const HomeWorld = () => {
   const [isShowCitySelect, setIsShowCitySelect] = useState(false);
   const [isShowPostModal, setIsShowPostModal] = useState(false);
   const [scrollTop, setScrollTop] = useState(0);
+  const [showWelcomePopup, setShowWelcomePopup] = useState(false);
 
   // 为每个tab创建独立的页码状态
   const [userPage, setUserPage] = useState(1);
@@ -144,6 +146,7 @@ const HomeWorld = () => {
       order: 'DES_PRICE',
       capacity: 1,
     });
+    setShowWelcomePopup(true);
   }, []);
 
   // 修改 getList 函数以使用对应tab的页码
@@ -325,12 +328,38 @@ const HomeWorld = () => {
     setEndDate('');
     setCapacity(1);
   }, [activeTab]);
-//   在关闭 modal 时恢复滚动位置
+
+  // 在关闭 modal 时恢复滚动位置
   useEffect(() => {
     if (!isShowPostModal && scrollTop > 0) {
       window.scrollTo(0, scrollTop);
     }
   }, [isShowPostModal]);
+
+  const handleClosePopup = () => {
+    setShowWelcomePopup(false);
+  };
+
+  const handleJoinCommunity = () => {
+    setShowWelcomePopup(false);
+    if (GlobalStore.userInfo?.uid === 0) {
+        Taro.showModal({
+          title: '转至登录页面',
+          content: '请登录后充值会员哦~',
+          success: function (res) {
+            if (res.confirm) {
+              Taro.reLaunch({
+                url: `/pages/login/index`,
+              });
+            }
+          },
+        });
+        return;
+      }
+    Taro.navigateTo({
+        url: '/packageUser/user-vip/index',
+      });
+  };
 
   if (isShowDateSelect) {
     return (
@@ -535,6 +564,8 @@ const HomeWorld = () => {
         setIsShowPostModal={handlePostModalOpen}
         isShowPostModal={isShowPostModal}
       />
+
+      {showWelcomePopup && <WelcomePopup onClose={handleClosePopup} onJoin={handleJoinCommunity} />}
     </>
   );
 };
