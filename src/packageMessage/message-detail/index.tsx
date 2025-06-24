@@ -73,6 +73,9 @@ const MessageDetail = () => {
 
         setMessages(prev => [...prev, newMessage]);
         setShouldScrollBottom(true);
+        
+        // 收到新消息时发送已读回执
+        sendReadReceipt();
       }
     };
   
@@ -85,6 +88,23 @@ const MessageDetail = () => {
     };
   }, [id]);
   
+  // 发送已读回执
+  const sendReadReceipt = () => {
+    if (!id) return;
+    
+    try {
+      const readReceiptMessage = {
+        type: "read-receipt",
+        data: {
+          sessionId: id
+        }
+      };
+      
+      GlobalStore.sendWebSocketMessage(readReceiptMessage);
+    } catch (error) {
+      console.error('发送已读回执失败:', error);
+    }
+  };
 
   // 滚动到底部的函数
   const scrollToBottom = () => {
@@ -433,12 +453,16 @@ const MessageDetail = () => {
     // 在这里写你需要的逻辑
     console.log('用户点击了已付款');
     // 1. 构造一个新的消息对象
-    const newMessage = {
+    const newMessage: Message = {
       id: Date.now(), // 用时间戳做简单ID
       type: 'contact',
+      createTime: new Date().toISOString(),
       data: {
-        time: `${String(new Date().getHours()).padStart(2, '0')}:${String(new Date().getMinutes()).padStart(2, '0')}`, 
-        // 其它需要给 ContactMessageBox 的字段
+        time: `${String(new Date().getHours()).padStart(2, '0')}:${String(new Date().getMinutes()).padStart(2, '0')}`,
+        toUid: otherUserId || 0,
+        isProperty: Boolean(subjectId),
+        subjectId: subjectId || 0,
+        content: '已付款，请查看联系信息'
       },
       direction: 'right' // 或者 'left'，看你业务场景
     };
@@ -454,7 +478,7 @@ const MessageDetail = () => {
 
   const getAvatar = (msg) => {
     const myUid = GlobalStore.userInfo.uid || Taro.getStorageSync('uid')
-    const sessionInfo = sessionDict[id];
+    const sessionInfo = sessionDict[String(id)];
     const avatar = sessionInfo
       ? (sessionInfo.otherUid == myUid ? sessionInfo.selfAvatar : sessionInfo.otherAvatar)
       : 'https://eurostay-1330475057.cos.eu-frankfurt.myqcloud.com/sys/loading.png'
