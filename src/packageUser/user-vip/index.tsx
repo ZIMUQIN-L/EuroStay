@@ -57,7 +57,7 @@ const UserVip = () => {
           },
           data: {
             month: selectedPlan === 'appsingle' ? 1 : 2,
-            price: selectedPlan === 'appsingle' ? 15 : 22.5
+            price: selectedPlan === 'appsingle' ? 15.99 : 22.99
           }
         });
   
@@ -170,91 +170,84 @@ const UserVip = () => {
       {/* 白色容器 */}
       <View className='content-container'>
         {/* 会员套餐选项 */}
-        <View className='subscription-options'>
-          <View 
-            className={`option-card monthly ${selectedPlan === 'monthly' ? 'selected' : ''}`}
-            onClick={() => setSelectedPlan('monthly')}
-          >
-            <Image className='bg-image' src={bgMonthly} />
-            <View className='price-info'>
-              <View className='left'>
-                <Text className='label'>月度会员</Text>
-                <View className='price'>
-                  <Text className='currency'>€</Text>
-                  <Text className='amount'>2.99</Text>
-                  <Text className='unit'>/月</Text>
+        <View className='subscription-section'>
+
+
+        <View className='subscription-section'>
+          <View className='section-header'>
+            <Text className='section-title'>ES限时活动</Text>
+            <Text className='section-desc'>新的旅程就要开始啦！我们将在7月上线App。现在加入享专属折扣，用一杯咖啡的价格，住进世界的家～（会员与小程序同步）</Text>
+          </View>
+          <View className='subscription-options'>
+            <View 
+              className={`option-card monthly ${selectedPlan === 'appsingle' ? 'selected' : ''}`}
+              onClick={() => setSelectedPlan('appsingle')}
+            >
+              <Image className='bg-image' src={bgMonthly} />
+              <View className='price-info'>
+                <View className='left'>
+                  <Text className='label'>APP抢先试用一个月</Text>
+                  <View className='price'>
+                    <Text className='currency'>€</Text>
+                    <Text className='amount'>1.99</Text>
+                  </View>
+                </View>
+                <View className='right'>
+                  <Text className='original-price'>原价€9.99</Text>
+                  <Text className='discount'>限时2折</Text>
                 </View>
               </View>
-              <View className='right'>
-                <Text className='original-price'>原价€5.99</Text>
-                <Text className='discount'>限时5折</Text>
+            </View>
+
+            <View 
+              className={`option-card monthly ${selectedPlan === 'appdouble' ? 'selected' : ''}`}
+              onClick={() => setSelectedPlan('appdouble')}
+            >
+              <Image className='bg-image' src={bgMonthly} />
+              <View className='price-info'>
+                <View className='left'>
+                  <Text className='label'>APP抢先试用两个月</Text>
+                  <View className='price'>
+                    <Text className='currency'>€</Text>
+                    <Text className='amount'>2.99</Text>
+                  </View>
+                </View>
+                <View className='right'>
+                  <Text className='original-price'>原价€19.99</Text>
+                  <Text className='discount'>限时1.5折</Text>
+                </View>
               </View>
             </View>
           </View>
+        </View>
 
-          <View 
-            className={`option-card monthly ${selectedPlan === 'appsingle' ? 'selected' : ''}`}
-            onClick={() => setSelectedPlan('appsingle')}
-          >
-            <Image className='bg-image' src={bgMonthly} />
-            <View className='price-info'>
-              <View className='left'>
-                <Text className='label'>APP抢先试用一个月</Text>
-                <View className='price'>
-                  <Text className='currency'>€</Text>
-                  <Text className='amount'>1.99</Text>
-                  {/* <Text className='unit'>/月</Text> */}
+
+        <View className='section-header'>
+            <Text className='section-title'>ES日常会员</Text>
+            <Text className='section-desc'>最近无法发起换宿？可能是会员到期啦~续上会员，继续你的换宿旅程，住进世界的家吧~</Text>
+          </View>
+          <View className='subscription-options'>
+            <View 
+              className={`option-card monthly ${selectedPlan === 'monthly' ? 'selected' : ''}`}
+              onClick={() => setSelectedPlan('monthly')}
+            >
+              <Image className='bg-image' src={bgMonthly} />
+              <View className='price-info'>
+                <View className='left'>
+                  <Text className='label'>月度会员</Text>
+                  <View className='price'>
+                    <Text className='currency'>€</Text>
+                    <Text className='amount'>2.99</Text>
+                    <Text className='unit'>/月</Text>
+                  </View>
                 </View>
-              </View>
-              <View className='right'>
-                <Text className='original-price'>原价€5.99</Text>
-                <Text className='discount'>限时3.3折</Text>
+                <View className='right'>
+                  <Text className='original-price'>原价€9.99</Text>
+                  <Text className='discount'>限时3折</Text>
+                </View>
               </View>
             </View>
           </View>
-
-          <View 
-            className={`option-card monthly ${selectedPlan === 'appdouble' ? 'selected' : ''}`}
-            onClick={() => setSelectedPlan('appdouble')}
-          >
-            <Image className='bg-image' src={bgMonthly} />
-            <View className='price-info'>
-              <View className='left'>
-                <Text className='label'>APP抢先试用两个月</Text>
-                <View className='price'>
-                  <Text className='currency'>€</Text>
-                  <Text className='amount'>2.99</Text>
-                  {/* <Text className='unit'>/月</Text> */}
-                </View>
-              </View>
-              <View className='right'>
-                <Text className='original-price'>原价€10.99</Text>
-                <Text className='discount'>限时2.8折</Text>
-              </View>
-            </View>
-          </View>
-
-          {/* <View 
-            className={`option-card yearly ${selectedPlan === 'yearly' ? 'selected' : ''}`}
-            // onClick={() => setSelectedPlan('yearly')}
-          >
-            <Image className='bg-image' src={bgYearly} />
-            <View className='price-info'>
-              <View className='left'>
-                <Text className='label'>年度会员</Text>
-                <View className='price'>
-                  <Text className='currency'>€</Text>
-                  <Text className='amount'>正在上架中</Text>
-                  <Text className='unit'></Text>
-                </View>
-              </View>
-              <View className='right'>
-                <Text className='original-price'>原价€358.8</Text>
-                <Text className='discount'>限时5.5折</Text>
-              </View>
-            </View>
-          </View> */}
-          
         </View>
 
         {/* 协议同意 */}

@@ -1,6 +1,6 @@
 import { View, Text, Image } from '@tarojs/components'
 import { observer } from 'mobx-react'
-import Taro, { useReachBottom } from '@tarojs/taro'
+import Taro, { useReachBottom, useDidShow } from '@tarojs/taro'
 import { useState, useEffect } from 'react'
 import './index.scss' // 记得在这里引入自己的样式文件
 import GlobalStore from '@store/GlobalStore'
@@ -80,6 +80,10 @@ const Index = () => {
   useEffect(() => {
     checkLoginStatus();
   }, [GlobalStore.wsMessageCounter]);
+
+  useDidShow(() => {
+    checkLoginStatus();
+  });
 
   const checkLoginStatus = () => {
     const loggedIn = Boolean(GlobalStore.userInfo?.uid && GlobalStore.userInfo?.uid !== 0);

@@ -701,10 +701,10 @@ const HousePublish = () => {
         </View>
 
         <View className='input-item'>
-          <Text className='label'>详细地址*</Text>
+          <Text className='label'>详细地址（具体到街道就好哦）*</Text>
           <Textarea
             className='textarea'
-            placeholder='请填写更详细的位置信息，将会展现在房源详情界面，大概在哪个区域什么街道离景点车站距离呢'
+            placeholder='请填写更详细的位置信息，将会展现在房源详情界面~请不要把具体门牌号告知对方~'
             placeholderClass='placeholder'
             value={formData.detailAddress}
             onInput={e =>
