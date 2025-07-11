@@ -92,7 +92,7 @@ const StrangersPage = () => {
       }
       
       const res = await Taro.request({
-        url: 'https://api.eurostay.co/app/esmessages/createSession',
+        url: 'https://prod.eurostay.co/app/esmessages/createSession',
         method: 'POST',
         header: {
           token: token,

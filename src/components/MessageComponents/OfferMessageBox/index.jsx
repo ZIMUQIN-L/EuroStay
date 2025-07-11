@@ -26,7 +26,7 @@ const OfferMessageBox = (props) => {
   
   const handleSingleButtonClick = () => {
     Taro.request({
-        url: isProperty ? `https://api.eurostay.co/app/property/showReservationInfo` : 'https://api.eurostay.co/app/activity/showReservationInfo',
+        url: isProperty ? `https://prod.eurostay.co/app/property/showReservationInfo` : 'https://prod.eurostay.co/app/activity/showReservationInfo',
         method: 'POST',
         header: {
             token: GlobalStore.userInfo.token,
@@ -45,7 +45,7 @@ const OfferMessageBox = (props) => {
   // 当点击"已付款"按钮时，调用 onPaid 回调
   const handleLeftButtonClick = () => {
     Taro.request({
-        url: isProperty ? `https://api.eurostay.co/app/property/showReservationInfo` : 'https://api.eurostay.co/app/activity/showReservationInfo',
+        url: isProperty ? `https://prod.eurostay.co/app/property/showReservationInfo` : 'https://prod.eurostay.co/app/activity/showReservationInfo',
         method: 'POST',
         header: {
             token: GlobalStore.userInfo.token,
@@ -61,7 +61,7 @@ const OfferMessageBox = (props) => {
   
   const handleRightButtonClick = () => {
     Taro.request({
-        url: isProperty ? `https://api.eurostay.co/app/property/showReservationInfo` : 'https://api.eurostay.co/app/activity/showReservationInfo',
+        url: isProperty ? `https://prod.eurostay.co/app/property/showReservationInfo` : 'https://prod.eurostay.co/app/activity/showReservationInfo',
         method: 'POST',
         header: {
             token: GlobalStore.userInfo.token,

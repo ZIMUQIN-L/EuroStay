@@ -41,9 +41,10 @@ const UserVip = () => {
     try {
       // 调用充值接口
       const month = selectedPlan === 'monthly' ? 1 : 12;
-      const price = selectedPlan === 'monthly' ? 6.6 : 88.8;
+      const price = selectedPlan === 'monthly' ? 15 : 88.8;
       
       const paymentData = await API.vip.recharge(month, price);
+      console.log(paymentData);
       
       // 调用支付
       await Taro.requestPayment({
@@ -111,14 +112,14 @@ const UserVip = () => {
                 <Text className='label'>月度会员</Text>
                 <View className='price'>
                   <Text className='currency'>€</Text>
-                  <Text className='amount'>0.88</Text>
+                  <Text className='amount'>1.99</Text>
                   <Text className='unit'>/月</Text>
                 </View>
               </View>
-              {/* <View className='right'>
-                <Text className='original-price'>原价€29.9</Text>
-                <Text className='discount'>限时67折</Text>
-              </View> */}
+              <View className='right'>
+                <Text className='original-price'>原价€9.9</Text>
+                <Text className='discount'>限时2折</Text>
+              </View>
             </View>
           </View>
 

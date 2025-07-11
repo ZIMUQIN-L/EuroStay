@@ -7,7 +7,7 @@ interface RequestOptions {
   data?: any;
 }
 
-const BASE_URL = 'https://api.eurostay.co';
+const BASE_URL = 'https://prod.eurostay.co';
 
 async function request<T>(options: RequestOptions): Promise<T> {
   const token = GlobalStore.userInfo.token;

@@ -4,7 +4,7 @@ import Taro from '@tarojs/taro';
 export const POST = async (url, body) => {
   console.log('token', GlobalStore.userInfo.token);
   Taro.request({
-    url: 'https://api.eurostay.co' + url,
+    url: 'https://prod.eurostay.co' + url,
     method: 'POST',
     data: {
       ...body,

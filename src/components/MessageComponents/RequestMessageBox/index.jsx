@@ -39,7 +39,7 @@ const RequestMessageBox = (props) => {
   
   const handleClick = () => {
     Taro.request({
-      url: isProperty ? `https://api.eurostay.co/app/property/showReservationInfo` : 'https://api.eurostay.co/app/activity/showReservationInfo',
+      url: isProperty ? `https://prod.eurostay.co/app/property/showReservationInfo` : 'https://prod.eurostay.co/app/activity/showReservationInfo',
       method: 'POST',
       header: {
           token: GlobalStore.userInfo.token,

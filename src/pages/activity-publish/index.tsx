@@ -95,7 +95,7 @@ const ActivityPublish = () => {
   const getCities = async () => {
     console.log(GlobalStore.userInfo.token);
     await Taro.request({
-      url: `https://api.eurostay.co/app/eslocation/cityList`,
+      url: `https://prod.eurostay.co/app/eslocation/cityList`,
       method: 'GET',
       header: {
         token: GlobalStore.userInfo.token,
@@ -123,7 +123,7 @@ const ActivityPublish = () => {
   const getCountries = async () => {
     console.log(GlobalStore.userInfo.token);
     await Taro.request({
-      url: `https://api.eurostay.co/app/eslocation/countryList`,
+      url: `https://prod.eurostay.co/app/eslocation/countryList`,
       method: 'GET',
       header: {
         token: GlobalStore.userInfo.token,
@@ -147,7 +147,7 @@ const ActivityPublish = () => {
   const fetchActivityBase = async (activityId: number) => {
     try {
       const response = await Taro.request({
-        url: `https://api.eurostay.co/app/activity/getActivityBase`,
+        url: `https://prod.eurostay.co/app/activity/getActivityBase`,
         method: 'POST',
         header: {
           token: GlobalStore.userInfo.token,
@@ -227,7 +227,7 @@ const ActivityPublish = () => {
             return '';
           }
           await Taro.uploadFile({
-            url: 'https://api.eurostay.co/app/common/upload',
+            url: 'https://prod.eurostay.co/app/common/upload',
             filePath: file,
             name: 'Image',
             formData: {
@@ -355,8 +355,8 @@ const ActivityPublish = () => {
 
     try {
       const url = aid
-        ? 'https://api.eurostay.co/app/activity/modify'
-        : 'https://api.eurostay.co/app/activity/addActivity';
+        ? 'https://prod.eurostay.co/app/activity/modify'
+        : 'https://prod.eurostay.co/app/activity/addActivity';
 
       const requestData = {
         ...(aid && { aid }),

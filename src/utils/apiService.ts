@@ -39,6 +39,7 @@ export const apiRequest = async <T>(
   } = options;
   
   try {
+      console.log(getApiUrl(path));
     const response = await Taro.request({
       url: getApiUrl(path),
       method,
@@ -59,8 +60,8 @@ export const apiRequest = async <T>(
       }
       throw new Error(errorMsg);
     }
-    
-    return response.data.result;
+    console.log('Response Data:', response);
+    return response.data.result ? response.data.result : response.data.data;
   } catch (error) {
     if (showError) {
       Taro.showToast({
