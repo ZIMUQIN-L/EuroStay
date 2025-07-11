@@ -199,7 +199,7 @@ export const API = {
       images: string[];
       anonymous: boolean;
     }) =>
-      apiRequest<any>('app/propert/postPropertyReview', {
+      apiRequest<any>('app/property/postPropertyReview', {
         data
       }),
     applyProperty: (data: {
