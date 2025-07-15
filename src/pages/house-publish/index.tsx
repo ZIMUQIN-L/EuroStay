@@ -202,7 +202,7 @@ const HousePublish = () => {
 
   const fetchPropertyBase = async (propertyId: number) => {
     try {
-      const detail = await API.property.getPropertyDetail(propertyId);
+      const detail = await API.property.getPropertyBase(propertyId);
 
       const availableDates: [string, string][] = [];
       let currentStart = '';

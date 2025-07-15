@@ -183,6 +183,8 @@ export const API = {
       }>>('app/property/getPropertyList', { data }),
     getPropertyDetail: (id: number) => 
       apiRequest<any>(`app/property/getPropertyDetail?pid=${id}`),
+    getPropertyBase: (id: number) =>
+      apiRequest<any>(`app/property/getPropertyBase?pid=${id}`),
     addPropertyCollection: (id: number) => 
       apiRequest<any>(`app/property/addPropertyCollection?pid=${id}`),
     cancelPropertyCollection: (id: number) => 
