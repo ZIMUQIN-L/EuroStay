@@ -171,13 +171,13 @@ const MessageDetail = () => {
       try {
         const contentObj = JSON.parse(msg.content || '{}');
         if (contentObj && contentObj.text) {
-          messageContent = contentObj.text + "\n请前往APP查看消息详情";
+          messageContent = contentObj.text + "\n请前往APP或小程序订单页面查看消息详情";
         } else {
-          messageContent = "请前往APP查看消息详情";
+          messageContent = "请前往APP或小程序订单页面查看消息详情";
         }
       } catch (e) {
         // 如果解析失败，显示默认消息
-        messageContent = "请前往APP查看消息详情";
+        messageContent = "请前往APP或小程序订单页面查看消息详情";
         console.error('JSON解析失败：', e, msg.content);
       }
     }

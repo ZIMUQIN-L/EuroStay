@@ -62,7 +62,7 @@ const HostAwaitingOrder = ({
             价格
           </View>
           <View className='info-card-value'>
-          {price === 0 ? '免费' : `€${price}/晚`}
+          {price === 0 ? '与房主自行商议' : `€${price}/晚`}
           {/* {type === 0 ? `€${price}/晚，共${days}晚` : price === 0 ? '免费' : `€${price}`} */}
           </View>
         </View>

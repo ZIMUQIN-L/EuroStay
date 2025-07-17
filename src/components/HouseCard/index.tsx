@@ -61,7 +61,7 @@ const HouseCard: React.FC<HouseCardProps> = ({
     if (type === 1) {
       Taro.showModal({
         title: '出行详情',
-        content: '请前往APP查看出行详情',
+        content: '请前往APP或小程序订单页面查看出行详情',
         showCancel: false,
         success: function (res) {}
       });
