@@ -37,13 +37,13 @@ export const CURRENT_ENV = getCurrentEnv();
 // API base URLs
 const API_URLS = {
   [ENV.DEV]: 'https://prod.eurostay.co/',
-  [ENV.TEST]: 'https://prod.eurostay.co/',
+  [ENV.TEST]: 'https://test.eurostay.co/',
   [ENV.PROD]: 'https://prod.eurostay.co/'
 };
 
 // WebSocket base URLs
 const WS_URLS = {
-  [ENV.DEV]: 'wss://test.eurostay.co/app/essocket/',
+  [ENV.DEV]: 'wss://prod.eurostay.co/app/essocket/',
   [ENV.TEST]: 'wss://test.eurostay.co/app/essocket/',
   [ENV.PROD]: 'wss://prod.eurostay.co/app/essocket/'
 };
