@@ -12,6 +12,7 @@ import { formatToday } from '@utils/dateUtil';
 import ReviewCard from '@components/ReviewCard';
 import { API } from '@utils/apiService';
 import {heartPurpleIcon, starPurpleIcon, starYellowIcon} from '@utils/cloudIcons';
+import WelcomeModal from '@components/WelcomeModal';
 
 // Define the review interface to match the API response
 interface ReviewData {
@@ -53,7 +54,8 @@ const HouseDetail: React.FC = () => {
     tags: [],
     buttonText: '打个招呼',
     buttonFunc: () => {
-      setShowLikeModal(true);
+    //   setShowLikeModal(true);
+      setShowWelcomeModal(true);
     }
   });
   
@@ -91,10 +93,15 @@ const HouseDetail: React.FC = () => {
   const [startDate, setStartDate] = useState(today);
   const [endDate, setEndDate] = useState<string | null>(null);
   const [valid, setValid] = useState<Array<{value: string | null}>>([]);
+  const [showWelcomeModal, setShowWelcomeModal] = useState(false);
 
   const [allReviews, setAllReviews] = useState<ReviewData[]>([]);
 
   Taro.setNavigationBarTitle({ title: '房源详情' });
+
+  const handleCloseModal = () => {
+    setShowWelcomeModal(false);
+  };
 
   const handelCollect = () => {
     if (GlobalStore.userInfo?.uid === 0) {
@@ -208,21 +215,22 @@ const HouseDetail: React.FC = () => {
           tags: result.hostInfo.tags,
           buttonText: '打个招呼',
           buttonFunc: () => {
-            if (GlobalStore.userInfo?.uid === 0) {
-                Taro.showModal({
-                  title: '转至登录页面',
-                  content: '请登录后联系别人~',
-                  success: function (res) {
-                    if (res.confirm) {
-                      Taro.reLaunch({
-                        url: `/pages/login/index`,
-                      });
-                    }
-                  },
-                });
-                return;
-              }
-            setShowLikeModal(true);
+            setShowWelcomeModal(true);
+            // if (GlobalStore.userInfo?.uid === 0) {
+            //     Taro.showModal({
+            //       title: '转至登录页面',
+            //       content: '请登录后联系别人~',
+            //       success: function (res) {
+            //         if (res.confirm) {
+            //           Taro.reLaunch({
+            //             url: `/pages/login/index`,
+            //           });
+            //         }
+            //       },
+            //     });
+            //     return;
+            //   }
+            // setShowLikeModal(true);
           }
         });
         setOrder({
@@ -305,7 +313,7 @@ const HouseDetail: React.FC = () => {
         });
         return;
       }
-    setShowLikeModal(true)
+    setShowLikeModal(true);
   }
 
   const handleSendLike = () => {
@@ -370,6 +378,8 @@ const HouseDetail: React.FC = () => {
   }
 
   const handleSubmit = () => {
+    setShowWelcomeModal(true);
+    return;
     if (GlobalStore.userInfo?.uid === 0) {
         Taro.showModal({
           title: '转至登录页面',
@@ -434,6 +444,16 @@ const HouseDetail: React.FC = () => {
     }
   }
 
+    // 处理下载APP
+    const handleDownloadApp = () => {
+        // 这里可以添加下载APP的逻辑
+        Taro.showToast({
+          title: '跳转下载页面',
+          icon: 'success'
+        });
+        setShowWelcomeModal(false);
+      };
+
   const handleViewAllReviews = () => {
     Taro.showModal({
       title: '更多评价',
@@ -450,6 +470,12 @@ const HouseDetail: React.FC = () => {
 
   return (
     <View style={{paddingBottom: '120px'}}>
+              {/* 欢迎弹窗组件 */}
+      <WelcomeModal
+        visible={showWelcomeModal}
+        onClose={handleCloseModal}
+        onDownload={handleDownloadApp}
+      />
       <Swiper
         className='image-swiper'
         onChange={handleSwiperChange}

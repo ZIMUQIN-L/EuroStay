@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, Image } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import './index.scss';
@@ -15,6 +15,7 @@ import { useMemo } from 'react';
 import GlobalStore from '@store/GlobalStore';
 import { observer } from 'mobx-react-lite';
 import { API } from '@utils/apiService';
+import WelcomeModal from '@components/WelcomeModal';
 
 interface TabBarProps {
   onWorldSelected?: () => void;
@@ -24,6 +25,7 @@ interface TabBarProps {
 
 const TabBar: React.FC<TabBarProps> = ({ onWorldSelected, setIsShowPostModal, isShowPostModal }) => {
   const currentTab = GlobalStore.currentTab;
+  const [showWelcomeModal, setShowWelcomeModal] = useState(false);
 
   useEffect(() => {
     if (!currentTab || currentTab === '') {
@@ -49,8 +51,24 @@ const TabBar: React.FC<TabBarProps> = ({ onWorldSelected, setIsShowPostModal, is
 
   const tabBarHeight = isIphone ? '60px' : '40px';
 
+  const handleCloseModal = () => {
+    setShowWelcomeModal(false);
+  };
+
+  // 处理下载APP
+  const handleDownloadApp = () => {
+    // 这里可以添加下载APP的逻辑
+    Taro.showToast({
+      title: '跳转下载页面',
+      icon: 'success'
+    });
+    setShowWelcomeModal(false);
+  };
+
   const handleTabClick = async (page) => {
     if (page === 'post') {
+        setShowWelcomeModal(true);
+        return;
       if (GlobalStore.userInfo?.uid === 0) {
         Taro.showModal({
           title: '未登录无法发布信息哦~',
@@ -143,6 +161,12 @@ const TabBar: React.FC<TabBarProps> = ({ onWorldSelected, setIsShowPostModal, is
 
   return (
     <>
+        {/* 欢迎弹窗组件 */}
+          <WelcomeModal
+        visible={showWelcomeModal}
+        onClose={handleCloseModal}
+        onDownload={handleDownloadApp}
+      />
       {isShowPostModal && (
         <View
           className='post-modal'

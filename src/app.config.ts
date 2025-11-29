@@ -7,6 +7,7 @@ export default {
     'pages/user/index',
     'pages/orders/index',
     'pages/house-publish/index',
+    'pages/webview/index',
     // 'pages/activity-publish/index',
     'pages/common-setting/index',
     'pages/user-setting/index',
