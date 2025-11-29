@@ -21,6 +21,7 @@ import {
 import CitySelect from '@components/CitySelect';
 import TabBar from '@components/TabBar';
 import { API } from '@utils/apiService';
+import WelcomeModal from '@components/WelcomeModal';
 
 type TabType = '房源' | '旅行者';
 
@@ -36,6 +37,8 @@ const HomeWorld = () => {
   const instance = getCurrentInstance();
   const [userList, setUserList] = useState<HomeItemType[]>([]);
   const [propertyList, setPropertyList] = useState<HomeItemType[]>([]);
+  // 添加弹窗状态
+  const [showWelcomeModal, setShowWelcomeModal] = useState(false);
 
   const curList: HomeItemType[] = useMemo(() => {
     switch (activeTab) {
@@ -85,6 +88,9 @@ const HomeWorld = () => {
       people: capacity,
       order: 1,
     });
+    
+    // 显示欢迎弹窗
+    setShowWelcomeModal(true);
   }, []);
 
   // 获取用户列表
@@ -221,6 +227,21 @@ const HomeWorld = () => {
     }
   }, [isShowPostModal]);
 
+  // 处理弹窗关闭
+  const handleCloseModal = () => {
+    setShowWelcomeModal(false);
+  };
+
+  // 处理下载APP
+  const handleDownloadApp = () => {
+    // 这里可以添加下载APP的逻辑
+    Taro.showToast({
+      title: '跳转下载页面',
+      icon: 'success'
+    });
+    setShowWelcomeModal(false);
+  };
+
   if (isShowDateSelect) {
     return (
       <DateSelect
@@ -268,6 +289,13 @@ const HomeWorld = () => {
 
   return (
     <>
+      {/* 欢迎弹窗组件 */}
+      <WelcomeModal
+        visible={showWelcomeModal}
+        onClose={handleCloseModal}
+        onDownload={handleDownloadApp}
+      />
+
       <View className={`home-search ${isShowPostModal ? 'modal' : ''}`}>
         <View className='tab-container'>
           <View
