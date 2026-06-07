@@ -8,7 +8,7 @@ import { API } from '@utils/apiService';
 
 const UserVip = () => {
   const [agreed, setAgreed] = useState(false);
-  const [selectedPlan, setSelectedPlan] = useState<'monthly' | 'yearly'>('monthly');
+  const [selectedPlan, setSelectedPlan] = useState<'monthly' | 'yearly'>('yearly');
   const [vipEndDate, setVipEndDate] = useState('');
 
   // 获取会员信息
@@ -41,7 +41,7 @@ const UserVip = () => {
     try {
       // 调用充值接口
       const month = selectedPlan === 'monthly' ? 1 : 12;
-      const price = selectedPlan === 'monthly' ? 15 : 88.8;
+      const price = selectedPlan === 'monthly' ? 55 : 199;
       
       const paymentData = await API.vip.recharge(month, price);
       console.log(paymentData);
@@ -102,7 +102,7 @@ const UserVip = () => {
       <View className='content-container'>
         {/* 会员套餐选项 */}
         <View className='subscription-options'>
-          <View 
+          {/* <View 
             className={`option-card monthly ${selectedPlan === 'monthly' ? 'selected' : ''}`}
             onClick={() => setSelectedPlan('monthly')}
           >
@@ -112,20 +112,20 @@ const UserVip = () => {
                 <Text className='label'>月度会员</Text>
                 <View className='price'>
                   <Text className='currency'>€</Text>
-                  <Text className='amount'>1.99</Text>
+                  <Text className='amount'>6.99</Text>
                   <Text className='unit'>/月</Text>
                 </View>
               </View>
               <View className='right'>
                 <Text className='original-price'>原价€9.9</Text>
-                <Text className='discount'>限时2折</Text>
+                <Text className='discount'>限时7折</Text>
               </View>
             </View>
-          </View>
+          </View> */}
 
           <View 
             className={`option-card yearly ${selectedPlan === 'yearly' ? 'selected' : ''}`}
-            // onClick={() => setSelectedPlan('yearly')}
+            onClick={() => setSelectedPlan('yearly')}
           >
             <Image className='bg-image' src={bgYearly} />
             <View className='price-info'>
@@ -133,14 +133,14 @@ const UserVip = () => {
                 <Text className='label'>年度会员</Text>
                 <View className='price'>
                   <Text className='currency'>€</Text>
-                  <Text className='amount'>正在上架中</Text>
-                  <Text className='unit'></Text>
+                  <Text className='amount'>24.99</Text>
+                  <Text className='unit'>/年 </Text>
                 </View>
               </View>
-              {/* <View className='right'>
-                <Text className='original-price'>原价€358.8</Text>
-                <Text className='discount'>限时5.5折</Text>
-              </View> */}
+              <View className='right'>
+                <Text className='original-price'>原价€119.99</Text>
+                <Text className='discount'>限时2折</Text>
+              </View>
             </View>
           </View>
         </View>

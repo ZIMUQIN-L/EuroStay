@@ -72,8 +72,8 @@ const WelcomeModal: React.FC<WelcomeModalProps> = ({ visible, onClose, onDownloa
         {/* 底部邀请码信息 */}
         <View className="modal-footer">
           <View className="modal-offer">
-            <Text className="offer-text">填写邀请码00000000006赠送</Text>
-            <Text className="offer-text">一个月会员哦~</Text>
+            <Text className="offer-text">EuroStay，世界不贵！</Text>
+            {/* <Text className="offer-text">一个月会员哦~</Text> */}
           </View>
         </View>
         
