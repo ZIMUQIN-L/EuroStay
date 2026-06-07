@@ -257,7 +257,7 @@ export interface Order {
     title: string;
     tags: Array<string>;
     description: string;
-    price: number;
+    price?: number;
     address: string;
     images: Array<string>;
     pid: number;
@@ -271,6 +271,15 @@ export interface Order {
     capacity?: number;
     flexiblePrice?: boolean;
     requirement?: string;
+    receptionTime?: Array<string>;
+    gender?: number;
+}
+
+export interface PropertyImage {
+  commonArea: string[];
+  livingRoom: string[];
+  toilet: string[];
+  bedroom: string[];
 }
 
 export interface ReviewCardProps {

@@ -235,7 +235,7 @@ const UserSetting = () => {
           <View className='vip-content'>
             <View className='vip-info'>
               <Text className='vip-title'>
-                {isLoggedIn && GlobalStore.userInfo.isVip ? 'Eurostay 包月会员' : '开通会员享专属权益'}
+                {isLoggedIn && GlobalStore.userInfo.isVip ? 'Eurostay 包年会员' : '开通会员享专属权益'}
               </Text>
               <Text className='vip-level'>
                 {isLoggedIn && GlobalStore.userInfo.isVip ? 'LV.1' : ''}
@@ -299,7 +299,7 @@ const UserSetting = () => {
                 setShowInviteModal(false);
               }
             }}>
-              跟朋友平分2个月会员
+              跟朋友平分14天会员
             </View>
             <View className='invite-later' onClick={() => setShowInviteModal(false)}>稍后再领</View>
           </View>

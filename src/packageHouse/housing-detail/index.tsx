@@ -63,7 +63,6 @@ const HouseDetail: React.FC = () => {
     title: '',
     tags: [],
     description: '',
-    price: 0,
     address: '',
     images: [],
     pid: 0,
@@ -75,8 +74,9 @@ const HouseDetail: React.FC = () => {
     city: '',
     cityId: 0,
     capacity: 0,
-    flexiblePrice: false,
-    requirement: ''
+    requirement: '',
+    receptionTime: [],
+    gender: 2,
   });
   
   const [topReview, setTopReview] = useState<ReviewCardProps>({
@@ -212,45 +212,54 @@ const HouseDetail: React.FC = () => {
           role: 'Host',
           username: result.hostInfo.username,
           detail: result.hostInfo.aboutMe,
-          tags: result.hostInfo.tags,
+          tags: result.hostInfo.tags || [],
           buttonText: '打个招呼',
           buttonFunc: () => {
-            setShowWelcomeModal(true);
-            // if (GlobalStore.userInfo?.uid === 0) {
-            //     Taro.showModal({
-            //       title: '转至登录页面',
-            //       content: '请登录后联系别人~',
-            //       success: function (res) {
-            //         if (res.confirm) {
-            //           Taro.reLaunch({
-            //             url: `/pages/login/index`,
-            //           });
-            //         }
-            //       },
-            //     });
-            //     return;
-            //   }
-            // setShowLikeModal(true);
+            if (GlobalStore.userInfo?.uid === 0) {
+              Taro.showModal({
+                title: '转至登录页面',
+                content: '请登录后联系别人~',
+                success: function (res) {
+                  if (res.confirm) {
+                    Taro.reLaunch({
+                      url: `/pages/login/index`,
+                    });
+                  }
+                },
+              });
+              return;
+            }
+            setShowLikeModal(true);
           }
         });
+        let tags: string[] = [];
+        if (result.tags && Array.isArray(result.tags) && result.tags.length > 0) {
+          tags = result.tags;
+        } else if (result.tagsJson) {
+          try {
+            const parsed = JSON.parse(result.tagsJson);
+            tags = (Object.values(parsed) as string[][]).flat();
+          } catch { tags = []; }
+        }
+
         setOrder({
           title: result.title,
-          tags: result.tags,
+          tags,
           description: result.description,
-          price: result.price,
-          address: result.address,
+          address: result.address || '',
           images: result.images,
           pid: result.pid,
           uid: result.uid,
-          availableDate: result.availableDate,
+          availableDate: result.availableDate || [],
           startTime: '',
           country: result.country || '',
           countryId: result.countryId || 0,
           city: result.city || '',
           cityId: result.cityId || 0,
           capacity: result.capacity || 0,
-          flexiblePrice: result.flexiblePrice || false,
-          requirement: result.requirement || ''
+          requirement: result.requirement || '',
+          receptionTime: result.receptionTime || [],
+          gender: result.gender ?? 2,
         });
         setIsStarred(result.isCollected);
       })
@@ -378,8 +387,6 @@ const HouseDetail: React.FC = () => {
   }
 
   const handleSubmit = () => {
-    setShowWelcomeModal(true);
-    return;
     if (GlobalStore.userInfo?.uid === 0) {
         Taro.showModal({
           title: '转至登录页面',
@@ -547,6 +554,14 @@ const HouseDetail: React.FC = () => {
             ))
           }
       </View>
+
+      {isComplete && order.receptionTime && order.receptionTime.length > 0 && (
+        <View className='house-tags'>
+          {order.receptionTime.map((time, i) => (
+            <View key={i} className='house-tag' style={{ backgroundColor: '#f3f0fb', color: '#7A63C7' }}>{time}</View>
+          ))}
+        </View>
+      )}
 
       <View className='detail-text'>{order.description}</View>
 

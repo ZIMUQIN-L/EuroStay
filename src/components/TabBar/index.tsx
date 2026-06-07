@@ -67,8 +67,6 @@ const TabBar: React.FC<TabBarProps> = ({ onWorldSelected, setIsShowPostModal, is
 
   const handleTabClick = async (page) => {
     if (page === 'post') {
-        setShowWelcomeModal(true);
-        return;
       if (GlobalStore.userInfo?.uid === 0) {
         Taro.showModal({
           title: '未登录无法发布信息哦~',

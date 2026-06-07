@@ -42,15 +42,19 @@ interface HouseFormData {
     name: string;
   };
   detailAddress: string;
-  flexiblePrice: boolean;
   tenantGender: number;
   tenantCount: number;
-  houseImages: string[];
-  paymentImages: string[];
+  propertyImages: {
+    commonArea: string[];
+    livingRoom: string[];
+    toilet: string[];
+    bedroom: string[];
+  };
   story: string;
   wechat: string;
   status: number;
   receptionTime: string[];
+  detailedReceptionTime: string;
 }
 
 interface PropertyBase {
@@ -79,15 +83,14 @@ const HousePublish = () => {
     country: { id: 0, cname: '选择国家', name: '' },
     city: { id: 0, cname: '选择城市', name: '' },
     detailAddress: '',
-    flexiblePrice: false,
     tenantGender: Gender.Default,
     tenantCount: 0,
-    houseImages: [],
-    paymentImages: [],
+    propertyImages: { commonArea: [], livingRoom: [], toilet: [], bedroom: [] },
     story: '',
     wechat: '',
     status: PropertyStatus.Available,
     receptionTime: [],
+    detailedReceptionTime: '',
   });
   const today = formatToday();
   const [startDate, setStartDate] = useState(today);
@@ -204,10 +207,34 @@ const HousePublish = () => {
     try {
       const detail = await API.property.getPropertyBase(propertyId);
 
+      // Parse tags from tagsJson (v5) or fallback to tags array
+      let houseTag: string[] = detail.tags || [];
+      if ((!houseTag || houseTag.length === 0) && detail.tagsJson) {
+        try {
+          const parsed = JSON.parse(detail.tagsJson);
+          houseTag = (Object.values(parsed) as string[][]).flat();
+        } catch { houseTag = []; }
+      }
+
+      // Map categorized images (v5), fallback flat images into commonArea
+      const propertyImages = detail.propertyImage
+        ? {
+            commonArea: detail.propertyImage.commonArea || [],
+            livingRoom: detail.propertyImage.livingRoom || [],
+            toilet: detail.propertyImage.toilet || [],
+            bedroom: detail.propertyImage.bedroom || [],
+          }
+        : {
+            commonArea: detail.images || [],
+            livingRoom: [],
+            toilet: [],
+            bedroom: [],
+          };
+
+      // Parse available dates for calendar display
       const availableDates: [string, string][] = [];
       let currentStart = '';
-
-      detail.availableDate.forEach((date, index) => {
+      (detail.availableDate || []).forEach((date, index) => {
         const cleanDate = date.split(' ')[0];
         if (index % 2 === 0) {
           currentStart = cleanDate;
@@ -220,36 +247,24 @@ const HousePublish = () => {
         ...formData,
         houseName: detail.title,
         houseDesc: detail.description,
-        country: {
-          id: detail.countryId || 0,
-          cname: detail.country || '',
-          name: '',
-        },
-        city: {
-          id: detail.cityId || 0,
-          cname: detail.city || '',
-          name: '',
-        },
+        country: { id: detail.countryId || 0, cname: detail.country || '', name: '' },
+        city: { id: detail.cityId || 0, cname: detail.city || '', name: '' },
         detailAddress: detail.address || '',
-        flexiblePrice: detail.flexiblePrice || false,
-        tenantGender: detail.gender,
+        tenantGender: detail.gender ?? Gender.Default,
         tenantCount: detail.capacity,
-        houseImages: detail.images || [],
+        propertyImages,
         wechat: detail.wxId || '',
-        houseTag: detail.tags || [],
-        status: detail.status || PropertyStatus.Available,
+        houseTag,
+        status: detail.status ?? PropertyStatus.Available,
         receptionTime: detail.receptionTime || [],
+        detailedReceptionTime: detail.detailedReceptionTime || '',
         story: detail.requirement || '',
       });
 
       setMultiDays(availableDates);
     } catch (error) {
       console.error('获取房源信息失败，请重试', error);
-      Taro.showToast({
-        title: '获取房源信息失败，请重试',
-        icon: 'none',
-        duration: 2000,
-      });
+      Taro.showToast({ title: '获取房源信息失败，请重试', icon: 'none', duration: 2000 });
     }
   };
 
@@ -292,10 +307,6 @@ const HousePublish = () => {
     setFormData({ ...formData, tenantGender: gender });
   };
 
-  const handleFlexiblePriceToggle = (isFlexible: boolean) => {
-    setFormData({ ...formData, flexiblePrice: isFlexible });
-  };
-
   const handleTenantCountSelect = count => {
     setFormData({ ...formData, tenantCount: count });
   };
@@ -308,38 +319,43 @@ const HousePublish = () => {
     }
   };
 
-  const handleUpload = async (type: string) => {
+  const handleUpload = async (category: 'commonArea' | 'livingRoom' | 'toilet' | 'bedroom') => {
+    const current = formData.propertyImages[category];
+    const remaining = 4 - current.length;
+    if (remaining <= 0) return;
+
     try {
       const res = await Taro.chooseImage({
-        count: type === 'house' ? 6 - formData.houseImages.length : 1,
+        count: remaining,
         sizeType: ['compressed'],
         sourceType: ['album', 'camera'],
       });
-      
-      const uploadPromises = res.tempFilePaths.map(file => 
-        API.common.upload(file, { prefix: 'test' })
+
+      const uploadPromises = res.tempFilePaths.map(file =>
+        API.common.upload(file, { prefix: 'house' })
       );
-      
+
       const uploadedImages = await Promise.all(uploadPromises);
-      
-      if (type === 'house') {
-        setFormData({
-          ...formData,
-          houseImages: [...formData.houseImages, ...uploadedImages],
-        });
-      } else {
-        setFormData({
-          ...formData,
-          paymentImages: [...formData.paymentImages, ...uploadedImages],
-        });
-      }
+
+      setFormData({
+        ...formData,
+        propertyImages: {
+          ...formData.propertyImages,
+          [category]: [...current, ...uploadedImages],
+        },
+      });
     } catch (error) {
       console.error('Upload failed:', error);
-      Taro.showToast({
-        title: '上传失败',
-        icon: 'none',
-      });
+      Taro.showToast({ title: '上传失败', icon: 'none' });
     }
+  };
+
+  const handleDeleteImage = (category: 'commonArea' | 'livingRoom' | 'toilet' | 'bedroom', index: number) => {
+    const newImages = formData.propertyImages[category].filter((_, i) => i !== index);
+    setFormData({
+      ...formData,
+      propertyImages: { ...formData.propertyImages, [category]: newImages },
+    });
   };
 
   const handleCountryChange = e => {
@@ -412,7 +428,8 @@ const HousePublish = () => {
       errors.push('请填写租客人数要求');
     }
 
-    if (formData.houseImages.length === 0) {
+    const totalImages = Object.values(formData.propertyImages).flat().length;
+    if (totalImages === 0) {
       errors.push('请至少上传一张房源照片');
     }
 
@@ -455,15 +472,17 @@ const HousePublish = () => {
         }
       });
 
-      // Convert available dates to required format
-      const availableDates = multiDays
-        .flatMap(pair => pair)
-        .sort((a, b) => new Date(a).getTime() - new Date(b).getTime());
+      // Flatten all categorized images into a single array for backward compatibility
+      const allImages = [
+        ...formData.propertyImages.commonArea,
+        ...formData.propertyImages.livingRoom,
+        ...formData.propertyImages.toilet,
+        ...formData.propertyImages.bedroom,
+      ];
 
       const requestData = {
         ...(pid && { pid }),
         title: formData.houseName,
-        tags: formData.houseTag,
         tagsJson: JSON.stringify(tagsJson),
         country: formData.country.cname,
         countryId: formData.country.id,
@@ -473,45 +492,18 @@ const HousePublish = () => {
         description: formData.houseDesc,
         capacity: formData.tenantCount,
         gender: formData.tenantGender,
-        images: formData.houseImages,
+        images: allImages,
+        propertyImage: formData.propertyImages,
         wxId: formData.wechat,
-        price: 0,
-        flexiblePrice: formData.flexiblePrice,
         status: formData.status,
         receptionTime: formData.receptionTime,
+        detailedReceptionTime: formData.detailedReceptionTime,
         requirement: formData.story,
-        availableDate: availableDates,
       };
 
       if (pid) {
-        const modifyData = {
-          pid,
-          title: requestData.title,
-          tags: requestData.tags,
-          tagsJson: requestData.tagsJson,
-          country: requestData.country,
-          countryId: requestData.countryId,
-          city: requestData.city,
-          cityId: requestData.cityId,
-          address: requestData.address,
-          description: requestData.description,
-          capacity: requestData.capacity,
-          gender: requestData.gender,
-          images: requestData.images,
-          wxId: requestData.wxId,
-          price: requestData.price,
-          flexiblePrice: requestData.flexiblePrice,
-          status: requestData.status,
-          receptionTime: requestData.receptionTime,
-          requirement: requestData.requirement,
-          availableDate: requestData.availableDate,
-        };
-        await API.property.modifyProperty(modifyData);
-        Taro.showToast({
-          title: '修改成功！',
-          icon: 'none',
-          duration: 2000,
-        });
+        await API.property.modifyProperty({ ...requestData, pid });
+        Taro.showToast({ title: '修改成功！', icon: 'none', duration: 2000 });
       } else {
         await API.property.uploadProperty(requestData);
         Taro.showToast({
@@ -712,26 +704,6 @@ const HousePublish = () => {
           />
         </View>
 
-        
-        
-        <View className='input-item'>
-          <View className='price-options'>
-            <Text className='label'>接待类型</Text>
-            <Text
-              className={`option ${formData.flexiblePrice ? 'active' : ''}`}
-              onClick={() => handleFlexiblePriceToggle(true)}
-            >
-              可商议
-            </Text>
-            <Text
-              className={`option ${!formData.flexiblePrice ? 'active' : ''}`}
-              onClick={() => handleFlexiblePriceToggle(false)}
-            >
-              一口价
-            </Text>
-          </View>
-        </View>
-
         <View className='input-item'>
           <>
             <Text className='label with-margin'>我期望的Guest*</Text>
@@ -774,42 +746,40 @@ const HousePublish = () => {
           </View>
         </View>
         <View className='input-item'>
-          <View className='label label-flex with-margin'>
-            <Text>我家的照片*</Text>
-            <Text className='image-count'>
-              {formData.houseImages.length}/6张
-            </Text>
-          </View>
+          <Text className='label with-margin'>我家的照片*（每类最多4张）</Text>
           <Text className='description'>
-        请拍摄一下你家里的【客厅】【厨房】【卫生间】【旅客住宿区域】的照片，客观真实的展示你家的美照吧！这些将展示在房源卡片，成为住客选择的重要参考哦~
+            请分类上传你家的照片，客观真实展示你的房源吧！
           </Text>
-          <View className='image-upload'>
-            {formData.houseImages.map((image, index) => (
-              <View key={index} className='image-item'>
-                <Image src={image} mode='aspectFill' />
-                <View
-                  className='delete-icon'
-                  onClick={e => {
-                    e.stopPropagation();
-                    const newImages = formData.houseImages.filter(
-                      (_, i) => i !== index,
-                    );
-                    setFormData({ ...formData, houseImages: newImages });
-                  }}
-                >
-                  ×
-                </View>
+          {(
+            [
+              { key: 'commonArea', label: '公共区' },
+              { key: 'livingRoom', label: '睡觉区' },
+              { key: 'toilet',     label: '卫生间' },
+              { key: 'bedroom',    label: '更多'   },
+            ] as { key: 'commonArea' | 'livingRoom' | 'toilet' | 'bedroom'; label: string }[]
+          ).map(({ key, label }) => (
+            <View key={key} className='tag-category'>
+              <Text className='category-title'>{label}（{formData.propertyImages[key].length}/4）</Text>
+              <View className='image-upload'>
+                {formData.propertyImages[key].map((image, index) => (
+                  <View key={index} className='image-item'>
+                    <Image src={image} mode='aspectFill' />
+                    <View
+                      className='delete-icon'
+                      onClick={e => { e.stopPropagation(); handleDeleteImage(key, index); }}
+                    >
+                      ×
+                    </View>
+                  </View>
+                ))}
+                {formData.propertyImages[key].length < 4 && (
+                  <View className='upload-button' onClick={() => handleUpload(key)}>
+                    <Text className='plus'>+</Text>
+                  </View>
+                )}
               </View>
-            ))}
-            {formData.houseImages.length < 6 && (
-              <View
-                className='upload-button'
-                onClick={() => handleUpload('house')}
-              >
-                <Text className='plus'>+</Text>
-              </View>
-            )}
-          </View>
+            </View>
+          ))}
         </View>
         <View className='input-item'>
           <View className='label'>
@@ -881,7 +851,19 @@ const HousePublish = () => {
               <Text className='option' onClick={handleAddReceptionTime}>+</Text>
             </View>
           </View>
-          
+
+          <View className='input-item' style={{ marginTop: '16px' }}>
+            <Text className='label'>具体换宿时间（最多16字）</Text>
+            <Input
+              className='input'
+              placeholder='如：圣诞节、暑假期间'
+              placeholderClass='placeholder'
+              value={formData.detailedReceptionTime}
+              maxlength={16}
+              onInput={e => setFormData({ ...formData, detailedReceptionTime: e.detail.value })}
+            />
+          </View>
+
           <View className='date-select '>
             <AtCalendar
               isMultiSelect

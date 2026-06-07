@@ -1,10 +1,10 @@
 import Taro from '@tarojs/taro';
 import { getApiUrl } from './config';
 import GlobalStore from '@store/GlobalStore';
-import { 
-  LocationData, 
-  HostDetail, 
-  Order, 
+import {
+  LocationData,
+  HostDetail,
+  Order,
   ReviewCardProps,
   PaginatedResponse,
   ApiResponse,
@@ -18,7 +18,8 @@ import {
   OrderInfo,
   SessionItem,
   MessageItem,
-  CollectionItem
+  CollectionItem,
+  PropertyImage
 } from './interfaces';
 
 /**
@@ -181,10 +182,10 @@ export const API = {
         user: any;
         property: any;
       }>>('app/property/getPropertyList', { data }),
-    getPropertyDetail: (id: number) => 
+    getPropertyDetail: (id: number) =>
       apiRequest<any>(`app/property/getPropertyDetail?pid=${id}`),
     getPropertyBase: (id: number) =>
-      apiRequest<any>(`app/property/getPropertyBase?pid=${id}`),
+      apiRequest<any>(`app/property/v5/getPropertyDetail?pid=${id}`),
     addPropertyCollection: (id: number) => 
       apiRequest<any>(`app/property/addPropertyCollection?pid=${id}`),
     cancelPropertyCollection: (id: number) => 
@@ -211,16 +212,14 @@ export const API = {
       description: string;
       startDate: string;
       endDate: string;
-      contact: string;
-      selfIntro: string;
+      resources: string[];
       skill: string;
     }) =>
-      apiRequest<any>('app/property/applyProperty', {
+      apiRequest<any>('app/property/v5/applyProperty', {
         data
       }),
     uploadProperty: (data: {
       title: string;
-      tags: string[];
       tagsJson: string;
       country: string;
       countryId: number;
@@ -231,19 +230,17 @@ export const API = {
       capacity: number;
       gender: number;
       images: string[];
-      wxId: string;
-      price: number;
-      flexiblePrice: boolean;
-      requirement: string;
+      propertyImage: PropertyImage;
       status: number;
       receptionTime: string[];
-      availableDate: string[];
+      detailedReceptionTime: string;
+      requirement?: string;
+      wxId?: string;
     }) =>
-      apiRequest<any>('app/property/upload', { data }),
+      apiRequest<any>('app/property/v5/modifyWithImage', { data }),
     modifyProperty: (data: {
       pid: number;
       title: string;
-      tags: string[];
       tagsJson: string;
       country: string;
       countryId: number;
@@ -254,15 +251,14 @@ export const API = {
       capacity: number;
       gender: number;
       images: string[];
-      wxId: string;
-      price: number;
-      flexiblePrice: boolean;
-      requirement: string;
+      propertyImage: PropertyImage;
       status: number;
       receptionTime: string[];
-      availableDate: string[];
+      detailedReceptionTime: string;
+      requirement?: string;
+      wxId?: string;
     }) =>
-      apiRequest<any>('app/property/modify', { data }),
+      apiRequest<any>('app/property/v5/modifyWithImage', { data }),
   },
   messages: {
     // Get session list with pagination
@@ -289,6 +285,12 @@ export const API = {
     sendLikeMsg: (toUid: number, content: string) =>
       apiRequest<any>('app/esmessages/sendLikeMsg', {
         data: { toUid, content }
+      }),
+
+    // Create a new chat session with a user
+    createSession: (toUid: number) =>
+      apiRequest<{ result: number }>('app/esmessages/createSession', {
+        data: { toUid }
       }),
   },
   location: {
