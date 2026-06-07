@@ -177,11 +177,11 @@ export const API = {
     },
   },
   property: {
-    getPropertyList: (data = {}) => 
+    getPropertyList: (data: { page: number; country?: number | null; city?: number | null; sort?: number } = { page: 1 }) =>
       apiRequest<PaginatedResponse<{
         user: any;
         property: any;
-      }>>('app/property/getPropertyList', { data }),
+      }>>('app/property/v5/getPropertyList', { data }),
     getPropertyDetail: (id: number) =>
       apiRequest<any>(`app/property/getPropertyDetail?pid=${id}`),
     getPropertyBase: (id: number) =>
