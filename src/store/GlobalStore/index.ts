@@ -16,6 +16,7 @@ class GlobalStore {
   _currentTab: string = 'home';
   _userInfo: ESUserLoginInfoProps;
   _socket: Taro.SocketTask | null = null;
+  pendingRedirect: string | null = null;
 
   constructor() {
     makeAutoObservable(this, {}, { autoBind: true });

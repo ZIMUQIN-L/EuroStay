@@ -57,15 +57,45 @@ const HomeWorld = () => {
         sort: 0,
       });
 
+      const adapted: HomeItemType[] = result.data.map(item => {
+        let userTags: string[] = [];
+        try { userTags = JSON.parse(item.user?.tagsJson || '[]'); } catch {}
+        return {
+          user: {
+            aboutMe: item.user?.aboutMe || '',
+            avatar: item.user?.avatar || '',
+            backgroundPic: item.user?.backgroundPic || item.user?.avatar || '',
+            gender: item.user?.gender ?? 0,
+            isVip: item.user?.isVip || false,
+            location: item.user?.location || '',
+            tags: userTags,
+            uid: item.user?.uid || 0,
+            username: item.user?.username || '',
+          },
+          property: {
+            id: item.property?.pid ?? item.property?.id,
+            images: item.property?.images || [],
+            price: item.property?.price ?? 0,
+            title: item.property?.title || '',
+            capacity: item.property?.capacity ?? 0,
+            flexiblePrice: item.property?.flexiblePrice || false,
+            receptionTime: item.property?.receptionTime || [],
+            country: item.property?.country || '',
+            city: item.property?.city || '',
+            tags: [],
+          },
+        };
+      });
+
       if (isLoadMore) {
-        setPropertyList(prev => [...prev, ...result.data]);
+        setPropertyList(prev => [...prev, ...adapted]);
         if (result.current_page >= result.last_page) {
           setHasMoreProperty(false);
         } else {
           setPropertyPage(currentPage + 1);
         }
       } else {
-        setPropertyList(result.data);
+        setPropertyList(adapted);
         setPropertyPage(2);
         setHasMoreProperty(result.current_page < result.last_page);
       }

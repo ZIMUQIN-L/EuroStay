@@ -184,7 +184,7 @@ const HomepageCard = (props: {
             )}
           </View>
           <View className='homepage-card-bottom property'>
-            <View className='property-title'>{props.property?.title}</View>
+            <View className='property-title'>{props.user?.username}</View>
 
             <View className='property-info-container'>
               <View className='property-details'>
@@ -194,7 +194,7 @@ const HomepageCard = (props: {
                   ))}
                 </View>
               </View>
-              <View className='capacity'>可住{props.property?.capacity}人</View>
+              {/* <View className='capacity'>可住{props.property?.capacity}人</View> */}
             </View>
           </View>
         </>

@@ -1,4 +1,4 @@
-.welcome-modal-overlay {
+.vip-overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -7,141 +7,111 @@
   background: rgba(0, 0, 0, 0.5);
   z-index: 1000;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
-  padding: 20px;
+  padding: 40px;
+  padding-top: 120px;
 }
 
-.welcome-modal {
-  background: #f5f5f5;  
-  border-radius: 20px;
-  padding: 40px 30px 30px;
-  max-width: 600px;
-  height: 400px;
-  width: 100%;
+/* Wrapper: relative container that lets price & claw overflow above the card */
+.vip-wrapper {
   position: relative;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  width: 100%;
+  padding-top: 64px; /* space for overflowing price/claw */
 }
 
-/* 标题区域 - 有白边包裹，部分重叠在弹窗上 */
-.modal-title-section {
+/* Price image: absolute, overflows above card at top-left */
+.vip-price-img {
   position: absolute;
-  top: -45px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 10;
-  background: #fffFFF00;
-  padding: 8px 20px;
-  border-radius: 25px;
+  top: -6px;
+  left: -32px;
+  width: 520px;
+  height: 144px;
+  z-index: 2;
 }
 
-.modal-title {
-  display: block;
-  font-size: 64px;
-  font-family: 'Alibaba PuHuiTi';
-  font-weight: bold;
-  color: #5a4b8a;
-  text-shadow: 
-    -5px -5px 0 #FFFFFF,
-    5px -5px 0 #FFFFFF,
-    -5px 5px 0 #FFFFFF,
-    5px 5px 0 #FFFFFF;
-}
-
-/* 副标题 - 黄字紫边包裹，在框内 */
-.modal-subtitle-section {
-  text-align: center;
-  margin-bottom: 60px;
-  margin-top: 30px;
-}
-
-.modal-subtitle {
-  display: block;
-  font-size: 36px;
-  font-family: 'Alibaba PuHuiTi';
-  font-weight: bold;
-  color: #FFD35E;
-  text-shadow: 
-    -2px -2px 0 #7A63C7,
-    2px -2px 0 #7A63C7,
-    -2px 2px 0 #7A63C7,
-    2px 2px 0 #7A63C7;
-}
-
-/* 右上角图片区域 - 直接显示图片，不需要包裹 */
-.modal-top-image {
+/* Claw: absolute, overflows above card at top-right */
+.vip-claw-img {
   position: absolute;
-  top: -60px;
-  right: -25px;
-  width: 200px;
-  height: 240px;
+  top: -48px;
+  right: -12px;
+  width: 220px;
+  height: 220px;
+  z-index: 2;
+}
+
+/* The actual card */
+.vip-card {
+  background: #fff;
+  border-radius: 32px;
+  overflow: hidden;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
+}
+
+/* Header: cream background, holds start text */
+.vip-card-header {
+//   background: #FFF8E6;
+  padding: 20px 24px 8px;
+}
+
+.vip-start-img {
+  width: 100%;
+  height: 80px;
+  margin-top: 40px;
+  left: -32px;
+}
+
+/* Middle intro image */
+.vip-intro-img {
+  width: 92%;
+  display: block;
+  margin: 0 auto;
+}
+
+/* Buttons container */
+.vip-buttons {
+  padding: 24px 28px 28px;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 5;
-  
-  /* 图片样式 */
-  image {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Shared pill button style */
+.vip-btn {
+  border-radius: 20px;
+  padding: 22px 0;
+  text-align: center;
+
+  &:active {
+    opacity: 0.85;
   }
 }
 
-/* 下载按钮 */
-.modal-button {
-  background: linear-gradient(90deg, #7a63c7 0%, #9b7fd9 100%);
+.vip-btn-primary {
+  background: linear-gradient(180deg, #7664C1 0%, #BEAAFF 100%);
+}
+
+.vip-btn-secondary {
+  background: linear-gradient(180deg, #FFF7E4 0%, #FFE6A5 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.vip-crown-icon {
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+}
+
+.vip-btn-text {
+  font-size: 30px;
+  font-weight: 400;
   color: #fff;
-  text-align: center;
-  padding: 20px;
-  border-radius: 50px;
-  font-size: 32px;
   font-family: 'Alibaba PuHuiTi';
-  font-weight: bold;
-  margin: 30px 0;
-  cursor: pointer;
-  transition: transform 0.2s;
-  
-  &:active {
-    transform: scale(0.98);
-  }
-}
 
-/* 底部邀请码信息 */
-.modal-footer {
-  text-align: center;
-  margin-top: 20px;
-}
-
-.modal-offer {
-  .offer-text {
-    display: block;
-    font-size: 26px;
-    color: #7a63c7;
-    line-height: 1.6;
-    font-weight: 500;
-  }
-}
-
-/* 关闭按钮 */
-.modal-close {
-  position: absolute;
-  top: 15px;
-  right: 20px;
-  z-index: 1000;
-  width: 40px;
-  height: 40px;
-  background: #f5f5f5;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 24px;
-  color: #999;
-  cursor: pointer;
-  transition: background 0.2s;
-  
-  &:active {
-    background: #e0e0e0;
+  .vip-btn-secondary & {
+    color: #7A63C7;
   }
 }

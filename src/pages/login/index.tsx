@@ -30,6 +30,16 @@ const Login = () => {
     checkLoginStatus();
   }, []);
 
+  const navigateAfterLogin = () => {
+    const redirect = GlobalStore.pendingRedirect;
+    if (redirect) {
+      GlobalStore.pendingRedirect = null;
+      Taro.reLaunch({ url: redirect });
+    } else {
+      Taro.reLaunch({ url: '/pages/home-world/index' });
+    }
+  };
+
   const checkLoginStatus = () => {
     Taro.login({
       success: function (res) {
@@ -42,9 +52,7 @@ const Login = () => {
                 GlobalStore.setAllInfo(userInfo);
                 GlobalStore.setToken(token || '');
                 GlobalStore.currentTab = 'world';
-                Taro.reLaunch({
-                  url: '/pages/home-world/index',
-                });
+                navigateAfterLogin();
               } else {
                 setIsChecking(false);
               }
@@ -150,20 +158,14 @@ const Login = () => {
           GlobalStore.setToken(result.token || '');
           GlobalStore.currentTab = 'world';
           setIsChecking(false);
-          Taro.reLaunch({
-            url: '/pages/home-world/index',
-            success: function () {
-              Taro.showModal({
-                  title: '前往补充个人信息',
-                  content: '请前往补充个人信息，方便Guest/Host更好地了解你哦~',
-                  success: function (res) {
-                    if (res.confirm) {
-                      Taro.navigateTo({
-                        url: `/packageUser/user-editing/index`,
-                      });
-                    }
-                  },
-                });
+          navigateAfterLogin();
+          Taro.showModal({
+            title: '前往补充个人信息',
+            content: '请前往补充个人信息，方便Guest/Host更好地了解你哦~',
+            success: function (res) {
+              if (res.confirm) {
+                Taro.navigateTo({ url: `/packageUser/user-editing/index` });
+              }
             },
           });
         }
@@ -215,16 +217,7 @@ const Login = () => {
               GlobalStore.setAllInfo(result.userInfo);
               GlobalStore.setToken(result.token || '');
               GlobalStore.currentTab = 'world';
-              Taro.reLaunch({
-                url: '/pages/home-world/index',
-                success: function () {
-                  Taro.showToast({
-                    title: '登录成功',
-                    icon: 'success',
-                    duration: 2000,
-                  });
-                },
-              });
+              navigateAfterLogin();
             })
             .catch(error => {
               console.error('Request failed:', error);

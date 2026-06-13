@@ -197,7 +197,7 @@ const UserSetting = () => {
           </View>
         </View>
 
-        {/* 填写邀请码按钮 */}
+        {/* 填写邀请码按钮
         <View className='invite-btn-row'>
           <View
             className='invite-btn left'
@@ -219,7 +219,7 @@ const UserSetting = () => {
           >
             填写邀请码获取会员
           </View>
-        </View>
+        </View> */}
 
         {/* VIP卡片 */}
         <View 

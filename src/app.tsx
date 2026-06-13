@@ -14,7 +14,25 @@ const App = props => {
 
     const storedUserInfo = Taro.getStorageSync('userInfo');
     if (storedUserInfo) {
-      GlobalStore.userInfo = storedUserInfo; // 初始化状态
+      GlobalStore.userInfo = storedUserInfo;
+    }
+
+    // Deeplink auth guard: if launched to a non-home page without login, save path and redirect to login
+    const launchOptions = Taro.getLaunchOptionsSync();
+    const { path, query } = launchOptions;
+    const isLoginPage = path === 'pages/login/index';
+    const isHomePage = path === 'pages/home-world/index';
+
+    if (path && !isLoginPage && !isHomePage) {
+      const queryStr = Object.entries(query || {}).map(([k, v]) => `${k}=${v}`).join('&');
+      const redirectUrl = `/${path}${queryStr ? '?' + queryStr : ''}`;
+      GlobalStore.pendingRedirect = redirectUrl;
+
+      const uid = storedUserInfo?.uid ?? 0;
+      if (uid === 0) {
+        Taro.reLaunch({ url: '/pages/login/index' });
+        return;
+      }
     }
 
     // 检测新版本

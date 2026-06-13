@@ -30,3 +30,9 @@ dist/*
 
 # 错误的 Git 文件
 *.lock
+
+# claude
+.claude/
+
+# design
+figma/
